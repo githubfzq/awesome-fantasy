@@ -40,9 +40,25 @@ if command -v npm &> /dev/null; then
   # 设置 npm 镜像加速
   echo "设置 npm 镜像加速..."
   # 尝试使用 x-cmd 设置镜像
-  if command -v x &> /dev/null; then
+  # x 是一个 shell 函数，需要先加载 x-cmd 的初始化文件
+  if [ -f "$HOME/.x-cmd.root/X" ]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.x-cmd.root/X"
+  fi
+  
+  # 检查 x 函数或 x-cmd 可执行文件是否可用
+  X_CMD_AVAILABLE=false
+  if type x &> /dev/null 2>&1; then
+    X_CMD_AVAILABLE=true
+    X_CMD_CMD="x"
+  elif command -v x-cmd &> /dev/null; then
+    X_CMD_AVAILABLE=true
+    X_CMD_CMD="x-cmd"
+  fi
+  
+  if [ "$X_CMD_AVAILABLE" = true ]; then
     echo "使用 x-cmd 设置 npm 镜像..."
-    x mirror npm set npmmirror
+    $X_CMD_CMD mirror npm set npmmirror
   else
     # 如果 x-cmd 不可用，使用 npm config 设置镜像
     echo "x-cmd 未安装，使用 npm config 设置镜像..."

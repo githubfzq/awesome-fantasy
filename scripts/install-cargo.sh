@@ -40,9 +40,20 @@ if [ "$USE_RUSTUP" = true ]; then
   echo "正在通过 rustup 安装 cargo..."
   
   # 尝试使用 x-cmd 设置镜像
-  if command -v x &> /dev/null; then
+  # x 是一个 shell 函数，需要先加载 x-cmd 的初始化文件
+  if [ -f "$HOME/.x-cmd.root/X" ]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.x-cmd.root/X"
+  fi
+  
+  # 检查 x 函数或 x-cmd 可执行文件是否可用
+  if type x &> /dev/null 2>&1 || command -v x-cmd &> /dev/null; then
     echo "使用 x-cmd 设置 cargo 镜像..."
-    x mirror cargo set tuna
+    if type x &> /dev/null 2>&1; then
+      x mirror cargo set tuna
+    elif command -v x-cmd &> /dev/null; then
+      x-cmd mirror cargo set tuna
+    fi
   else
     # 如果 x-cmd 不可用，使用环境变量设置镜像
     echo "x-cmd 未安装，使用环境变量设置镜像..."
