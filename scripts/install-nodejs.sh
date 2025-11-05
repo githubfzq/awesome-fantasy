@@ -75,7 +75,10 @@ fi
 # 检查是否已安装 n
 if ! command -v n &> /dev/null; then
   echo "正在安装 n (Node.js 版本管理器)..."
-  npm install -g n
+  if ! npm install -g n; then
+    echo "❌ 错误: n 安装失败"
+    exit 1
+  fi
   # 安装后确保 n 在 PATH 中
   if [[ ":$PATH:" != *":$N_PREFIX/bin:"* ]]; then
     export PATH="$N_PREFIX/bin:$PATH"
@@ -84,51 +87,102 @@ else
   echo "✓ n 已安装"
 fi
 
+# 记录安装前的 Node.js 版本（如果存在）
+OLD_NODE_VERSION=""
+if command -v node &> /dev/null; then
+  OLD_NODE_VERSION=$(node --version)
+  echo "当前 Node.js 版本: $OLD_NODE_VERSION"
+fi
+
 # 使用 n 安装 LTS 版本
 echo "正在使用 n 安装 Node.js LTS 版本..."
 echo "n 安装路径: $N_PREFIX"
-n lts
 
-# 验证安装
-if command -v node &> /dev/null; then
-  NODE_VERSION=$(node --version)
-  NPM_VERSION=$(npm --version)
-  echo "✓ Node.js 安装成功！"
-  echo "  Node.js 版本: $NODE_VERSION"
-  echo "  npm 版本: $NPM_VERSION"
-  
-  # 提示用户永久配置 PATH
-  echo ""
-  echo "提示: 为了在后续 shell 会话中也能使用全局安装的 npm 包和 n 管理的 Node.js，"
-  echo "      请将以下内容添加到您的 shell 配置文件中 (~/.bashrc 或 ~/.zshrc):"
-  echo ""
-  echo "      export N_PREFIX=\"\$HOME/.n\""
-  echo "      export PATH=\"\$HOME/.npm-global/bin:\$N_PREFIX/bin:\$PATH\""
-  
-  # 尝试自动添加到 shell 配置文件
-  SHELL_CONFIG=""
-  if [ -f "$HOME/.bashrc" ]; then
-    SHELL_CONFIG="$HOME/.bashrc"
-  elif [ -f "$HOME/.zshrc" ]; then
-    SHELL_CONFIG="$HOME/.zshrc"
-  fi
-  
-  if [ -n "$SHELL_CONFIG" ]; then
-    # 检查是否已包含配置
-    if ! grep -q "N_PREFIX" "$SHELL_CONFIG" 2>/dev/null; then
-      {
-        echo ""
-        echo "# Node.js and npm configuration"
-        echo "export N_PREFIX=\"\$HOME/.n\""
-        echo "export PATH=\"\$HOME/.npm-global/bin:\$N_PREFIX/bin:\$PATH\""
-      } >> "$SHELL_CONFIG"
-      echo "✓ 已自动添加到 $SHELL_CONFIG"
-    else
-      echo "✓ 配置已存在于 $SHELL_CONFIG"
-    fi
-  fi
+# 尝试使用镜像安装
+N_LTS_SUCCESS=false
+if n lts 2>&1; then
+  N_LTS_SUCCESS=true
 else
-  echo "⚠ 警告: Node.js 安装可能未完成，请检查错误信息"
+  N_LTS_ERROR=$?
+  echo "⚠ 警告: 使用镜像下载失败 (退出码: $N_LTS_ERROR)"
+  echo "尝试使用官方源安装..."
+  
+  # 临时取消镜像设置，使用官方源
+  OLD_NODE_MIRROR="$NODE_MIRROR"
+  unset NODE_MIRROR
+  
+  if n lts 2>&1; then
+    N_LTS_SUCCESS=true
+    export NODE_MIRROR="$OLD_NODE_MIRROR"
+  else
+    export NODE_MIRROR="$OLD_NODE_MIRROR"
+    echo "❌ 错误: 使用官方源也失败，请检查网络连接"
+  fi
+fi
+
+# 验证安装结果
+if [ "$N_LTS_SUCCESS" = false ]; then
+  if [ -n "$OLD_NODE_VERSION" ]; then
+    echo "⚠ 警告: n lts 安装失败，但检测到已有 Node.js 版本: $OLD_NODE_VERSION"
+    echo "       将继续使用现有版本"
+  else
+    echo "❌ 错误: Node.js LTS 安装失败，且未检测到已安装的 Node.js"
+    exit 1
+  fi
+fi
+
+# 验证 Node.js 是否可用
+if ! command -v node &> /dev/null; then
+  echo "❌ 错误: Node.js 未找到，安装可能失败"
   exit 1
+fi
+
+# 获取实际安装的版本
+NODE_VERSION=$(node --version)
+NPM_VERSION=$(npm --version)
+
+# 验证版本是否更新（如果之前有版本）
+if [ -n "$OLD_NODE_VERSION" ] && [ "$N_LTS_SUCCESS" = true ]; then
+  if [ "$NODE_VERSION" = "$OLD_NODE_VERSION" ]; then
+    echo "⚠ 警告: Node.js 版本未更新，可能安装失败或已是最新版本"
+    echo "  当前版本: $NODE_VERSION"
+  else
+    echo "✓ Node.js 已从 $OLD_NODE_VERSION 升级到 $NODE_VERSION"
+  fi
+fi
+
+echo "✓ Node.js 安装完成！"
+echo "  Node.js 版本: $NODE_VERSION"
+echo "  npm 版本: $NPM_VERSION"
+
+# 提示用户永久配置 PATH
+echo ""
+echo "提示: 为了在后续 shell 会话中也能使用全局安装的 npm 包和 n 管理的 Node.js，"
+echo "      请将以下内容添加到您的 shell 配置文件中 (~/.bashrc 或 ~/.zshrc):"
+echo ""
+echo "      export N_PREFIX=\"\$HOME/.n\""
+echo "      export PATH=\"\$HOME/.npm-global/bin:\$N_PREFIX/bin:\$PATH\""
+
+# 尝试自动添加到 shell 配置文件
+SHELL_CONFIG=""
+if [ -f "$HOME/.bashrc" ]; then
+  SHELL_CONFIG="$HOME/.bashrc"
+elif [ -f "$HOME/.zshrc" ]; then
+  SHELL_CONFIG="$HOME/.zshrc"
+fi
+
+if [ -n "$SHELL_CONFIG" ]; then
+  # 检查是否已包含配置
+  if ! grep -q "N_PREFIX" "$SHELL_CONFIG" 2>/dev/null; then
+    {
+      echo ""
+      echo "# Node.js and npm configuration"
+      echo "export N_PREFIX=\"\$HOME/.n\""
+      echo "export PATH=\"\$HOME/.npm-global/bin:\$N_PREFIX/bin:\$PATH\""
+    } >> "$SHELL_CONFIG"
+    echo "✓ 已自动添加到 $SHELL_CONFIG"
+  else
+    echo "✓ 配置已存在于 $SHELL_CONFIG"
+  fi
 fi
 
