@@ -1,0 +1,23 @@
+{
+  "skill_name": "fish-shell",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "运行 omf reload 报错：'case' builtin not inside of switch block，指向 ~/.config/fish/config.fish 第 7 行，帮我看看怎么回事并修好",
+      "expected_output": "识别为 bash case 语法混入 fish 配置，改写 export/case/esac 为 set -gx 和 contains 去重，验证 source 与 omf reload 通过",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "pnpm 安装完让我在 ~/.bashrc 里加 PATH，我用的是 fish，应该怎么写进 config.fish？",
+      "expected_output": "给出 fish 版 PNPM_HOME 与 PATH 设置，使用 set -gx 和 if not contains，不用冒号拼接 PATH",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "fish 启动就报 source config.fish 错误，config 里有很多 export 和 &&，从 bashrc 复制过来的",
+      "expected_output": "列出 bash→fish 对照改写规则，逐类替换 export/&&/case，并给出验证命令",
+      "files": []
+    }
+  ]
+}
