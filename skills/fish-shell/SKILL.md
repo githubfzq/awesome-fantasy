@@ -2,10 +2,12 @@
 name: fish-shell
 description: >-
   Fish shell 配置与排错技能。用于编写和修复 ~/.config/fish/config.fish、处理 omf
-  reload 报错、将 bash/zsh 语法迁移为 fish 语法、PATH 去重与 conda/pnpm 等工具链初始化。
-  当用户提到 fish、config.fish、omf、Oh My Fish、'case' builtin not inside of switch
-  block、export 在 fish 中报错、从 bashrc 复制配置、fish PATH 重复等问题时，务必使用本技能——
-  即使用户只说「shell 启动报错」且 config.fish 在错误栈里，也应触发。
+  reload 报错、将 bash/zsh 语法迁移为 fish 语法、用 fish_add_path 管理 PATH、
+  排查 pnpm ls -g / x-cmd 因 PATH 顺序或列表语义出错等问题。当用户提到 fish、
+  config.fish、omf、Oh My Fish、fish_add_path、'case' builtin not inside of switch
+  block、export 在 fish 中报错、echo $PATH 没有冒号、pnpm global bin not in PATH、
+  从 bashrc 复制配置时，务必使用本技能——即使用户只说「shell 启动报错」或
+  「PATH 看起来不对」且涉及 fish，也应触发。
 agent_created: true
 ---
 
@@ -13,7 +15,12 @@ agent_created: true
 
 ## Overview
 
-Fish 与 bash/zsh **语法不兼容**。安装脚本（pnpm、nvm、conda 等）和从 `~/.bashrc` 复制的片段，直接粘贴进 `~/.config/fish/config.fish` 会导致启动失败。本技能基于真实排错经验：bash 的 `case ... in` / `export` 写入 fish 配置后，`omf reload` 报 `'case' builtin not inside of switch block`。
+Fish 与 bash/zsh **语法不兼容**。安装脚本（pnpm、nvm、conda 等）和从 `~/.bashrc` 复制的片段，直接粘贴进 `~/.config/fish/config.fish` 会导致启动失败或 PATH 语义错误。
+
+本技能覆盖两类真实故障：
+
+1. bash 的 `case ... in` / `export` 写入 fish → `omf reload` 报 `'case' builtin not inside of switch block`
+2. PATH 用 bash 冒号拼接、或错误 prepend `PNPM_HOME` → `pnpm ls -g` 报 global bin not in PATH；`echo $PATH` 看起来「没有冒号」其实是 fish 列表显示
 
 ## 配置文件位置
 
@@ -34,8 +41,8 @@ Fish 没有 `export`、`case ... in ... esac`、`:$PATH:` 子串匹配。常见�
 | bash/zsh | fish | 说明 |
 |----------|------|------|
 | `export VAR=value` | `set -gx VAR value` | `-g` 全局，`-x` 导出到子进程 |
-| `export PATH="$A:$PATH"` | `set -gx PATH $A $PATH` | fish 的 PATH 是**列表**，不是冒号字符串 |
-| `case ":$PATH:" in *":$DIR:"*) ;; *) export PATH="$DIR:$PATH" ;; esac` | `if not contains $DIR $PATH; set -gx PATH $DIR $PATH; end` | PATH 去重用 `contains` |
+| `export PATH="$A:$PATH"` | `fish_add_path --path $A`（或 append） | **优先**用内置函数，勿手写冒号拼接 |
+| `case ":$PATH:" in *":$DIR:"*) ;; *) export PATH="$DIR:$PATH" ;; esac` | `fish_add_path --path $DIR` | 去重与存在性检查内置 |
 | `source file` | `source file` 或 `. file` | 相同 |
 | `[ -f file ]` | `test -f file` | fish 推荐 `test` |
 | `&&` / `\|\|` | `and` / `or` | fish 用关键字 |
@@ -60,57 +67,62 @@ end
 
 这与 bash 的 `case ... in` 完全不是同一套语法。
 
-## PATH 管理（fish 习惯）
+## PATH 管理：优先用 `fish_add_path`
 
-PATH 在 fish 中是列表。追加路径时先去重，避免每次 source 重复 prepend：
+PATH 在 fish 中是**列表**，不是冒号字符串。往 PATH 加目录时，优先用内置 `fish_add_path`，不要手写 `if not contains` + `set -gx PATH`，更不要写自定义 dedupe 函数。
+
+### 为什么用 `fish_add_path`
+
+| 能力 | 手写 `set -gx PATH` | `fish_add_path` |
+|------|---------------------|-----------------|
+| 去重 | 需自己写 | 内置 |
+| 路径规范化 | 无 | `realpath` |
+| 目录不存在时跳过 | 无 | 自动跳过 |
+| 列表语义 | 容易写错 | 正确处理 |
+
+### 推荐写法
 
 ```fish
 set -gx PNPM_HOME "/path/to/pnpm"
-if not contains $PNPM_HOME $PATH
-    set -gx PATH $PNPM_HOME $PATH
-end
-
-if not contains /opt/nvim-linux64/bin $PATH
-    set -gx PATH $PATH /opt/nvim-linux64/bin
-end
+# 追加勿 prepend：见下方 pnpm 陷阱
+fish_add_path --append --global --path $PNPM_HOME
+fish_add_path --append --global --path /opt/nvim-linux64/bin
 ```
 
-注意：
+常用参数：
 
-- **不要**写成 `set -gx PATH "$PNPM_HOME:$PATH:/other"`——那是 bash 冒号拼接，在 fish 里会把整串当成一个 PATH 元素。
-- 若前面有 `if not contains` 去重，后面又无条件 `set -gx PATH $PNPM_HOME $PATH`，去重会被覆盖；保留一种逻辑即可。
+| 参数 | 含义 |
+|------|------|
+| `--path` | 直接改 `$PATH`（适合 `config.fish`） |
+| `--global` | global 作用域（配合 `--path`） |
+| `--append` | 追加到末尾 |
+| （默认） | 写入 universal `fish_user_paths` 并 **prepend** |
 
-查看 PATH 是否包含某目录：
+不加 `--path` 时默认写 `fish_user_paths`（universal），适合交互会话里一次性执行；在 `config.fish` 里建议显式 `--global --path`，行为更清晰。
+
+### 禁止 / 易错写法
 
 ```fish
-if contains $PNPM_HOME $PATH
-    echo "pnpm in PATH: yes"
-else
-    echo "pnpm in PATH: no"
-end
+# ❌ bash 冒号拼接：在 fish 里可能把整串当成异常 PATH 语义
+set -gx PATH "$PNPM_HOME:$PATH:/other"
+
+# ❌ 手写 dedupe 用 echo $out 做命令替换：多元素会被压成「一个」空格串，毁掉 PATH
+set -gx PATH (__my_dedupe $PATH)
+
+# ❌ 无条件 prepend PNPM_HOME：可能遮蔽 ~/.npm/bin/pnpm
+set -gx PATH $PNPM_HOME $PATH
 ```
 
-## 修复 workflow
+### `echo $PATH`「没有冒号」是正常现象
 
-1. **读报错行号**：错误栈会指向 `~/.config/fish/config.fish` 的具体行。
-2. **识别 bash 片段**：搜索 `export`、`case`、`esac`、`[ ]`、`&&`、`||`、`:$PATH:`。
-3. **逐段改写为 fish 语法**（参照上表）。
-4. **验证**（按顺序执行）：
+- fish 里 `echo $PATH` 用**空格**分隔列表元素，不是 bug
+- 传给 `pnpm` / `bash` / `node` 等子进程时，fish **自动用 `:` 拼接**
+- 要看冒号形式：`string join : $PATH`
+- 要看元素个数：`count $PATH`；详细：`set -S PATH`
 
-```bash
-fish -c 'source ~/.config/fish/config.fish; echo source OK'
-fish -c 'omf reload 2>&1; echo exit:$status'
-```
+## 真实案例 A：pnpm bash 片段 → fish（语法迁移）
 
-5. **检查环境变量**（可选）：
-
-```bash
-fish -c 'source ~/.config/fish/config.fish; echo PNPM_HOME=$PNPM_HOME; if contains $PNPM_HOME $PATH; echo "pnpm in PATH: yes"; end'
-```
-
-## 真实案例：pnpm PATH 片段迁移
-
-**错误写法（bash，来自 pnpm 安装提示）：**
+**错误写法（bash，来自 `pnpm setup`）：**
 
 ```fish
 export PNPM_HOME="/path/to/pnpm"
@@ -118,30 +130,77 @@ case ":$PATH:" in
  *":$PNPM_HOME:"*) ;;
  *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-export PATH="$PNPM_HOME:$PATH:/opt/nvim-linux64/bin"
 ```
 
 **正确写法（fish）：**
 
 ```fish
 set -gx PNPM_HOME "/path/to/pnpm"
-if not contains $PNPM_HOME $PATH
-    set -gx PATH $PNPM_HOME $PATH
-end
-if not contains /opt/nvim-linux64/bin $PATH
-    set -gx PATH $PATH /opt/nvim-linux64/bin
-end
+fish_add_path --append --global --path $PNPM_HOME
 ```
 
-## conda / 其他工具初始化
+## 真实案例 B：`pnpm ls -g` 报 global bin not in PATH
 
-`conda init fish` 生成的块应保留在 `config.fish` 中，且使用 fish 语法（`if test -f ...`、`eval ... | source`）。**不要**手动把 `conda init bash` 的输出贴进 fish 配置。
+**现象：**
 
-若某工具只提供 bash 安装脚本：
+```
+[ERROR] The configured global bin directory ".../pnpm/bin" is not in PATH
+Run "pnpm setup" to update your shell configuration.
+```
 
-- 查官方是否支持 `fish` / `conda init fish` / `*.fish` conf.d；
-- 或把 bash 逻辑**手工翻译**为 fish，而非直接粘贴；
-- 复杂初始化可放到 `~/.config/fish/conf.d/tool.fish` 单独维护。
+或用户发现 `which pnpm` 指向 `$PNPM_HOME/pnpm`，而不是 `~/.npm/bin/pnpm`。
+
+**根因（实战）：**
+
+1. `PNPM_HOME`（含全局 bin 与一份 `pnpm` 可执行文件）被 **prepend** 到 PATH 最前
+2. `command -v pnpm` 解析到 `$PNPM_HOME/pnpm`，而不是更靠后的 `~/.npm/bin/pnpm`
+3. 该路径下的 pnpm 对 global bin 目录的校验与 PATH 不一致时抛错
+
+**修复：** 对 `PNPM_HOME` 使用 **`--append`**，让 `~/.npm/bin`（或 nvm 的 pnpm）优先：
+
+```fish
+fish_add_path --append --global --path $PNPM_HOME
+```
+
+bash 侧若也有同样问题，对应改为：
+
+```bash
+export PATH="$PATH:$PNPM_HOME"   # append，不是 $PNPM_HOME:$PATH
+```
+
+验证：
+
+```fish
+command -v pnpm   # 期望 ~/.npm/bin/pnpm（或你真正安装的那份）
+pnpm ls -g
+```
+
+## 修复 workflow
+
+1. **读报错行号**：错误栈会指向 `~/.config/fish/config.fish` 的具体行。
+2. **识别 bash 片段**：搜索 `export`、`case`、`esac`、`[ ]`、`&&`、`||`、`:$PATH:`。
+3. **PATH 改用 `fish_add_path`**；注意 pnpm 等场景要 `--append`。
+4. **验证**（按顺序执行）：
+
+```bash
+fish -c 'source ~/.config/fish/config.fish; echo source OK'
+fish -c 'omf reload 2>&1; echo exit:$status'
+fish -c 'command -v pnpm; pnpm ls -g; type -q x; and x 2>&1 | head -3'
+```
+
+5. **检查 PATH 语义**（可选）：
+
+```fish
+count $PATH
+string join : $PATH
+contains -- $PNPM_HOME $PATH; and echo "PNPM_HOME in PATH"
+```
+
+## conda / x-cmd / 其他工具初始化
+
+- `conda init fish` 生成的块应保留，且使用 fish 语法。**不要**把 `conda init bash` 贴进 fish。
+- x-cmd：保留 `source "$HOME/.x-cmd.root/local/data/fish/rc.fish"`；PATH 被毁掉时（例如错误 dedupe），x-cmd 内部 `cat`/`which` 会连锁失败。
+- 若某工具只提供 bash 安装脚本：查官方 fish 支持，或手工翻译；复杂逻辑放到 `~/.config/fish/conf.d/tool.fish`。
 
 ## omf（Oh My Fish）
 
@@ -151,10 +210,11 @@ end
 
 ## 代理操作时的注意点
 
-- 编辑前**先读取** `~/.config/fish/config.fish` 全文，避免只改报错行而遗漏其他 bash 片段。
+- 编辑前**先读取** `~/.config/fish/config.fish` 全文，避免只改报错行而遗漏其他 bash 片段或重复的 source 块。
 - 改动尽量小：只翻译有问题的小节，不动 conda 等已正确的 fish 块。
-- 改完后**必须**用 `fish -c 'source ...'` 验证，不要假设语法正确。
-- 用户若使用 x-cmd 等第三方 fish rc，保留其 `source` 行，只修复其后的错误片段。
+- PATH 一律优先 `fish_add_path`；不要引入自定义 PATH dedupe 辅助函数。
+- 改完后**必须**用 `fish -c 'source ...'` 验证，并确认 `command -v pnpm` / `x`（若用户用 x-cmd）仍可用。
+- 用户若使用 x-cmd，保留其 `source` 行，只修复其后的错误片段。
 
 ## 快速诊断命令
 
@@ -164,6 +224,9 @@ fish -c 'source ~/.config/fish/config.fish'
 
 # 找出 config.fish 里可疑的 bash 关键字
 grep -nE '^\s*(export|case |esac|\[ )' ~/.config/fish/config.fish
+
+# PATH 列表是否健康
+fish -c 'echo count:(count $PATH); string join : $PATH | head -c 200; echo; command -v pnpm'
 
 # 查看 fish 版本
 fish --version
