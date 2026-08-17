@@ -1,0 +1,23 @@
+{
+  "skill_name": "docker-containerd-disk",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "系统盘 /var/lib/containerd 占了 250G，但 docker info 显示 Docker Root Dir 在外接盘。这是什么占用？能不能直接 rm -rf？",
+      "expected_output": "解释 data-root 与 containerd root 分离；content vs snapshotter；禁止运行中 rm -rf；给出诊断步骤与清理档位 A（dangling + content prune）",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "调研 io.containerd.snapshotter.v1.overlayfs 和 io.containerd.content.v1.content 的用途，并给出清理建议。本机 snapshotter 164G、content 87G。",
+      "expected_output": "说明 content=压缩 blob、snapshotter=解压层；结合 GraphDriver/UpperDir/无 snapshotter mount 判断多为缓存；按 A/B/C 阶梯给建议",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "现在哪些 docker 镜像和容器依赖 /var/lib/containerd 里的数据？我想只清安全的部分。",
+      "expected_output": "区分运行时依赖与磁盘依赖；列出如何核对 UpperDir 与 Active snapshot；建议先清 moby-dangling 再 content prune，不动外盘 overlay2 容器层",
+      "files": []
+    }
+  ]
+}
