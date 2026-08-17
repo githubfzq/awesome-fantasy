@@ -1,0 +1,5 @@
+# RPA 驱动层依赖（VM 内独立 venv：C:\venv）
+# 安装：C:\venv\Scripts\pip install -r requirements.txt
+# 说明：Win32 交互走标准库 ctypes，无需额外包；唯一第三方依赖是截图用的 Pillow。
+# 历史记录：早期文档误称依赖 pywinauto —— 实际未使用（owner-drawn 弹窗 pywinauto 坐标不准），故不列。
+Pillow>=9.0
