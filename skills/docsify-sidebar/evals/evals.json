@@ -1,0 +1,29 @@
+{
+  "skill_name": "docsify-sidebar",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "在项目 docs/ 下生成能按层级用的文档目录，plans、solutions 这些子目录也要进侧边栏",
+      "expected_output": "不调用 docsify-auto-sidebar；运行 generate_sidebar.py 写出 docs/_sidebar.md 嵌套列表，并为 index.html 打开 loadSidebar 与 alias",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "docsify-auto-sidebar -d docs 报 ENOENT stat '/README.md'，帮我生成目录",
+      "expected_output": "说明该包把 URL 路径 /README.md 拿去 stat；改用本技能脚本按真实 docs 路径生成 _sidebar.md",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "后来在 docs/plans/ 里又加了一篇 md，侧边栏会自动出现吗？不会的话怎么更新",
+      "expected_output": "说明 Docsify 不会自动扫描；重新运行 generate_sidebar.py 覆盖 _sidebar.md，或按两空格缩进手动加一行链接",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "docsify 文档里的流程图不显示，帮我在 index.html 引入 mermaid 脚本渲染",
+      "expected_output": "按 Docsify → Mermaid 10 ESM → mermaid-docsify 的顺序补齐 CSS、mermaidConfig 和插件；Markdown 使用 mermaid 代码块",
+      "files": []
+    }
+  ]
+}

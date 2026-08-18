@@ -1,0 +1,29 @@
+{
+  "skill_name": "fish-shell",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "运行 omf reload 报错：'case' builtin not inside of switch block，指向 ~/.config/fish/config.fish 第 7 行，帮我看看怎么回事并修好",
+      "expected_output": "识别为 bash case 语法混入 fish 配置，改写为 fish 语法并用 fish_add_path 管理 PATH，验证 source 与 omf reload 通过",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "pnpm 安装完让我在 ~/.bashrc 里加 PATH，我用的是 fish，应该怎么写进 config.fish？",
+      "expected_output": "给出 fish_add_path --append --global --path $PNPM_HOME，强调勿 prepend、勿冒号拼接",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "fish 里 echo $PATH 没有冒号分隔，pnpm ls -g 还报 global bin not in PATH，是不是 PATH 坏了？",
+      "expected_output": "说明空格显示是 fish 列表常态；根因是 PNPM_HOME prepend 遮蔽正确 pnpm；用 fish_add_path --append 修复并验证 command -v pnpm 与 pnpm ls -g",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "fish 启动就报 source config.fish 错误，config 里有很多 export 和 &&，从 bashrc 复制过来的",
+      "expected_output": "列出 bash→fish 对照改写规则，PATH 改用 fish_add_path，并给出验证命令",
+      "files": []
+    }
+  ]
+}
