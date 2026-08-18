@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import io
 import json
 import os
 import select
+import shlex
 import socket
 import subprocess
 import sys
@@ -27,13 +29,18 @@ STATUS_LABELS = {
     "unknown": "未知",
 }
 
-REMOTE_RELAY = r"""
+# Bridged over SSH via `python3 -c 'exec(b64decode(...))'` so newlines never
+# pass through nested shell quoting (json.dumps + ssh + python -c).
+REMOTE_RELAY = """
 import os
 import select
 import socket
 import sys
 
 path = os.path.expanduser(sys.argv[1])
+if not os.path.exists(path):
+    print("herdr socket not found:", path, file=sys.stderr)
+    sys.exit(1)
 sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 sock.connect(path)
 inputs = [sys.stdin.buffer, sock]
@@ -51,7 +58,9 @@ while True:
                 sys.exit(0)
             sys.stdout.buffer.write(chunk)
             sys.stdout.buffer.flush()
-"""
+""".strip()
+
+REMOTE_RELAY_B64 = base64.b64encode(REMOTE_RELAY.encode("utf-8")).decode("ascii")
 
 LIFECYCLE_SUBSCRIPTIONS = [
     {"type": "pane.created"},
@@ -70,6 +79,50 @@ def expand_remote_socket_path(session: str | None, socket_path: str | None) -> s
     if session:
         return f"~/.config/herdr/sessions/{session}/herdr.sock"
     return "~/.config/herdr/herdr.sock"
+
+
+def resolve_socket_path(
+    ssh_host: str | None,
+    session: str | None,
+    socket_path: str | None,
+) -> str:
+    """Pick the socket path for the target host.
+
+    Local herdr injects HERDR_SOCKET_PATH with an absolute path on *this* machine.
+    That value must not be forwarded over SSH, where the home directory and user
+    are often different.
+    """
+    if socket_path:
+        return expand_remote_socket_path(session, socket_path)
+
+    env_path = os.environ.get("HERDR_SOCKET_PATH")
+    if env_path and not ssh_host:
+        return env_path
+    if env_path and ssh_host:
+        local_home = os.path.expanduser("~")
+        leaked_local = env_path == local_home or env_path.startswith(local_home + os.sep)
+        if not leaked_local:
+            return env_path
+        log(
+            "ignoring local HERDR_SOCKET_PATH for SSH "
+            f"({env_path}); using the remote default instead"
+        )
+    return expand_remote_socket_path(session, None)
+
+
+def remote_bridge_command(socket_path: str) -> str:
+    quoted_path = shlex.quote(socket_path)
+    return (
+        "SOCK=$(python3 -c 'import os,sys; print(os.path.expanduser(sys.argv[1]))' "
+        f"{quoted_path}); "
+        "if command -v socat >/dev/null 2>&1; then "
+        'exec socat STDIO "UNIX-CONNECT:$SOCK"; '
+        "else "
+        "exec python3 -u -c "
+        f"'exec(__import__(\"base64\").b64decode(\"{REMOTE_RELAY_B64}\").decode())' "
+        '"$SOCK"; '
+        "fi"
+    )
 
 
 def status_label(status: str, state_labels: dict[str, str] | None = None) -> str:
@@ -92,18 +145,8 @@ class HerdrClient:
     def connect(self) -> None:
         self.close()
         if self.ssh_host:
-            remote_cmd = (
-                "SOCK=$(python3 -c 'import os; print(os.path.expanduser(\""
-                + self.socket_path.replace('"', '\\"')
-                + "\"))'); "
-                "if command -v socat >/dev/null 2>&1; then "
-                'exec socat STDIO "UNIX-CONNECT:$SOCK"; '
-                "else "
-                f"exec python3 -u -c {json.dumps(REMOTE_RELAY)} \"$SOCK\"; "
-                "fi"
-            )
             self.proc = subprocess.Popen(
-                ["ssh", self.ssh_host, remote_cmd],
+                ["ssh", self.ssh_host, remote_bridge_command(self.socket_path)],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -241,19 +284,49 @@ class HerdrClient:
             yield json.loads(line)
 
 
-def pane_ids_from_snapshot(result: dict[str, Any]) -> set[str]:
-    panes = result.get("panes") or []
+def pane_ids_from_result(result: dict[str, Any]) -> set[str]:
+    panes = result.get("panes")
+    snapshot = result.get("snapshot")
+    if not panes and isinstance(snapshot, dict):
+        panes = snapshot.get("panes")
+    panes = panes or []
     return {pane["pane_id"] for pane in panes if pane.get("pane_id")}
 
 
-def collect_pane_ids(client: HerdrClient) -> set[str]:
-    snapshot = client.request("session.snapshot", timeout=15)
-    pane_ids = pane_ids_from_snapshot(snapshot)
+def rpc_once(
+    ssh_host: str | None,
+    socket_path: str,
+    method: str,
+    params: dict[str, Any] | None = None,
+    timeout: float = 15.0,
+) -> dict[str, Any]:
+    """Herdr closes the socket after a non-subscribe request. Use a fresh connection."""
+    client = HerdrClient(ssh_host=ssh_host, socket_path=socket_path)
+    try:
+        client.connect()
+        return client.request(method, params, timeout=timeout)
+    finally:
+        client.close()
+
+
+def pane_exists(ssh_host: str | None, socket_path: str, pane_id: str) -> bool:
+    try:
+        result = rpc_once(ssh_host, socket_path, "pane.get", {"pane_id": pane_id})
+    except RuntimeError:
+        return False
+    pane = result.get("pane") if isinstance(result, dict) else None
+    if isinstance(pane, dict):
+        return pane.get("pane_id") == pane_id
+    return result.get("pane_id") == pane_id
+
+
+def collect_pane_ids(ssh_host: str | None, socket_path: str) -> set[str]:
+    snapshot = rpc_once(ssh_host, socket_path, "session.snapshot")
+    pane_ids = pane_ids_from_result(snapshot)
     if pane_ids:
         return pane_ids
-    listed = client.request("pane.list", timeout=15)
-    panes = listed.get("panes") or []
-    return {pane["pane_id"] for pane in panes if pane.get("pane_id")}
+    listed = rpc_once(ssh_host, socket_path, "pane.list")
+    return pane_ids_from_result(listed)
 
 
 def build_subscriptions(pane_ids: set[str]) -> list[dict[str, Any]]:
@@ -333,15 +406,11 @@ def run_listener(
         client = HerdrClient(ssh_host=ssh_host, socket_path=socket_path)
         try:
             log(f"connecting to herdr ({ssh_host or 'local'}:{socket_path})")
-            client.connect()
-
-            ping = client.request("ping", timeout=10)
-            if ping.get("type") != "pong":
-                log(f"unexpected ping response: {ping}")
-
-            subscribed_panes = collect_pane_ids(client)
+            # pane.list/snapshot may omit some panes; keep IDs learned from events.
+            subscribed_panes |= collect_pane_ids(ssh_host, socket_path)
             log(f"tracking {len(subscribed_panes)} pane(s) for agent status changes")
 
+            client.connect()
             subscribe_id = client.send(
                 "events.subscribe",
                 {"subscriptions": build_subscriptions(subscribed_panes)},
@@ -355,9 +424,21 @@ def run_listener(
                     log("subscription started")
                     continue
                 if message.get("id") == subscribe_id and "error" in message:
+                    err = message["error"]
+                    msg = str(err.get("message") or "")
+                    bad_pane = None
+                    if err.get("code") == "pane_not_found":
+                        parts = msg.split()
+                        if len(parts) >= 2:
+                            bad_pane = parts[1]
+                    if bad_pane and bad_pane in subscribed_panes:
+                        log(f"dropping missing pane {bad_pane}")
+                        subscribed_panes.discard(bad_pane)
+                        need_resubscribe = True
+                        break
                     raise RuntimeError(
                         "events.subscribe failed: "
-                        f"{message['error'].get('code')}: {message['error'].get('message')}"
+                        f"{err.get('code')}: {err.get('message')}"
                     )
                 if "error" in message and message.get("id"):
                     log(f"request error: {message['error']}")
@@ -371,6 +452,8 @@ def run_listener(
                 if event_name in {"pane_created", "pane_agent_detected"}:
                     pane_id = extract_pane_id_from_lifecycle(event_name, data)
                     if pane_id and pane_id not in subscribed_panes:
+                        if not pane_exists(ssh_host, socket_path, pane_id):
+                            continue
                         log(f"new pane detected ({pane_id}); refreshing subscriptions")
                         subscribed_panes.add(pane_id)
                         need_resubscribe = True
@@ -425,8 +508,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--socket-path",
-        default=os.environ.get("HERDR_SOCKET_PATH"),
-        help="Remote/local herdr socket path. Overrides --session when set.",
+        default=None,
+        help="Herdr socket path on the target host. Overrides --session. "
+        "Do not point this at a local WSL path when using --ssh-host.",
     )
     parser.add_argument(
         "--notify-cmd",
@@ -460,7 +544,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     ssh_host = args.ssh_host or None
-    socket_path = expand_remote_socket_path(args.session, args.socket_path)
+    socket_path = resolve_socket_path(ssh_host, args.session, args.socket_path)
     notify_on = {item.strip() for item in args.notify_on.split(",") if item.strip()}
     notifier = Notifier(
         command=args.notify_cmd,
