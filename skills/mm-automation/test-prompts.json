@@ -1,0 +1,52 @@
+{
+  "skill": "mm-automation",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "每周一早上我要花一个半小时从三个系统导数据拼成周报，一年五十周。要不要做个自动化的？",
+      "expected_behavior": "应激活 mm-automation，量化现状约 75 人时/年，对比脚本开发加维护成本，给出回收周期与明确建议，并要求先确认手工流程已稳定。",
+      "notes": "正面场景：重复任务的自动化决策"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "记账是纸笔加计算器好、电子表格好，还是用能自动导入银行流水的软件好？",
+      "expected_behavior": "应激活 mm-automation，按书中的个人预算例子逐层比较：每升一级节省更多时间但增加迁移学习成本，按使用频率判断该升到哪一级。",
+      "notes": "正面场景：书中原例的迁移判断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们上了 RPA 半年了，钱花了不少，但团队说好像也没省出时间来。问题出在哪？",
+      "expected_behavior": "应激活 mm-automation，检查是否选错工具、流程未跑通就自动化、以及是否漏算维护成本；并指出省下的人力若没有更高价值的事填充，账面节省不会兑现。",
+      "notes": "正面场景：自动化未达预期的复盘"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我明天要整理一份一次性的汇报材料，大概两小时。要不要先搭个模板工具？",
+      "expected_behavior": "不应激活本 skill，因为任务只发生一次，设置成本必然高于收益；直接完成即可。",
+      "notes": "诱饵：涉及工具但无重复性"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的订单量上来了，单件成本反而比小厂高，是不是因为我们仓库和物流不够大？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-economies-of-scale——用户在问「规模扩大导致单位成本下降」的结构性现象，自动化只是实现它的手段之一，此处应先分析固定成本摊薄。",
+      "notes": "跨 skill 混淆诱饵：与 mm-economies-of-scale 同章相邻，区分点在手段与结果"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个流程我们自己都还没理清楚，每周做法都不一样，但领导要求先上自动化系统。",
+      "expected_behavior": "应激活 mm-automation 但明确反对立即自动化：流程未稳定时自动化会把混乱固化，后续改动成本更高；建议先手工跑顺至少三轮并形成标准，再上系统。",
+      "notes": "边界：模型适用但正确动作是推迟"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-dunning-kruger-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "新来的同事看了两天代码就说我们系统架构设计得太差，他一天就能重写。怎么跟他谈？",
+      "expected_behavior": "应激活 mm-dunning-kruger-effect，定位为信心冲高的第一个峰值，用提高难度或换对象的具体测试让他自己看到差距，而不是口头否定",
+      "notes": "正面场景：典型过度自信的新手"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我学数据分析学了三个月，刚开始觉得挺简单，现在越学越觉得自己什么都不懂，想放弃了。",
+      "expected_behavior": "应激活本 skill，定位为学习曲线中部的信心骤降，说明这是正常现象，列出已有进步并给予鼓励，同时仍要帮其正确认识水平",
+      "notes": "正面场景：曲线中部的信心崩塌"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "He just started and already thinks he knows more than the senior folks. Is this Dunning-Kruger?",
+      "expected_behavior": "应激活本 skill，确认第一个峰值，并提醒该效应能解释整条曲线、通常被窄化使用；给出教练上的双向动作（现实检查 + 称赞进步）",
+      "notes": "正面场景：英文触发词"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我算一下这个团队季度产出的增长曲线，看看投入产出比。",
+      "expected_behavior": "不应激活本 skill，因为这是客观数据分析任务，不涉及信心与能力的错位",
+      "notes": "诱饵：含'曲线'但与学习曲线无关"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "她明明业绩很好、大家都认可，却总说自己不配在这个岗位，迟早会被识破。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-impostor-syndrome（冒名顶替综合征）：书中明确指出两者恰恰相反，此处是低估自己而非高估自己",
+      "notes": "跨 skill 混淆诱饵：书中明示的对照模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "他在这个领域干了十五年，说话特别笃定，从不说'我不确定'。这是过度自信吗？",
+      "expected_behavior": "应激活本 skill 但须避免倒推：不能由'自信'反推'能力不足'；应要求用客观能力数据判断，并指出本模型描述的是学习曲线上的信心错位，对资深者的笃定需另找证据（如校准记录）验证",
+      "notes": "边界：自信不等于能力不足"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

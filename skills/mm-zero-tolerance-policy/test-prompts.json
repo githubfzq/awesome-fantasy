@@ -1,0 +1,52 @@
+{
+  "skill": "mm-zero-tolerance-policy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "公司要出个制度:只要虚报发票,不管金额多少一律辞退。这样定行不行?",
+      "expected_behavior": "应激活 mm-zero-tolerance-policy,检查行为定义是否客观可判定、发现率(能否查出虚报)是否足够、误伤情形(票据填错、系统问题)如何处置,并做'第一个人'测试——若第一个触线者是核心员工是否仍顶格执行;要求补上申诉与复核渠道。",
+      "notes": "正面场景:典型零容忍制度设计"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "社区里老有人刷单,我打算改成一次发现就永久封号,不给警告。",
+      "expected_behavior": "应激活 mm-zero-tolerance-policy,先确认发现率(抓不到则顶格处罚无意义),再算误伤(误判、盗号、被陷害)与执行成本,并提示对方可能故意叫你摊牌检验你是否真下得了手;建议先解决识别机制并设1-3个月复核点。",
+      "notes": "正面场景:平台治理中的零容忍"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "定了零容忍之后真有人初犯了,而且是我最得力的销售。我现在下不了手,怎么办?",
+      "expected_behavior": "应激活 mm-zero-tolerance-policy,指出这正是'第一个人'测试失败的情形:当初的后果定在了自己不愿执行的量级;要求二选一并承担代价——要么顶格执行以保住政策的长期效力,要么按程序修订政策(缩小适用范围或明确例外),并公开说明原因,而不是悄悄网开一面。",
+      "notes": "正面场景:零容忍政策的实际兑现压力"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "孩子这次考试没考好,我跟他约定下次再退步就不许玩游戏了。",
+      "expected_behavior": "不应激活本 skill,因为这是有梯度、有条件、后果轻微且可逆的一次性约定,不是零容忍;零容忍针对的是无论轻重一律顶格、不可逆的处罚设计。用零容忍框架处理日常管教会过度放大。",
+      "notes": "诱饵:形似严规但实为普通分级约定"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他已经违反过两次了,这次我要正式发函说再犯一次就终止合作,给他最后一次机会。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-red-line:这是有梯度、给最后一次机会的界线宣告,恰恰是零容忍所要取消的东西;零容忍是不分级、初犯即顶格。",
+      "notes": "跨 skill 混淆诱饵:红线(有梯度、给机会)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们在安全操作上实行零容忍,一旦发现违规立即停工。但最近有人发现违规也不敢上报了,怕连累同事。这政策是不是有问题?",
+      "expected_behavior": "合理判断:政策方向(安全)是对的,但出现了零容忍的典型副作用——隐瞒文化:既然没有改正机会,当事人和目击者会全力遮盖而非上报,小隐患因此变成大事故。建议保留对恶意违规的零容忍,同时为非恶意的主动上报与自查自纠开辟'不处罚'通道(区分故意隐瞒与主动报告),并补上申诉复核机制,让制度的威慑指向隐瞒而不是指向报告。",
+      "notes": "边界:零容忍的正当用途与其催生隐瞒的副作用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

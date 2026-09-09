@@ -1,0 +1,52 @@
+{
+  "skill": "mm-perfect-is-the-enemy-of-good",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个方案其实已经能用了，但我总觉得还差一点，一直改来改去不敢发，怎么办？",
+      "expected_behavior": "应激活 mm-perfect-is-the-enemy-of-good，请用户写出「足够好」的三条硬性判据，写出继续等的默认选项（现状）及其三个月代价，检验最近几次打磨是否还会改变排序，并设定交付时点加发布后修订清单。",
+      "notes": "正面场景：达标但不肯交付"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我招人招了四个月，面了三十几个，总觉得下一个可能更好，一直没发 offer。",
+      "expected_behavior": "应激活 mm-perfect-is-the-enemy-of-good，指出等待完美候选等于持续选择「岗位空缺」这个默认项，且这个默认项可能比已面试的任何人选都糟；要求定义三条硬性录用判据并设截止日期。",
+      "notes": "正面场景：等更好的候选"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我不想将就，所以一直没开始做，怕第一版太 low。",
+      "expected_behavior": "应激活 mm-perfect-is-the-enemy-of-good，说明「不起步」本身就是选择了零产出这个默认项；配合 mm-minimum-viable-product 设计最小可交付范围并设定首发日期。",
+      "notes": "正面场景：以完美为由不开始"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个医疗器械的软件还有两个已知的安全缺陷，测试没跑完，我觉得不能上线。",
+      "expected_behavior": "不应激活本 skill，因为存在客观硬门槛（安全/合规未达标），这是客观不合格而非完美主义，应先完成必要验证再发布。",
+      "notes": "诱饵：看似拖延实为必要把关"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "买个笔记本我看了八十篇评测、对比了二十个型号，信息太多脑子乱了，完全选不出来。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-analysis-paralysis。这是信息过多导致选不出来，解药是削减选项与信息源；而不是标准过高不肯落地。",
+      "notes": "跨 skill 混淆诱饵：分析瘫痪"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们在选并购标的，这是不可逆的大额决策，团队催我别完美主义赶紧定一个，我该听吗？",
+      "expected_behavior": "合理的判断是：不可逆且代价极高的决策属于本 skill 的排除区，值得慢，不应套用「足够好就停」。正确做法是先把它降级为可逆（分期交割、对赌条款、先少数股权），对不可降级的部分投入系统性尽调；只在信息已不再改变排序时才施加收敛压力。",
+      "notes": "边界：不可逆高代价决策"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

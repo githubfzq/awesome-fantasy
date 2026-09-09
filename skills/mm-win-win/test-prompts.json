@@ -1,0 +1,52 @@
+{
+  "skill": "mm-win-win",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "客户要我们再降 15% 的价格，我们利润已经很薄了。感觉只能要么答应、要么丢单，还有别的可能吗？",
+      "expected_behavior": "应激活 mm-win-win，先确认底线与 BATNA，再列出价格之外的可交换维度（付款节奏、合同期限、量级承诺、排他性、服务范围），找出「我不太在意但客户很在意」的维度，构造双方优于折中的方案。",
+      "notes": "正面场景：单一维度拉锯，需要打开维度"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我和合伙人谈分工，两个人都想负责产品方向。现在只能各管一半，谁都不满意。",
+      "expected_behavior": "应激活 mm-win-win，指出「各管一半」是同一维度上的折中，应改为在不同维度上各取所需（如一人主导产品定义、另一人主导用户体验与路线图节奏），使双方都优于折中。",
+      "notes": "正面场景：误把折中当解法"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我要跟房东谈续租，他一定要涨租。有没有办法让我们俩都舒服？",
+      "expected_behavior": "应激活 mm-win-win，列出租期长短、付款方式、维修责任、家具家电、续租锁定期等维度，找出房东在意而租客不太在意（或反之）的项，构造交换方案。",
+      "notes": "正面场景：日常谈判找互利空间"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "对方报价虚高而且交付记录很差，我手上有另外两家更靠谱的供应商。还要继续谈吗？",
+      "expected_behavior": "不应激活本 skill，因为有更好的替代方案时最优动作是直接走 BATNA，不必谈判；强行找双赢会浪费筹码。",
+      "notes": "诱饵：谈判场景，但正确答案是离开谈判桌"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "公司给我开了个偏低的 offer，我在想要不要接。在去谈之前，我最应该先想清楚的是什么？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-batna——用户在问谈判前该先确定什么，正确顺序是先算清「谈不成时我的最佳替代方案」以确定底线与筹码，之后才是设计双赢方案。",
+      "notes": "跨 skill 混淆诱饵：与 mm-batna 同属谈判家族，区分点在「先定底线」还是「设计交换」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这次谈的是一个固定总价的项目，甲方只关心总价低，我们也只关心总价高。还有什么双赢空间吗？",
+      "expected_behavior": "应激活 mm-win-win 但给出诚实的否定结论：双方在同一维度上偏好完全相反且无其他差异维度时，这是真实的零和结构；应明确告知并转向 mm-zero-sum / mm-batna，而不是包装出一个虚假的双赢方案。",
+      "notes": "边界：考验 agent 是否会在零和结构中强行找双赢"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

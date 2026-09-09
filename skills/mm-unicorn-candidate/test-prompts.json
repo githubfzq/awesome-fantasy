@@ -1,0 +1,52 @@
+{
+  "skill": "mm-unicorn-candidate",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个岗位招了八个月，面了四十多个人，一个合格的都没有。是不是市场上没人？",
+      "expected_behavior": "应激活 mm-unicorn-candidate，先排除薪酬是否匹配、公司声誉是否有问题；若两者无碍，判定为独角兽岗位，给出三种解法：拆岗雇多人、内部培养、或两者结合",
+      "notes": "正面场景：长期招不到人"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的 JD 写着：十年以上大厂经验 + 能从零搭建 + 精通最新 AI 技术 + 能带十人团队。这样要求过分吗？",
+      "expected_behavior": "应激活本 skill，把要求拆成必需与加分，找出互斥组合（大厂流程经验 vs. 从零搭建、深耕十年 vs. 掌握最新技术），指出这是独角兽岗位的典型证据",
+      "notes": "正面场景：要求清单互斥"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "Nobody checks all the boxes for this role. Should we just lower the bar?",
+      "expected_behavior": "应激活本 skill，明确'降低标准'不是推荐解法；书中给的是拆岗、内部培养、二者结合——都是重构需求，而不是接受不合格的人",
+      "notes": "正面场景：要不要降标准"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "岗位刚挂出去两周，收到了五份简历，还没找到特别合适的。",
+      "expected_behavior": "不应激活本 skill，因为样本量太小、时间太短，此时招不到人只是信息不足，不是岗位设计问题",
+      "notes": "诱饵：时间太短"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们开的薪资比市场低三成，挂了半年没人投。要不要把 JD 改一改？",
+      "expected_behavior": "不应激活本 skill，因为书中明示必须先排除'薪酬与职位不匹配'才能判定为独角兽问题；真实原因是薪酬，改 JD 无效（另可关联 mm-supply-and-demand 看待薪酬与市场的关系）",
+      "notes": "跨 skill 混淆诱饵：未走完排除条件"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们是二十人的初创公司，现在需要一个人同时管产品、增长和招聘，招不到全能的怎么办？",
+      "expected_behavior": "应激活本 skill 但需调整解法权重：初创人头不足，强行拆岗不可行，应优先'内部培养 + 外部补位'（招一个核心专长者 + 用外包/顾问/工具补另一侧），或由创始人暂代其中一个职能并明确交接时间点；这是由机制推导的解法排序，非书中明示",
+      "notes": "边界：解法在初创场景下的适用限制"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

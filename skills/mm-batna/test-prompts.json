@@ -1,0 +1,52 @@
+{
+  "skill": "mm-batna",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "对方给了个 offer，薪资比预期低一点，我要不要接？",
+      "expected_behavior": "应激活 mm-batna，先头脑风暴桌外所有替代方案（含留在当前工作），白纸黑字列出并评估可行性，选出 BATNA 后判断该报价是否低于底线。",
+      "notes": "最典型的正面场景：接不接 offer"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "供应商咬死这个价不肯降，我们除了接受好像也没别的办法了。",
+      "expected_behavior": "应激活本 skill，强制列出桌外替代（换供应商、自研、缩减需求、延后采购），明确最好的那个作为底线；若真无替代则说明是极端弱势位置，需先创造替代。",
+      "notes": "看似别无选择"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "下周要去谈合同价格了，我应该提前准备什么？",
+      "expected_behavior": "应激活本 skill，强调关键是在谈判前就认清 BATNA，现在就把桌外替代列全并选出最好的那个。",
+      "notes": "谈判前准备"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "对方大概率会拒绝我的第一次报价，我要不要一开始就报高一点？",
+      "expected_behavior": "不应激活本 skill，这是预测对方行为与策略互动，应激活 mm-game-theory（博弈论）或 mm-ultimatum-game（最后通牒博弈）。",
+      "notes": "诱饵：都是谈判话题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我是花两年读研还是直接工作，两边只能选一个，怎么想？",
+      "expected_behavior": "不应激活本 skill，这是一般性的选项取舍而非谈判桌上的底线，应激活 mm-opportunity-cost（机会成本）。",
+      "notes": "跨 skill 混淆诱饵：都是\"放弃了什么\""
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "对方开的价已经比我 BATNA 高了，但我觉得还有空间，是不是该见好就收？",
+      "expected_behavior": "可激活：低于 BATNA 一律不接受；已高于 BATNA 但仍有空间时应继续谈而非立刻接受，同时不要把 BATNA 说出来当要价筹码。",
+      "notes": "边界：高于底线时如何处理"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-survivorship-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我研究了一百家成功的创业公司，发现创始人几乎都很早就全职投入，所以我也打算退学全职创业。",
+      "expected_behavior": "应激活 mm-survivorship-bias，指出样本只有活下来的公司，失败的创业者几乎没有记录（书中盖茨/扎克伯格类比），要求先找到被淘汰那批的比例与特征，再谈「早全职」是否是成功原因。",
+      "notes": "正面场景：成功学归纳"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们员工敬业度调研结果很好，90% 的人说很满意，是不是说明公司文化没问题？",
+      "expected_behavior": "应激活 mm-survivorship-bias，复述书中原文逻辑：调查无法纳入前雇员的看法，过得不自在的员工可能已离职；建议补救（查辞职者面试数据、针对离职员工做调查）。",
+      "notes": "正面场景：书中原案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "为什么几十年前的老房子看起来都比现在的漂亮？是不是以前的工匠更用心？",
+      "expected_behavior": "应激活 mm-survivorship-bias，指出丑的老建筑早被拆掉了，能留到今天被看见的是被筛选过的样本。",
+      "notes": "正面场景：老建筑案例迁移"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这季度所有客户投诉按类别做个统计表。",
+      "expected_behavior": "不应激活本 skill，因为这是对已记录事件的直接汇总描述，不涉及从幸存样本归纳规律。",
+      "notes": "诱饵：同为数据分析任务"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们发现用新版本的用户留存更高。但会不会是那些本来就更活跃的用户更愿意升级？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-selection-bias：两组都在样本中，问题是分组非随机导致组间不可比，而非失败者缺席。",
+      "notes": "跨 skill 混淆诱饵：选择性偏差与幸存者偏差在书中相邻"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们看了所有已关闭的项目复盘，发现失败的项目也都做过用户访谈，所以用户访谈没什么用。",
+      "expected_behavior": "应激活本 skill 并做出细致判断：样本已包含失败者，确实缓解了幸存者偏差；但仍需追问是否所有失败项目都留下了复盘（无声失败的沉默样本），并指出「做过访谈」与「访谈有用」之间的因果跳跃。",
+      "notes": "边界：失败者部分进入样本，需判断残留偏差"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-precautionary-principle",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个新成分目前没有任何研究表明它有害，是不是可以直接加进产品里？",
+      "expected_behavior": "应激活 mm-precautionary-principle，指出\"没有证据表明有害\"不等于\"无害\"，把举证责任倒置：危害重大且难以逆转时应先严格控制、等弄清危害，并设定解除条件。",
+      "notes": "最典型的正面场景：举证责任倒置"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "准备在生产库上跑一个批量改写脚本，改完就回不去了，怎么稳妥点？",
+      "expected_behavior": "应激活本 skill，判断危害重大且不可逆，设计可逆的最小试探（备份/小范围/可回滚/监测与熔断），并给出扩大范围的条件。",
+      "notes": "不可逆操作"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "朋友拉我投一个项目，说稳赚，但要把房子抵押了，我有点犹豫。",
+      "expected_behavior": "应激活本 skill，归入书中个人层面的经济损害类别，指出重大且难以逆转，建议先管控并明确解除条件而不是全凭对方说辞。",
+      "notes": "个人层面经济损害"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个 A/B 实验如果效果不好就回滚，成本就几百块钱，要不要跑？",
+      "expected_behavior": "不应激活本 skill，因为危害轻微且完全可逆，此时套用预防原则反而会扼杀尝试。",
+      "notes": "诱饵：谨慎总没错的错觉"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个功能上线后如果不行，能不能退回到旧版本？决定了要不要快速上线。",
+      "expected_behavior": "不应激活本 skill，这是在判断决策能否回头以决定推进速度，应激活 mm-reversible-vs-irreversible-decisions（可逆决策与不可逆决策）。",
+      "notes": "跨 skill 混淆诱饵：可逆性 vs 危害未知"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "风险都还没搞清楚，但这事不做公司可能就错过窗口期了，到底该不该上？",
+      "expected_behavior": "可激活但要给出平衡：作者把它定位为平衡\"保留可能性\"与\"路径依赖\"的工具而非无条件不作为，应走\"可逆的最小试探 + 明确解除条件\"而不是二选一。",
+      "notes": "边界：预防 vs 错失窗口"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

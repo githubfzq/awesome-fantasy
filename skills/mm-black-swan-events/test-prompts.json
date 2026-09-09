@@ -1,0 +1,52 @@
+{
+  "skill": "mm-black-swan-events",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的压力测试里把“整个机房不可用”标成 0.1%，基本不考虑，这样可以吧？",
+      "expected_behavior": "应激活 mm-black-swan-events,指出这个概率多半来自“没见过”而非计算;追问并标注概率来源,人为上调后重算影响,并检查是否低估了连锁故障。",
+      "notes": "正面场景:高影响低概率被忽略"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个城市三年里遭了三次“500 年一遇”的洪水，是不是哪里算错了？",
+      "expected_behavior": "应激活 mm-black-swan-events,说明“X 年一遇”基于历史数据估计,在条件已变时会失效;这正说明该分布是肥尾的,人为上调概率并重新设计防洪/保险方案。",
+      "notes": "正面场景:书中案例的现实版本"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们做了十年都没出过合规问题，所以这块不用投入了吧？",
+      "expected_behavior": "应激活 mm-black-swan-events,点明“我没见过它发生”不是概率估计;合规处罚属于高影响事件,应人为上调概率并重算投入产出。",
+      "notes": "正面场景:以历史缺席论证安全"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个月退货率比上个月高了 1.2 个点，算正常波动吗？",
+      "expected_behavior": "不应激活本 skill,因为这是已知范围内的常规波动、后果不极端;用常规统计或置信区间判断即可。",
+      "notes": "诱饵:同为概率问题但无极端后果"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想给未来三年构造几套不同的行业图景，看看我们在每种情况下怎么应对。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-scenario-analysis:用户要的是构造多套自洽的未来并推演应对;黑天鹅在定义上超出任何一套构造出来的图景,不能混为一谈。",
+      "notes": "跨 skill 混淆诱饵:未来不确定性处理"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我把所有风险的概率都上调十倍，现在每个方案都不可接受了，怎么办？",
+      "expected_behavior": "合理判断:说明问题不在数字而在结构——人为上调只是暴露了缺少冗余;应转向结构性手段（保险、冗余、可逆决策、反脆弱设计）,而不是继续调概率;同时提醒本 skill 不提供精确概率,滥用会让决策瘫痪。",
+      "notes": "边界:上调概率的失效点"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

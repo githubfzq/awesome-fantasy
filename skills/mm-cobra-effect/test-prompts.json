@@ -1,0 +1,52 @@
+{
+  "skill": "mm-cobra-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们打算上线 bug bounty，按提交的漏洞数量给外部研究员发奖金。这样设计有问题吗？",
+      "expected_behavior": "应激活 mm-cobra-effect，推演方案改变了谁的行为，检查是否出现「靠问题存在而获利」的群体（自产自销、重复提交、低质刷量），并给出反套利约束（按严重度定级、去重、禁止内部制造）与退出预案。",
+      "notes": "正面场景：悬赏设计"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们搞了半年的违规内容治理专项，投入翻倍了，违规量不降反升，是不是我们的人不行？",
+      "expected_behavior": "应激活 mm-cobra-effect，先确认基线度量，再检查治理机制是否创造了靠违规牟利的路径（如按清理量计功、账号被封后换号成本极低反而刺激批量注册），并指出加大投入可能进一步放大问题。",
+      "notes": "正面场景：越治越糟的诊断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "政府要给节能改造发补贴，按改造面积算。会不会出问题？",
+      "expected_behavior": "应激活 mm-cobra-effect，推演被激励方会如何放大「面积」而非「实际节能量」，指出这创造了靠申报面积获利的群体，建议改为与实际节能量挂钩并做事后核验。",
+      "notes": "正面场景：补贴设计的事前预判"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们上线了一个新流程，三个月了，问题一点没改善，但也没变严重。",
+      "expected_behavior": "不应激活本 skill，因为方案只是无效，问题没有被放大，属于方案设计与执行问题，不构成眼镜蛇效应。",
+      "notes": "诱饵：方案无效但无反效果"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们把「代码提交数」写进了晋升标准，现在大家提交得特别勤，但每次都只改一个字符，代码质量其实没变好也没变坏。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-goodhart-s-law。此处问题本身没有变严重，只是指标失去了信息价值（提交数不再代表产出），属于度量失效而非干预反效果。",
+      "notes": "跨 skill 混淆诱饵：古德哈特定律"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的拉新奖励效果很好，用户量涨得快。现在预算要砍，打算把奖励停掉，会有影响吗？",
+      "expected_behavior": "合理的判断是：重点是退出设计，而非奖励期本身。若拉新奖励期间已催生了靠刷量获利的群体（羊毛党、虚假账号），突然停掉会造成存量账号一次性失效/流失、数据断崖；应提前安排退出节奏（梯度削减、改为留存活跃奖励）、并对被人为放大的存量做承接处理。同时应先验证增量中真实用户的占比，再决定退出速度。",
+      "notes": "边界：退出环节与存量回流"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

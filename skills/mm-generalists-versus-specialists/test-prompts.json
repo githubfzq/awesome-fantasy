@@ -1,0 +1,52 @@
+{
+  "skill": "mm-generalists-versus-specialists",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们 12 人的创业公司，一个月大概碰到两次安全相关的问题。要不要招一个专职安全工程师？",
+      "expected_behavior": "应激活 mm-generalists-versus-specialists，估算安全问题的频率×耗时是否足以养一个全职岗位，大概率给出通才覆盖+外部专家的组合方案，并设定重算节点",
+      "notes": "正面场景：典型频率判据"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "公司从 30 人涨到 200 人了，原来一个人兼着做的数据分析明显跟不上，该怎么调整？",
+      "expected_behavior": "应激活本 skill，指出规模变化会翻转答案：问题密度上升后专家岗变得养得起，应拆分专职岗位",
+      "notes": "正面场景：规模变化触发重算"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "Should our small nonprofit hire a full-time grant writer, or keep having program staff write proposals?",
+      "expected_behavior": "应激活本 skill，用'该类专业问题频率是否高到足以养一个全职岗位'作判据给出建议",
+      "notes": "正面场景：英文 + 组织配置"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我评估一下这位候选人的算法能力，他简历上写了三年推荐系统经验。",
+      "expected_behavior": "不应激活本 skill，因为这是对具体个体的能力评估，而非岗位/组织结构配置问题",
+      "notes": "诱饵：与人才相关但属个体评估"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们团队里那个人做规划特别细、总能看到别人漏掉的风险，另一个人天天讲愿景。分别适合放什么位置？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-foxes-versus-hedgehogs（狐狸与刺猬）：这是认知风格与岗位适配问题，不是知识覆盖宽度问题",
+      "notes": "跨 skill 混淆诱饵：同章相邻的人才分类模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们公司一年只碰上一次税务稽查，但每次出问题都是百万级罚款。要不要养专职税务？",
+      "expected_behavior": "可激活本 skill，但须指出纯频率判据在此失效：低频但高损风险不适用'养不养得起'的经济性判断，建议外部专家常备+关键节点介入，并标注此为该模型隐含边界之外的补充判断",
+      "notes": "边界：频率判据与严重性冲突"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

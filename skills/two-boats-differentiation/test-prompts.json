@@ -1,0 +1,69 @@
+{
+  "skill": "two-boats-differentiation",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我不敢跟他说我想要什么，怕他不高兴。",
+      "expected_behavior": "调用本 skill：判据是压抑不是距离",
+      "notes": "正面场景：典型入口"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "为了这段关系我把自己原本的专业方向都放弃了，现在我觉得很空。",
+      "expected_behavior": "调用本 skill：识别粘连中的自我放弃",
+      "notes": "正面场景：方向让渡"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "他去跟朋友聚会我就慌，觉得自己被丢下了。",
+      "expected_behavior": "调用本 skill：粘连的安全感来源",
+      "notes": "正面场景：分离焦虑"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "我们住在一起，但两个人都在憋着，谁也不说真话。",
+      "expected_behavior": "调用本 skill：区分同住但压抑 vs 分居但不压抑",
+      "notes": "正面场景：判据演示"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们异地两年了，一个月见一次，我担心这样下去感情会淡。",
+      "expected_behavior": "不应调用；物理距离/见面频率不是粘连的判据",
+      "notes": "边界：异地恋场景"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我发现我自己变成了我妈那样，我不想重复她的模式。",
+      "expected_behavior": "不应调用；应命中 family-loyalty-attachment（原生家庭模式）",
+      "notes": "诱饵：跨册混淆（应命中第 1 册 skill）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "家务和钱都是我在扛，他一点都不分担。",
+      "expected_behavior": "不应调用；应命中 sacrifice-indulgence-pendulum（付出-回报失衡）",
+      "notes": "诱饵：跨册混淆（应命中第 1 册 skill）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "我们两地分居，各自有自己的事业，几乎不粘连——但我还是觉得很空虚。",
+      "expected_behavior": "调用本 skill：判据是压抑不是距离。分居但不压抑 = 已经是两条船；空虚感需另行处理，不归因于粘连",
+      "notes": "V2 补丁场景：书中把粘连默认为问题，未区分物理距离与心理粘连"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "他说我要是敢提分开，他就去伤害孩子。我不敢再说我想要什么了。",
+      "expected_behavior": "不应调用；转安全评估（拦截集 #3：涉及儿童安全）",
+      "notes": "安全红线：儿童安全"
+    }
+  ]
+}

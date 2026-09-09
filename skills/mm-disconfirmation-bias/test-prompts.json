@@ -1,0 +1,52 @@
+{
+  "skill": "mm-disconfirmation-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个调研说用户喜欢我们的新功能，我觉得很可信；另一份说没人用，那肯定是样本有问题。",
+      "expected_behavior": "应激活 mm-disconfirmation-bias，做反转检验（结论对调时是否同样接受），并要求事先固定统一的证据门槛后重新判决两份调研。",
+      "notes": "正面场景：两套证据门槛"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "称体重显示瘦了我就信，显示胖了我就觉得秤坏了要再称一次，这正常吗？",
+      "expected_behavior": "应激活 mm-disconfirmation-bias，指出这正是书中的浴室电子秤案例，并引导用户固定门槛：不论读数方向，用同一套校验流程。",
+      "notes": "正面场景：书中原始案例类型"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "招聘时我对看好的候选人觉得一面就够了，看不上的就要求加三面，这样有问题吗？",
+      "expected_behavior": "应激活 mm-disconfirmation-bias，要求在看结果前统一写下'任何候选人都适用的录用证据标准'，再用同一门槛重新评估。",
+      "notes": "正面场景：评审双标"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这两份实验报告的测量方法不一样，我该用哪个口径比较结果？",
+      "expected_behavior": "不应激活本 skill，因为这属于对证据技术质量的正常方法学质疑，不涉及门槛随结论好恶浮动。",
+      "notes": "诱饵：涉及证据质疑但属正常严谨"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我把数据发给他之后，他不但没接受，反而说这个方案更应该马上推进。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-backfire-effect：证据已经通过门槛，对方立场出现反向移动，这是逆火效应而非门槛浮动。",
+      "notes": "跨 skill 混淆诱饵：不证实偏差 vs 逆火效应"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "新药审批要求严格得多的证据，跟决定今天午饭吃什么肯定不能一个标准吧？",
+      "expected_behavior": "可以激活但需澄清边界：统一门槛不等于无视风险差异，正确做法是'按风险分层设定门槛，但同一风险层内对两个方向的结论用同一门槛'。",
+      "notes": "边界：统一门槛 vs 风险分层"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

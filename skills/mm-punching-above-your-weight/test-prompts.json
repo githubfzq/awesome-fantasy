@@ -1,0 +1,52 @@
+{
+  "skill": "mm-punching-above-your-weight",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们是一家 20 人的公司，有机会去竞标一个行业头部客户，成了就能活下来。要不要上？",
+      "expected_behavior": "应激活 mm-punching-above-your-weight，量化量级差距，列出三项收益（快速达成目标/被看见/向高手学习），检验是否具备让游戏有利的战术，并给出带前提的三选一结论",
+      "notes": "正面场景：典型越级参战决策"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "有个总监岗，要求 8 年经验，我才 4 年，但我觉得我能干。投吗？",
+      "expected_behavior": "应激活本 skill，分析越级收益与'重重打脸'风险，并追问是否存在能让自己资历劣势失效的差异化打法",
+      "notes": "正面场景：个人越级竞聘"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "We want to punch above our weight and launch at the biggest industry conference instead of doing small meetups.",
+      "expected_behavior": "应激活本 skill，评估曝光收益与'尚未准备就绪被推向主流市场'的风险，检查是否有非对称打法支撑",
+      "notes": "正面场景：用户直接使用英文触发词"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个任务是我们部门日常职责范围内的常规工作，按流程做就行。",
+      "expected_behavior": "不应激活本 skill，因为不存在量级越级与不对称赌注，属于同级日常执行",
+      "notes": "诱饵：只是'做一件重要的事'但不构成越级"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "竞品砸钱很猛，我们正面刚不过，我在想能不能换一种打法，比如去他们完全不重视的下沉渠道。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-guerrilla-warfare（游击战）：用户已经决定要打，问题是怎么换战场，而非要不要越级参战",
+      "notes": "跨 skill 混淆诱饵：两者常连用，需按'要不要打 vs 怎么打'区分"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们现金流只够撑两个月，唯一的翻身机会是拿下这个大客户。是不是只能搏一把了？",
+      "expected_behavior": "可激活本 skill，但须明确指出下行风险已不对称到无法承受（书中未覆盖的极端约束），建议先寻求降低赌注规模或不对称度的路径，而不是直接给'搏'或'不搏'",
+      "notes": "边界：风险承担能力为零时的模型失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

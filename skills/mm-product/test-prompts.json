@@ -1,0 +1,52 @@
+{
+  "skill": "mm-product",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的产品功能明明比同行全、价格还便宜，可是一直起不来，用户在留不住。到底哪里出问题？",
+      "expected_behavior": "应激活 mm-product，指出'质量更好/价格更低'本身不足以打动用户——书中明确说率先进入市场不是关键、率先达成产品/市场匹配才是赢家。应检查是否存在客户主动要求增加供应的信号、做撤回测试（产品消失谁真的难受）、并让用户在'好多少倍 vs 略好'之间作区分；落到加码/深挖/转介转型三者之一的结论。",
+      "notes": "正面场景：典型'更好的产品却打不动'"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "刚出来一个更便宜的竞品，客户会不会被抢走？我有点慌。",
+      "expected_behavior": "应激活本 skill，把'是否被替代'当作匹配强度的实证检验：若产品/市场匹配已达成，即使出现质量更好或价格更低的竞品也很难被逐出市场；若 customers 立刻动摇则说明从未真正匹配。应要求列出目标客户实际流失数据与撤回测试结果再下结论。",
+      "notes": "正面场景：反向验证匹配"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我写的东西发出来基本没人看，是不是我水平太差了？",
+      "expected_behavior": "应激活本 skill 的迁移版——信息/受众匹配：内容质量不是唯一变量，关键是有没有精准触达某个特定群体的痛处。应追问目标受众是谁、他们最在意什么、内容有没有击中那个点；可能结论是换受众而不是提高写作水平。",
+      "notes": "正面场景：非产品领域的迁移"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我有个产品想法，还没找任何人聊过。帮我判断一下这个想法成不成。",
+      "expected_behavior": "不应激活本 skill。产品/市场匹配是对已有市场反馈的状态判定，没有真实用户就没有可判定的输入。应激活 mm-customer-development，先去建立客户快速反馈循环。",
+      "notes": "诱饵：都想判断'成不成'，但阶段完全不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们比所有对手都早进入这个市场，先发优势应该能让我们赢吧？",
+      "expected_behavior": "不应激活本 skill 来肯定这个判断，因为书中明确反驳了它——'率先进入市场并不是关键，率先实现产品/市场匹配的才是赢家'。应先纠正这个前提，再引导用户检查自己的匹配状态；若要讨论先发本身，那是 mm-first-mover-advantage 的话题。",
+      "notes": "跨 skill 混淆诱饵：书中明确定为先配送 advantage 模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "三年前我们明显达成了产品/市场匹配，用户拉都拉不住。但最近明显感觉打不动了，需要转型吗？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：书中明确提醒——即使实现了产品/市场匹配，护城河仍可能失效，最终仍可能需要转型。应先区分是匹配对象本身迁移了（人群/任务变了）还是执行退化（产品老化、服务下滑）；前者指向转型（转介 mm-pivot），后者指向重做匹配而非更换方向。不能因为'曾经匹配过'就假定现在仍然匹配。",
+      "notes": "边界：曾经的匹配不等于现在的匹配"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 涉及 mm-first-mover-advantage 的纠正。"
+}

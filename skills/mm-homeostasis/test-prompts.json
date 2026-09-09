@@ -1,0 +1,52 @@
+{
+  "skill": "mm-homeostasis",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "公司三令五申禁止用微信群私下派活，结果现在大家改成私聊一对一派了，活还是一样多。制度推了三次都没用。",
+      "expected_behavior": "应激活 mm-homeostasis，识别被保护的目标值（管理层对响应速度和人力的需求），枚举绕行路径，并给出针对反向回路的对冲措施而不是加大禁令力度。",
+      "notes": "正面场景：上有政策下有对策的典型"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我开始跑步减肥，一个月下来一斤没掉，反而每天饿得受不了，晚上总会吃更多。这是怎么回事？",
+      "expected_behavior": "应激活 mm-homeostasis，说明身体在围绕体重设定点自我调节、食欲增加是反向补偿回路，并给出对冲方案（如慢消化蛋白、控制进食窗口）。",
+      "notes": "正面场景：书中明示案例的同构场景"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们准备把客服的考核指标改成「一次解决率」，但我担心会出乱子。能不能帮我预判一下？",
+      "expected_behavior": "应激活 mm-homeostasis，推演系统会把「一次解决率」稳定在什么值上、客服会通过什么方式（如强行挂断、草率结单）来守住它，并建议配套的对冲指标。",
+      "notes": "正面场景：设计指标前预判自我稳定回路"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的 CI 流水线昨天开始一直报同一个错，日志里显示是磁盘满了。这个怎么修？",
+      "expected_behavior": "不应激活本 skill，因为这是无自我调节主体的技术故障，直接给出排查与清理步骤即可。",
+      "notes": "诱饵：出现了「系统」二字但无反馈回路"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们给了举报违规行为的员工现金奖励，结果内部举报量暴涨，后来发现有人专门制造违规再去举报领钱。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-cobra-effect——结果是被激励扭曲后恶化，而不是系统回到原状；判据在于系统没有「回弹到目标值」，而是跑到了更糟的新状态。",
+      "notes": "跨 skill 混淆诱饵：同属「干预失效」，但结果方向不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们团队一直坚持代码评审必须两人通过，我想改成一人通过以提速。但大家说这是团队的底线，改了就不是我们了。",
+      "expected_behavior": "应激活 mm-homeostasis 并判停：被保护的目标值（团队对质量的身份认同）本身合理且不该打破，应停止「打破它」的方案，改为顺着它设计（如分层评审、按风险分级）。",
+      "notes": "边界：动态平衡保护的是合理核心，考验 agent 是否会停止强行改变"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

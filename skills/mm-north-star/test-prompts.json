@@ -1,0 +1,52 @@
+{
+  "skill": "mm-north-star",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "有三个合作机会摆在我面前，看起来都不错，我说不上来该选哪个。",
+      "expected_behavior": "应激活 mm-north-star，先测「知不知道要去哪」：要求用户用一句话说出三年后要成为什么，再以此作为筛选器逐个判断「更近还是更远」，而不是逐个比较短期收益。",
+      "notes": "正面场景：缺统一取舍标准"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这一年我特别忙，但年终回头看，好像什么都没积累下来，说不清在往哪走。",
+      "expected_behavior": "应激活 mm-north-star，指出方向漂移的根因是缺少长期目标，引导写出一句可筛选的愿景，并用过去半年的重要决定做回溯检验，识别并清掉偏离项。",
+      "notes": "正面场景：忙但无方向"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "各部门都说自己的项目最重要，年度优先级排不下去，怎么定？",
+      "expected_behavior": "应激活 mm-north-star，说明缺了共同参照就无法比较「重要」，应先确立北极星，再用「是否靠近它」给所有项目排序，并清掉消耗大但无关的项。",
+      "notes": "正面场景：优先级排序争执"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这周有七件事要做，帮我排一下先后顺序，都是已经定下来的执行任务。",
+      "expected_behavior": "不应激活本 skill，因为这是短期排期与执行排序问题，方向已定、不需要愿景框架，直接做时间管理即可。",
+      "notes": "诱饵：排序但方向已定"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我每天花大量时间做报表，感觉投入产出比很低，有没有更省力的做法？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-high-leverage-activities。问题在于「哪件事投入产出比最高」的效率层面，而不是「往哪个方向走」的方向层面。",
+      "notes": "跨 skill 混淆诱饵：高杠杆活动"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们定了愿景是「三年内做到行业第一」，这个能当北极星用吗？",
+      "expected_behavior": "合理的判断是：不宜直接用作北极星。虽然它是长期目标，但「行业第一」是排名指标而非「要成为什么」的描述，既无法判断某个具体选项是靠近还是远离，又会触发古德哈特定律式的指标腐蚀。应引导把它翻译成对用户/世界创造什么价值的描述（如鸭鸭搜索的「提高上网的安全性和可信度」），使它能真正用于日常筛选。",
+      "notes": "边界：愿景 vs 指标"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

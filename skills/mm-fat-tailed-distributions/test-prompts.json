@@ -1,0 +1,52 @@
+{
+  "skill": "mm-fat-tailed-distributions",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们按平均赔付额加两个标准差来定今年的准备金，够了吧？",
+      "expected_behavior": "应激活 mm-fat-tailed-distributions,指出保险赔付是书中点名的肥尾分布;用分位数（P95/P99）替代均值±标准差,并按高分位数设定准备金。",
+      "notes": "正面场景:均值±标准差描述肥尾量"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个用户的消费额超出五个标准差了，肯定是数据错误，剔掉再算。",
+      "expected_behavior": "应激活 mm-fat-tailed-distributions,提醒在肥尾分布里最大离群值恰恰是核心信息而非噪声;检查最大离群值出现频率是否远高于正态预期,不要先删。",
+      "notes": "正面场景:把离群值当异常剔除"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我要跑蒙特卡洛模拟估算项目工期，输入该用什么分布？",
+      "expected_behavior": "应激活 mm-fat-tailed-distributions,先检查工期的历史分布是否为肥尾（工期超支几乎总是厚尾）,若是则不能用正态输入,应改用实际样本或厚尾分布。",
+      "notes": "正面场景:分布假设前置校验"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这批零件的尺寸公差数据分析一下，看看合格率。",
+      "expected_behavior": "不应激活本 skill,因为尺寸测量误差是典型的正态量（中心极限、无乘性正反馈）;用正态与过程能力分析即可,按肥尾处理会过度保守。",
+      "notes": "诱饵:同为分布分析但是正态量"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们刚被一次完全没预料到的事件打懵了，现在该想想怎么让体系被打中后反而更强。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-antifragile:用户已经识别出黑天鹅并开始设计结构;肥尾分布是解释“为什么会低估”的统计成因,不是“如何在受损后变强”的设计方法。",
+      "notes": "跨 skill 混淆诱饵:极端风险应对"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我只有 8 个历史样本，但最大值明显偏得很远，能判定这是肥尾分布吗？",
+      "expected_behavior": "合理判断:不能判定——厚尾恰恰藏在样本稀少处,8 个样本既证明不了也证伪不了。合理做法是暂时按肥尾处理（保守假设）、明确标注样本不足,并说明需要补到 30 个以上再判断;同时提醒本 skill 不做精确分布拟合。",
+      "notes": "边界:小样本下的判断失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-conjunction-fallacy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我觉得明年我们大概率会拿下华东市场，而且很可能顺带被一家大厂看中收购。两个加一起是不是更值得期待？",
+      "expected_behavior": "应激活 mm-conjunction-fallacy，指出'拿下华东且被收购'是'拿下华东'的子集，P(A且B) ≤ P(A)，加条件只会让概率更低；估算下降幅度，并说明细节让故事更连贯但不提高发生概率。",
+      "notes": "正面场景：典型的'加条件后觉得更可能'"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的目标用户画像写好了：30-35 岁、一线城市、养猫、喜欢露营、在做副业的独立开发者。这个市场应该挺大的吧？",
+      "expected_behavior": "应激活本 skill，逐条指出每个条件是相乘关系，人群随条件数指数收缩；提醒先把最核心的 1-2 条拿出来估规模，其余作为细分而非必要门槛。",
+      "notes": "正面场景：画像条件过多导致规模被高估"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "他给我讲了特别详细的发展路径，第一年做什么第二年做什么，还说第三年能上市。听着好真实，是不是真有戏？",
+      "expected_behavior": "应激活本 skill，把剧本拆成一串联的必须成立条件，指出每多一步都乘一个小于 1 的概率，细节丰富提高的是叙事可信度而非事件发生概率。",
+      "notes": "正面场景：详细剧本带来虚假的可信感"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这两款产品是互斥的路线，只能选一个，帮我比较下优劣。",
+      "expected_behavior": "不应激活本 skill。两个选项互斥、不存在包含关系，P(A且B) ≤ P(A) 套不上，这里是择优问题，应做成本收益分析或决策树。",
+      "notes": "诱饵：涉及概率与选择，但不满足包含关系前提"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "用户流失可能有两个原因：竞品挖人，或者我们新版体验变差。哪个解释更靠谱？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-ockham-s-razor（或 mm-alternative-hypothesis）：这是在两个竞争解释间做选择，不是判断'加了条件的事件概率更高'。两者方向不同——一个管概率计算，一个管解释选择。",
+      "notes": "跨 skill 混淆诱饵：都处理'多条件/多选项'，但机制不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "说明年经济会衰退，且通货膨胀会超过 5%。这两个条件加一起概率是不是更低？",
+      "expected_behavior": "应激活本 skill 但要处理相关性：先确认包含关系成立（确实概率更低），再指出这两个条件高度正相关（不能简单相乘会低估），改用区间估计并说明相关性来源，最后给出修正后的概率区间而非点估计。",
+      "notes": "边界：规则适用但条件不独立，需防止简单相乘"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-ockham-s-razor。"
+}

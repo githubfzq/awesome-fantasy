@@ -1,0 +1,52 @@
+{
+  "skill": "mm-reciprocity",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "销售给我免费做了三个月方案,现在要我签一百万的单,不签我实在过意不去。",
+      "expected_behavior": "应激活 mm-reciprocity,指出触发亏欠感的是'给予'动作本身、与这份好处你是否索要或需要无关;帮用户分离'这个方案值不值一百万'与'我欠了人情',并给出把人情折算成明账、或用边界清晰的小回报清偿的路径。",
+      "notes": "正面场景:未被索要的好处换取大回报"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我在做餐饮,想让顾客多给点小费,有什么低成本的做法?",
+      "expected_behavior": "应激活 mm-reciprocity,给出书中薄荷糖案例的机制与数据(一块 +3%、两块 +14%、两块加一句好话 +23%),并说明是'给予'动作而非糖的价值在起作用;同时提醒不要把它变成操纵性的索取。",
+      "notes": "正面场景:书中原案例 + 设计方视角"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "谈判时对方先主动让了一步,我就觉得自己也该让,结果让过头了。是不是被套路了?",
+      "expected_behavior": "应激活 mm-reciprocity,确认这是互惠在谈判中的典型运作(先让一步制造亏欠),并给出应对:预先设定让步底线与节奏、把对方的让步识别为战术而非善意、用等价交换而非单向退让来回应。",
+      "notes": "正面场景:谈判中的互惠战术"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "朋友结婚我包了红包,明年我结婚他也会包回来,这正常吗?",
+      "expected_behavior": "不应激活本 skill 去做'操纵'解读,因为这是正常的礼尚往来与长期关系维护,把它一律病理化会破坏健康的社会关系;简单确认其规范性即可。",
+      "notes": "诱饵:形似互惠但属于正常人情往来"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他先问我是不是也想提升效率,我说是,然后就被一路推进着签了合同。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-commitment:驱动力是你自己先作出的表态带来的一致性压力,不存在任何'给予'动作;互惠一定有一个对方先给你好处的环节。",
+      "notes": "跨 skill 混淆诱饵:承诺"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我是采购,供应商经常请我吃饭送小礼。我知道这会影响判断,但金额都很小,要不要紧?",
+      "expected_behavior": "合理判断:小额恰恰是最有效的——书中强调触发亏欠感的是给予动作本身而非好处大小;且当送礼被制度化进采购流程,就不再是个人心理问题而是制度性的不当诱因;建议明确拒收规则、公司层面设红线、必要时回避。",
+      "notes": "边界:个人心理机制升级为制度问题"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

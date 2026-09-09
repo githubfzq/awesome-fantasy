@@ -1,0 +1,52 @@
+{
+  "skill": "mm-campbell-s-law",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们打算把学生的升学率跟教师绩效和学校经费直接挂钩，这样能提升教学质量吧？",
+      "expected_behavior": "应激活 mm-campbell-s-law，指出指标已升格为决策目标且利害很高，画出改行为（砍掉不考的课、劝退后进生）、改口径（重定义升学统计）、改数据三条腐化路径，为高压力路径设计封堵，并补一个不受该指标驱动的真实教育结果观测项。",
+      "notes": "正面场景：高利害社会指标"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们准备按用户满意度评分给客服团队发奖金，同时把评分低于 4.8 的外包商换掉。这个方案有什么风险？",
+      "expected_behavior": "应激活 mm-campbell-s-law，指出满意度已挂上奖惩与去留，腐化压力高；列出刷分、诱导好评、改口径（剔除低分样本）等路径，并要求多指标制衡、随机抽检、滞后核验以及造假的高额代价。",
+      "notes": "正面场景：奖惩硬挂钩的设计预判"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们上季度事故数降到历史最低，但客户投诉反而变多了。数字这么漂亮，我是不是该查点什么？",
+      "expected_behavior": "应激活 mm-campbell-s-law，指出「数字漂亮但真实结果变差」正是指标被腐化的典型信号，建议检查口径是否被重定义（什么算一次事故）、是否存在漏报激励，并补一个独立观测项（客户侧的真实故障率）。",
+      "notes": "正面场景：数字与真实结果背离"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们内部看板上放了一个服务 P99 延迟的曲线，只是给大家看趋势，不考核。会不会有问题？",
+      "expected_behavior": "不应激活本 skill，因为该指标仅作描述性观测、不挂任何奖惩利害，腐化压力极低；且 P99 延迟属于工程测量量，难以被人为重定义。",
+      "notes": "诱饵：纯观测指标"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们把代码行数纳入了产出考核，现在大家拼命写冗余代码，行数涨了但功能产出没变。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-goodhart-s-law。此处的核心是指标失去了信息价值（行数不再代表产出），被监控的工程活动本身并没有被改造或破坏，属于度量失效而非坎贝尔定律强调的腐化压力扭曲进程。",
+      "notes": "跨 skill 混淆诱饵：古德哈特定律"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们设了一个「安全生产天数」的公示牌，不发奖金也不罚款，只是挂在厂门口。结果有班组隐瞒了小事故不报。",
+      "expected_behavior": "合理的判断是：应按本 skill 处理，但要修正对「利害」的理解。虽然没有金钱奖惩，但公示牌制造了声誉压力，这同样构成腐化压力——坎贝尔定律的作用强度取决于利害高低，而利害不只来自奖金。结论：把该指标降级为内部可Reporting且无声誉惩罚的通道，明确「主动上报小事故不扣分、隐瞒重罚」，并补一个独立观测（隐患整改率、未遂事件上报数）。这一条说明判断标准应是「有没有值得撒谎的利害」，而不是「有没有发钱」。",
+      "notes": "边界：无奖金但存在声誉利害"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-simulation",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的库存老是忽高忽低，静态公式算出来的补货点完全不靠谱，怎么办？",
+      "expected_behavior": "应激活 mm-simulation,指出这属于有反馈与延迟的系统（补货滞后、需求波动）,静态公式不够;引导画系统图并转成可运行模型,设定初始条件观察库存随时间演化。",
+      "notes": "正面场景:有延迟的反馈系统"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "涨价之后销量和竞品反应会怎么演变？我想看半年内的过程，不只看最终值。",
+      "expected_behavior": "应激活 mm-simulation,建议绘制系统图后跑模型,施加涨价冲击并观察系统如何随时间自行调整（勒夏特列原理式的部分抵消）,并标出关键转折点。",
+      "notes": "正面场景:需要时间轨迹而非快照"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想看看在极端冲击下我们这套体系会不会崩，有没有工具能模拟？",
+      "expected_behavior": "应激活 mm-simulation,提到书中推荐的 Insight Maker 与 True-World,把系统画成示意图转成模型后施加冲击观察动态行为,再把输出的概率与结果喂给决策树。",
+      "notes": "正面场景:压力下的动态行为预测"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这两个方案今年各花多少钱，帮我算个总数比较一下。",
+      "expected_behavior": "不应激活本 skill,因为这是一次性的静态成本比较,不存在状态随时间的累积与反馈;直接做成本收益分析即可。",
+      "notes": "诱饵:形似建模但无时间维度"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想知道这个项目的工期和成本有多少种可能结果，各自概率多大。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-monte-carlo-simulation:用户要的是多次随机运行后的结果概率分布,而普通仿真模拟是单次运行看系统演化过程;前者给分布,后者给过程。",
+      "notes": "跨 skill 混淆诱饵:两种模拟"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我把系统图跑成了模型，输出的曲线看起来很专业，可以直接拿去汇报说这就是未来吧？",
+      "expected_behavior": "合理判断:不能——仿真输出只是你那张图的推演结果,不是对未来的真实预测。应检查图是否漏了关键反馈回路（漏掉比不仿真更危险,因为数字看起来可信）、对拍脑袋参数做敏感性分析,并把输出作为决策树的输入而非结论本身。",
+      "notes": "边界:仿真输出的可信度"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

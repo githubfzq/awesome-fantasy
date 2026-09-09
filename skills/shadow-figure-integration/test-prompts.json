@@ -1,0 +1,76 @@
+{
+  "skill": "shadow-figure-integration",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我就是受不了他，一看到他就来气",
+      "expected_behavior": "调用本 skill，走五步整合",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我最讨厌那种爱出风头的人了，我们部门就有一个",
+      "expected_behavior": "调用本 skill，识别投射",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "他老批评我不成熟，每句话都戳得我特别疼",
+      "expected_behavior": "调用本 skill，用镜子法",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "我嫉妒我朋友，虽然我不想承认",
+      "expected_behavior": "羡慕也是投射的一种，应调用本 skill",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我变成了我妈那样，我发现自己也在吼孩子",
+      "expected_behavior": "不应调用本 skill；应命中 family-loyalty-attachment（复制，不是投射）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他偷了我的工作成果还拿去邀功",
+      "expected_behavior": "真实侵权，不是投射；不应调用本 skill，应走边界设定与维权",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "怎么礼貌地拒绝同事的求助",
+      "expected_behavior": "完全无关",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "他公开在会上羞辱我，已经三次了",
+      "expected_behavior": "真实伤害行为；前置检查应判定为外部问题，不应做投射工作",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我就是看不惯他，但他说得确实有道理",
+      "expected_behavior": "边界：需先确认反感强度是否超过实际后果；若有道理则可能是合理分歧",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "should-not-trigger-04",
+      "type": "should_not_trigger",
+      "prompt": "我说不出我现在是什么感觉，但我非常清楚他是个什么样的人。",
+      "expected_behavior": "不应调用；应命中 polarity-quadrant-mapping（镜像反推，不是投射整合）",
+      "notes": "诱饵：跨册混淆（应命中第 2 册 skill）"
+    }
+  ]
+}

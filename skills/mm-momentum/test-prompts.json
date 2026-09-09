@@ -1,0 +1,52 @@
+{
+  "skill": "mm-momentum",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "有两个 offer，一个是已经起飞的明星团队，一个是很大的传统部门，该去哪个？",
+      "expected_behavior": "应激活 mm-momentum，分别评估质量（规模、嵌入深度）与速度（方向与快慢），给出借势/撤离/观望的建议与复核指标。",
+      "notes": "最典型的正面场景：选方向"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "传真明明早就过时了，为什么到现在还有公司在用？",
+      "expected_behavior": "应激活本 skill，说明大质量+负速度导致缓慢衰落：嵌入商业流程深、惯性大，即使越过峰值也要很久才退场。",
+      "notes": "过时不倒现象"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "现在入场这个赛道还来得及吗？还是已经晚了？",
+      "expected_behavior": "应激活本 skill，判断该赛道当前速度的方向与大小，并提醒存在感不等于势头、需看持续增速而非规模。",
+      "notes": "借势时机"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "组织想改但推不动，改变为什么这么难？",
+      "expected_behavior": "不应激活本 skill，用户只问改变难度、不涉及方向与速度，应激活 mm-inertia（惯性只与质量成正比）。",
+      "notes": "诱饵：只涉及质量不涉及速度"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这门手艺流传了三百年，是不是还能再传三百年？",
+      "expected_behavior": "不应激活本 skill，用户在问长期存续时间，应激活 mm-lindy-effect；动量看的是当前方向与速度而非历史寿命。",
+      "notes": "跨 skill 混淆诱饵：都在判断长期前景"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个赛道现在增速惊人，但我总觉得方向是错的，还要不要加入？",
+      "expected_behavior": "应激活并提醒：动量本身不保证方向正确，高速冲向悬崖的事物动量也很大；应先独立判断方向的可持续性再决定是否借势。",
+      "notes": "边界：势头 vs 方向正确性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-monte-carlo-simulation",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个项目要多久能完成？别只给一个数，我想知道各种可能性。",
+      "expected_behavior": "应激活 mm-monte-carlo-simulation,把各任务工期作为不确定输入并指定分布,独立重复运行数千次,输出 P10/P50/P90 的分布而不是单点估计。",
+      "notes": "正面场景:要区间不要单值"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们该为被投公司未来的融资储备多少资金？",
+      "expected_behavior": "应激活 mm-monte-carlo-simulation,沿用书中风险投资者的案例:输入流动资金记录、对成功的估计、潜在融资规模,多次随机运行后按分布的高分位数确定储备额度。",
+      "notes": "正面场景:书中案例的原型"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想知道这笔投资最坏会亏多少，以及亏成那样的概率有多大。",
+      "expected_behavior": "应激活 mm-monte-carlo-simulation,跑出完整分布后读尾部（P10 及最坏情形）而非均值,并提醒若输入是肥尾则不能用正态假设。",
+      "notes": "正面场景:尾部风险量化"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "把价格调高之后，这个市场半年内会怎么一步步演变？我想看过程。",
+      "expected_behavior": "不应激活本 skill,因为用户要的是单次运行下系统随时间的演化过程,不是多次随机后的结果分布;应激活 mm-simulation。",
+      "notes": "诱饵:同为模拟但目标是过程"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想看看如果转化率单独变化 10%，利润会怎么变。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-sensitivity-analysis:用户要的是一次拨动单个参数看结果变化的静态分析,而蒙特卡洛是让所有不确定参数同时随机取值并反复运行（动态的敏感性分析）。",
+      "notes": "跨 skill 混淆诱饵:参数分析的两个路子"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "各个输入的具体分布我完全没数据，能用均匀分布随便填一下跑蒙特卡洛吗？",
+      "expected_behavior": "合理判断:可以跑但必须明确标注——随机性不能弥补对参数的无知,输出会给出虚假的精确度。建议先做敏感性分析识别关键输入,只为关键项收集数据,非关键项用宽区间;若关键输入是肥尾量（工期超支、赔付）,绝不能默认正态。最终结论要说明是“在你的假设下”的分布。",
+      "notes": "边界:输入无依据时的可用性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

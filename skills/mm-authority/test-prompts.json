@@ -1,0 +1,52 @@
+{
+  "skill": "mm-authority",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这位诺奖得主说这种保健品有效,虽然我看不懂原理,但应该可以买吧?",
+      "expected_behavior": "应激活 mm-authority,把'诺奖得主'这个身份背书与'有效的论证'拆成两栏;检查其专业领域是否覆盖营养学、该领域是否有分歧;指出权威也必须像所有人一样证明自己的论点,建议要求给出机制与可检验的证据。",
+      "notes": "正面场景:跨界权威背书"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们想找个大 V 带货,是不是粉丝越多越好?CNN 黄金时段和头部博主选哪个?",
+      "expected_behavior": "应激活 mm-authority,指出权威是相对于受众的,书中例子是蒂姆·费里斯一篇客座博文比 CNN 黄金时段报道更能带动新书销量;关键不是客观头衔而是受众把谁当权威,并提醒权威可被外在符号(粉丝量)制造、背书带来的信任风险由品牌承担。",
+      "notes": "正面场景:书中网红 vs CNN 案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我总觉得这个方案有问题,但我不是技术出身,不敢在会上提。",
+      "expected_behavior": "应激活 mm-authority,指出服从权威的倾向强到会压制合理质疑(可引米尔格兰姆实验中 28%~91% 的人愿施加致命电压作为强度参照);给出不依赖身份的提问方式:请对方解释机制、给出可检验的预测、说明与主流意见的分歧点。",
+      "notes": "正面场景:自我审查式的权威服从"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "同行都在上这套系统,我们要不要也跟上?",
+      "expected_behavior": "不应激活本 skill,因为用户跟随的是'多数人的行为'而非某个被认证的权威;应激活 mm-social-proof。",
+      "notes": "诱饵:同为'跟着别人'但参照是多数人"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他就是个销售,连个技术学位都没有,他的方案肯定不行。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-ad-hominem:这是用'这个人缺乏资质'来驳斥论点,作者明确警告不能以缺乏资质作为驳斥的唯一依据;判断应只针对论证本身,与权威偏差方向相反但同构。",
+      "notes": "跨 skill 混淆诱饵:人身攻击"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我爸没读过什么书,但他凭经验说的那套判断天气的办法每次都准。要不要信?",
+      "expected_behavior": "合理判断:不应因缺乏资质而否定——作者明确警告不能以缺乏资质作为驳斥论点的唯一依据;此处恰恰有可检验的预测记录(每次都准),经验本身就是证据;结论是可以信,且应把判断标准锚定在预测准确率而非身份上。",
+      "notes": "边界:无资质但有可靠预测记录"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

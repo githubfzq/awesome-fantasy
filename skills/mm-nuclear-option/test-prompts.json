@@ -1,0 +1,52 @@
+{
+  "skill": "mm-nuclear-option",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "他们拖着不给钱,我打算告诉他:不结算我就把合作过程中的所有聊天记录和合同细节全发到行业群里,大家一块儿难看。",
+      "expected_behavior": "应激活 mm-nuclear-option,识别自伤成分(自己的行业声誉同样受损),检验可信度、算三条净收益(动用/不动用/升级失败),并给出自伤更小的同效替代(发律师函、申请仲裁、向平台投诉),再决定要不要动用。",
+      "notes": "正面场景:典型玉石俱焚式威胁"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我已经提了离职,但公司卡着不批。我想说'不批我就直接走人,离职证明不要了,社保断了我也不管'。这样能逼他们松口吗?",
+      "expected_behavior": "应激活 mm-nuclear-option,指出这是以自身利益受损(离职证明、社保)换取可信度的极端威胁;要求量化自己的实际损失,并给出更便宜的替代(书面通知到期自动解除、劳动监察投诉、仲裁),同时明确社保断缴的真实代价。",
+      "notes": "正面场景:自伤式威胁在职场的应用"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "对方放出狠话说要跟我鱼死网破,我想知道他是真敢还是吓唬我。",
+      "expected_behavior": "应激活 mm-nuclear-option,从自伤成本与'已被逼到只能这么做'的客观情境两个维度判断可信度:若自伤极重且无客观被逼情境,多半是虚张声势;并要求用户评估自己的退让成本,而不是硬碰硬。",
+      "notes": "正面场景:判断对方的核选项真假"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "客户又要求免费加功能,我想跟他说以后超范围的需求一律按人天报价。",
+      "expected_behavior": "不应激活本 skill,因为这是常规的商业条款调整,己方执行时没有任何自伤,属于普通的界线设定,应激活 mm-red-line。",
+      "notes": "诱饵:强硬表态但无自伤成分"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们和竞争对手都握有能让对方停摆的筹码,谁都不敢先动手,这个僵局怎么破?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-mutually-assured-destruction:这是双方互相握有毁灭性能力的对称结构,分析的是'谁都不敢先动'的均衡;核选项是单方的极端威胁。",
+      "notes": "跨 skill 混淆诱饵:相互确保毁灭(对称结构)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "谈判里我每次都放狠话'大不了不合作了',但每次都还是签了。这算不算核选项用得不好?",
+      "expected_behavior": "合理判断:首先这不算核选项——没有自伤成分,连普通红线都谈不上,只是反复失真的威胁。真正的问题是核选项/重威胁被当成常规加码话术反复使用,价值来自'仅此一次、真的会做',一旦常规化可信度立刻归零;建议只发出准备兑现的威胁,并在下次谈判前先定好真正愿意执行的退出点。",
+      "notes": "边界:核选项被误用为常规加码筹码"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-social-proof",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "同行都在上这套系统,我们要不要也上?大家都买了应该没错吧。",
+      "expected_behavior": "应激活 mm-social-proof,先确认用户跟随的是'多数同行'而非某个专家;再追问这个'多数'样本是否与自家处境可比、数据是否独立、是否只展示了成功案例;最后区分'减少不确定性'与'放弃判断'。",
+      "notes": "正面场景:用'大家都这样'为决策辩护"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我写了块牌子:'每年有大量游客把木化石带回家,请勿效仿'。结果偷的人更多了,为什么?",
+      "expected_behavior": "应激活 mm-social-proof,指出这块牌子把'很多人在偷'当作常态展示,而社会认同对不良行为同样有效——书中石化森林公园案例盗窃率提高了 3 倍;建议改写为指向良好行为的描述('绝大多数游客都把木化石留在原地')。",
+      "notes": "正面场景:书中反例的直接应用"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "想让酒店客人重复使用毛巾,文案怎么写才有效?",
+      "expected_behavior": "应激活 mm-social-proof,给出书中做法——把提示改为'多数客人都会重复使用毛巾'(重复使用率提升 25%),并说明关键是把你想推广的行为描述为多数人的常态,同时提醒不要虚假陈述。",
+      "notes": "正面场景:书中正例 + 设计方视角"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这位诺奖得主推荐了这款产品,是不是就靠谱了?",
+      "expected_behavior": "不应激活本 skill,因为用户跟随的是被公认的权威个体而非'多数人的行为';应激活 mm-authority,并提醒权威也必须像所有人一样证明自己的论点。",
+      "notes": "诱饵:同为'跟着别人走'但参照对象不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们组的老人都习惯这么写代码,我也跟着这么写,虽然别的组不这么干。这正常吗?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-in-group-favoritism:驱动力是'我认同的这个群体在这么做'(纵向的身份归属),不是'多数人都在这么做所以是对的'(横向的数量暗示)——其他组并不这么干恰恰说明参照系是所属群体而非多数;两者常被混为一谈,但改变行为时要撬动的杠杆完全不同。",
+      "notes": "跨 skill 混淆诱饵:群内偏爱"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "产品页面写'10 万人都在用'其实是我编的,反正也没人查,能用吗?",
+      "expected_behavior": "合理判断:机制上确实有效,但属于虚假陈述——既是不正当竞争/广告合规风险,也破坏了社会认同本应提供的真实信号;建议改用真实可核验的数据(哪怕数字小),或换用其他非欺骗性的说服手段。",
+      "notes": "边界:机制有效但性质是欺骗"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-game-theory",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们准备降价 15%,但竞品肯定会跟进,这样做到底值不值?",
+      "expected_behavior": "应激活 mm-game-theory,点名玩家与各自选项,从自己立场画收益矩阵,为每个组合找出对方的最佳回应并标出均衡;再判断这局之后是否还会再见(转入重复博弈)。",
+      "notes": "正面场景:对手会回应"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "明天要谈薪资,我报多少合适?我得先想清楚 HR 会怎么回应我的报价。",
+      "expected_behavior": "应激活 mm-game-theory,明确对方是可回应的玩家,列出双方选项与收益结构,并指出若均衡不理想应改博弈参数(改变对方收益结构)而不是指望对方讲道理。",
+      "notes": "正面场景:谈判中的相互回应"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我算下来这个计划明明是最优的,为什么落地之后结果这么糟?",
+      "expected_behavior": "应激活 mm-game-theory,指出症状是只算了自己的最优、忘了对手会回应;引导用户点名另一个会回应的玩家并预演其最佳回应。",
+      "notes": "正面场景:缺博弈视角的典型症状"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "如果下个月下雨我们的户外展会就要取消,我要不要现在订备用场地?",
+      "expected_behavior": "不应激活本 skill,因为分支另一端是自然状态(天气)而非会思考、会回应的玩家;应激活 mm-decision-tree 配合概率与期望值计算。",
+      "notes": "诱饵:也有'如果…就…'但对手是自然状态"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们部门和市场部都在抢同一笔预算,谁都不肯先让步,怎么把这个结构摊开看清?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-payoff-matrix:用户已经知道这是博弈,要的是把'我做什么 × 他做什么'的所有组合与各自收益填进表格、找出均衡这一具体工具;博弈论是判断'这是不是博弈'的视角,收益矩阵是把它摊开算的工具。",
+      "notes": "跨 skill 混淆诱饵:收益矩阵"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "对手公司刚换了 CEO,新老板行事完全不可预测,我们还能用博弈论分析吗?",
+      "expected_behavior": "合理判断:可以保留'先确认对手会如何回应'的习惯,但均衡解的指导意义有限——博弈论假设对手理性且收益可估计;建议改为情景化应对:列出几种可能的对手类型分别准备预案,优先选择在各种情形下都不至于糟糕的稳健策略,并尽快通过小动作试探对方的真实偏好。",
+      "notes": "边界:对手非理性时均衡解失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-public-goods",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们行业急需一个共用的基础数据库，价值很大，但没有一家公司愿意单独出资建，都说让别人先建。",
+      "expected_behavior": "应激活 mm-public-goods，判定其难排他、非竞争的公共物品属性，算出社会价值与私人可回收价值的落差，并设计供给机制（行业联盟共担、按使用量分摊、协会出资）。",
+      "notes": "正面场景：行业共性基础设施供给不足"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "为什么抗生素明明能救命，大药企却都停止研发了？",
+      "expected_behavior": "应激活 mm-public-goods，指出新型抗生素保护公众健康的属性使其具有公共物品特征，社会价值与私人市场价值严重脱节（需储备、小批量、会过期、专利提前到期），因此需扩大专利保护或共同承担开发成本等干预。",
+      "notes": "正面场景：书中案例的同类迁移"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "公司中台要不要做？每条业务线都说需要，但一到出预算就都往后退。",
+      "expected_behavior": "应激活 mm-public-goods，确认其公共物品属性与搭便车结构，建议由总部出资或按业务线使用量强制分摊，并给中台团队建立可持续的回报与考核口径。",
+      "notes": "正面场景：内部平台建设的出资归属"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们这款 SaaS 是付费订阅的，不交钱就登不进去，现在想提价，会不会流失客户？",
+      "expected_behavior": "不应激活本 skill，因为该产品在技术上可低成本排他（不付费无法登录），不具备公共物品的难排他与非竞争属性，属于普通定价与留存问题。",
+      "notes": "诱饵：涉及多人使用但可排他"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "公共草场上的牧民都在拼命增加牛羊，草场眼看着要沙化了，谁也不肯先减。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-tragedy-of-the-commons。草场是竞争性的（你多放一头牛别人就少一分草），问题是过度取用导致耗尽，而不是非竞争物品供给不足。",
+      "notes": "跨 skill 混淆诱饵：公地悲剧"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的 API 网关一开始谁都能免费用，现在调用量暴涨，已经开始限流了，它还算公共物品吗？",
+      "expected_behavior": "合理的判断是：非竞争性随规模消失了，它已从公共物品转变为拥挤型公地。此时继续按公共物品的「供给不足」思路处理会错，应转向限制取用/配额/按量计费（公地悲剧与内部化的组合），并重新设计排他门槛与成本分摊。判定公共物品必须同时满足难排他与非竞争两个条件，容量上限会击穿后者。",
+      "notes": "边界：拥挤导致非竞争性消失"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-pygmalion-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我一直觉得这个新人靠不住，简单活儿才敢交给他，结果他确实越来越没存在感。",
+      "expected_behavior": "应激活 mm-pygmalion-effect，识别为魔像效应（低期待导致表现变差），检查自己的行为证据（任务难度、反馈频率），并给出上调期待+配套支援的具体方案",
+      "notes": "正面场景：低期待的自我实现"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我想让团队整体上一个台阶，除了加任务量还有什么办法？",
+      "expected_behavior": "应激活本 skill，说明寄予高期待的领导风格在 200 项研究荟萃分析中优于魅力型/激励型/变革型等方式，同时强调高期待须配支援系统",
+      "notes": "正面场景：领导技巧选择"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我对她期望特别高，什么难活都往她身上压，最近她明显焦虑、开始加班到很晚。",
+      "expected_behavior": "应激活本 skill 并援引书中警告：高期待加上不断敦促会使人筋疲力尽或焦虑不安，必须配套支援系统；应给出疲劳监测指标与下调/再平衡建议",
+      "notes": "正面场景：高期待的失效模式"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这批实验数据我先看了一眼结果，现在回头复核总是不自觉地往结论上靠。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-observer-expectancy-bias（观察者期望偏差）：这是观察者误读结果使测量被污染，不是期待真实改变了对方表现",
+      "notes": "诱饵：同为'期待影响结果'但机制不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他自己就认定'我这种人学不会编程'，一提学习就回避。怎么改变他的想法？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-fixed-mindset-versus-growth-mindset（固定型思维 vs. 成长型思维）：核心是他本人对能力的信念，不是他人期待通道",
+      "notes": "跨 skill 混淆诱饵：同章相邻的潜能释放类模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我手上没有任何多余资源，也没时间多带人，但我可以对大家表达很高期待吧？",
+      "expected_behavior": "应激活本 skill 并明确指出条件不成立：书中说高期待须配支援系统，且高期待本身不足以让人发挥全部潜能；无支援时只上调期待会导致筋疲力尽或焦虑，应先解决最小支援（哪怕是反馈频率）",
+      "notes": "边界：书中明示的前提条件缺失"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

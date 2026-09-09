@@ -1,0 +1,52 @@
+{
+  "skill": "mm-what-type-of-customer-are-you-hunting",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们明年想做到一个亿营收，到底需要多少客户？我心里完全没数。",
+      "expected_behavior": "应激活 mm-what-type-of-customer-are-you-hunting，把营收目标除以单客年付费得出所需客户数；要求给出客单价定价依据而非拍脑袋；用可查数据估算符合条件的目标客户总量，若所需数超过总量的合理比例则判定目标在数学上不可行，必须回头调整目标或提高客单价；最后倒推出互动方式与商业模式。",
+      "notes": "正面场景：典型的数量倒推"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "团队吵翻了：一半人想做自助产品走大众市场，一半人想给每个客户做定制交付。到底该选哪个？",
+      "expected_behavior": "应激活本 skill，指出这不是风格偏好而是被单客付费量级决定的：先两端各自算出需要多少客户，再说明成千上万客户必须自助零摩擦、不可能让千万人付高价；几百几千客户才必须逐个面谈配专职销售、单客投入可以很高。明确指出两条路不可混用，并列出各自连锁确定的获客渠道/销售组织/交付形态/服务承诺。",
+      "notes": "正面场景：模式路线之争"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个行业看着很热，但我们这种产品在这个地区到底有多少家潜在客户？",
+      "expected_behavior": "应激活本 skill 的可行性判定用法：用可查数据源估算符合条件的目标客户总数并给出估算过程（不是只给结论），再换算成所需数量占比；同时提醒算术的另一面——同样一个亿，可以是千万只付十块的苍蝇，也可以是一千头付十万的象，路线不同对该总量的要求完全不同。",
+      "notes": "正面场景：市场可行性判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的客户非常明确就是这 200 家工厂，现在的问题是注册转化率只有 2%，怎么提上去？",
+      "expected_behavior": "不应激活本 skill。客户群已明确、规模已定，剩下的是运营与转化优化问题，重算客户量级没有增量。直接讨论转化漏斗改进。",
+      "notes": "诱饵：都涉及客户数量，但阶段不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们想先集中拿下一个很小的细分市场，站稳了再往外扩。这个顺序对吗？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-beachhead（滩头堡）：用户问的是先集中拿下小细分、再扩张的顺序策略，而不是按客户付费量级做定量测算。两者常串联使用但输出不同——滩头堡决定先打哪儿，本模型决定每头猎物值多少、需要多少头。",
+      "notes": "跨 skill 混淆诱饵：都关于'先做哪些客户'"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们平均客单价是 20 万，目标一个亿，那只要 500 个客户，听起来不难啊？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：指出这个除法本身没错，但平均值常被少数极端大客户拉高，用它推算会严重低估所需客户数；应要求按不同客户层级分别计算而不是用均值。同时检查年度经常性收入口径——年付费 20 万和一次性付费 20 万是两回事。最后仍要走一步总量验证：这 500 个客户是否真的存在且可被触达。",
+      "notes": "边界：均值误导与口径混淆"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-beachhead。"
+}

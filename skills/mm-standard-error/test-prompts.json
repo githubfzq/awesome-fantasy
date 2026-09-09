@@ -1,0 +1,52 @@
+{
+  "skill": "mm-standard-error",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们做了 400 人的用户问卷，满意度 62%，这个数字到底有多准？误差范围是多少？",
+      "expected_behavior": "应激活 mm-standard-error，用 SE = s/√n 算出标准误差并换算成误差范围（约 ±5%），说明真实满意度大概落在 57%~67%，并判断这个宽度是否足以支撑决策。",
+      "notes": "正面场景：估计精度评估"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "老板要求把这次调研的误差范围从 5% 压到 2.5%，我们要多招多少样本？",
+      "expected_behavior": "应激活 mm-standard-error，指出误差减半需样本量翻 4 倍（约 384→1536 人），说明平方反比带来的边际递减代价，让对方判断投入是否值得。",
+      "notes": "正面场景：精度—样本量倒推"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "AB 测试里新版比旧版转化率高了 1.2%，样本各 500，这算真的有提升吗？",
+      "expected_behavior": "应激活 mm-standard-error，先算出差值的标准误差，判断 1.2% 是否落在噪声区间内，若差异小于误差范围则说明尚不能下结论，需要更多样本。",
+      "notes": "正面场景：差异是否超出噪声"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我写个 SQL，统计上个月全量订单的平均客单价。",
+      "expected_behavior": "不应激活本 skill，因为这是全量数据的确定性计算，不存在抽样误差，无需标准误差。",
+      "notes": "诱饵：统计计算但非抽样推断"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的问卷只发给了活跃用户，结果好评率 90%，能不能代表全体用户？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-selection-bias：问题出在抽样框不具代表性（系统性偏差），增加样本量也无法修复，与标准误差衡量的随机波动无关。",
+      "notes": "跨 skill 混淆诱饵：同属数据可靠性，但偏差性质不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们把样本从 500 加到 2000，误差范围应该能降到原来的四分之一吧？",
+      "expected_behavior": "应激活本 skill 并纠正：样本量 ×4 只能让误差范围减半（√4 = 2），不是降到 1/4；要降到 1/4 需要 16 倍样本。同时提醒别把标准误差与样本标准差混淆。",
+      "notes": "边界：对平方根关系的常见误解"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

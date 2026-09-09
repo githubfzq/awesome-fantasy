@@ -1,0 +1,52 @@
+{
+  "skill": "mm-appeal-to-emotion",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "刚才那场辩论我看完热血沸腾,他讲得太好了,我现在完全站他这边——不过你要我复述他的理由,我好像说不上来。",
+      "expected_behavior": "应激活 mm-appeal-to-emotion,指出'复述不出理由'正是情绪成为结论主要支撑的信号;要求把情绪性表述与支持结论的理由拆成两栏,并检验同样强度的情绪能否支持相反结论(若能,说明情绪不具判别力)。",
+      "notes": "正面场景:情绪取代理由"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我要写封募捐信,是不是该多放点让人心酸的真实照片?我怕太煽情了不合适。",
+      "expected_behavior": "应激活 mm-appeal-to-emotion,给出底线区分:使用真实案例的感染力可以,虚构或夸大受害者不可以;并点明书中把'是否用诉诸情感包装更有说服力的措辞'作为留给读者自定的道德难题。",
+      "notes": "正面场景:设计说服性内容"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我妈说'我为你付出这么多,你就不能听我一次吗',我一内疚就答应了,事后又后悔。",
+      "expected_behavior": "应激活 mm-appeal-to-emotion,识别这是典型的内疚诉求(guilt trip);把内疚情绪与'这件事本身该不该做'分开评估,并给出可操作动作:先不当场答复,隔一段时间在无情绪状态下重估该决定是否仍然成立。",
+      "notes": "正面场景:内疚驱动的承诺"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我养了十年的狗今天走了,我现在真的很难过,什么都干不下去。",
+      "expected_behavior": "不应激活本 skill,因为用户是在倾诉与哀伤,情绪本身就是议题而非说服手段;此时应提供情感支持,把情绪当作论证来分析是不合时宜的。",
+      "notes": "诱饵:强情绪但非说服场景"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "竞品一直在跟客户说'用别家的系统会出安全事故,而且谁也说不准会出什么事',客户被拿住了。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-fear(FUD):诉求结构明确是恐惧 + 不确定性 + 怀疑三者组合,且把注意力从'我的方案好不好'转移到'不选我的后果有多可怕';虽然 FUD 属于诉诸情感的一种手法,但此处精确命中 FUD 的定义与案例,应优先调用它。",
+      "notes": "跨 skill 混淆诱饵:惧、惑、疑"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的产品确实帮助了很多真实用户,宣传片里讲他们的真实故事、配上音乐让人感动,这算操纵吗?",
+      "expected_behavior": "合理判断:不算。使用真实案例与真实情感不构成操纵,情绪诉求本身不等于谬误——判断标准是案例是否真实、是否被夸大、情绪是否替代了关于产品本身的关键信息(如价格、局限、适用条件)。建议在同一宣传中保留未包装的关键事实,让情绪感染力与信息披露并存。",
+      "notes": "边界:真实情感表达 vs 操纵"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

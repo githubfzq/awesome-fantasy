@@ -1,0 +1,52 @@
+{
+  "skill": "mm-vaporware",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这家厂商去年就官宣了新一代产品,参加展会也一直挂着,但到现在一年多了连个试用版都没有。我该继续等吗?",
+      "expected_behavior": "应激活 mm-vaporware,确认\"已宣布 + 无实物\"两条同时成立;指出宣布动作已让客户推迟采购、这正是它的主要效果;建议设定明确截止日期、要求书面交付承诺,同时并行推进备选方案,不要无限等待。",
+      "notes": "正面场景:宣布未交付,等待方"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "竞对突然宣布三个月后要出一个跟我们主打功能一样的东西,我们是不是要先放一放、看看他们做成什么样?",
+      "expected_behavior": "应激活 mm-vaporware,指出这很可能是用\"即将推出\"冻结你们的决策;建议核查其是否有可验证的进展(招聘、测试版、客户共建),评估对方历史跳票记录,并按\"宣布是否真能改变你的投入节奏\"决定要不要等,而不是默认让路。",
+      "notes": "正面场景:竞对官宣冻结我方决策"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "市场同事想先官宣一个我们还在设计阶段的功能,说可以试试用户反应再决定做不做。这个能干吗?",
+      "expected_behavior": "应激活 mm-vaporware,列出书的三种用途(测试需求、评估反应、让对手停手)并说明第三种是竞争武器;给出越线检查:若不打算在合理周期内交付,不要公开官宣,改用私下用户访谈或小范围灰度来收集需求;提醒信用是一次性资产,跳票会折损下一次发布的可信度。",
+      "notes": "正面场景:自查要不要提前官宣"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "他们在官网上公开了今年的产品路线图,每个季度更新进度,上个季度的三项都按时交付了。",
+      "expected_behavior": "不应激活本 skill,因为有可交付实物且持续按期交付,属于正常的路线图进度同步;雾件要求\"已宣布但尚未完成且无交付\",且主要效果是改变客户与对手的决策。",
+      "notes": "诱饵:路线图公告但真实推进"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "去他们公司参观,展厅里摆满了正在运行的设备,后来才知道有一半是借来充门面的,根本不是他们的产线。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-potemkin-village:波将金村骗的是现在——摆出已经做好的样子(实物布景)让人误以为现状如此;雾件骗的是未来——只宣布不交付,根本没有实物。",
+      "notes": "跨 skill 混淆诱饵:波将金村"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们确实在做一个新模块,只是遇到技术难题延期了两次,但一直如实跟客户同步进度。客户开始说我们画饼,怎么回应?",
+      "expected_behavior": "合理判断:跳票不等于雾件,判据是宣布时的意图与是否持续如实披露。若延期真实存在、原因已公开、有更新的交付节点,应主张这属于进度问题而非雾件;回应动作是给出可验证的里程碑、提供中间可试用版本,并明确下一节点与不达成时的补偿安排。",
+      "notes": "边界:真实延期 vs 雾件"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-anecdotal-evidence",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我爷爷每天抽一包烟活到八十五，所以吸烟致癌那套说法是不是被夸大了？",
+      "expected_behavior": "应激活 mm-anecdotal-evidence，说明个案只证明「有可能发生」而不提供风险比，追问样本为何被选中、反例为何沉默，并建议查看系统性研究数据。",
+      "notes": "正面场景：书中明示案例的同构场景"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我看这个保健品的分享帖，几百个人都说吃了有效，还有详细的亲身经历。应该靠谱吧？",
+      "expected_behavior": "应激活 mm-anecdotal-evidence，指出分享行为本身是选择性传播（有效的人才发帖、无效的人沉默），并区分「提出假设」与「验证结论」，建议寻找对照性证据。",
+      "notes": "正面场景：营销内容中的轶事堆砌"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们做了五场用户访谈，有三个人提到同一个痛点。是不是可以直接定为下一季度的重点了？",
+      "expected_behavior": "应激活 mm-anecdotal-evidence，指出访谈适合提出假设但样本小且非随机、不足以验证优先级，并建议用更大样本或行为数据做验证。",
+      "notes": "正面场景：用户研究中过度依赖访谈"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我奶奶上周走了，我一直在想她最后那段时间的样子。",
+      "expected_behavior": "不应激活本 skill，因为用户在倾诉情绪、寻求共情而非做推断；应先共情回应，不做任何证据层面的纠正。",
+      "notes": "诱饵：涉及个人经历，但无推断诉求"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们在看创业公司的成功率数据，但失败的公司早就不存在了，统计里只有活下来的。这个数据是不是有问题？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-survivorship-bias——问题在于样本被系统性筛选（失败者已消失），而不是证据形式是传闻；判据是「样本怎么来的」而非「证据是什么形式」。",
+      "notes": "跨 skill 混淆诱饵：与 mm-survivorship-bias 相邻，区分在样本筛选 vs. 证据形式"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们在研究一种极其罕见的病，全球只有三十例。除了把这些案例的详细记录收集起来，好像也没别的办法了。",
+      "expected_behavior": "应激活 mm-anecdotal-evidence 但明确判停：在研究罕见事件时，个案本身就是核心证据，「这是轶事所以无效」的判据不适用；应转向如何系统化地收集与共享个案，而不是否定它们。",
+      "notes": "边界：罕见事件场景下模型的适用例外"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-systematic-review",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "关于「远程办公是否提高生产力」，网上说法完全相反，我想搞清楚到底证据怎么说，该怎么查？",
+      "expected_behavior": "应激活 mm-systematic-review，引导把问题写成明确问句，事前制定检索策略与纳入排除标准，筛出全部相关研究而非挑支持自己的，最后给出带证据强度分级的结论。",
+      "notes": "正面场景：矛盾的证据需要系统评估"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我要给管理层写一份「这个方法到底有没有效」的论证材料，但怕自己只挑了对结论有利的论文，怎么办？",
+      "expected_behavior": "应激活 mm-systematic-review，说明这正是系统综述要消除的认知偏差，要求先冻结检索方案与纳入标准，记录筛选漏斗每步的剔除数量，使结论可被第三方复现。",
+      "notes": "正面场景：对抗挑文献的偏差"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们做技术选型，A 方案和 B 方案各有一批论文支持，怎么中立地比较？",
+      "expected_behavior": "应激活 mm-systematic-review，对两个方案分别做系统检索，评估纳入研究的质量与异质性，并指出是否已有现成的系统综述可直接引用。",
+      "notes": "正面场景：技术选型调研"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我总结一下这篇论文的核心观点。",
+      "expected_behavior": "不应激活本 skill，因为只涉及单篇研究的理解，不需要系统检索与筛选流程。",
+      "notes": "诱饵：文献相关但非综述"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们收集了 12 项研究的数据，想把它们合并起来算一个总体效应量，该用什么方法？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-meta-analysis：问题已进入数据合并的统计分析阶段，系统综述是找全研究的流程，荟萃分析才是合并计算的技巧。",
+      "notes": "跨 skill 混淆诱饵：书中同一小节，高度易混"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们查到的研究里，效果显著的都发表了，没效果的估计都没发表，这种情况系统综述还能信吗？",
+      "expected_behavior": "应激活本 skill 并诚实说明：系统综述消除的是筛选过程中的认知偏差，但无法消除发表偏倚（只能涵盖已发表结果）；应尝试检索灰色文献/预注册库，并在结论中把发表偏倚标注为主要不确定性来源。",
+      "notes": "边界：系统综述的能力边界"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

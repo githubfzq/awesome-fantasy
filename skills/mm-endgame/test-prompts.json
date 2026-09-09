@@ -1,0 +1,52 @@
+{
+  "skill": "mm-endgame",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "项目已经做了十个月,核心功能都完成了,但团队还在不断加优化项、重构架构,交付日一拖再拖。",
+      "expected_behavior": "应激活 mm-endgame,判定已进入收官阶段(剩余可变因素少);把评价指标从'争取更好位置'切换为'锁定收益或最小化损失'二选一;剪掉已无法改变终局结果的活动(继续优化、继续重构),明确'达到X即为结束'的客观条件与回款/验收动作。",
+      "notes": "正面场景:中局打法误用于终局"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "融资到了最后一轮尽调,条款基本定了。我还要不要在几个小细节上再争取一下?",
+      "expected_behavior": "应激活 mm-endgame,指出终局的目标是兑现而非继续争取位置;评估再争小细节是否会危及已锁定的主体条款,建议把不可逆的核心条款落实(签、交割)优先,可分割的次要项留到交割后处理。",
+      "notes": "正面场景:谈判终局的取舍"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这场内部晋升之争基本明朗了,对手已经出局。接下来我该做什么?",
+      "expected_behavior": "应激活 mm-endgame,把重点从'争取优势'转为'把优势兑现成确定结果'——明确落地的动作(正式任命流程、关键方确认、书面记录),同时注意不要在收官阶段做新的树敌动作(与过河拆桥相关)。",
+      "notes": "正面场景:竞争收官阶段的兑现"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们刚做完第一版原型,正在讨论下一步要往哪个方向发展,选项挺多的。",
+      "expected_behavior": "不应激活本 skill,因为选项仍在快速增加、主要变量可由己方显著改变,这是典型的中局;此时谈终局会过早收敛、放弃布局。应继续争取位置并保留可能性。",
+      "notes": "诱饵:项目进行中但实为中局"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个业务已经亏了两年,我该不该把它关掉?如果要关,怎么处理员工和客户?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-exit-strategy:用户问的是'要不要退出、怎么退出'的方案设计,而不是'当前阶段该怎么打'的阶段判断;终局是阶段框架,退出策略是具体方案。",
+      "notes": "跨 skill 混淆诱饵:退出策略(方案 vs 阶段)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们本来都准备收尾交付了,结果竞品突然发布了同类型产品,老板说要重新加功能。现在还算终局吗?",
+      "expected_behavior": "合理判断:阶段可能被重新打开——出现了新的、己方可主动改变的关键变量(竞争态势、需求定义),因此不能继续沿用终局打法。建议先重新做阶段判定:若新变量确实改变了交付标准,则退回到中局处理(重新评估定位与取舍),并明确由谁、在什么时点做这个重新判定;若判断竞品发布不影响本项目交付标准,则维持终局并坚持原定收官动作。关键是要显式地重新判定,而不是默认继续收尾或默认推翻重来。",
+      "notes": "边界:外部变化导致阶段被重新打开"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

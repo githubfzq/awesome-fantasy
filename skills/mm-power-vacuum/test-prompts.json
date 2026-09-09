@@ -1,0 +1,52 @@
+{
+  "skill": "mm-power-vacuum",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "团队负责人突然离职了，这个位置空出来了。接下来会发生什么？我该怎么处理？",
+      "expected_behavior": "应激活 mm-power-vacuum，说明空缺会被迅速涌入填补（物理真空类比），并帮助用户设计受控版本：划定空缺范围、设观察期限、准备到期兜底方案；同时警示不受控会演变成争权夺利（关联九头蛇效应）",
+      "notes": "正面场景：突然空缺"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我想知道团队里谁对这个新方向真有兴趣，直接问肯定问不出来。有什么办法？",
+      "expected_behavior": "应激活本 skill，建议安排一系列职责供员工接任、或刻意留出一个受控的权力真空观察谁主动挺身而出，借此在正式委任前判断谁感兴趣、谁适合",
+      "notes": "正面场景：识别意愿与适配度"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "There's a patch of work nobody owns. Should I assign it right away or wait and see who steps up?",
+      "expected_behavior": "应激活本 skill，先让用户回答'要确定性还是要信息'：要确定性就转 mm-directly-responsible-individual；要信息就留受控真空，并明确边界、期限与兜底方案",
+      "notes": "正面场景：指派 vs 观察的取舍"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "合规申报下周就到期了，负责人刚走，这块没人管。",
+      "expected_behavior": "不应激活本 skill，因为有硬性截止、不能有空窗，必须立刻明确指定负责人（转 mm-directly-responsible-individual）；留真空会造成合规风险",
+      "notes": "诱饵：不能留空的场景"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "上次会后定的那件事，两周过去了一点动静都没有，大家都说以为别人会做。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-diffusion-of-responsibility（责任分散）：这里是'没人主动站出来'的失效状态，需要立即指定 DRI 消除责任分散，而不是继续留真空观察",
+      "notes": "跨 skill 混淆诱饵：同为空缺但结果已证明无人补位"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我留了个真空观察，结果两个人都开始暗中抢这个位置，气氛变差了。",
+      "expected_behavior": "应激活本 skill 并判定真空已经失控：书中明说必须'受控'，不受控会演变成争权夺利的混乱（关联 mm-hydra-effect）。应立即收口——按预设兜底方案明确委任或拆分职责，并公开说明决策依据，避免内耗扩大",
+      "notes": "边界：受控 vs 失控的分界线"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

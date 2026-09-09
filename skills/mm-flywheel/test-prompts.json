@@ -1,0 +1,52 @@
+{
+  "skill": "mm-flywheel",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我在做一个技术博客，写了半年，每周两篇，阅读量一直很低。我还要不要继续写下去？感觉前期投入太大看不到回报。",
+      "expected_behavior": "应激活 mm-flywheel，先锁定存量变量（文章库、订阅者、搜索排名、写作速度），再判断当前处在静摩擦段还是加速段，最后给出对应动作（继续单线投入 vs. 调整分发机制）。",
+      "notes": "正面场景：前期投入大、看不到回报是典型飞轮起步段信号"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们团队同时在推五个功能，每个都做了一半，三个月了没有一个上线。大家很累但好像什么都没积累下来。",
+      "expected_behavior": "应激活 mm-flywheel，指出这是不断重新启动轮子而非利用已有势头，建议收敛到单一轮子并识别哪个功能具备存量累积结构。",
+      "notes": "正面场景：多任务处理导致无动量，书中明示的失败模式"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想设计一套客户成功流程，希望老客户能带来新客户，越做越省力。这个闭环该怎么搭？",
+      "expected_behavior": "应激活 mm-flywheel，帮用户画出「投入→存量→让下一次投入更省力」的闭环，逐条验证每条箭头的具体机制。",
+      "notes": "正面场景：主动设计自我强化循环"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们下周要办一场线下发布会，预算有限，怎么把成本压到最低？",
+      "expected_behavior": "不应激活本 skill，因为这是一次性活动，没有可累积的存量变量；应转向成本收益或执行规划类思路。",
+      "notes": "诱饵：出现了「投入」但无累积结构"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我知道每天应该写 500 字，但每次坐到电脑前就是不想动，一拖再拖。明明知道长期有用，就是启动不了。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-activation-energy——问题出在起步门槛（活化能）太高，而不是飞轮转不起来；解法是找催化剂降低启动成本。",
+      "notes": "跨 skill 混淆诱饵：同为「长期做事」，但卡点在不同环节"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的用户增长完全靠平台推荐算法，上个月算法一调整，流量直接腰斩。之前感觉也挺有飞轮效应的，现在全没了。",
+      "expected_behavior": "应激活 mm-flywheel 但判定这不是真飞轮：存量变量（算法流量）由第三方控制、可被一次性清零，属于「漏水的轮子」；应建议建立自己可控的存量（私域、内容库、品牌），而不是继续加注在原循环上。",
+      "notes": "边界：看似飞轮实质依赖外部，考验存量变量的可控性判断"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

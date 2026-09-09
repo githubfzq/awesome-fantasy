@@ -1,0 +1,52 @@
+{
+  "skill": "mm-big-five-personality-traits",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "他就是太随便了，交代的事总差一口气；他说我太较真。我们因为这个吵了好几次。",
+      "expected_behavior": "应激活 mm-big-five-personality-traits，定位为尽责性（有条理 vs. 随便）维度上的差异，把特质冲突翻译成'对什么叫完成的标准不同'，并给出不依赖改人的外部机制（验收清单、明确的定义 of done）",
+      "notes": "正面场景：特质差异导致的反复冲突"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我要搭一个四人小组，需要一个敢闯的、一个能把细节收干净的、一个能对外协调的。该怎么配？",
+      "expected_behavior": "应激活本 skill，用五条连续谱描述互补画像（经验开放性高的探索者、尽责性高的收口者、亲和性/外向性高的协调者），并按互补而非相似配人",
+      "notes": "正面场景：按维度做团队互补搭配"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "It's not just introvert vs extrovert — we seem to clash on risk appetite and on how much planning is enough. What framework should I use?",
+      "expected_behavior": "应激活本 skill，说明单维度不够用时展开五维：经验开放性（好奇 vs. 审慎）解释风险偏好差异，尽责性解释规划粒度差异，并逐条给出可观察行为证据",
+      "notes": "正面场景：单维度不够，需完整画像"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我给这五个候选人按性格打分，分数最高的录取。",
+      "expected_behavior": "不应激活本 skill，因为书中明确定位它是'理解差异'的工具，且学界对维度选取尚无共识；用于筛选定级是误用",
+      "notes": "诱饵：用于招聘打分排序"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个岗位主要就是整天跟客户开会，她技术没问题但每次开完会都要缓半天。适合吗？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-introverts-versus-extroverts（内向型与外向型）：只需判断互动密度与能量消耗，用单维度快判即可；展开五维是过度处理",
+      "notes": "跨 skill 混淆诱饵：同属人格框架但只需单维"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们团队全都是高尽责性的人，每件事都要核对三遍，产品上线速度被拖得很慢。",
+      "expected_behavior": "应激活本 skill 并指出五条谱没有价值方向、'高=好'是误读（推导，非书中明示）：同质化本身就是风险，建议引入低尽责性/高经验开放性的人做探索环节，或用阶段化标准（探索期放宽验收、发布期严格）而非统一要求；同时说明这是推导而非书中明示",
+      "notes": "边界：特质同质化与高=好的误读"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-golem-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "自从大家觉得他能力一般之后，他就越来越摆烂了，现在动不动就说'反正我也不行'。",
+      "expected_behavior": "应激活 mm-golem-effect，识别这是期待值降低导致表现变差（自我实现的预言）；要求清点已泄露的低期待信号，并把期待开诚布公说清楚——包含'我对你的期待是 X、你要达成 Y、机会是 Z'三要素，而非空洞鼓励",
+      "notes": "正面场景：被看低后破罐破摔"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我现在对他基本不抱希望了，重要的活也不派给他，反馈也懒得给了。",
+      "expected_behavior": "应激活本 skill，指出不抱期待本身就会造成重大阻碍，且减少的任务、省略的反馈、被跳过的机会都是信号，接收者读得懂；要求恢复实质性投入并明确说出期待",
+      "notes": "正面场景：管理者自身在制造低期待"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "My kid was told he's 'not a math person' and his grades keep dropping. What do I do?",
+      "expected_behavior": "应激活本 skill（书中明说适用于父母养育孩子），指出被贴上'不是这块料'的标签会朝被期待的方向腐坏；解法是开诚布公把期待说清楚、让人认清目标并把握机会",
+      "notes": "正面场景：育儿中的标签效应"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "他手上的项目缺两个人、预算也被砍了，产出下滑得很明显。",
+      "expected_behavior": "不应激活本 skill，因为表现下滑的真实原因是资源缺失；抬高期待不能替代补资源",
+      "notes": "诱饵：表现下滑但根源是资源"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我对这个新人寄予厚望，重要项目都交给他，他最近成长特别快。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-pygmalion-effect（皮格马利翁效应）：期待升高带来表现提升，是魔像效应的镜像；诊断时先定方向——期待是升了还是降了",
+      "notes": "跨 skill 混淆诱饵：同一机理的镜像"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我嘴上跟他说'你很有潜力'，但重要任务还是给了别人。他好像越来越没干劲了。",
+      "expected_behavior": "应激活本 skill 并指出把期待'说出来'不等于把期待'抬起来'（推导，非书中明示）：接收者读的是行为而非言辞，效应不会反转；必须配合实质动作——派一个需要跳一跳才够得着的任务、给一次完整反馈、或补上此前省略的背景说明",
+      "notes": "边界：言辞期待与行为期待不一致"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

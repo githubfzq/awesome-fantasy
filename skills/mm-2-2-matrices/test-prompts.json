@@ -1,0 +1,52 @@
+{
+  "skill": "mm-2-2-matrices",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我有二十多个待办事项，感觉都很重要，完全不知道先做哪个。能不能帮我理一下？",
+      "expected_behavior": "应激活 mm-2-2-matrices，先列全清单，再挑两个能真正分开它们的独立维度交叉成四象限，并给每个象限配明确的行动规则。",
+      "notes": "正面场景：大量选项的优先级排序"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们要在周会上向老板汇报几十个客户需求的取舍，怎么讲能让他一眼看懂？",
+      "expected_behavior": "应激活 mm-2-2-matrices，构造一个可视化的四象限框架（如价值 × 实现成本），并为每格配一句决策结论。",
+      "notes": "正面场景：用简化框架做沟通对齐"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我自制了一个「影响 × 成本」的表格来决定参加哪些会议，但填完发现所有事不是落在高影响高成本就是低影响低成本，其他两格是空的。",
+      "expected_behavior": "应激活 mm-2-2-matrices，识别出两个维度高度相关导致矩阵退化为对角线，建议更换维度（如「影响 × 时间确定性」），并说明退化时不应继续使用该框架。",
+      "notes": "正面场景：维度退化诊断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们要在两个云服务方案之间做选择，涉及三年期的多项成本、性能、迁移风险和团队学习曲线，需要给董事会一个数字。",
+      "expected_behavior": "不应激活本 skill，因为需要多维度加权与连续量化、且要给出可辩护的数字，四格定性分类会丢失关键信息；应转向多准则决策或净现值分析。",
+      "notes": "诱饵：决策场景，但精度要求不匹配"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我的待办事项按照「重要/不重要 × 紧急/不紧急」该怎么安排？",
+      "expected_behavior": "不应激活本 skill 作为主模型，应激活 mm-eisenhower-decision-matrix——用户已经指定了「重要 × 紧急」这一固定维度组合，这是艾森豪威尔矩阵这一特定实例，而非通用构造法。",
+      "notes": "跨 skill 混淆诱饵：通用构造法 vs. 固定实例"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我用 2×2 给客户分了层，但很多客户其实落在中间地带，硬分进四个格子感觉失真了。怎么办？",
+      "expected_behavior": "应激活 mm-2-2-matrices 并给出书中明示的补救方法：大多数事物是连续统一体而非非此即彼的两极，应在 2×2 基础上画散点图来看真实分布，用连续坐标代替硬分格。",
+      "notes": "边界：书中明示的矩阵局限性及其补救"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

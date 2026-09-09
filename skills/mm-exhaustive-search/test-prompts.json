@@ -1,0 +1,52 @@
+{
+  "skill": "mm-exhaustive-search",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我行李箱的密码锁忘了，是三位数的，我想干脆从 000 试到 999。这样靠谱吗？",
+      "expected_behavior": "应激活 mm-exhaustive-search，先速算：1000 种组合，每次约 2 秒，总计约 33 分钟，确认可行并给出不重复的枚举顺序（按百位顺序推进）。",
+      "notes": "正面场景：小规模可枚举"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我有个脚本要在一批配置里找出能跑通的那一种，总共就十来种组合，是不是直接循环跑一遍比想算法快？",
+      "expected_behavior": "应激活 mm-exhaustive-search，确认规模小、穷举最可靠且不易错，支持直接遍历并记录已试过的组合以保证覆盖。",
+      "notes": "正面场景：小数据集下穷举优于设计算法"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "用户反馈说登录不上，可能的原因我想想也就那么五六个：密码错、账号被锁、token 过期、缓存问题、网络。要不我一个个查一遍？",
+      "expected_behavior": "应激活 mm-exhaustive-search，确认候选有限且可逐条验证，建议按概率排序依次排查并逐项记录已排除项，保证不遗漏。",
+      "notes": "正面场景：有限候选的排查"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的推荐模型效果不好，我想把所有可能的特征组合都试一遍，特征有两百多个。",
+      "expected_behavior": "不应激活本 skill 支持穷举，因为搜索空间是 2^200 量级，应明确劝退并转向特征选择算法或启发式搜索。",
+      "notes": "诱饵：要求穷举但规模爆炸"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这份两百页的合同，我打算从头到尾逐字读一遍找风险条款，是不是最稳妥？",
+      "expected_behavior": "不应激活 mm-exhaustive-search，因为这不是枚举候选解的问题，而是靠力气完成的大工作量任务——应激活 mm-brute-force 评估投入产出，或直接建议结构化审阅。",
+      "notes": "跨 skill 混淆诱饵：与 mm-brute-force 相邻，区分点在「枚举候选解」还是「靠力气硬做」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "密码是六位数字，但我记得前两位一定是 19，我打算穷举后四位。可以吗？",
+      "expected_behavior": "应激活 mm-exhaustive-search 并先加约束再速算：候选从 100 万降到 1 万，约 5-6 小时（每次 2 秒）仍偏长，建议先试生日等高概率组合（启发式）再兜底穷举。",
+      "notes": "边界：约束缩小空间后的可行性判断"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

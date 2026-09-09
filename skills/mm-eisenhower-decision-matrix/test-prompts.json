@@ -1,0 +1,52 @@
+{
+  "skill": "mm-eisenhower-decision-matrix",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "事情太多了，完全不知道先做哪个，帮我排一下。",
+      "expected_behavior": "应激活 mm-eisenhower-decision-matrix，把待办按紧急/重要填入四象限并给出立即做/排期/委派/删减的处置。",
+      "notes": "最典型的正面场景：待办排序"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "每天都在救火，重要的事一件也没推进，是不是我的时间分配有问题？",
+      "expected_behavior": "应激活本 skill，指出紧急事项在挤占第二象限，并把重要不紧急事项写进日程。",
+      "notes": "长期忙而无进展"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这些事哪些其实可以交给别人做或者干脆不做？",
+      "expected_behavior": "应激活本 skill，识别第三象限（紧急不重要→委派/忽略）与第四象限（既不紧急也不重要→删减）。",
+      "notes": "委派与删减判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我准备辞职创业，前期大概要投 30 万，划不划算？",
+      "expected_behavior": "不应激活本 skill，因为这是单一方案的投入产出与放弃项评估，应转向 mm-opportunity-cost（及期望值），矩阵只能做粗分类。",
+      "notes": "诱饵：需要定量评估而非粗分类"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "评审会上大家为一个按钮颜色吵了半小时，核心架构问题反而没人提，这是怎么回事？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-parkinson-s-law-of-triviality；这是群体讨论中的注意力错配，不是个人待办排序。",
+      "notes": "跨 skill 混淆诱饵：都涉及\"重要 vs 不重要\""
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "老板刚临时塞了个活，说今天就要，但我手上有件很重要的事在推进。",
+      "expected_behavior": "可激活但要谨慎：先追问这个临时任务的真实截止时间与后果，判断是真紧急还是虚假紧迫（可结合 false-urgency），再决定是立即做还是与上级重新谈判排期。",
+      "notes": "边界：紧急信号来自他人，需先验证真实性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

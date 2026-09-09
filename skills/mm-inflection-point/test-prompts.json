@@ -1,0 +1,52 @@
+{
+  "skill": "mm-inflection-point",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的用户增长曲线最近明显变陡了，是不是到拐点了？",
+      "expected_behavior": "应激活 mm-inflection-point，先对齐'拐点'用的是通俗含义（起飞）还是数学含义（凹凸性改变），再估算二阶导符号并给出两种含义下的位置。",
+      "notes": "正面场景：定义歧义 + 曲线定位"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "增速是不是已经见顶了？我现在还该继续加投放预算吗？",
+      "expected_behavior": "应激活 mm-inflection-point，判断当前处于数学拐点前还是后，并给出可执行结论：拐点前加码边际回报上升，拐点后加码边际回报下降。",
+      "notes": "正面场景：投入时机判断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "老板在会上说我们已经到了 inflection point，可到底是要加速了还是要减速了？",
+      "expected_behavior": "应激活 mm-inflection-point，指出两种定义指向曲线上不同位置、对应相反行动，并要求用曲率数据确认老板指的是哪一种。",
+      "notes": "正面场景：跨部门定义冲突"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我算一下这两个月收入的月平均增长率。",
+      "expected_behavior": "不应激活本 skill，因为这是纯一阶趋势计算，不涉及曲率变化；直接给出平均增长率即可，引入拐点语言是硬凑。",
+      "notes": "诱饵：涉及增长率但无曲率判断"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个社区产品到底要积累到多少用户，才能自己增长起来不用我们推？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-critical-mass：用户问的是'规模阈值'（达到多少后链式反应自持），判据是绝对数量而非曲率变号。",
+      "notes": "跨 skill 混淆诱饵：曲线上的点 vs 规模阈值"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们只有 3 个月的数据，能判断现在是不是拐点吗？",
+      "expected_behavior": "可以激活但必须判停：数据点少于 5 个时二阶导符号无法可靠判断，应明确说明'当前数据无法定位拐点'，并说明需要补齐多少时间点，而不是给出猜测位置。",
+      "notes": "边界：数据不足以拟合曲率"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-chilling-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们上线了全员可见的代码评审看板，结果提 PR 的人变少了，评论也几乎没人敢写了，怎么回事？",
+      "expected_behavior": "应激活 mm-chilling-effect，用「拿掉被看见会不会恢复」做归因测试，指出行为改变来自被看见的风险而非内容，并给出缩小溢出范围的措施（匿名/去标识渠道、聚合展示、明确不用于考核）。",
+      "notes": "正面场景：监控抑制了合法行为"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们打算对抄袭我们内容的一个小账号发律师函，顺便震慑一下其他想抄的人。有什么要注意的？",
+      "expected_behavior": "应激活 mm-chilling-effect，说明强硬手段的威慑范围会溢出到目标之外（吓退正当引用、评论与二次创作），要求列出被误伤的合法行为并设计范围界定与沟通方式。",
+      "notes": "正面场景：有意为之的杀鸡儆猴"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "公司要求所有骚扰投诉必须实名上报 HR 系统，但举报量反而降了。是不是大家变好了？",
+      "expected_behavior": "应激活 mm-chilling-effect，指出强制实名上报会让受害者在求助前犹豫再三，属于规则的副作用而非问题消失，建议把举报与求助通道分离、提供匿名/去标识入口，并设定求助量作为寒蝉监测指标。",
+      "notes": "正面场景：合规机制的副作用"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "会上没人发言，我问了一圈，大家说确实对议题不熟、没什么想法。",
+      "expected_behavior": "不应激活本 skill，因为行为不变的原因是能力与信息不足，而非惧怕被追责；去掉被看见的因素行为也不会恢复。",
+      "notes": "诱饵：沉默但非威慑导致"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们要求删掉那条负面视频，结果删完之后反而被更多人转发了，现在全网都在看。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-streisand-effect。压制行为不但没生效反而放大了传播（越删越火），而寒蝉效应的特征是压制生效、行为萎缩。",
+      "notes": "跨 skill 混淆诱饵：史翠珊效应"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们要对明确违规的刷单账号做定向封禁，有人担心会不会造成寒蝉效应。这个担心有必要吗？",
+      "expected_behavior": "合理的判断是：定向、范围精确、只针对明确违规行为的执法属于正常规则执行，且适度的威慑本身就是设计目标，此时不必按寒蝉效应处理；但仍应做两件事——明确公开规则边界与判定标准，避免合规者因不确定而自我收缩，并监测合规行为的量（如正常下单量、咨询量）是否一同下降。",
+      "notes": "边界：合理执法 vs 溢出威慑"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

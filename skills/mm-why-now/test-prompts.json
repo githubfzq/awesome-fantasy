@@ -1,0 +1,52 @@
+{
+  "skill": "mm-why-now",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我想做一个面向中小商家的 AI 客服产品，你觉得这个想法怎么样？",
+      "expected_behavior": "应激活 mm-why-now，先反问'为什么去年做不成'：要求列出 12-24 个月前还不存在的促成条件（技术突破、基础设施采纳率、法规、用户行为），为每条给出可查证的指标锚点；检查 обществу 可见性带来的同步发明风险；最后给出'太早/刚好/太晚'的判定与复检时间或放弃建议。",
+      "notes": "正面场景：创意可行性筛查"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们三年前做过一个项目，当时失败了。现在团队想重启，你觉得条件变了吗？",
+      "expected_behavior": "应激活本 skill，做牛顿/iPad 式复盘：列出当年缺失的促成条件并核对如今是否已补齐（尤其是底层基础设施采纳率这类客观指标），只有确有结构性变化的才支持重启；若只是团队记忆美化而无客观变化，应明确反对重启。",
+      "notes": "正面场景：复活失败项目"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "最近大模型成本掉得很快，我所在的行业好像还没人用起来。有什么可以做的吗？",
+      "expected_behavior": "应激活本 skill 的逆用法：先锁定客观变化（推理成本下降曲线这样的可量化条件），再逐条回答'因为这个变化，什么事情第一次变得可能'，倒推出候选方向，最后对每个候选检查窗口长度与并行者风险。",
+      "notes": "正面场景：逆用法——从变化倒推机会"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "产品已经上线三个月了，留存很差。是不是我们运气不好、时机不对？",
+      "expected_behavior": "不应激活本 skill。这是执行与客户匹配问题，时机分析只会把它包装成'生不逢时'而掩盖真实原因。应转向客户开发与产品/市场匹配去定位真实问题。",
+      "notes": "诱饵：用户主动归因于时机"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我注意到很多人在做 X，但因为他们都没注意到一个常识，我看出了其中的机会。这个机会成立吗？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-secret：用户问的是'这里有什么被忽视的真相'，属于秘密的判断；虽然在结论中应补一句'还需要检查时机是否恰当'，但主执行路径属于秘密模型。",
+      "notes": "跨 skill 混淆诱饵：配套但职责不同的两个模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我把方案讲给十个朋友听，九个都说看不懂、不会用。是不是说明时机还没到，市场还没准备好？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：明确指出这本书的提醒——斯滕伯格说过'至少在一开始，创意的接纳程度通常都不高'，初期冷遇是常态而非时机未到的证据；真正的判断应回到客观促成条件是否到位。同时提醒不要走到另一个极端：对过度宣传保持质疑也是合理的，媒体热度同样不等于时机成熟。",
+      "notes": "边界：初期冷遇 vs 条件未成熟"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-secret。"
+}

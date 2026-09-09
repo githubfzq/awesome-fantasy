@@ -1,0 +1,52 @@
+{
+  "skill": "mm-design-pattern",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "公司第一次做校招，我准备自己设计一套面试流程和评分表，从零开始想。该怎么入手？",
+      "expected_behavior": "应激活 mm-design-pattern，指出校招是高度成熟的重复性问题，先给出 2-3 个有名有姓的既有模式（结构化行为面试、统一评分量规、面试官培训）并核对适用条件，产出可复用模板，而不是从空白页设计。",
+      "notes": "正面场景：老问题准备现造方案"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们团队五个人写周报，格式五花八门，看得人头疼。要不要统一一下？",
+      "expected_behavior": "应激活 mm-design-pattern，用「一致性降低所有人认知成本」的机制支持统一，并给出可固化为规范的具体模板而非笼统建议。",
+      "notes": "正面场景：一致性带来的效率"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们想做个内部报销审批系统，是买现成的 SaaS 还是自己开发？我们开发能力不弱。",
+      "expected_behavior": "应激活 mm-design-pattern，把问题重构为「该领域是否已有可购买的成熟方案」，倾向先用现成方案，把自研能力留给真正差异化的地方。",
+      "notes": "正面场景：自制 vs. 复用既有方案"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个项目已经上线三个月了，现在只差把按钮颜色从蓝色改成绿色，需要我怎么安排？",
+      "expected_behavior": "不应激活本 skill，因为方案早已确定，只是微调执行，寻找设计模式属于过度设计；直接执行即可。",
+      "notes": "诱饵：涉及「设计」二字但只是执行微调"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们团队明明知道该做代码评审，但每次都变成挑格式问题，吵半天没人看逻辑，越做越烦。这是怎么回事？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-anti-pattern——用户描述的是「看似合理的做法实际不管用」，属于负面清单问题，需要识别反面模式并找替代的设计模式，而不是直接套用模板。",
+      "notes": "跨 skill 混淆诱饵：与 mm-anti-pattern 同章成对出现，区分点在正面模板 vs. 负面雷区"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们要做一个 AI 原生产品，市场上完全没有同类，我想找找成熟的设计模式来套。",
+      "expected_behavior": "可以激活 mm-design-pattern 但须先做「是不是老问题」的判定：承认产品整体新颖，转而把问题分解为可复用的子问题（ onboarding、定价、反馈收集）分别套用成熟模式，整体形态则不能用模式硬套。",
+      "notes": "边界：新颖性与可复用性的混合场景"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

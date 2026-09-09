@@ -1,0 +1,52 @@
+{
+  "skill": "mm-minimum-viable-product",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的 App 第一版到底要做多少功能？我列了 30 个，感觉半年都做不完。",
+      "expected_behavior": "应激活 mm-minimum-viable-product，先锁定要验证的核心假设，再用'砍掉它还能拿到真实反馈吗'逐项过筛 30 个功能，并指定真实反馈用户与验证门槛。",
+      "notes": "正面场景：第一版范围纠结"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这份内部方案我改了两周了，还是觉得不够完整，不敢发给老板。",
+      "expected_behavior": "应激活 mm-minimum-viable-product，指出'脸红'是正常甚至正确的信号，砍到能换取老板真实反馈的最小版本，并预约反馈时间。",
+      "notes": "正面场景：不敢拿出手"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "新部门刚成立，流程要不要先写完整制度再跑，还是先小范围试？",
+      "expected_behavior": "应激活 mm-minimum-viable-product，用'最简可行组织/流程'的推广用法，先设计最小可跑版本并明确反馈对象与复盘时间点。",
+      "notes": "正面场景：最简可行X 的推广用法"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们要上线一个新的用药剂量计算功能，能不能先出个最简版本让用户试试？",
+      "expected_behavior": "不应激活本 skill，因为医疗剂量属于不可逆、错了会伤人的领域，不能拿最小版本去撞真实反馈；应先做完整验证与合规审查。",
+      "notes": "诱饵：看似适用但触碰安全红线"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "产品上线三个月数据一直很差，我们在想要不要彻底换个方向。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-pivot：用户已经拿到反馈，现在的问题是反馈之后的转型决策，而不是如何做出最小版本去搜集反馈。",
+      "notes": "跨 skill 混淆诱饵：MVP vs 转型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们做了一个 MVP，但公司里根本找不到愿意试用的真实用户，还要继续做吗？",
+      "expected_behavior": "应激活但必须判停：找不到真实反馈对象时 MVP 的前提不成立，应停止继续打磨产品，先转 mm-customer-development 去找愿意给反馈的人。",
+      "notes": "边界：反馈对象缺失"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

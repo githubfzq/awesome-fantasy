@@ -1,0 +1,16 @@
+{
+  "skill": "mm-router",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯 (蒸馏导航层)",
+  "darwin_compatible": true,
+  "test_cases": [
+    {"id":"should-trigger-01","type":"should_trigger","prompt":"我们两个同事一直在互相甩锅，谁都觉得是对方的问题，有什么思维模型能解释这种情况？","expected_behavior":"应激活 mm-router，定位到「认知与推理」域的基本归因错误/汉隆的剃刀等候选，加载目标 skill 后按其 E 段执行","notes":"用户描述困境但说不出模型名，典型路由场景"},
+    {"id":"should-trigger-02","type":"should_trigger","prompt":"分析一下我们产品增长停滞这件事，有没有什么框架可以用？","expected_behavior":"应激活 mm-router，判断落在「竞争与战略」或「增长与系统」域，给出 2-3 个候选模型","notes":"用户直接要分析框架"},
+    {"id":"should-trigger-03","type":"should_trigger","prompt":"这算不算一种幸存者偏差？我看到的创业故事好像都活下来了","expected_behavior":"应激活 mm-router 做交叉验证，确认后指向 mm-survivorship-bias","notes":"用户已能识别现象、想验证"},
+    {"id":"should-not-trigger-01","type":"should_not_trigger","prompt":"帮我查一下 2026 年最新的 GDP 数据","expected_behavior":"不应激活本 skill，这是纯信息查询，不涉及思维模型选择","notes":"诱饵：查询类请求"},
+    {"id":"should-not-trigger-02","type":"should_not_trigger","prompt":"用第一性原理帮我分析一下电池成本为什么降不下来","expected_behavior":"不应激活本 skill，用户已点名具体模型，应直接加载 mm-first-principles","notes":"跨 skill 混淆诱饵：用户点名模型时不应经过路由层"},
+    {"id":"edge-01","type":"edge_case","prompt":"我该不该跳槽？感觉现在这份工作没什么成长了","expected_behavior":"边界场景。可激活路由（落在「时间与优先级」域，指向机会成本/沉没成本谬误），但若用户后续明确说\"算算期望值\"则应直接转 mm-expected-value","notes":"边界：既像路由器场景，也可能直接命中具体模型"}
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should-not-trigger-02 为跨 skill 混淆诱饵（点名模型时绕过路由）。"
+}

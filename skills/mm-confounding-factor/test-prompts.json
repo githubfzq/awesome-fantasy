@@ -1,0 +1,52 @@
+{
+  "skill": "mm-confounding-factor",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "数据显示，我们医院里用了某种药的患者死亡率反而更高。是不是这种药有问题？",
+      "expected_behavior": "应激活 mm-confounding-factor，指名候选第三变量（病情严重程度——越重的患者越可能用该药，也越可能死亡），评估其影响力，并给出分层或匹配的排除方案。",
+      "notes": "正面场景：经典混淆（适应证混杂）"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们对比了参加培训的员工和没参加的员工，前者绩效明显更好。培训确实有用吧？",
+      "expected_behavior": "应激活 mm-confounding-factor，指出自我选择（更有上进心的员工更可能参加培训，本来绩效也更好）同时推动了两端，并建议随机分配或匹配对照。",
+      "notes": "正面场景：两组本来就不可比"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们准备评估一个新的推荐算法，在开跑前想先排查一下有哪些变量会污染这个对比。",
+      "expected_behavior": "应激活 mm-confounding-factor，逐个指名候选混淆变量（用户活跃度、新老用户比例、时间段、品类差异），并给出首选随机化、次选分层的排除方案。",
+      "notes": "正面场景：实验设计前的混淆排查"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们已经把用户完全随机分成两组跑了两周，结果出来了。还要考虑混淆因素吗？",
+      "expected_behavior": "不应激活本 skill，因为随机化已在期望上打散了所有已知与未知的混淆因素；应直接解读实验结果。",
+      "notes": "诱饵：涉及因果，但已有随机化"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他们拿出一份报告说 A 和 B 相关，所以 A 导致 B。我总觉得不该这么快下结论，但说不清哪里不对。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-correlation-does-not-imply-causation——用户处于「知道不该下因果结论、但说不清原因」的总原则层面，尚未识别出具体的第三变量；应先建立总原则再排查具体混淆项。",
+      "notes": "跨 skill 混淆诱饵：总原则 vs. 具体路径，区分在是否已能指名第三变量"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们在分析时发现有个变量同时和原因、结果都高度相关，但它在因果链条的中间而不是旁边。这个也要控制掉吗？",
+      "expected_behavior": "应激活 mm-confounding-factor 并给出关键区分：位于因果链上的变量是中介变量而非混淆变量，控制它会把真实的因果效应一并消掉；应保留它，或改用中介分析而非作为混淆项剔除。",
+      "notes": "边界：混淆变量 vs. 中介变量（过度控制风险）"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

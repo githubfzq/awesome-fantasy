@@ -1,0 +1,52 @@
+{
+  "skill": "mm-a-b-testing",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们把注册按钮从灰色换成了绿色，转化率从 2.1% 涨到 2.6%，这个提升是真的吗？",
+      "expected_behavior": "应激活 mm-a-b-testing, 并确认两版是否只有按钮颜色一处不同、流量是否随机分流、指标是否为客观点击行为，再要求给出样本量与停止规则后判读显著性。",
+      "notes": "正面场景：单变量 + 客观指标 + 因果归因疑问"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "下周要上一个新的结算页，我想验证一下到底有没有用，该怎么设计这个验证？",
+      "expected_behavior": "应激活 mm-a-b-testing, 并给出实验设计：改动收敛为单变量、随机分流规则、客观结果指标（是否完成支付）、开跑前定样本量与停止规则。",
+      "notes": "正面场景：实验设计咨询"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "新版首页同时换了标题、换了头图、还把注册入口往上挪了，现在注册量涨了 30%，是不是说明新首页更好？",
+      "expected_behavior": "应激活 mm-a-b-testing, 并指出三处同时改动导致因果无法归属，要求拆成单变量实验或改用多臂设计，拒绝把 30% 归给任何一个具体元素。",
+      "notes": "正面场景：变量未隔离，需要被纠正"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们品牌想换一个新 logo，红蓝两个方向，你觉得哪个更能体现我们'专业可靠'的气质？",
+      "expected_behavior": "不应激活本 skill, 因为这是品牌调性与审美取舍问题，不由点击率等短期行为指标决定，A/B 测试会把长期品牌问题压成短期指标问题。",
+      "notes": "诱饵：看似是两个版本的对比，实为不可量化的价值判断"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们打算给所有用户上线这个功能，想先知道需要多少用户样本才能可靠地判断效果，跑多久合适？",
+      "expected_behavior": "不应激活本 skill（核心诉求不是实验设计而是样本量估算）, 应激活 mm-sample-size。A/B 测试只应作为附带提及的背景框架。",
+      "notes": "跨 skill 混淆诱饵：样本量权衡 vs 实验设计"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们只有 200 个日活用户，能跑 A/B 测试吗？跑了两天，B 版看起来好一点。",
+      "expected_behavior": "合理的判断是：承认 A/B 测试在设计上仍然正确（随机分流、单变量都可以做到），但明确告知 200 日活下两天的样本量远不足以区分随机波动与真实效应，结论不可信；建议延长周期、改用更大效应的改动，或直接用定性研究替代。",
+      "notes": "边界：框架适用但样本量不足以支撑判读"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

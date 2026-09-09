@@ -1,0 +1,52 @@
+{
+  "skill": "mm-type-i",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "老板说我们实验的置信度要用 99.9%，这样假阳性就几乎不可能了，我觉得不太对，该怎么跟他解释？",
+      "expected_behavior": "应激活 mm-type-i，说明 α 从 5% 压到 0.1% 在样本量固定时会让 β（假阴性率）大幅上升，很可能真实效果也测不出来；正确做法是先给两类错误定价再选 α/β，并核算所需样本量。",
+      "notes": "正面场景：压低 α 的代价"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们要上线一个改动，误上线比漏上线严重得多，实验的 α 和功效该怎么设？",
+      "expected_behavior": "应激活 mm-type-i，把「误上线」识别为第一类错误、「漏上线」识别为第二类错误，建议压低 α（如 1%）并接受较高的 β，同时说明这会让所需样本量上升。",
+      "notes": "正面场景：按后果定价选 α/β"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "都说 95% 置信度，那是不是意味着我有 95% 的概率是对的？",
+      "expected_behavior": "应激活 mm-type-i，解释 α=5% 意味着「若原假设为真，平均 20 次实验中会有 1 次得到假阳性」，而不是「结论有 95% 概率正确」，并澄清 α 是实验前设定的容忍度。",
+      "notes": "正面场景：α 的通俗解释"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把实验数据里的异常值清洗掉再跑一遍回归。",
+      "expected_behavior": "不应激活本 skill，因为这是数据清洗任务，不涉及错误容忍度的设定。",
+      "notes": "诱饵：实验相关但非错误权衡"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们这个实验跑了 200 人，如果真实差异是 15%，我们有多大把握能测出来？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-power：问题集中在假阴性一侧的检出概率，功效 = 1 − β 才是直接答案。",
+      "notes": "跨 skill 混淆诱饵：β 与功效一体两面"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "实验做完了 p 值 0.06，差一点点，我们把 α 放宽到 10% 就能说显著了，这样行吗？",
+      "expected_behavior": "应激活本 skill 并明确反对：α 必须在看数据之前设定，事后放宽就是数据捕捞（mm-data-dredging），会让名义错误率失真；正确做法是按预设的 α 报告「未达显著」，并在下一轮实验中按新的 α 重新设计样本量。",
+      "notes": "边界：事后修改 α"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

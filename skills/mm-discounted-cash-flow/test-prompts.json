@@ -1,0 +1,52 @@
+{
+  "skill": "mm-discounted-cash-flow",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "客户想分三年付我们 300 万，另一个方案是一次性付 260 万，我该接哪个？",
+      "expected_behavior": "应激活 mm-discounted-cash-flow，把三年分期款按年份排开，选定并说明折现率（通胀+风险+机会成本），逐年折现后加总，与 260 万比较；再用低/中/高三个折现率做敏感性分析，标出结论翻转的临界折现率。",
+      "notes": "正面场景：分期收款报价估值"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "公司说给我两个选择：现在拿 80 万走人，或者未来 5 年每年给 20 万，怎么算？",
+      "expected_behavior": "应激活 mm-discounted-cash-flow，说明今天的钱比未来的钱值钱，逐年把 20 万折成现值并加总，与 80 万一次性比较，并指出结论高度依赖所选折现率。",
+      "notes": "正面场景：买断 vs 分期"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "有人给我一个项目估值报告说值 5000 万，我看不懂，这个数字是怎么来的？",
+      "expected_behavior": "应激活 mm-discounted-cash-flow，解释估值是未来现金流逐年折现加总的结果，并引导用户追问报告使用了什么折现率——因为结论常常是被折现率而非现金流决定的。",
+      "notes": "正面场景：反向拆解估值报告"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "A 供应商报价 8 万，B 供应商报价 7.5 万，都是本月结清，选哪个？",
+      "expected_behavior": "不应激活本 skill，因为两笔钱都发生在同一时间点、不涉及跨期，不需要折现；直接比价即可。",
+      "notes": "诱饵：静态比价无需折现"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我知道健身很重要，但总是今天想着明天再去，明天又推后天，怎么破？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-hyperbolic-discounting（或 mm-present-bias）。这是对未来的非理性高折扣导致的行为偏差问题，属于描述性的心理规律，不是规范性的折现计算。",
+      "notes": "跨 skill 混淆诱饵：双曲折现（同样讲\"未来打折\"）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我要不要在今年花 30 万读一个 MBA？未来二十年应该能多赚不少。",
+      "expected_behavior": "合理判断：可以用 DCF 框架估算增量收入的现值，但必须明确标注估算的脆弱性——未来二十年的收入增量只能靠假设，折现率取 3% 还是 15% 会让结论完全翻转。正确做法是给出区间与临界折现率，并明确补上非经济因素（职业转型、人脉、机会成本），不应给出单一精确数字充当决策依据。",
+      "notes": "边界：长周期估算下 DCF 的虚假精确风险"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-birth-lottery",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我从小城市一路考到现在这个位置，全靠自己努力，为什么那些人就是不肯努力一点？",
+      "expected_behavior": "应激活 mm-birth-lottery，列出用户的优势清单并区分'抽到的'与'挣来的'，指出'能持续努力'本身也依赖条件，并把结论落到对他人处境判断的修正上。",
+      "notes": "正面场景：优势归功于自己"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们公司在做贫困生资助评审，怎么避免带着'他们不够努力'的偏见？",
+      "expected_behavior": "应激活 mm-birth-lottery，用运气维度校正评审标准，把家庭、地区、健康等不可控变量纳入考量，并给出具体的标准调整项。",
+      "notes": "正面场景：资源分配决策"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我总觉得我配得上现在的一切，但偶尔也心虚，这正常吗？",
+      "expected_behavior": "应激活 mm-birth-lottery，说明这种心虚正是模型要唤起的东西，并引导用户做'挣来的 vs 抽到的'清单，同时承认这一步会带来不适。",
+      "notes": "正面场景：自我盘点与抵抗感"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这两只基金过去五年的年化收益分别是多少？帮我算一下哪个更划算。",
+      "expected_behavior": "不应激活本 skill，因为这是需要精确数据计算的决策，心态校正替代不了具体信息，套用运气框架只会模糊判断。",
+      "notes": "诱饵：涉及优势但不涉及归因"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他失业了，肯定是他自己在上一家公司混日子，这种人就该自己承担后果。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-victim-blaming：用户正在把不幸结果归咎于受害者本人的品性，这是指责受害者的行为输出，需要直接拆解指责而非先做自我优势盘点。",
+      "notes": "跨 skill 混淆诱饵：出生彩票 vs 指责受害者"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "承认运气重要，那是不是努力就没意义了？我还要不要拼？",
+      "expected_behavior": "可以激活，但必须澄清边界：承认运气不等于否定能动性，模型否定的是'结果完全由品性决定'，不否定行为对概率的影响；应把结论导向'拼的同时降低对结果的道德化解读'。",
+      "notes": "边界：运气 vs 能动性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

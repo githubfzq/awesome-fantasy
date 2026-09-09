@@ -1,0 +1,52 @@
+{
+  "skill": "mm-diffusion-of-responsibility",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "上周会上定了一件事，今天一问，三个人都说以为别人在做。怎么避免下次还这样？",
+      "expected_behavior": "应激活 mm-diffusion-of-responsibility，指出人数越多个体行动概率越低（85%→31%），并要求指定单一直接负责人（DRI）+具体交付物+时间点，且公开宣布",
+      "notes": "正面场景：典型会后无人跟进"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个跨部门项目说是由三个团队'共同负责'，两个月没进展了。",
+      "expected_behavior": "应激活本 skill，识别'共同负责'是责任分散的高危信号，要求把责任收回到一个具体可指名的人身上",
+      "notes": "正面场景：集体负责 = 无人负责"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "I want people on my team to volunteer for hard problems instead of waiting to be assigned. Any trick?",
+      "expected_behavior": "应激活本 skill，给出反向用法：制造可控的权力真空，公开留出一个无人负责的位置等人认领，并确认团队中存在受任务激励或想展示能力的人",
+      "notes": "正面场景：模型的反向设计用法"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个任务已经明确由小李负责，但他手上三个项目都赶在同一周，资源根本不够。",
+      "expected_behavior": "不应激活本 skill，因为责任归属已经唯一，真实瓶颈是资源与排期；再指定负责人无效",
+      "notes": "诱饵：有负责人但依然没进展"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "讨论方案时，明明有人不同意，但谁都不说，最后全票通过了一个有问题的方案。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-groupthink（群体思维）：这是意见形成阶段为达成一致而压制异议，不是执行阶段的责任归属问题",
+      "notes": "跨 skill 混淆诱饵：同为群体失效现象"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们给每件事都指定了负责人，但负责人一共有三十件事，实际上还是没人真做。",
+      "expected_behavior": "应激活本 skill 并指出 DRI 泛滥会导致责任再次被稀释：一个人挂十几件事等于没有负责人；建议限制每人在办 DRI 数量并检查是否存在问责后果（推导，非书中明示）",
+      "notes": "边界：解法本身的失效条件"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

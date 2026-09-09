@@ -1,0 +1,52 @@
+{
+  "skill": "mm-free-rider-problem",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们组内部的知识库一直是两个人义务维护，全公司三十几个人都在查，现在那两个人快撑不住了，怎么办？",
+      "expected_behavior": "应激活 mm-free-rider-problem，识别出被搭的「车」是知识库的维护时间成本，检验其难排他、非竞争属性，估算不付费受益者占比（已越过阈值），并设计计量/分摊机制（按部门轮值、与文档消费量挂钩的贡献配额、给维护者显性激励）。",
+      "notes": "正面场景：公共品维护缺位"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "小组作业四个人，有一个人从头到尾没干过活，最后成绩是平分的。该怎么处理？",
+      "expected_behavior": "应激活 mm-free-rider-problem，指出这是典型的搭便车结构（收益共享、成本自担），建议引入可计量的贡献记录与差异化评分机制，同时提醒单人搭便车看似无害、真正的危害是多数人都这么做的阈值效应。",
+      "notes": "正面场景：贡献不均"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们做的开源库被几百家公司用在生产环境，但没人赞助也没人提 PR，维护者就我一个，快做不动了。",
+      "expected_behavior": "应激活 mm-free-rider-problem，确认难排他与供给方激励枯竭的结构，给出排他或计量方案（商业许可/双许可、赞助门槛、企业版支持合同），并明确维护者应得到的显性回报。",
+      "notes": "正面场景：供给方失去动力"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们跟供应商签了年度维保合同，按合同付了钱，但他们这个月响应很慢，要不要扣款？",
+      "expected_behavior": "不应激活本 skill，因为这是权责与付费关系清晰的双边交易履约问题，不存在公共物品与免费使用结构，应按合同条款处理。",
+      "notes": "诱饵：涉及付费但无公共品结构"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "公司打印机旁的 A4 纸，每个部门都拼命多拿，一个月就消耗了三倍预算，全都堆在自己工位上。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-tragedy-of-the-commons。此处是存量资源被过度取用而耗尽（抢着用），不是没人愿意为供给付钱（躲着付）；干预方向应是限制取用而非落实付费。",
+      "notes": "跨 skill 混淆诱饵：公地悲剧"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们产品有 5% 的免费用户，我们打算上严格的反共享机制把他们都转成付费。值得做吗？",
+      "expected_behavior": "合理的判断是：先算排他成本 vs 收益。5% 未越过阈值，书中明确说单个/少数人搭便车「看起来似乎没有多大危害」，且排他机制本身有开发成本与口碑损失；更合理的做法是先测算这 5% 中有多少是高意向付费用户、排他成本多少，若排他成本高于可收回收益，应维持开放或改用轻度引导（功能分级）而非硬性封锁。",
+      "notes": "边界：阈值未达 + 排他成本过高"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

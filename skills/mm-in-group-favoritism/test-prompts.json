@@ -1,0 +1,52 @@
+{
+  "skill": "mm-in-group-favoritism",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这次晋升我倾向提我自己带的那个人，虽然业绩数据上他跟另一个组那位差不多。我就是觉得我带的更靠谱。",
+      "expected_behavior": "应激活 mm-in-group-favoritism，做随机性检验（若两人换个组你还会这样选吗），要求列出统一的行为指标对比，把「谁带的人」与「做得怎么样」分离，并建议引入外部评委或统一评分表做结构性对冲。",
+      "notes": "正面场景：同等条件下仍偏向自己人"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们招聘时基本只看校友和前同事推荐的，觉得知根知底。这样有问题吗？",
+      "expected_behavior": "应激活 mm-in-group-favoritism，指出分组依据（校友、前同事）与工作能力无关，属于「微乎其微的关联」，建议用统一的行为指标（工作样本、结构化面试）替代身份筛选。",
+      "notes": "正面场景：分组依据与能力无关"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们组的小王这次项目延期，我觉得是外部依赖的问题；隔壁组那个项目延期，我觉得就是他们自己不靠谱。",
+      "expected_behavior": "应激活 mm-in-group-favoritism，指出对内群成员给处境归因、对外群成员给性格归因的双重标准，用随机性检验确认这是偏爱而非基于事实的判断。",
+      "notes": "正面场景：归因上的内外双重标准"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们团队今年业绩确实是全公司第一，数据摆在那里。我为他们感到骄傲，这应该没什么问题吧？",
+      "expected_behavior": "不应激活本 skill，因为这是基于真实业绩差异的正面评价，且不涉及对外群的贬损；不应病理化正常的团队认同与凝聚力。",
+      "notes": "诱饵：内群正面评价，但有真实业绩依据"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他们部门多拿一块预算，我们就少一块。这不是我偏见，是本来就是他们赢我们就输。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-us-versus-them——这里的核心是「得失必然相反」的对立框架与零和假设，而不是对内群的偏爱；群内偏爱可以没有敌意，此例有明显敌意。",
+      "notes": "跨 skill 混淆诱饵：与 mm-us-versus-them 同属第4章群体心理三件套，区分点在「偏好」还是「对立」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我承认我更愿意用跟我共事过多年的人，毕竟信任是合作的基础，换谁都会这样吧？这算偏见吗？",
+      "expected_behavior": "应激活 mm-in-group-favoritism 但谨慎定性：信任本身有真实功能，不能一概判为偏见；判据是「同等条件下是否仍偏向」以及是否因此排除更优的外部人选，建议补充可比的外部候选与统一评估标准，而不是要求放弃信任。",
+      "notes": "边界：正当的团队信任 vs. 偏爱"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

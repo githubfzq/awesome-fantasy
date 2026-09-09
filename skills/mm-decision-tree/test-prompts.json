@@ -1,0 +1,52 @@
+{
+  "skill": "mm-decision-tree",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "泳池要修,老承包商一口价 2500,新承包商 2000 但只有一半把握按时做完,拖一周加 250、两周加 500、三周以上返工加 1000。选谁?",
+      "expected_behavior": "应激活 mm-decision-tree,画出决策点→两支,新承包商支接机会节点分四档结果,逐项概率×成本加总得 2212.50 美元,与 2500 比较后推荐新承包商,并说明'可能收 3000 但期望值更低'的含义。",
+      "notes": "正面场景:书中原案例"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "医保免赔额选 500 还是 5000?5000 那档保费便宜很多,万一住院就惨了。",
+      "expected_behavior": "应激活 mm-decision-tree,列出'住院/不住院'机会节点与对应自付金额,结合保费差算出两档期望成本;并明确指出这是低概率高后果场景,不能只看期望值最低,还要看最坏情况能否承受。",
+      "notes": "正面场景:书中点名的低概率高后果"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "要不要给这套系统加一套容灾?一年多花 8 万,出故障的概率大概 5%,一次损失 100 万。",
+      "expected_behavior": "应激活 mm-decision-tree,按'出故障/不出故障'分叉算期望损失(5万)与容灾成本(8万)比较,并提醒这里真正该问的是 100 万损失是否可承受(破产级),期望值判断在这种情形会误导。",
+      "notes": "正面场景:期望值与风险承受的张力"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "买房的首付、税费、装修加起来多少?帮我算个总数,看看我够不够。",
+      "expected_behavior": "不应激活本 skill,因为所有成本都是确定的、不存在会分叉的可能结果;应激活 mm-cost-benefit-analysis 或做简单的清单加总。",
+      "notes": "诱饵:涉及钱但没有不确定性"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们和竞对都在考虑要不要投广告,谁投谁占便宜,但都投就白烧钱。我该怎么决定?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-prisoner-s-dilemma(配合 mm-nash-equilibrium):结果取决于另一个有意图的玩家的策略,不是自然随机性;决策树的机会节点没有意图,收益矩阵才处理互动。",
+      "notes": "跨 skill 混淆诱饵:博弈论"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我要进一个全新市场,历史上没人做过,各种结果的概率我完全给不出来,还能画决策树吗?",
+      "expected_behavior": "合理判断:可以画结构(列出有哪些可能结果、各自代价),但硬填概率会产生虚假精确;建议先用情景分析发散、或设计小实验/试点拿数据,再回到决策树量化;并可做敏感性分析看'需要多大概率才值得做'——把未知参数反解成门槛。",
+      "notes": "边界:无概率依据时的退化用法"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

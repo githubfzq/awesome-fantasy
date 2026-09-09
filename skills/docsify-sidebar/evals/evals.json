@@ -5,25 +5,68 @@
       "id": 1,
       "prompt": "在项目 docs/ 下生成能按层级用的文档目录，plans、solutions 这些子目录也要进侧边栏",
       "expected_output": "不调用 docsify-auto-sidebar；运行 generate_sidebar.py 写出 docs/_sidebar.md 嵌套列表，并为 index.html 打开 loadSidebar 与 alias",
-      "files": []
+      "files": [],
+      "expectations": [
+        "work/docs/_sidebar.md 存在，含 brainstorms、plans、solutions 下每个 md 的链接且以 / 开头",
+        "work/docs/index.html 含 loadSidebar: true",
+        "work/docs/index.html 含 '/.*/_sidebar.md': '/_sidebar.md' alias"
+      ]
     },
     {
       "id": 2,
       "prompt": "docsify-auto-sidebar -d docs 报 ENOENT stat '/README.md'，帮我生成目录",
       "expected_output": "说明该包把 URL 路径 /README.md 拿去 stat；改用本技能脚本按真实 docs 路径生成 _sidebar.md",
-      "files": []
+      "files": [],
+      "expectations": [
+        "work/docs/_sidebar.md 生成成功（含各子目录链接）",
+        "notes.md 说明 docsify-auto-sidebar 的根因（把 /README.md 当文件系统路径 stat）",
+        "notes.md 表明用了本技能的生成脚本（提到 generate_sidebar）"
+      ]
     },
     {
       "id": 3,
       "prompt": "后来在 docs/plans/ 里又加了一篇 md，侧边栏会自动出现吗？不会的话怎么更新",
       "expected_output": "说明 Docsify 不会自动扫描；重新运行 generate_sidebar.py 覆盖 _sidebar.md，或按两空格缩进手动加一行链接",
-      "files": []
+      "files": [],
+      "expectations": [
+        "work/docs/_sidebar.md 存在，且包含 work/docs/plans/ 下所有 md 的链接（含新增示例文件）",
+        "notes.md 说明 docsify 不会自动扫描、需重跑脚本或手动加行"
+      ]
     },
     {
       "id": 4,
       "prompt": "docsify 文档里的流程图不显示，帮我在 index.html 引入 mermaid 脚本渲染",
-      "expected_output": "按 Docsify → Mermaid 10 ESM → mermaid-docsify 的顺序补齐 CSS、mermaidConfig 和插件；Markdown 使用 mermaid 代码块",
-      "files": []
+      "expected_output": "不用 mermaid-docsify（CDN 404）也不用 Mermaid 10（render 返回 Promise，docsify 渲染器必须同步返回）；改用 mermaid@9.3.0 + mermaid.initialize({startOnLoad:false}) + markdown.renderer.code 里同步 mermaid.render，renderer 用 try/catch 包住",
+      "files": [],
+      "expectations": [
+        "index.html 引入 mermaid@9.3.0/dist/mermaid.min.js",
+        "index.html 有 mermaid.initialize({ startOnLoad: false })",
+        "index.html 有 mermaid.render( 调用",
+        "index.html 未使用 mermaid-docsify 或 mermaid@10",
+        "renderer 的 mermaid.render 外层有 try/catch"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "docsify serve ./docs/ 打开 brainstorms 目录下的 md 都是空白页，但 plans 目录正常，帮我修",
+      "expected_output": "先跑 check_mermaid.js 定位坏图；brainstorms 的图里有 mermaid 9.3 禁忌字符（全角括号（）/→/结尾斜杠等），改写图语法；确认 index.html renderer 有 try/catch 防止以后单图失败整页白屏",
+      "files": [],
+      "expectations": [
+        "修复后 check_mermaid.js 对 work/docs 退出码 0（所有 mermaid 图语法兼容 9.3.0）",
+        "index.html 的 renderer 有 try/catch（防止单图失败整页空白）",
+        "notes.md 说明根因是 mermaid 图语法导致整页渲染失败"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "每个文档页面顶部都显示 --- date: 2026-08-20 topic: xxx --- 这样的原始文本，怎么去掉",
+      "expected_output": "说明 docsify 核心不处理 YAML frontmatter；在 index.html 的 $docsify 配置之后、docsify 主库之前加 hook.beforeEach 插件剥掉开头 frontmatter（正则只匹配开头 --- + key: value 行 + ---）",
+      "files": [],
+      "expectations": [
+        "index.html 含 hook.beforeEach 的 frontmatter 剥离插件",
+        "插件脚本在 docsify 主库脚本之前加载",
+        "文档 md 的 frontmatter 保留在文件里（靠渲染层剥离，不删源文件）"
+      ]
     }
   ]
 }

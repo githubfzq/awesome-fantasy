@@ -1,0 +1,52 @@
+{
+  "skill": "mm-bait-and-switch",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "看房广告写这个价,到了现场销售说那个户型早没了,带我看的全是加价升级的样板间。",
+      "expected_behavior": "应激活 mm-bait-and-switch,直接对应书中建筑商案例:先用对应毛坯房的极低标价吸引看房,再带看升级样板房抬高心理预算;检验诱饵是否真的打算出售(是否长期'刚好没有'、是否被提前否定、替代品是否系统性更贵),并把判断拉回'原定需求现在要多少钱'。",
+      "notes": "正面场景:书中原型案例"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "网上那个 1999 的套餐我点进去永远是售罄,客服一直推荐 4999 的版本,这是不是套路?",
+      "expected_behavior": "应激活 mm-bait-and-switch,指出长期不可购 + 系统性地被导向更高价替代品,是诱饵不打算出售的典型信号;建议要求书面确认低价套餐的可购性、索取完整报价单,并拒绝在被引导的状态下当场决策。",
+      "notes": "正面场景:电商低价引流"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们想用低价款在投放页引流,但库存其实只有几十件,这样算不算诱购?",
+      "expected_behavior": "应激活 mm-bait-and-switch,给出边界:若低价款真实可购、数量可核验并在页面上如实披露,属于正常的亏本销售/限量促销,不算诱购;若明知无货仍长期挂着引流、且到店后一概导向高价款,即构成诱购。建议明确标注库存数量与售罄后的替代方案。",
+      "notes": "正面场景:设计方自查引流价边界"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这款确实做活动,原价 599 现价 199,但页面上写着只剩 12 件。",
+      "expected_behavior": "不应激活本 skill,因为低价品真实可购且库存信息被如实披露,属于正常的限量促销;应激活 mm-scarcity 处理紧迫感问题,或按常规促销决策处理。",
+      "notes": "诱饵:低价促销但无调包"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "有家公司说要免费送我们一套系统先跑起来,结果装上之后我们才发现它在往外面传数据。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-trojan-horse:礼物是真的给了你,危险藏在里面,机制是绕过安全检查后从内部发作;诱购的诱饵则根本不打算给你,只是用来引流再调包。",
+      "notes": "跨 skill 混淆诱饵:特洛伊木马"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "广告价 1999 那款是真有货的,但要配齐能用的配件还得加 3000,这算不算偷梁换柱?",
+      "expected_behavior": "合理判断:需看披露是否充分。若配件为必需项且在广告中未以显著方式披露,使得广告价事实上不可达成,则构成实质上的诱购(属于信息披露型调包);若配件为可选项、广告中已明确标注'主机价'且基础功能可独立使用,则属于正常的配件加价。建议一律索取含税含配件的完整报价单后再比较,并核查广告页是否有'起'价等限定说明。",
+      "notes": "边界:披露不足 vs 明确披露"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

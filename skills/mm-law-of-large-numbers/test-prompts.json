@@ -1,0 +1,52 @@
+{
+  "skill": "mm-law-of-large-numbers",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我用了这个新的销售话术，跟三个客户谈都成了，是不是说明这个话术很有效？",
+      "expected_behavior": "应激活 mm-law-of-large-numbers, 指出 n=3 时随机波动远未抵消，三次成功极可能只是噪声，应给出达到可判断水平所需的样本量与观察周期，而不是确认话术有效。",
+      "notes": "正面场景：极小样本下结论"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "新功能上线才三天，转化率从 3% 掉到 2.4%，要不要马上回滚？",
+      "expected_behavior": "应激活 mm-law-of-large-numbers, 估算当前日均样本量与波动幅度，判断这个跌幅是否落在噪声区间，给出再观察多久的建议，并提醒不要对单个短窗口极值做反应。",
+      "notes": "正面场景：早期指标波动是否为信号"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的日活曲线每天上下抖得很厉害，我该怎么看它才不会被数字牵着走？",
+      "expected_behavior": "应激活 mm-law-of-large-numbers, 建议拉长平均窗口、看移动平均而非单点，并说明为什么样本量增大后平均值才贴近真实水平。",
+      "notes": "正面场景：如何正确读波动指标"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们已经连续五个月超额完成目标了，下个月是不是该保守一点设定目标？",
+      "expected_behavior": "不应激活本 skill, 因为这是关于下一次结果的预期问题，大数定律不预测单次结果；把它用在这里会滑向赌徒谬误式的推理。",
+      "notes": "诱饵：涉及连续结果与趋势，但问的是单次预测"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们跟踪了 20 个创业项目的回报，其中 1 个赚了 100 倍，其余基本归零。用这 20 个的平均回报来预测下一个项目合理吗？",
+      "expected_behavior": "不应激活本 skill（肥尾分布下少数极值主导总和，均值收敛极慢甚至实际不收敛）, 应激活 mm-fat-tailed-distributions 或 mm-power-law-distribution。套大数定律会严重低估所需样本量。",
+      "notes": "跨 skill 混淆诱饵：同样是小样本问题，但分布形态使大数定律失效"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们已经积累了 5000 个样本，平均值看起来很稳了。是不是就可以完全相信这个平均值了？",
+      "expected_behavior": "合理的判断是：样本量确实已使平均值相当可靠，但需同时提醒书中那句——即使抛 500 次仍有值远远偏离，所以应给出区间而非点估计；此外要检查总体本身是否在漂移（业务增长、季节变化），若真实均值在变，再大的样本也只是更精确地测量一个过时的事实。",
+      "notes": "边界：大样本已足够时，风险转移到总体漂移与区间表达"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

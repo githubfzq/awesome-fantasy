@@ -1,0 +1,52 @@
+{
+  "skill": "mm-null-hypothesis",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要测新版落地页是不是更好，这个实验的假设要怎么写？",
+      "expected_behavior": "应激活 mm-null-hypothesis，把命题写成「新旧落地页转化率没有差别」，明确两组与度量，并进一步给出对立假设与最小有意义效应。",
+      "notes": "正面场景：实验设计"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "新版本转化率 3.2%，老版本 3.0%，看起来高了 0.2 个点，是不是就说明新版更好？",
+      "expected_behavior": "应激活 mm-null-hypothesis，指出默认起点是「无差异」，需看该差异在原假设分布中落在多远的尾部；不能仅凭点估计差异下结论。",
+      "notes": "正面场景：点估计差异的解读"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "检测没发现这个成分有害，是不是就说明它肯定安全？",
+      "expected_behavior": "应激活 mm-null-hypothesis，说明「未能否定无危害的原假设」不等于「证明无害」，并把举证责任与结论边界讲清楚。",
+      "notes": "正面场景：阴性结论的误读"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这两个版本的转化数据画成对比柱状图。",
+      "expected_behavior": "不应激活本 skill，因为这是可视化任务，不涉及假设设定与显著性判定。",
+      "notes": "诱饵：A/B 数据但仅做展示"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "算出来 p=0.01，这个数具体是什么意思？是说原假设只有 1% 的概率成立吗？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-p-value：问题在于 P 值的定义与误读，而非如何设定被检验的假设。",
+      "notes": "跨 skill 混淆诱饵：原假设与 P 值几乎总是成对出现"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们想证明新版「不比老版差」，这种非劣效检验的原假设该怎么设？",
+      "expected_behavior": "应激活本 skill 并说明：非劣效检验需把原假设反过来设为「新版比老版差于某个容许界限」，举证责任随之改变；应明确写出容许界限而不是套用默认的无差异假设。",
+      "notes": "边界：非劣效场景下原假设方向不同"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-just-world-hypothesis",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "他那么年轻就查出重病，我总觉得是不是他平时生活太不节制了。",
+      "expected_behavior": "应激活 mm-just-world-hypothesis，捕捉'应得'句式，列出不可控变量（基因、环境、筛查可及性），并做'同样生活习惯却没生病'的对照组检验。",
+      "notes": "正面场景：不幸结果被解释为应得"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我从不做高风险投资，也不乱交友，所以我根本不需要买保险。",
+      "expected_behavior": "应激活 mm-just-world-hypothesis，指出'我谨慎所以我安全'是公正世界信念在自我保护上的体现，并把判断改成概率视角：发生概率、可降低部分、不可控部分。",
+      "notes": "正面场景：低估随机性"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "为什么好人也会遭殃？这个世界到底讲不讲道理？",
+      "expected_behavior": "应激活 mm-just-world-hypothesis，分离事实判断与价值判断，说明'应得'是信念不是证据，并引入随机性与出生彩票视角。",
+      "notes": "正面场景：解释好人遭殃"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这份合同里对方明确违约了，按条款该怎么追责？",
+      "expected_behavior": "不应激活本 skill，因为这是明确的合同与法律责任判定，属于规则问题，引入'世界是否公平'的讨论会干扰正当的追责。",
+      "notes": "诱饵：涉及应得但属法律判定"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "她被裁是因为公司架构调整，可大家都在说她肯定平时绩效不行。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-victim-blaming：焦点是他人正在对该受害者做品性归因这一具体指责行为，需要直接拆解指责并追问环境改进项。",
+      "notes": "跨 skill 混淆诱饵：公正世界假说 vs 指责受害者"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "朋友刚遭遇重大变故，一直跟我说'这一切都是有原因的'，我要不要点破？",
+      "expected_behavior": "应激活但需判停：此时对方正用公正世界信念做心理支撑，拆穿是无益的残忍；应优先陪伴，等对方主动追问时再做信念层面的探讨。",
+      "notes": "边界：信念校正 vs 创伤支持"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

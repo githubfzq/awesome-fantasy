@@ -1,0 +1,52 @@
+{
+  "skill": "mm-consensus-contrarian-matrix",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "现在整个行业都在投这个方向，所有人都在说这是未来。我现在进场还来得及吗？",
+      "expected_behavior": "应激活 mm-consensus-contrarian-matrix，定位这是'顺势'一侧：指出赔率反映的是有多少人同意你，众人同心押注会把超额回报提前抽走；即使判断正确也只能拿到平均回报（芒格的均值回归提醒）。要求先画出四格、给出共识强度证据，并换算当前的赔率空间。",
+      "notes": "正面场景：典型追热点"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "身边所有人都劝我别做这个项目，说这玩意儿肯定没人买。但我真的觉得他们看漏了东西。",
+      "expected_behavior": "应激活本 skill，先肯定'超额回报只来自投对+逆势这一格'，但必须接着做信息优势审查：要求用户具体列出'我知道而别人不知道的'是什么，检查是否真的稀缺、对手多久能补全。若无一条成立，应直接援引贝索斯'逆势之人通常是错的'建议缩小或放弃，而不是鼓励坚持。",
+      "notes": "正面场景：逆势下注的关键检验"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我判断这个市场三年内会翻三倍，我打算重仓押进去。帮我看看这注划不划算。",
+      "expected_behavior": "应激活本 skill，要求把断言写成可证伪的陈述与时间表；测量该判断在市场上的共识强度（若已高度共识则赔率已被压缩）；落到四格后给出与格子匹配的仓位建议，并写下'如果我错了，会先看到什么'的可观测证伪信号。",
+      "notes": "正面场景：仓位评估"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们打算从反面推演一下：怎样做才能百分之百让这个项目失败？把答案反过来就是打法。",
+      "expected_behavior": "不应激活本 skill。这是逆向思维（inversion）——一种从反面推演问题的思考技巧，与'与大众是否同向'无关。应激活 mm-inversion。两者名字都含'逆'，但机理完全不相干。",
+      "notes": "诱饵：中文里都带'逆'字"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个决定后果很严重，但我只有六成把握。是再等等收集信息，还是现在就动手？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-consequence-conviction-matrix：用户问的是'后果严重性 × 我的确信度'决定行动节奏，而不是'我与大众是否同向'决定赔率。顺势-逆势矩阵无法回答要不要立即行动。",
+      "notes": "跨 skill 混淆诱饵：同为本书 2×2 决策矩阵"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我看好一个方向，圈子里没人讨论，但我手上刚好有这个行业一线的运营数据，别人拿不到。这算逆势取胜吗？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：这恰恰接近第四格成立的唯一条件——掌握他人不了解的信息，使真实概率高于大众估计。但需进一步检验：数据是否真的独占（别人多久能买到或自建）、是否足以支撑'我的概率估计显著高于市场'、以及是否可能是不可外推的局部样本。同时提醒逆势之人通常是错的，建议分批建仓并设证伪信号。",
+      "notes": "边界：区分真正的第四格与伪装的第三格"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-consequence-conviction-matrix。"
+}

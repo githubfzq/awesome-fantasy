@@ -1,0 +1,52 @@
+{
+  "skill": "mm-black-boxes",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我想用一个第三方的 OCR 服务来识别票据，但我完全不懂它的模型原理。是不是应该先学一下再决定用不用？",
+      "expected_behavior": "应激活 mm-black-boxes，指出作为使用者不必理解内部机制，转而明确接口（输入图片格式、输出字段、识别失败的形态），并设一个抽样人工复核的校验机制。",
+      "notes": "正面场景：使用者不必开盖"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们上了个智能客服系统，它给的答案我就直接发给客户了。反正它是系统算出来的，应该比人准吧？",
+      "expected_behavior": "应激活 mm-black-boxes 并纠正误解：黑匣子免除理解义务但不免除验证义务，应建立输出校验（抽查、兜底人工通道）与故障升级路径，而不是全盘信任。",
+      "notes": "正面场景：误把「不需理解」当成「不需验证」"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "团队里只有我懂这套推荐逻辑，其他人都只会调用接口。这样有问题吗？",
+      "expected_behavior": "应激活 mm-black-boxes，说明这是正常且高效的分工（工具内置技巧），但需补充：一旦你要对它负责（故障、改造、追责）就必须有人能开盖，建议至少两人具备维护能力。",
+      "notes": "正面场景：使用与维护的角色分工"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个模型在测试集上表现很好，上线后效果掉了一半。我要不要去查一下它的特征工程？",
+      "expected_behavior": "不应激活本 skill，因为用户此刻是系统的维护者与责任人，必须打开盒子内部排查；书明示「修工具或给它们编程则是另外一回事」。",
+      "notes": "诱饵：涉及不理解内部但角色是维护者"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我要给风控系统写一套分步骤的评分流程，需要明确每一步怎么算。有没有什么要注意的？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-algorithms——用户在设计分步骤的求解过程本身，而不是使用封装好的系统。",
+      "notes": "跨 skill 混淆诱饵：与 mm-algorithms 同章相邻，区分点在「用封装」还是「写过程」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "银行用模型拒绝了我的贷款申请，客户经理说这是系统算的，他也解释不了。这合理吗？",
+      "expected_behavior": "应激活 mm-black-boxes 并指出边界：内部实现可以是黑匣子，但当决策涉及他人重大利益且需要解释依据时，「系统说的」不是可接受的理由，应当要求可解释的决策依据与申诉通道。",
+      "notes": "边界：对内可黑匣，对外需可解释"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

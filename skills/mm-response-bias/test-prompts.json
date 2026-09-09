@@ -1,0 +1,52 @@
+{
+  "skill": "mm-response-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的敬业度问卷是匿名的，但回收上来的意见全是'挺好的''没什么意见'。是大家真的没意见吗？",
+      "expected_behavior": "应激活 mm-response-bias, 并指出报复恐惧通道（书中点名场景）：即使匿名，小样本或可交叉比对的字段仍可能被识别，建议改用第三方访谈、聚合到最小组规模或换间接问法。",
+      "notes": "正面场景：书中原案例"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "帮我看看这份问卷的题目写得有没有问题：'您是不是也觉得我们的新流程节省了大量时间？' 后面还有一道'您对新流程的整体满意度如何？'",
+      "expected_behavior": "应激活 mm-response-bias, 指出第一题是诱导性措辞、且会启动正面思路污染第二题（顺序效应），要求改写为中立表述并把整体感受题前置或随机化顺序。",
+      "notes": "正面场景：措辞 + 顺序双通道"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "用户自报说平均每周用我们的产品 8 小时，但后台数据只有 2 小时。该信哪个？",
+      "expected_behavior": "应激活 mm-response-bias, 指出记忆不准与只讲对自己有利的事这两条通道会让自报时长系统性偏高，建议以日志为准，并把自报数据仅用于主观感受而非行为频次。",
+      "notes": "正面场景：自报数据与客观数据冲突"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们要统计用户平均使用时长，是发问卷问好还是直接从后台拉数据？",
+      "expected_behavior": "不应激活本 skill 来做修补——正确答案是直接用后台日志，从源头避免自报偏差；此处只需简单建议取日志，不需要展开反应偏差的六条通道分析。",
+      "notes": "诱饵：涉及自报数据，但解法是绕开而非修正"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "问卷发出去了 500 份，只回来 60 份。回来的这批人是不是代表不了所有人？",
+      "expected_behavior": "不应激活本 skill（问题在样本缺失而非答案失真）, 应激活 mm-nonresponse-bias。补访不回应者才是对症的做法，改问法无效。",
+      "notes": "跨 skill 混淆诱饵：调查失真，但偏差在缺失而非内容"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们只有 5 个人的小团队，想匿名收集对 manager 的真实意见，这能做到吗？",
+      "expected_behavior": "合理的判断是：5 人样本下匿名在技术上几乎无法实现（报复恐惧通道无法关闭），反应偏差会很严重；建议改为由外部第三方做一对一访谈并只反馈聚合主题，或直接用离职/转岗行为数据替代，而不是强行发匿名问卷。",
+      "notes": "边界：匿名这个常用解药在小样本下失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

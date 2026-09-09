@@ -1,0 +1,52 @@
+{
+  "skill": "mm-law-of-diminishing-returns",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这份报告已经改到第六稿了，感觉质量也没提升，还要继续吗？",
+      "expected_behavior": "应激活 mm-law-of-diminishing-returns，估算下一稿的边际产出、比较机会成本，给出继续/转向/停止的结论与止损线。",
+      "notes": "最典型的正面场景：过度打磨"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "广告投放预算翻倍，转化却只涨了一点点，是不是该停了？",
+      "expected_behavior": "应激活本 skill，计算边际产出下降，比较这笔预算在其他渠道的机会成本，给出止损线与替代方案。",
+      "notes": "边际产出下降"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "页面加载时间已经优化到 1.2 秒了，再往下压还有意义吗？",
+      "expected_behavior": "应激活本 skill，评估再压缩的边际收益与所需投入，并头脑风暴是否有更高杠杆的优化项被忽略。",
+      "notes": "技术优化场景"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我刚开始学钢琴，练了两周感觉没什么进步，是不是不适合？",
+      "expected_behavior": "不应激活本 skill，因为处于学习曲线早期，边际产出低是暂时的，此时退出会错失后续拐点；应转向学习曲线/刻意练习。",
+      "notes": "诱饵：早期低产出 ≠ 收益递减"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "项目已经砸进去两百万了，现在放弃前面的钱就全没了，还是继续吧。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-sunk-cost-fallacy；用户纠结的是已投入且不可收回的部分，不是边际产出。",
+      "notes": "跨 skill 混淆诱饵：都是\"该不该继续\""
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "边际产出确实在降，但我现在的确没有别的事可做，还要停吗？",
+      "expected_behavior": "应激活并准确传达书中观点：达到收益递减点不意味着必须停下，若别处没有更好的用途，继续做仍然有进展；但仍建议做一次头脑风暴确认没有更高杠杆的选项。",
+      "notes": "边界：递减但无更好替代"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

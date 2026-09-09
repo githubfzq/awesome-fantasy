@@ -1,0 +1,52 @@
+{
+  "skill": "mm-externalities",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们打算把推荐算法的点击率提上去，但内容团队抱怨说这样会让低质内容越来越多。这事该怎么算？",
+      "expected_behavior": "应激活 mm-externalities，列出受影响方（内容团队、用户、平台长期生态），逐条过「是否参与决策、是否被补偿/收费」判据，将低质内容成本定向量化，并给出内部化手段。",
+      "notes": "正面场景：副作用盘点"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "隔壁部门把他们的脏数据直接写进我们的数仓，清洗成本全是我们这边扛，他们一点事没有。",
+      "expected_behavior": "应激活 mm-externalities，指出成本承担方未参与决策且未获补偿，然后检查产权与交易成本是否允许自行协商（科斯路径），否则建议由上级设定规则或计费。",
+      "notes": "正面场景：跨部门成本转嫁"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要不要在园区里建一个充电桩？造价挺高，但好像对大家都有好处，账不太好算。",
+      "expected_behavior": "应激活 mm-externalities，识别这是正外部性（收益外溢、无法充分收费导致市场供给不足），因此不能只看直接收费能否回本，应纳入间接收益并考虑补贴或公共提供。",
+      "notes": "正面场景：正外部性"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我自己开的小店要不要买一台新咖啡机？成本两个月就能收回来。",
+      "expected_behavior": "不应激活本 skill，因为所有成本与收益都落在决策者自己身上，不存在未参与决策却承担后果的第三方，属于普通的成本收益问题。",
+      "notes": "诱饵：涉及成本但无外溢"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "公司给全员上了全额报销的补充医疗保险之后，有同事开始频繁做一些本不必要的检查，反正不用自己掏钱。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-moral-hazard。此处的关键是「有了兜底之后行为更冒险/更放纵」，发生在交易内部且对方已同意，属于道德风险而非外部性。",
+      "notes": "跨 skill 混淆诱饵：道德风险"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们上线了一个功能，用户投诉变多了，但收入也涨了。这算不算我们给用户造成了负外部性？",
+      "expected_behavior": "合理的判断是：要区分「交易内的不满」与「外部性」。如果用户是在知情且可退出的前提下继续使用，价格/体验已包含在交易里，通常不算外部性；只有当影响落到未参与交易的人身上（如非用户、第三方商家、公共秩序），或存在信息不对称导致的非自愿承担，才成立。应要求补充「谁受损、是否可退出」的事实再下结论。",
+      "notes": "边界：交易内的不满 vs 真正的外部性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

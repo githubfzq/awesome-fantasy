@@ -1,0 +1,52 @@
+{
+  "skill": "mm-gambler-s-fallacy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "抽卡连着 12 次都没出金了，下一次出货概率肯定比平时高，我该加大投入吧？",
+      "expected_behavior": "应激活 mm-gambler-s-fallacy，检验各次抽取是否独立（通常独立），明确指出下一次概率与历史序列无关、并未升高，并把决策改写为基于期望值与基础比率的判断。",
+      "notes": "正面场景：典型赌徒谬误"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这只股票连跌了六天，跌了这么多总该反弹了，我准备补仓。",
+      "expected_behavior": "应激活 mm-gambler-s-fallacy，指出「跌多了就该涨」是把大数定律错用到短期；除非有真实基本面变化或均值回归机制，否则序列本身不携带反弹信息。",
+      "notes": "正面场景：投资中的补偿幻觉"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们风控系统刚拦下一笔欺诈，所以接下来几笔应该都是安全的，可以放宽校验吗？",
+      "expected_behavior": "应激活 mm-gambler-s-fallacy，指出独立事件之间不存在「已发生一次就不会马上再发生」的补偿机制，并建议改用基础比率驱动的风控策略。",
+      "notes": "正面场景：业务决策中的谬误"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "从一副牌里连着抽了五张红桃都没放回，下一张是红桃的概率是不是变了？",
+      "expected_behavior": "不应激活本 skill，因为事件不独立（不放回抽样改变了剩余牌的构成），概率确实改变了；直接给出条件概率计算即可。",
+      "notes": "诱饵：看似连续序列，实为非独立事件"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们只访谈了 5 个用户，4 个都说喜欢新界面，所以新界面肯定更受欢迎，可以全量了。",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-law-of-small-numbers：问题在于用小样本估计总体，而不是期待独立事件自我纠正。",
+      "notes": "跨 skill 混淆诱饵：书中同一节的两个模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "连着 20 把都开出黑，这难道不正好说明轮盘有问题吗？我能不能据此怀疑它被动了手脚？",
+      "expected_behavior": "应做出细致判断：极端序列本身确实可以成为怀疑独立性与设备异常的合理理由（应转向检验机制、条件概率），但这不等于「下一把更可能出红」——后者才是赌徒谬误。",
+      "notes": "边界：极端序列作为独立性质疑 vs 补偿预期"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

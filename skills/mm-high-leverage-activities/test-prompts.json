@@ -1,0 +1,52 @@
+{
+  "skill": "mm-high-leverage-activities",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "每周只有五小时自由时间，学英语、健身、做副业、陪孩子都想做，怎么选？",
+      "expected_behavior": "应激活 mm-high-leverage-activities，发散列全候选活动，对每项粗估投入与影响，算影响/投入比排序取头部，并检查头部在具体情境下是否真的合适。",
+      "notes": "最典型的正面场景：时间分配"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "装修预算有限，哪些改动最能让房子升值？",
+      "expected_behavior": "应激活本 skill，列出候选改动项，按影响/投入比排序取头部——这正是书中\"哪种装修最升值\"的自问。",
+      "notes": "金钱分配"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "想捐一笔钱做公益，捐给哪家影响最大？",
+      "expected_behavior": "应激活本 skill，列出候选受赠方向，按每单位投入产生的影响排序取头部，并给影响维度配可观测指标。",
+      "notes": "慈善捐赠"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这份待办清单上有二十件事，我知道大部分做完也没什么用，该怎么挑？",
+      "expected_behavior": "不应激活本 skill，已有一份明确清单要从中挑出贡献最大的少数，应激活 mm-the-vital-few（关键的少数）。",
+      "notes": "诱饵：都是找重点"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我是周末加班赶项目还是陪家人，只能选一个，值不值？",
+      "expected_behavior": "不应激活本 skill，这是两个明确选项之间的取舍，应激活 mm-opportunity-cost（机会成本）。",
+      "notes": "跨 skill 混淆诱饵：都是资源分配"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "所有候选活动算下来投入产出比都差不多，没有明显头部，怎么办？",
+      "expected_behavior": "可激活但要给出判停：若各项比值接近、没有明显头部，说明该领域不存在高杠杆活动，应改为平均用力或先做小实验找出差异，不要硬凑一个重点。",
+      "notes": "边界：没有高杠杆项时"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-prisoner-s-dilemma",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们和主要竞对同时降价,现在两家都在亏钱卖,谁先涨价谁就丢市场。怎么破?",
+      "expected_behavior": "应激活 mm-prisoner-s-dilemma,画出合作/背叛的收益矩阵,指出双方都不降价才双赢但任一方都能单方面降价获益,因此均衡是双重降价;给出改参数的出路(信号传递、行业协议、差异化、提高对方背叛成本),而不是劝对方'讲道理'。",
+      "notes": "正面场景:价格战是最典型的现实版本"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "检方分别找我和同案谈话,说先坦白的释放、沉默的重判。我该不该招?",
+      "expected_behavior": "应激活 mm-prisoner-s-dilemma,说明无论对方沉默还是背叛,自己背叛的刑期都更短,背叛是占优策略;同时指出都背叛的 5 年远差于都沉默的 1 年,以及最简单的模型不含实时协商与未来报复。",
+      "notes": "正面场景:书中原案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "部门之间互相留一手,谁先共享数据谁吃亏,整体效率上不去。我是其中一个负责人,能做什么?",
+      "expected_behavior": "应激活 mm-prisoner-s-dilemma,确认这是占优策略结构导致的内耗,然后给出改参数的具体动作(建立重复互动、让共享可观测、设中央考核把整体效率纳入个人 KPI、先做小额可撤回的共享试点),强调不要等对方先动。",
+      "notes": "正面场景:组织内耗"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "老供应商 2500 一口价,新供应商 2000 但可能拖期,选哪个?",
+      "expected_behavior": "不应激活本 skill,因为这是单方面面对自然随机性的决策,不涉及另一个有意图的玩家的策略互动;应激活 mm-decision-tree 配合 mm-expected-value。",
+      "notes": "诱饵:形似'选择'但无策略互动"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们两家在争同一个固定预算包,他多拿一块我就少一块,该怎么谈?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-zero-sum:这是严格零和分配,不存在'合作双赢'的空间,用囚徒困境的合作框架会误判局面;正确思路是谈判与 BATNA。",
+      "notes": "跨 skill 混淆诱饵:零和"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我和这个供应商是长期合作,每周都要打交道,那还该不该按囚徒困境的思路防着他?",
+      "expected_behavior": "合理判断:结构仍是囚徒困境,但书中明确指出'一旦博弈会重复进行,结论就变了'——重复博弈里未来互动的影子让合作成为可能(以牙还牙、声誉机制);建议按重复博弈处理,建立可观测、可回报的合作模式,而非单次背叛逻辑。",
+      "notes": "边界:单次 vs 重复博弈的结论翻转"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-asymmetric-information",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "装修队给我的报价单密密麻麻几十项，我完全看不懂，也不知道贵不贵。该怎么办？",
+      "expected_behavior": "应激活 mm-asymmetric-information，定位「关于材料与工时真实成本，施工方知道而我不知道且难以核验」，并给出缓解手段：第三方审价、分项比价、把报价拆成可核验的清单。",
+      "notes": "正面场景：专业信息落差"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "理财顾问给我推荐了一款产品，讲得头头是道，但我总觉得他可能在拿佣金。怎么判断？",
+      "expected_behavior": "应激活 mm-asymmetric-information，指出关键在于报酬安排不透明，建议直接要求书面披露佣金与利益关系，并说明若客户知道有佣金就不太可能购买该产品——这正是披露机制起作用的原理。",
+      "notes": "正面场景：未披露的利益关系"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "远程团队天天汇报进度正常，但我看不到真实情况，心里没底。",
+      "expected_behavior": "应激活 mm-asymmetric-information，明确「关于实际产出与真实进度，执行方知道而委托方不知道」，建议引入可核验的产物（演示、自动化测试、公开看板）把私有信息转成公开信息。",
+      "notes": "正面场景：执行方的私有信息"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个牌子的价格官网上都写着呢，我就是还没去查，帮我总结一下几个型号的区别。",
+      "expected_behavior": "不应激活本 skill，因为信息完全公开可查，不存在结构性不对称，只是用户尚未获取，直接提供信息即可。",
+      "notes": "诱饵：信息可得但未获取"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们平台的二手车越来越差了，好车车主都不愿意来挂，买家只肯出均价，现在基本只剩问题车。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-adverse-selection（或 mm-market-for-lemons）。这里信息不对称已经产生了市场层面的后果——进场者结构偏移、优质方退出，属于逆向选择的处理范围。",
+      "notes": "跨 skill 混淆诱饵：逆向选择"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "卖家说他这台二手设备从没出过故障，我信不过，但又没有检测手段。这算信息不对称吗？",
+      "expected_behavior": "合理的判断是：构成信息不对称（关于设备真实状况，卖家知道而买家无法核验），但要注意优势方不一定是卖家——应确认是否还有第三方检测、使用日志等低成本核验途径。缓解顺序应为：先尝试核验（维修记录、第三方检测）→ 再要求信号与担保（质保期、延后付款、押金）→ 若仍不可核验且买家只能出均价，警惕滑向逆向选择。",
+      "notes": "边界：从不对称到逆向选择的过渡"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-observer-expectancy-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我自己做的用户访谈，五个用户都说新功能好用。但我问的时候一直在说'这个新功能是不是比之前方便多了'，这个结论还站得住吗？",
+      "expected_behavior": "应激活 mm-observer-expectancy-bias, 并指出提问措辞本身带有引导性、追问时机与记录方式都可能传递期望，要求改用逐字稿脚本化提问或换不知情第三方重做，并对已有结论打折。",
+      "notes": "正面场景：研究者期望通过提问措辞传递"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "供应商交给我们的调研报告结论跟我们高管会上的判断一模一样，我总觉得哪里不对，该怎么审？",
+      "expected_behavior": "应激活 mm-observer-expectancy-bias, 并沿着准备阶段（读了哪些资料、预设假设）与分析汇报阶段（选择汇报哪些指标）三个渗漏点逐项审查，要求对方出示事前固定的分析方案。",
+      "notes": "正面场景：结论过于符合预期，需审渗漏点"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的实验已经是双盲了，所以偏差问题应该彻底解决了吧？",
+      "expected_behavior": "应激活 mm-observer-expectancy-bias, 明确纠正：双盲只能减少而不能完全避免，因为选择性读文献、预先构想的假设、选择性汇报仍会渗入，并要求对这三项给出事前约束。",
+      "notes": "正面场景：对双盲的过度信任需要被校准"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的线上实验数据全存在日志里，转化漏斗由脚本自动生成，没有人工参与。会有偏差吗？",
+      "expected_behavior": "不应激活本 skill, 因为数据采集与判读全程无人工解读，研究者的期望没有进入通道；这里更该关注的是分流与样本量问题，而非观察者期望。",
+      "notes": "诱饵：提到了实验偏差，但无人工解读环节"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "员工敬业度调查里，大家可能是因为怕被查出来是谁填的才不敢说真话。这算什么偏差？",
+      "expected_behavior": "不应激活本 skill（偏差来自回应者一侧的恐惧与隐瞒，而非研究者期望）, 应激活 mm-response-bias。",
+      "notes": "跨 skill 混淆诱饵：同样是偏差，但来源在回应者而非观察者"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "评估新项目的人就是提案人本人，他自己打分说效果很好。这算观察者期望偏差还是单纯的利益冲突？",
+      "expected_behavior": "合理的判断是：两者重叠但机制不同——观察者期望偏差解释他如何无意识地观察到支持自己的证据，利益冲突解释他为何有动机这么做；建议同时按两条处理（换独立评估者 + 固定事前指标），不要只归因于其中之一。",
+      "notes": "边界：期望偏差与动机性偏差重叠"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

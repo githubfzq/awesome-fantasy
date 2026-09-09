@@ -1,0 +1,52 @@
+{
+  "skill": "mm-peter-principle",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们最好的销售想转管理，说不带团队就没发展。要不要提他？",
+      "expected_behavior": "应激活 mm-peter-principle，对比销售岗与管理岗的能力类型差异，检查是否存在技术/专家通道，并做成长性判断",
+      "notes": "正面场景：典型晋升错配"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "技术大牛被提拔成经理半年了，团队怨声载道，他自己也说每天开会开到崩溃。",
+      "expected_behavior": "应激活本 skill，识别为个人贡献→人事管理的类型错配，给出技术领导通道或回到深度贡献岗的方案，并设定带复查节点的安排",
+      "notes": "正面场景：已在'无法胜任的层级'备受煎熬"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "Our career ladder only has one track: individual contributor to manager. Senior engineers keep leaving.",
+      "expected_behavior": "应激活本 skill，建议开辟不需要人事管理的技术领导通道，并说明须配套对等的薪酬、话语权与资源",
+      "notes": "正面场景：组织通道设计"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这位员工连续两个季度没完成指标，态度也消极，怎么处理？",
+      "expected_behavior": "不应激活本 skill，因为这属于绩效与态度问题，不是'因过去表现好被晋升到能力类型不同的岗位'",
+      "notes": "诱饵：与'不胜任'字面相关但机制不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "会上说好了要做这件事，结果一周过去谁都没动，大家都以为别人会做。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-diffusion-of-responsibility（责任分散/旁观者效应）：问题在责任归属不清，应指定直接负责人（DRI）",
+      "notes": "跨 skill 混淆诱饵：同章相邻的组织失效模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "他刚升上去三个月确实手忙脚乱，但明显在学，每周都在进步。要不要现在就把他换下来？",
+      "expected_behavior": "应激活本 skill 并援引书中明确提醒：最初不适合不意味着永远不适合，随时间与实践可能变得胜任且优于外部招聘；应给予扶上马的支持与带复查节点的观察期，而不是立即换人",
+      "notes": "边界：避免把彼得原理当永久判决"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

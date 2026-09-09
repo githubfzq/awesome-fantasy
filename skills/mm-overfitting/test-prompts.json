@@ -1,0 +1,52 @@
+{
+  "skill": "mm-overfitting",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我相亲过三个人，都是金融行业的，全都很功利。所以我觉得金融男一定都很现实，以后再也不见这个行业的了。",
+      "expected_behavior": "应激活 mm-overfitting，指出 3 个样本支撑不了『整个行业都如此』的结论，并构造更简单的竞争解释（相亲场景本身就筛选出了表现功利的样本、基础比率问题），要求指定下一次可证伪的观察。",
+      "notes": "正面场景：小样本提炼普遍规律"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我最近头疼、有点乏力，还在网上看到说这种组合可能是脑瘤的早期信号。我是不是应该去做个核磁共振？",
+      "expected_behavior": "应激活 mm-overfitting，指出用罕见重病拟合常见症状，先问基础比率与更简单的解释（睡眠、压力、感冒），再谈是否需要检查。",
+      "notes": "正面场景：书中原例（偶感风寒认定癌症）的同类情境"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的推荐策略在历史数据上准确率 98%，一上线就掉到 60%。我把规则又加了 20 条，回测又回到 97% 了。",
+      "expected_behavior": "应激活 mm-overfitting，判定加规则属于继续拟合历史噪声，要求做留出检验/时间外样本验证，而不是继续加规则。",
+      "notes": "正面场景：建模语境下的过拟合"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我解释一下过拟合和欠拟合的区别，以及正则化是怎么缓解过拟合的。",
+      "expected_behavior": "不应激活本 skill，因为这是纯知识性提问（要求讲解概念），不是在为一个具体结论做解释选择，直接作答即可。",
+      "notes": "诱饵：概念讲解而非决策场景"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "同事今天在会上当众驳了我一句，我觉得他就是嫉妒我。当然也可能他今天被老板骂了心情不好，但我觉得还是前者。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-fundamental-attribution-error（把他人行为归因于内在品性而忽略情境），而非过拟合；此处不涉及『用复杂模型拟合数据』。",
+      "notes": "跨 skill 混淆诱饵：归因偏差 vs 过拟合"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我做了 2000 份用户问卷，建了一个有 15 个变量的模型，预测效果很稳。同事说变量太多肯定过拟合了，让我砍到 3 个。",
+      "expected_behavior": "合理判断：可以激活但要克制——样本量远大于变量数，不构成典型过拟合；正确动作是要求做交叉验证/留出集检验，而不是按变量数量一刀切地砍。若同事无法指出更简单的竞争解释，则不满足过拟合判据。",
+      "notes": "边界：复杂度指控 vs 真实的过拟合判据"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

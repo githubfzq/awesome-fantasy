@@ -1,0 +1,52 @@
+{
+  "skill": "mm-spurious-correlation",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我拉了三十多个业务指标跟销售额做相关分析，发现「客服通话时长」跟销售额相关系数 0.87。是不是应该让客服多跟客户聊？",
+      "expected_behavior": "应激活 mm-spurious-correlation，做机制检验（通话时长通过什么影响销售额）、复现检验（换个季度/换个地区还成立吗）、多重比较核算（检了 30 多对，出现 0.87 的期望次数是多少），并要求降级为待验证假设、预先注册后再检验。",
+      "notes": "正面场景：多变量挖掘出的相关"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "有人发了张图，说某个国家的巧克力消费量和诺贝尔奖得主数量高度相关。这靠谱吗？",
+      "expected_behavior": "应激活 mm-spurious-correlation，指出两个各自有上升趋势的宏观变量几乎必然相关，缺乏可检验的机制链条，且需独立数据复现；不应据此得出「多吃巧克力能得诺奖」的结论。",
+      "notes": "正面场景：经典的虚假相关图"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们看了去年 12 个月的数据，发现「公众号发文数」和「注册量」几乎同步涨跌，相关 0.9。加大发文力度应该没错吧？",
+      "expected_behavior": "应激活 mm-spurious-correlation，提醒两者可能都被第三个因素（季节、投放节奏）驱动，要求做机制检验与在独立时间段/去掉季节因素后复现，再决定是否加码。",
+      "notes": "正面场景：时间序列同步上升的陷阱"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们在三个不同城市分别跑了同样的实验，每次都是投放组的转化率显著高于对照组，机制也说得很清楚。这套结论能用吗？",
+      "expected_behavior": "不应激活本 skill，因为相关已在多个独立场景复现且有明确机制；这是真信号，用虚假相关去质疑它属于反向误用。",
+      "notes": "诱饵：相关类场景，但已复现且有机制"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "数据显示使用我们 App 时长越长的用户留存越高，所以我们打算想办法让用户多停留，这样留存就会上去。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-correlation-does-not-imply-causation——这个相关很可能是真实的（不是虚假相关），问题出在因果方向：是留存高的用户本来就用得久，而非用得久导致留存高。",
+      "notes": "跨 skill 混淆诱饵：与 mm-correlation-does-not-imply-causation 高度相邻，区分点在「相关本身是假的」还是「方向推反了」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们发现冰淇淋销量和溺水人数高度相关，但 obviously 不是冰淇淋导致溺水，是夏天这个共同原因。这算虚假相关吗？",
+      "expected_behavior": "应给出精确区分：这不算严格意义的虚假相关——相关在统计上是真实且可复现的，只是被误解了因果；它属于混淆因素（mm-confounding-factor）的情形。虚假相关特指连相关本身都不可复现、纯属随机巧合的情况。",
+      "notes": "边界：真相关但被误读 vs. 假相关"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

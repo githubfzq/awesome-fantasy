@@ -1,0 +1,52 @@
+{
+  "skill": "mm-central-limit-theorem",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们抽了 500 个用户问是否喜欢新功能，62% 说喜欢，那全体用户的真实比例大概在什么范围？",
+      "expected_behavior": "应激活 mm-central-limit-theorem，说明单个人回答只有是/否，但样本均值的抽样分布趋近正态（书中问 2/5/30 人的对照），据此给出误差范围/置信区间而非只报 62%。",
+      "notes": "正面场景：抽样比例推断"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的转化数据只有 0 和 1，完全不是正态分布，为什么教程还让我用基于正态的方法算显著性？",
+      "expected_behavior": "应激活 mm-central-limit-theorem，解释定理正是正态分布「特别有用」的根源：即使底层是伯努利式 0/1，样本均值的抽样分布仍趋近钟形。",
+      "notes": "正面场景：解释为何可用正态工具"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "抽检 50 件产品的平均缺陷率是 1.2%，能代表整批货吗？波动会有多大？",
+      "expected_behavior": "应激活 mm-central-limit-theorem，用抽样分布给出均值波动范围，并说明样本越大越接近钟形、估计越稳。",
+      "notes": "正面场景：抽样质检"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我算一下这次考试全班的平均分。",
+      "expected_behavior": "不应激活本 skill，因为这是对已有全体数据的直接汇总描述，不涉及从样本均值推断总体。",
+      "notes": "诱饵：均值计算但无抽样推断"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "用户停留时长的直方图是一条中间高、两边低的对称曲线，我想知道 95% 的用户落在哪个区间。",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-normal-distribution：这里处理的是原始数据本身的分布形状与区间，而非样本均值的抽样分布。",
+      "notes": "跨 skill 混淆诱饵：书中同一节，两个模型极易混淆"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们只访谈了 4 个用户，3 个说喜欢，能不能用中心极限定理推出全体比例的范围？",
+      "expected_behavior": "应激活本 skill 但判定不适用：n=4 时抽样分布远未成形（书中只问 2 人时只有 3 种结果），正态近似不可靠，应说明需增大样本量后再做区间估计。",
+      "notes": "边界：样本量不足导致定理前提不成立"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

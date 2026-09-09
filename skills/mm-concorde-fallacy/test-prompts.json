@@ -1,0 +1,52 @@
+{
+  "skill": "mm-concorde-fallacy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个产品线做了三年一直亏，每次说再给一个季度，已经第五个季度了，还继续吗？",
+      "expected_behavior": "应激活 mm-concorde-fallacy，用两个自检问句——\"这个项目像协和式飞机吗\"（长期超支、从未盈利、追加理由都是再给一次机会）与\"是不是本想捞回损失结果反而贴了老本\"——做零基重估（今天从零开始还会投吗），并建议停止追加、转向 mm-exit-strategy 规划退出。",
+      "notes": "正面场景：持续加码的亏损项目"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "股票已经亏了 40%，我想再加仓把成本摊低，是不是就能早点回本？",
+      "expected_behavior": "应激活 mm-concorde-fallacy，指出加仓摊薄成本的动机是\"面向过去\"（想捞回损失）而非\"面向未来\"（标的值得投），要求做零基重估：如果今天空仓，会不会买入这只股票。",
+      "notes": "正面场景：越亏越补仓"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我在这家公司待了八年，早就没成长了，但一想走了这八年就白待了，走不了。",
+      "expected_behavior": "应激活 mm-concorde-fallacy，说明承诺升级不只发生在钱上，也会发生在时间与青春上；追问每次留下的动机是面向未来还是不甘心过去的投入，并做零基重估（今天从零开始还会选这里吗）。",
+      "notes": "正面场景：时间投入导致的承诺升级"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "电影看了半小时发现很难看，但票都买了，要不要看完？",
+      "expected_behavior": "不应激活本 skill，因为这是一次性的判断失误——是否因已花掉的票价影响当下决策，属于典型的沉没成本谬误；协和谬误特指持续加码、越陷越深的承诺升级过程。应改用 mm-sunk-cost-fallacy。",
+      "notes": "诱饵：一次性沉没成本而非持续升级"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我决定要关掉这条产品线了，怎么跟团队和客户说、怎么收尾比较体面？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-exit-strategy。用户已经做出了退出决策，需要的是\"如何退出\"的执行方案（时机、沟通、收尾）；协和谬误解决的是\"为什么退不出来\"的识别问题，本例中该问题已解决。",
+      "notes": "跨 skill 混淆诱饵：退出策略（识别 vs 执行）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们创业三年还没盈利，但用户数每个季度都在翻倍，投资人让我们再撑一年，这是协和谬误吗？",
+      "expected_behavior": "合理判断：不应草率套用。协和式飞机的特征是成本超支且始终未盈利、追加理由只是\"再给一次机会\"；而这里有可验证的客观进展（用户数翻倍）。正确做法是要求设定明确的里程碑与中止条件（如\"下一年若单位经济模型仍为负则关停\"），把坚持与承诺升级区分开——区别在于有没有按预设的客观标准验证，而不是投入了多久。",
+      "notes": "边界：长期主义与承诺升级的区分"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-carrot-and-stick",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "公司对违规操作罚得挺重的,但下面还是照犯,感觉他们把罚款当成本了。要不要再加个奖励?",
+      "expected_behavior": "应激活 mm-carrot-and-stick,先算大棒:比较\"违规收益\"与\"惩罚×被抓概率\",明确指出当惩罚小于收益时它就成了定价(书中明示:企业罚款常被视作经营成本);再加胡萝卜——为合规行为配一条真实可行的替代路径,而不是发安慰奖。",
+      "notes": "正面场景:罚款失效需补胡萝卜"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "想让渠道商别再串货,违约金定多少合适?是不是再加个返点?",
+      "expected_behavior": "应激活 mm-carrot-and-stick,先写出渠道商的收益矩阵(串货收益 vs 违约金×被发现概率),再给出返点设计;强调两者必须构成足够落差,组合太弱时对方的理性选择是忽略胡萝卜只应对大棒;并跑一遍规避检查(换个名目串货、压货转移)。",
+      "notes": "正面场景:合同条款设计"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "团队成员老是不按流程提交,扣绩效也没用,是不是该给做得好的人发奖金?",
+      "expected_behavior": "应激活 mm-carrot-and-stick,但先区分能力问题与意愿问题:若流程本身繁琐、工具不好用,奖惩解决不了\"做不到\";确认是意愿问题后,再设计\"顺从有明确收益 + 违抗有确定代价\"的组合,并给出替代路径(模板、工具、培训)。",
+      "notes": "正面场景:管理场景的奖惩组合"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的销售提成结构改一下,让他们自己多签单就能多拿钱,公司收入也涨,这样行不行?",
+      "expected_behavior": "不应激活本 skill,这是纯激励设计、没有惩罚侧,应激活 mm-aligning-incentives:激励一致追求让对方自利地就想做你要的事,能对齐就不需要大棒;同时提醒检查不当诱因。",
+      "notes": "诱饵:只有胡萝卜没有大棒"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们三令五申禁止刷单,抓到就封号,可还是有人刷,要不要再加重处罚?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-deterrence:只靠威胁后果阻止行为的单侧结构属于威慑;应先把资源从加重处罚转向提高被抓到的确定性(书中明示威慑效力主要来自确定性而非严厉程度),再判断是否确实需要补胡萝卜。",
+      "notes": "跨 skill 混淆诱饵:威慑(单侧)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们给按时交付的团队发奖金,也给延期的团队扣分,结果大家开始把大需求拆成小需求刷\"按时交付\"数量。这算成功了吗?",
+      "expected_behavior": "合理判断:奖惩组合确实改变了行为,但触发了指标被钻的空子——这正是书中强调必须评估的意外后果。判定为部分失败:应改用不可拆分的衡量口径(如按里程碑承诺达成率、需求交付周期),并补充质量与返工率作为对冲指标,而不是加大奖惩力度。",
+      "notes": "边界:行为改变但指标被钻"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

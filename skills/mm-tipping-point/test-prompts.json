@@ -1,0 +1,52 @@
+{
+  "skill": "mm-tipping-point",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我在考虑要不要现在转去做 AI 应用开发。感觉很热，但又怕已经晚了。现在进场是高杠杆还是低杠杆？",
+      "expected_behavior": "应激活 mm-tipping-point，先检验是否存在正反馈结构，定位驱动的网络效应类型，再估算临界点距离（临近/中期/遥远），最后给出明确的杠杆等级与下注建议。",
+      "notes": "正面场景：进入时机的杠杆判断"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "投资人不停问我们「为什么是现在」，我该怎么回答才有说服力？",
+      "expected_behavior": "应激活 mm-tipping-point，用「直接原因=达到临界量、根本原因=网络效应」的框架组织答案，并说明什么催化剂使临界点正在临近。",
+      "notes": "正面场景：why now 的标准答案框架"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的产品两年了一直不温不火，最近三个月突然用户翻倍。这是不是说明到临界点了？",
+      "expected_behavior": "应激活 mm-tipping-point，区分「增长率上升」与「临界点到达」，检查是否存在自持动量（不投入也会继续增长），并给出验证方法与催化剂建议。",
+      "notes": "正面场景：判断是否真的跨过阈值"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们工厂下个月要扩产，产能爬坡曲线大概是什么形状？",
+      "expected_behavior": "不应激活本 skill，因为产能爬坡是平滑的线性/边际递减过程，没有正反馈带来的突变结构；应给常规产能规划分析。",
+      "notes": "诱饵：涉及「增长曲线」但无自持动量"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的社区已经有三千人注册了，我想知道到底还要多少人才算够、才能自己转起来。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-critical-mass——用户在问还差多少量（阈值位置），而不是问什么时候会爆发（时机与杠杆）。",
+      "notes": "跨 skill 混淆诱饵：与 mm-critical-mass 因果相邻，区分在时刻 vs. 量"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我做的这个方向三年内看不到爆发的可能，但我很看好它的长期价值。是该继续深耕还是先放一放？",
+      "expected_behavior": "应激活 mm-tipping-point 并给出书中明示的低杠杆判断：专攻还要很久才到临界点的领域是低杠杆；建议保留可能性（mm-preserving-optionality）而非重仓，同时明确这不是「方向错」，只是时机与杠杆问题。",
+      "notes": "边界：低杠杆不等于错误，考验 agent 的措辞与建议分寸"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

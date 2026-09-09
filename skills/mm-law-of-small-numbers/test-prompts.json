@@ -1,0 +1,52 @@
+{
+  "skill": "mm-law-of-small-numbers",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "新版本上线才两天，40 个用户里有 6 个下单了，转化率 15%，比老版本高不少，可以全量了吧？",
+      "expected_behavior": "应激活 mm-law-of-small-numbers，报出 n=40，估算仅凭随机波动能产生多大偏离，指出 40 人样本不足以支持「转化率提升」的结论，并给出所需样本量量级与置信区间宽度。",
+      "notes": "正面场景：小样本就下结论"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我见了四个潜在客户，三个都说不需要这个功能，看来这需求根本不存在。",
+      "expected_behavior": "应激活 mm-law-of-small-numbers，指出 n=4 的样本波动极大，只能说明「可能发生什么」，应把结论降级为待验证假设并扩大样本。",
+      "notes": "正面场景：由少量个案推总体"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这周销量突然掉了很多，是不是我们新策略彻底失败了？",
+      "expected_behavior": "应激活 mm-law-of-small-numbers，引用书中双向警告：不该根据少许短期成果做长远预期，也不该期待短期成果必然符合长期预期；需更多数据区分异常与趋势。",
+      "notes": "正面场景：短期波动引发长期判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们收集了三个月、共十二万条用户行为数据，转化率差异稳定在 2 个百分点，这个结论稳吗？",
+      "expected_behavior": "不应激活本 skill，因为样本量已足够大；应转向效应量与置信区间/显著性的判断。",
+      "notes": "诱饵：同为结论可信度问题，但样本充足"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "连着五把都开出黑了，下一把总该开红了吧？我感觉概率已经偏向红色了。",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-gambler-s-fallacy：错误在于以为独立事件会自我纠正，而不是用小样本估计总体。",
+      "notes": "跨 skill 混淆诱饵：书中同一节内相邻的两个模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们只有 15 个用户访谈，但我不是要下结论，只是想据此列几个假设，后面再做大样本验证。",
+      "expected_behavior": "可轻度激活本 skill，但应肯定这是正当用法：小样本用于生成假设可以，前提是不把假设当结论，并明确后续验证计划。",
+      "notes": "边界：小样本提假设 vs 小样本下结论"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

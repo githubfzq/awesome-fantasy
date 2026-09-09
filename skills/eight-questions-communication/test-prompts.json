@@ -1,0 +1,83 @@
+{
+  "skill": "eight-questions-communication",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们又吵架了，为这点小事，我想今晚跟他好好谈一次",
+      "expected_behavior": "调用本 skill，走八问流程（核心信号是'我要谈/怎么谈'）",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "他不说话，问他什么都不说，怎么办",
+      "expected_behavior": "调用本 skill，说明单边启动（不需要对方配合）",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想跟他谈谈孩子上补习班的事，怕一开口就吵起来",
+      "expected_behavior": "调用本 skill，用第 1–2 问准备",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "吵到最后都不知道在吵什么了",
+      "expected_behavior": "调用本 skill，八问漏斗定位",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-05",
+      "type": "should_trigger",
+      "prompt": "异地恋，文字沟通老误会，越解释越糟",
+      "expected_behavior": "调用本 skill，第 2 问排查误会",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我知道该谈，但一想到要面对他就全身发抖，完全做不到",
+      "expected_behavior": "不应调用本 skill；应命中 quantum-tunnel-surrender（卡在意愿上，不是缺流程）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们各执一词谈了三次，谁也不让步",
+      "expected_behavior": "不应调用本 skill；应命中 drop-your-position（冷静僵持，非情绪失控）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "帮我写一封给房东的邮件",
+      "expected_behavior": "完全无关",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "他一吵架就摔东西砸墙，我根本不敢说话",
+      "expected_behavior": "不应走八问；先做安全评估。权力严重失衡时要求'百分百负责'会造成二次伤害",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我今天被领导骂了，想找人说说话",
+      "expected_behavior": "用户只想被听见，不应上流程；先接住再判断",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "should-not-trigger-04",
+      "type": "should_not_trigger",
+      "prompt": "我开口之前想确认一下——我说的这些，到底是出于防卫还是真心在沟通。",
+      "expected_behavior": "不应调用；应命中 truth-based-communication（说话出发点的层级自检）",
+      "notes": "诱饵：跨册混淆（应命中第 2 册 skill）"
+    }
+  ]
+}

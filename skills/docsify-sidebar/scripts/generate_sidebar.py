@@ -37,16 +37,61 @@ MERMAID_RENDERER = """      markdown: {
             var language = code && typeof code === 'object' ? code.lang : lang
             if (language === 'mermaid') {
               window.__mermaidSeq = (window.__mermaidSeq || 0) + 1
-              return (
-                '<div class="mermaid">' +
-                mermaid.render('mermaid-svg-' + window.__mermaidSeq, text) +
-                '</div>'
-              )
+              try {
+                return (
+                  '<div class="mermaid">' +
+                  mermaid.render('mermaid-svg-' + window.__mermaidSeq, text) +
+                  '</div>'
+                )
+              } catch (e) {
+                console.error('mermaid render failed, showing code block:', e)
+                return this.origin.code.apply(this, arguments)
+              }
             }
             return this.origin.code.apply(this, arguments)
           }
         }
       }"""
+
+# 旧版模板生成的 renderer 没有 try/catch（本会话踩过的坑：单张坏图让整页空白）。
+# 匹配旧版「无 try/catch」的 renderer 核心（不限定缩进），替换成防御版。
+RENDERER_CORE = """if (language === 'mermaid') {
+  window.__mermaidSeq = (window.__mermaidSeq || 0) + 1
+  try {
+    return (
+      '<div class="mermaid">' +
+      mermaid.render('mermaid-svg-' + window.__mermaidSeq, text) +
+      '</div>'
+    )
+  } catch (e) {
+    console.error('mermaid render failed, showing code block:', e)
+    return this.origin.code.apply(this, arguments)
+  }
+}"""
+
+OLD_UNGUARDED_CORE = re.compile(
+    r"([ \t]*)if \(language === 'mermaid'\) \{"
+    r"[ \t]*\n[ \t]*window\.__mermaidSeq = \(window\.__mermaidSeq \|\| 0\) \+ 1"
+    r"[ \t]*\n[ \t]*return \("
+    r"[ \t]*\n[ \t]*'<div class=\"mermaid\">' \+"
+    r"[ \t]*\n[ \t]*mermaid\.render\('mermaid-svg-' \+ window\.__mermaidSeq, text\) \+"
+    r"[ \t]*\n[ \t]*'</div>'"
+    r"[ \t]*\n[ \t]*\)"
+    r"[ \t]*\n[ \t]*\}"
+)
+
+# docsify 核心不处理 YAML frontmatter：不剥的话，每篇带 frontmatter 的文档
+# 顶部都会显示原始 `--- date: ... ---` 文本。插件脚本须在 $docsify 配置
+# 之后、docsify 主库之前加载。
+FRONTMATTER_PLUGIN = r"""  <script>
+    // docsify 核心不处理 YAML frontmatter：剥掉每篇文档开头的 --- 元数据块，
+    // 避免正文顶部显示原始 frontmatter 文本。
+    window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) {
+      hook.beforeEach(function (content) {
+        return content.replace(/^---\s*\n(?:[A-Za-z_][\w-]*:\s*[^\n]*\n)+---\s*\n?/, '')
+      })
+    })
+  </script>"""
 
 INDEX_TEMPLATE = """<!DOCTYPE html>
 <html lang="zh-CN">
@@ -80,17 +125,31 @@ INDEX_TEMPLATE = """<!DOCTYPE html>
             var language = code && typeof code === 'object' ? code.lang : lang
             if (language === 'mermaid') {{
               window.__mermaidSeq = (window.__mermaidSeq || 0) + 1
-              return (
-                '<div class="mermaid">' +
-                mermaid.render('mermaid-svg-' + window.__mermaidSeq, text) +
-                '</div>'
-              )
+              try {{
+                return (
+                  '<div class="mermaid">' +
+                  mermaid.render('mermaid-svg-' + window.__mermaidSeq, text) +
+                  '</div>'
+                )
+              }} catch (e) {{
+                console.error('mermaid render failed, showing code block:', e)
+                return this.origin.code.apply(this, arguments)
+              }}
             }}
             return this.origin.code.apply(this, arguments)
           }}
         }}
       }}
     }}
+  </script>
+  <script>
+    // docsify 核心不处理 YAML frontmatter：剥掉每篇文档开头的 --- 元数据块，
+    // 避免正文顶部显示原始 frontmatter 文本。
+    window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) {{
+      hook.beforeEach(function (content) {{
+        return content.replace(/^---\s*\n(?:[A-Za-z_][\w-]*:\s*[^\n]*\n)+---\s*\n?/, '')
+      }})
+    }})
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 </body>
@@ -118,17 +177,31 @@ DOCSIFY_SNIPPET = """
             var language = code && typeof code === 'object' ? code.lang : lang
             if (language === 'mermaid') {{
               window.__mermaidSeq = (window.__mermaidSeq || 0) + 1
-              return (
-                '<div class="mermaid">' +
-                mermaid.render('mermaid-svg-' + window.__mermaidSeq, text) +
-                '</div>'
-              )
+              try {{
+                return (
+                  '<div class="mermaid">' +
+                  mermaid.render('mermaid-svg-' + window.__mermaidSeq, text) +
+                  '</div>'
+                )
+              }} catch (e) {{
+                console.error('mermaid render failed, showing code block:', e)
+                return this.origin.code.apply(this, arguments)
+              }}
             }}
             return this.origin.code.apply(this, arguments)
           }}
         }}
       }}
     }}
+  </script>
+  <script>
+    // docsify 核心不处理 YAML frontmatter：剥掉每篇文档开头的 --- 元数据块，
+    // 避免正文顶部显示原始 frontmatter 文本。
+    window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) {{
+      hook.beforeEach(function (content) {{
+        return content.replace(/^---\s*\n(?:[A-Za-z_][\w-]*:\s*[^\n]*\n)+---\s*\n?/, '')
+      }})
+    }})
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 """
@@ -254,7 +327,29 @@ def ensure_mermaid(html: str) -> str:
             html,
             count=1,
         )
+    elif "catch (e)" not in html:
+        # 已有 renderer 但是旧版无防御：就地升级成 try/catch 版本，
+        # 保留原缩进（group 1），续行按同一缩进对齐。
+        html = OLD_UNGUARDED_CORE.sub(
+            lambda m: m.group(1) + RENDERER_CORE.replace("\n", "\n" + m.group(1)),
+            html,
+            count=1,
+        )
     return html
+
+
+def ensure_frontmatter_plugin(html: str) -> str:
+    if "hook.beforeEach" in html:
+        return html
+    if "cdn.jsdelivr.net/npm/docsify@4" not in html:
+        return html
+    # 用 lambda 注入，避免 re 把插件文本里的 \s \n 当作替换模板转义
+    return re.sub(
+        r'(<script src="//cdn\.jsdelivr\.net/npm/docsify@4[^"]*"></script>)',
+        lambda m: FRONTMATTER_PLUGIN + "\n" + m.group(1),
+        html,
+        count=1,
+    )
 
 
 def ensure_index_html(docs_root: Path, name: str, dry_run: bool) -> str:
@@ -289,6 +384,7 @@ def ensure_index_html(docs_root: Path, name: str, dry_run: bool) -> str:
                 count=1,
             )
     html = ensure_mermaid(html)
+    html = ensure_frontmatter_plugin(html)
     if html == original:
         return "unchanged"
     if not dry_run:

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-expected-value",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "两个投放渠道,A 转化率 2% 单次收益 500,B 转化率 5% 单次收益 150,预算一样,投哪个?",
+      "expected_behavior": "应激活 mm-expected-value,按概率×收益算出 A 期望 10、B 期望 7.5,推荐 A;并说明投放是可重复场景,期望值会真的兑现为长期结果。",
+      "notes": "正面场景:可重复决策,期望值直接可用"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "旧供应商一口价 2500,新供应商 2000 但有五成概率拖期加钱,算下来期望值 2212.5。可我从来没付过 2212.5 这个数啊?",
+      "expected_behavior": "应激活 mm-expected-value,解释这正是作者用'平均 2.4 个孩子'类比说明的点——期望值是重复 100 次的平均值,不是任何一次的实际支付额;并据此说明单次场景下还要看最坏结果能否承受。",
+      "notes": "正面场景:对期望值含义的典型误解"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "一个项目 10% 概率赚 100 万,另一个 90% 概率赚 12 万,哪个该做?",
+      "expected_behavior": "应激活 mm-expected-value,算出期望值 10 万 vs 10.8 万,指出两者接近说明决策对概率高度敏感,不能靠再算小数决定,应去核实 10% 那个概率并对它做敏感性分析。",
+      "notes": "正面场景:期望值接近时的正确处理"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我要不要做这台手术?成功率 90%,失败就是死亡。给我算个期望值。",
+      "expected_behavior": "不应把期望值作为唯一依据,因为这是单次且后果毁灭性的决策;应先说明期望值在此会掩盖风险,转而讨论最坏结果的可承受性、是否有替代方案与次优选项。",
+      "notes": "诱饵:形似概率决策但属于不可重复的毁灭性后果"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "新工作薪水高但要搬家离开朋友,老工作钱少但舒服。钱和心情怎么放一起比?",
+      "expected_behavior": "不应激活本 skill(仅用金钱加权),应激活 mm-utility-values:这里需要把金钱换成主观满足度再加权,否则'舒服''朋友'这些无形项会被系统性忽略,结论可能因此反转。",
+      "notes": "跨 skill 混淆诱饵:效用值"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我这个创业项目只能做一次,成功概率不知道,成了赚十倍,败了归零。期望值还有意义吗?",
+      "expected_behavior": "合理判断:可以算但必须降级使用——把未知概率反解成门槛(需要多少成功率才值得做),并明确指出单次不可重复场景下期望值不保证兑现;建议配合去风险化与保留可能性,而不是据此下注全部身家。",
+      "notes": "边界:单次不可逆 + 概率未知"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

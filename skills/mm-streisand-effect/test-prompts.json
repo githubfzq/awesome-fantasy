@@ -1,0 +1,52 @@
+{
+  "skill": "mm-streisand-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "有个博主发了篇说我们产品难用的文章，阅读量才两三百。我想投诉到平台把它下架，顺便发个律师函。合适吗？",
+      "expected_behavior": "应激活 mm-streisand-effect，先测当前可见度（两三百，量级很低），评估遮盖动作的新闻价值（企业 vs 个人博主、以大欺小叙事、媒体爱报「被封」），比较压与不压的预期传播量，建议改为直接回应或让其自然沉没，并说明为什么压制会把两三百变成几十万。",
+      "notes": "正面场景：低热度内容的压制决策"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们内部出了个事故，有人拍了照片发到群里。领导说先把群消息撤回，谁也不许往外说。这样行吗？",
+      "expected_behavior": "应激活 mm-streisand-effect，指出封口动作本身会制造信息真空与猜测、并极易催生外部泄露，建议改为有限范围的透明通报 + 事实说明，同时区分「不许对外撒谎」与「全员封口」。",
+      "notes": "正面场景：内部事故的封口决策"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们去年删掉的那条负面帖，现在又被翻出来了，还多了「被删过」这个说法在传。为什么越删越麻烦？",
+      "expected_behavior": "应激活 mm-streisand-effect，解释传播动力已从内容本身转移到「被压制」这件事上，删除记录本身成了新的新闻要素；建议停止追加删除，改用公开说明 + 提供可核对的事实，把叙事从「他们在掩盖」拉回事实层面。",
+      "notes": "正面场景：压制后持续扩散的诊断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我把自己的朋友圈设成了三天可见，只是不想让新加的人翻旧内容。",
+      "expected_behavior": "不应激活本 skill，因为这是个人正常的隐私设置，既不是对已公开信息的公开压制，也不具备任何新闻价值，不会引发公众好奇。",
+      "notes": "诱饵：正常隐私设置"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们摆了一堆数据和案例，想纠正用户对我们产品的错误印象，结果他们反而更坚信自己原来的看法了。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-backfire-effect。问题发生在信念层面（摆出反面证据反而加固原有信念），而不是注意力层面的遮盖放大，属于逆火效应而非史翠珊效应。",
+      "notes": "跨 skill 混淆诱饵：逆火效应"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "有人伪造了我们的公章发了一份假声明，已经有人在传。这个必须删吧？",
+      "expected_behavior": "合理的判断是：这类情形属于依法必须处理的明确侵权/伪造，处理是义务，不能以传播风险为由不作为——但执行方式仍应参考本 skill。合理做法：走平台侵权投诉与必要的法律程序的同时，同步发布一份简短、可核对的公开辟谣（说明哪份是假的、真的长什么样、如何查验），把删除动作包在公开说明里，避免只删不说造成的「被消失」叙事。判断原则：该不该删由法务与事实决定，怎么删由传播后果决定。",
+      "notes": "边界：合法必要的删除如何降低反噬"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-opportunity-cost",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我准备辞职创业，前期投入大概 30 万，感觉成本也就这些吧？",
+      "expected_behavior": "应激活 mm-opportunity-cost，补齐隐性成本：放弃的工资福利、资金的其他投资收益、利息、对家庭与自我实现的影响，再与创业回报比较。",
+      "notes": "最典型的正面场景：只算显性成本"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "为了省点钱开更远的路去加油，是不是挺划算的？",
+      "expected_behavior": "应激活本 skill，给时间定价后折算：省下的钱 vs 多耗时间折算的金额，说明这是用更贵的资源换更便宜的资源。",
+      "notes": "省钱但耗时的日常行为"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个功能自己开发还是买现成的 SaaS，怎么选？",
+      "expected_behavior": "应激活本 skill，列出两方案显性+隐性成本，识别各自放弃的最佳替代机会（自研占用的人力本可做什么），排序给出建议。",
+      "notes": "自建 vs 采购"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个项目已经投了两百万了，现在停掉前面的钱就全白费了。",
+      "expected_behavior": "不应激活本 skill，因为讨论的是已发生、不可收回的投入，应激活 mm-sunk-cost-fallacy 把它排除出决策。",
+      "notes": "诱饵：过去投入 vs 未来放弃项"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个创业方向成功率大概 20%，成功了能赚 500 万，值得下注吗？",
+      "expected_behavior": "不应激活本 skill，这是单一方案的概率与收益评估，应激活 mm-expected-value（期望值）而非选项间的机会成本比较。",
+      "notes": "跨 skill 混淆诱饵：都是\"值不值得\""
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我想同时兼顾事业和家庭，两边的机会成本都太高了，有没有两全的办法？",
+      "expected_behavior": "可激活但要明确告知：书中明示，无法拥有一切时多个重要目标之间必然有权衡取舍，机会成本给出的是排序而非消除取舍，不能承诺两全。",
+      "notes": "边界：用户希望消除取舍本身"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-anchoring",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "甲方开口就说这个活儿预算 20 万，我们内部估的是 35 万。要不要直接让步到 25 万显得有诚意？",
+      "expected_behavior": "应激活 mm-anchoring，先做无锚测试（如果没听过 20 万，这个活值多少），用成本侧推导 + 可比项目市场价 + 己方 BATNA 建立独立区间，坚持以独立区间而非对方数字为起点，把话题拉回'这活本身值多少'。",
+      "notes": "正面场景：被对方先发报价锁定区间"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这件外套标价 1999，现在打三折只要 599，是不是很划算？",
+      "expected_behavior": "应激活 mm-anchoring，指出虚高 MSRP 是典型锚点，折扣感来自'省了多少'而非'值多少'；要求独立估算该品类的真实市价与成本区间，再判断是否划算，并检查是否有次级锚（限时、仅剩几件）。",
+      "notes": "正面场景：零售虚高定价，书中明确举过 MSRP 例子"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要给新项目定工期，领导随口说了句'上次类似的好像三个月'。现在大家都按三个月排。",
+      "expected_behavior": "应激活 mm-anchoring，指出这个随口的数字成了全团队基准但可能毫无依据；做无锚测试，用任务拆分与历史数据重新估算，并指出锚不需要合理就能生效的机制。",
+      "notes": "正面场景：无依据的第一个数字成为集体基准"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这只基金的管理费是每年 1.5%，托管费 0.1%，我持有 50 万三年，总共要交多少？",
+      "expected_behavior": "不应激活本 skill。这是可直接精确计算的问题，有明确公式与输入，不存在参照点被先发信息劫持的情况，直接算即可。",
+      "notes": "诱饵：有数字、有费用，但没有先后暴露的参照点"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "同一组业绩数据，说'增长 8%'和说'未达 15% 目标'给人的感觉完全不一样，我该怎么向老板汇报？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-framing：这是同一事实的多种表述（框架）问题，不涉及先发数值锁定后续判断区间。锚定是框架效应中数值化、先发化的特例，本例不具备'先发锁定'结构。",
+      "notes": "跨 skill 混淆诱饵：书中把锚定为'第一则发挥框架效应的信息'，极易混淆"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我知道有锚定效应，所以对方报价时我特意提醒自己别受影响，但最后还是在他那个数附近成交了。为什么？",
+      "expected_behavior": "应激活本 skill 并指出核心边界：知道锚定存在并不能免疫锚定。唯一有效的防守是在接触锚之前先做出独立估算，事后心理提醒几乎无效；建议下次在谈判前就写好独立区间并以其为起点。",
+      "notes": "边界：元认知失效，需在暴露前建立估算而非事后提醒"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-framing。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-law-of-diminishing-utility",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "自助餐我已经吃了三个蛋糕了，还想再拿第四个，但已经开始有点腻，要不要再来一份？",
+      "expected_behavior": "应激活 mm-law-of-diminishing-utility，把每一份蛋糕作为可数单位，让用户给第 1/2/3/4 份的满足感打分，指出边际满足感已明显下滑，并给出停止建议：在边际满足感跌破边际成本（腻、胃胀、负罪感）的那一单位之前停手。",
+      "notes": "正面场景：追加消费的边际判断"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的会员权益已经送了 8 项了，还想再加第 9、第 10 项，加上去用户还会在意吗？",
+      "expected_behavior": "应激活 mm-law-of-diminishing-utility，说明消费端边际效用衰减，建议逐项评估第 N 项权益带来的增量感知价值与其成本，定位用户感知开始钝化的那一项，并建议把资源转向用户还没被填饱的需求。",
+      "notes": "正面场景：产品堆料到什么程度够"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我囤了 200 节课，买了之后再也没打开过，是不是买多了？以后到底该买几门？",
+      "expected_behavior": "应激活 mm-law-of-diminishing-utility，把\"每多买一门课\"作为单位，说明第 1 门的满足感最高、后续递减，建议按\"上一门学完再买下一门\"的节奏替代一次性囤课。",
+      "notes": "正面场景：囤货数量决策"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们团队现在 5 个人，再加 2 个人产出能多多少？会不会人越多效率越低？",
+      "expected_behavior": "不应激活本 skill，因为这是投入端（多投入人力多产出多少）的效率问题，属于收益递减法则；应改用 mm-law-of-diminishing-returns。",
+      "notes": "诱饵：看似\"递减\"实为投入端"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我已经连续三个月每天加班到凌晨，现在一想到工作就恶心，效率也掉得厉害。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-negative-returns。此时已越过临界点、总量在净下降（健康与产出同时恶化），不再是边际递减而是负收益；书中以过劳死与考前开夜车为例说明这种情形。",
+      "notes": "跨 skill 混淆诱饵：负收益（已越过临界点）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我每天背 100 个单词，背到第 60 个就记不住了，是效用递减还是我方法有问题？",
+      "expected_behavior": "合理判断：表面是\"越背越没效果\"的递减现象，但技能与记忆属于会累积的东西，边际效用未必单调递减——更可能是间隔与复习方法问题。应先按本 skill 逐段（每 20 个一组）测边际记忆留存率；若留存率随总量上升而非递减，则应转向学习方法（间隔效应）而非砍量，不应简单套用消费端递减结论。",
+      "notes": "边界：累积型活动的边际效用未必递减"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

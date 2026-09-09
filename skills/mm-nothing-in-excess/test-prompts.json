@@ -1,0 +1,52 @@
+{
+  "skill": "mm-nothing-in-excess",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "为了不出错，我准备再加两道审批和一份周报，应该更稳吧？",
+      "expected_behavior": "应激活 mm-nothing-in-excess，把变量锁定为\"审批层级/汇报频率\"，找出拐点的可观察信号（交付周期、抵触情绪），判断当前是否已越过并给出回撤建议。",
+      "notes": "最典型的正面场景：管控加码"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我每天练两小时还想加到四小时，是不是练得越多进步越快？",
+      "expected_behavior": "应激活本 skill，指出边际效用递减乃至转负，找拐点信号（恢复不足、伤病、状态下滑），判断当前位置并给出回撤数值。",
+      "notes": "个人投入加码"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "产品功能越全用户越喜欢，我们准备把竞品有的功能全加上，对吧？",
+      "expected_behavior": "应激活本 skill，说明好东西超过某个量反而变坏事，锁定功能数为变量、给出转折信号（上手成本、核心价值被稀释）。",
+      "notes": "产品加码"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "再投一万块广告，带来的新增客户比上一万块少一些，但还是有得赚。",
+      "expected_behavior": "不应激活本 skill，因为收益只是递减但尚未转负，这是收益递减法则的场景，不是过犹不及。",
+      "notes": "诱饵：递减 ≠ 转负"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我要买台咖啡机，看了三百条评论和二十个型号，现在完全选不出来了。",
+      "expected_behavior": "不应激活本 skill，这是信息量超出处理能力的问题，应激活 mm-information-overload（信息超载）。",
+      "notes": "跨 skill 混淆诱饵：都是\"太多了\""
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "现在我们减审批减得挺狠的，会不会反而不够稳？",
+      "expected_behavior": "可激活但方向相反：本模型说的是最优点在中间而非极端，减到越过下限同样是\"过\"。应判断当前位置是否已越过下限并给出回调数值。",
+      "notes": "边界：反向的\"过\"同样适用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

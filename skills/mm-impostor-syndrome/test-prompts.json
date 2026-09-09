@@ -1,0 +1,52 @@
+{
+  "skill": "mm-impostor-syndrome",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "刚升了主管，但我总觉得是运气好，过几个月大家就会发现我其实什么都不会。",
+      "expected_behavior": "应激活 mm-impostor-syndrome，先确认客观成就与自我评价的背离，再按三步干预：讲清 70% 普遍性、把新岗位的小错重构为离开舒适区的正常产物、建议连接有类似经历的导师",
+      "notes": "正面场景：典型怕被识破"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "团队里那个最靠谱的工程师，现在每天加班到十二点反复检查自己的代码，说怕出低级错误被笑话。",
+      "expected_behavior": "应激活本 skill，识别为劳累过度与完美主义的下游反应，除三步干预外单独处理过劳问题",
+      "notes": "正面场景：下游反应"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "I got accepted into the program but I feel like a fraud. Everyone else seems to actually know what they're doing.",
+      "expected_behavior": "应激活本 skill，说明 70% 普遍性与'离开舒适区犯小错是意料之中'，并建议与有同样经历的同伴建立联系",
+      "notes": "正面场景：英文触发词 fraud"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我刚转岗做数据，确实还不会写复杂查询，需要系统学一下。",
+      "expected_behavior": "不应激活本 skill，因为这是真实的能力缺口，应走能力建设与学习路径，而非按冒名顶替处理",
+      "notes": "诱饵：自我评价低但有客观依据"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他刚学了两周就觉得自己比干了五年的同事都懂，谁的意见都听不进去。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-dunning-kruger-effect（邓宁-克鲁格效应）：书中明确指出两者恰恰相反，此处是高估自己而非低估自己",
+      "notes": "跨 skill 混淆诱饵：书中明示的对照模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "她说自己不配在这个位置，但她们部门确实只有她一个女性，上级的评语里也有些明显的偏见。",
+      "expected_behavior": "应激活本 skill 但须谨慎：不能只用'你只是冒名顶替综合征'来否定对环境的合理担忧；应区分内部归因与真实存在的外部偏见，两条线分别处理",
+      "notes": "边界：模型被误用来忽视真实外部因素"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-cost-benefit-analysis",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我在纠结买房还是继续租房,列了张利弊清单,租房那边列了 8 条好处,买房只有 3 条,但买房那 3 条都特别重。怎么比?",
+      "expected_behavior": "应激活 mm-cost-benefit-analysis,指出利弊清单在数条数、会把 8 条小利压过 3 条重利;引导给每项打 -10~10 分、把分数折成美元、排出首付/按揭/维修/房产税与未来卖房回报的年份时间轴、折现后算净收益。",
+      "notes": "正面场景:利弊清单失效后的自然升级"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "有个方案是 6 年回本总共拿回 7.5 万,另一个 10 年回本拿回 10 万,哪个更划算?",
+      "expected_behavior": "应激活 mm-cost-benefit-analysis,并明确指出时间跨度不同的选项不能直接比总额——6 年方案拿回的钱可以再投资 4 年;应按折现率折成现值后比较净收益,并做敏感性分析。",
+      "notes": "正面场景:书中明示的时间跨度陷阱"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "辞职去读两年全日制 MBA 到底值不值?学费加放弃的工资是一大笔,但我觉得长期会赚回来。",
+      "expected_behavior": "应激活 mm-cost-benefit-analysis,把放弃的工资作为机会成本计入成本栏,把未来各年增量收入按年份排开并折现,算净收益;并提醒找读过 MBA 的人核对漏掉的成本项。",
+      "notes": "正面场景:典型重大个人决策"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我该不该跟相恋五年的人结婚?帮我分析一下利弊。",
+      "expected_behavior": "不应激活本 skill,因为这是价值与情感判断,强行把感情折算成美元会造成虚假精确并冒犯用户;应先澄清用户真正在意的冲突点,必要时改用价值观澄清类对话。",
+      "notes": "诱饵:形似'重大决策'但不可标价"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "两个承包商,一个固定报价 2500 美元,另一个报 2000 但只有一半概率按时完工,拖一周加 250、拖两周加 500、拖三周以上返工加 1000。选哪个?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-decision-tree(再配合 mm-expected-value):这里存在多种可能后果且需按概率分叉,成本收益分析假设每条成本收益是确定的;正确做法是画决策树、给每项后果标概率、算期望成本。",
+      "notes": "跨 skill 混淆诱饵:决策树/期望值"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我要评估一个百年期的环保项目,用 8% 折现率算下来净收益是负的,是不是就别做了?",
+      "expected_behavior": "合理判断:在成本收益分析框架内算术没错,但应明确指出书中警告——在气候等超长期议题上,累积折现会把后代利益压到近乎零,被部分经济学家指为不公不道德;建议改用低折现率或代际视角重算并做敏感性分析,同时说明这不是纯财务决策。",
+      "notes": "边界:折现率在超长期议题上的伦理失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

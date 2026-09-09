@@ -1,0 +1,52 @@
+{
+  "skill": "mm-herd-immunity",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要求全员完成安全培训，现在只有 70% 的人做完了。有人说「别人都做了，我不做也安全」，这个说法对吗？",
+      "expected_behavior": "应激活 mm-herd-immunity，说明阈值逻辑：安全培训的覆盖率决定「不合规行为是否还有可模仿的传播载体」，并用「未受惩罚的违规存量」做判据，估算该情境的阈值并说明当前 70% 在哪一侧。",
+      "notes": "正面场景：覆盖率与搭便车"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "公司里以前很少有人虚报差旅，最近一两年突然变多了，而且现在不报反而显得你傻。怎么会突然变成这样？",
+      "expected_behavior": "应激活 mm-herd-immunity，把违规行为识别为可传染行为，指出未受惩治的违规存量越过阈值后规范迅速固化为新常态，并强调跌破阈值后恢复成本远高于维持成本。",
+      "notes": "正面场景：社会规范版阈值崩塌"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要推一个新编码规范，团队 12 个人，需要多少人真正用起来，这个规范才能自己维持下去？",
+      "expected_behavior": "应激活 mm-herd-immunity，引导估算阈值而非拍脑袋定目标，指出阈值随「可模仿性」变化，并给出把覆盖率推过阈值的具体杠杆（工具化、公开化违规、便利化）。",
+      "notes": "正面场景：阈值估算"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们部门 8 个人投票决定要不要换项目管理工具，5 票赞成 3 票反对，这样定合适吗？",
+      "expected_behavior": "不应激活本 skill，因为这是多数决的决策规则问题，不存在传染/模仿机制，也没有「未参与者被保护」的溢出效应。",
+      "notes": "诱饵：涉及比例但无传染机制"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们新上的互助健康险，来买的大多是已经知道自己明年要做手术的人，健康的年轻人都不参保，保费一路涨，怎么办？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-adverse-selection。此处恶化的是风险池的「质量」（高风险者留下、低风险者退出），而不是宿主链的「传播」，应走强制参保或差异化定价，而非覆盖率阈值分析。",
+      "notes": "跨 skill 混淆诱饵：逆向选择"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "办公室冰箱里的公共牛奶总被人拿光，我觉得应该定个规矩。这个用群体免疫的思路能分析吗？",
+      "expected_behavior": "合理的判断是：这里更适合 mm-tragedy-of-the-commons（共享资源被各自多拿），只有当「拿牛奶」变成可观察、被模仿且未受惩罚的行为并形成规范时，才叠加群体免疫视角。应说明判据是「是否存在模仿链」，并给出两套并行的解法方向。",
+      "notes": "边界：与公地悲剧的接缝处"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-technical-debt",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "客户下周要看 demo，我这周必须上线，测试先跳过、配置先写死，后面再改。可以吗？",
+      "expected_behavior": "应激活 mm-technical-debt，明确这可以欠但要记账：写清本金（省下的时间）与利息（未来每次改动的额外成本），并登记位置、原因、偿还条件（可观测信号）与预计偿还时间。",
+      "notes": "正面场景：该不该欠这笔债"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "为什么现在加一个小功能要一周？三年前两天就搞定了。",
+      "expected_behavior": "应激活 mm-technical-debt，把改动变慢定位为累积的利息，按「被改动频率 × 每次额外成本」排偿还优先级，并建议固定比例（如每迭代 15-20%）持续偿还而非等大重构。",
+      "notes": "正面场景：利息显现"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "老板问我们为什么这个季度不能只做新功能，我该怎么解释？他是非技术出身。",
+      "expected_behavior": "应激活 mm-technical-debt，把技术债翻译成时间与灵活性的成本（现在省下的时间 vs 未来每次改动的额外成本、灵活性下降），并用书中的胶带类比帮助理解：卖房时反而要以更高价格重新修理。",
+      "notes": "正面场景：向非技术方解释"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我写了段一次性脚本，跑完这个数据 migration 就删掉，不留痕迹。",
+      "expected_behavior": "不应激活本 skill，因为不存在未来利息——用完即弃、不影响未来改动灵活性，属于非债务。",
+      "notes": "诱饵：临时代码但无未来成本"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们三年前随手选了这个云厂商，现在数据全在上面，迁移成本太高，明知别家更便宜也换不动。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-path-dependence。核心是「越用越难换」的锁定与切换成本，而不是「打补丁欠下的债」，应转向迁移成本估算与出口设计。",
+      "notes": "跨 skill 混淆诱饵：路径依赖"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们是个还在验证需求的早期项目，几乎每个设计都是临时的。技术负债这套还适用吗？",
+      "expected_behavior": "合理的判断是：适用但要轻量。作者明确指出技术负债不一定有害、有助于项目短期内迅速推进，早期大量欠债是合理的；关键分野是「有责任心的观察者 vs 无意识的温水青蛙」——仍需简易记账与偿还条件（如「若该方向被验证则两周内重写该模块」），而不是建立重度流程。同时应标注哪些模块被放弃时可直接丢弃、不计入债务。",
+      "notes": "边界：早期项目该不该记账"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

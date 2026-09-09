@@ -1,0 +1,52 @@
+{
+  "skill": "mm-third-story",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我和搭档因为交付延期吵起来了。他觉得是我需求改个不停，我觉得是他一直不反馈。我俩都觉得自己没错，明天还得谈，怎么办？",
+      "expected_behavior": "应激活 mm-third-story，分别写下两人各自会认可的版本，补上各自省略的不利事实（如确实中途改了需求、也确实三天没回消息），合成一段中立叙述，并给出以第三方故事开场的话术。",
+      "notes": "正面场景：冲突后准备困难谈话"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我要给两个争执不下的下属做调解，两边说法完全对不上，我需要一个双方都能接受的开场。",
+      "expected_behavior": "应激活 mm-third-story，产出一段双方都不觉得被诬蔑的第三方叙述作为共同起点，再引导各自补充事实。",
+      "notes": "正面场景：第三方主持调解"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我越想越气——这次项目搞砸，从头到尾就是他一个人的问题，我实在想不出他有什么可说的。",
+      "expected_behavior": "应激活 mm-third-story，要求用户先尝试写出『对方会认可的版本』，并补出一条对自己不利的事实，检查是否只保留了有利于自己的片段。",
+      "notes": "正面场景：单方叙事越想越笃定"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "服务器宕机四小时，日志显示是配置误操作导致的。请帮我写事故责任认定。",
+      "expected_behavior": "不应激活本 skill，因为事实与责任已清晰，需要的是结论与处置，中立复述会模糊责任（应转向 root-cause / 5-whys）。",
+      "notes": "诱饵：需要定论而非中立叙述"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "同事发来一句『行吧』，我总觉得他是在阴阳怪气，是不是对我有意见？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-most-respectful-interpretation 或 mm-hanlon-s-razor（对单个动机不明的信号做解释选择），而不是构造整件事的中立版本。",
+      "notes": "跨 skill 混淆诱饵：动机解释 vs 事件叙述"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "领导让我在复盘会上『客观地描述一下这次冲突』，但我知道领导心里已经认定是我的责任了。",
+      "expected_behavior": "合理判断：可以激活，但要提醒：第三方故事不是用来讨好听众或抹平真实差异的；正确做法是如实写出包含双方行为的中立叙述（包括对自己有利的事实），而不是为了显得『客观』而自我牺牲式地揽责。",
+      "notes": "边界：中立 vs 假装中立 / 被迫让步"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

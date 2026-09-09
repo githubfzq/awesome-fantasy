@@ -1,0 +1,52 @@
+{
+  "skill": "mm-tit-for-tat",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "合作方这次交付违约了,我要不要也给他们点颜色看看?",
+      "expected_behavior": "应激活 mm-tit-for-tat,先确认存在下一轮;再判断这是失误还是背叛(对方是否知情、是否获益、此前是否有类似行为);若是背叛,采取与对方上一轮行为对等的回应而非加倍报复,并让对方清楚这是对某行为的回应,同时留恢复通道。",
+      "notes": "正面场景:长期关系遭遇背叛"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我一直当好好先生,结果总被人占便宜,怎么既不吃亏又不撕破脸?",
+      "expected_behavior": "应激活 mm-tit-for-tat,给出'开局合作、此后对等回报'的打法:善意开局启动合作循环,对等报复让背叛得不偿失;报复必须让对方清楚这是对某行为的回应,且保留随时恢复合作的可能。",
+      "notes": "正面场景:建立不吃亏的相处方式"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "同事这次忘了同步一个重要信息害我返工,我要不要以后也对他这样?",
+      "expected_behavior": "应激活 mm-tit-for-tat,明确指出这是疑似单次失误而非规律性背叛,不应报复——书中提醒等对方背叛呈现出规律再实施报复,过度反应会毁掉卓有成效的关系;建议继续合作并明确表达一次。",
+      "notes": "正面场景:避免误报复"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我在二手平台卖东西,买家是一次性交易,收货后恶意压价。我要不要也给他差评报复?",
+      "expected_behavior": "不应激活本 skill,因为一次性交往没有下一轮可报复,报复无从构成威慑;应改用平台仲裁、规则申诉等外部机制,而不是套用对等策略。",
+      "notes": "诱饵:也讲报复但无下一轮"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "客户帮我们介绍了好几个新客户,我们是不是应该也回馈点什么?这种心理是怎么运作的?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-reciprocity:互惠是别人给了好处就想回报的影响力原则,偏'回报善意'且常被用作说服手段;以牙还牙是双向对称的博弈策略(既回报善意也回报背叛),服务于长期均衡。此处没有背叛也没有报复,只是善意回报。",
+      "notes": "跨 skill 混淆诱饵:互惠"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "合作方签了假合同骗了我们一大笔钱,还要不要按'对等回应'慢慢来?",
+      "expected_behavior": "合理判断:涉及违法与严重背信时,对等报复不再适用——应诉诸规则与法律(报案、仲裁、诉讼),同时冻结后续合作;以牙还牙适用于长期关系中的灰色摩擦,不适用于犯罪与重大背信,此时首要目标不是维持均衡而是止损与追责。",
+      "notes": "边界:严重背信/违法超出对等报复范围"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

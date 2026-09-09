@@ -1,0 +1,52 @@
+{
+  "skill": "mm-present-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "健身卡办了半年，每次都能给自己找到不去的理由，是不是我太懒了？",
+      "expected_behavior": "应激活 mm-present-bias，说明这不是懒而是现时偏好：即时回报被高估、长期进步被低估，并给出长期收益具体化与预设借口应对方案。",
+      "notes": "最典型的正面场景：拖延与即时满足"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我总说明天开始存钱，但明天到了又想买东西，怎么破？",
+      "expected_behavior": "应激活本 skill，指出未来被打折且不随时间自动修正，建议用承诺与默认机制（自动转账）锁定未来。",
+      "notes": "跨期选择冲突"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "明知道该写那个方案，但就是一直刷手机停不下来。",
+      "expected_behavior": "应激活本 skill，识别即时诱惑 vs 长期目标的冲突，给出降低即时诱惑阻力与预设最低行动量的做法。",
+      "notes": "即时诱惑占据上风"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我想每天固定时间锻炼，怎么让它变成不用想就做的事？",
+      "expected_behavior": "不应激活本 skill（作为主模型），用户问的是机制设计，应激活 mm-default-effect 用默认设置与重复时段解决。",
+      "notes": "诱饵：已知问题在问解法"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这段感情已经投入五年了，虽然不开心但还是舍不得放手。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-sunk-cost-fallacy；用户不愿放弃的是已经投入的过去，不是当下的舒适。",
+      "notes": "跨 skill 混淆诱饵：都表现为\"该放手不放手\""
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我最近项目连轴转，每天加班到十点，实在没有精力去健身了。",
+      "expected_behavior": "应谨慎激活：先区分是现时偏好找借口还是真实的过载与疲劳；若确属负荷问题，应转向决策疲劳/负荷管理，而不是套用拖延模型。",
+      "notes": "边界：合理自我保护 vs 拖延"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

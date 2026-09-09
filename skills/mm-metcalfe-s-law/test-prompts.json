@@ -1,0 +1,52 @@
+{
+  "skill": "mm-metcalfe-s-law",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们做的是团队协作工具，团队里人越多越离不开。现在 3 万用户，投资人问我们到 30 万的时候价值会变成多少倍。",
+      "expected_behavior": "应激活 mm-metcalfe-s-law，先确认节点间存在真实连接（同一团队内的协作），再按 n² 量级估增长，同时明确提醒「每个节点价值相同、所有节点都希望彼此相连」这两条假设不成立，只给量级不给精确估值。",
+      "notes": "正面场景：网络价值随规模估算"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的社区产品前半年涨得很慢，最近突然开始自增长了。是不是因为跨过了某个规模？",
+      "expected_behavior": "应激活 mm-metcalfe-s-law，用价值随节点数平方增长解释「过了某个点突然加速」，并估算临界区间与达到后应观察的指标，必要时转 mm-critical-mass。",
+      "notes": "正面场景：解释临界点后的加速"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "要不要在早期给双边市场一端大额补贴先把人铺起来？成本高得吓人。",
+      "expected_behavior": "应激活 mm-metcalfe-s-law，计算节点翻倍的 n² 价值增长与获客成本之比，并警告：若新增节点不活跃、不连接，实际收益是线性而非平方。",
+      "notes": "正面场景：补贴早期节点的论证"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们做的是单机版的图片压缩工具，用户之间完全不认识也不需要交互。明年用户翻倍，收入大概会怎样？",
+      "expected_behavior": "不应激活本 skill，因为节点间无连接、无网络价值，价值随用户线性增长；用 n² 估算会严重高估，应改用线性模型。",
+      "notes": "诱饵：用户规模增长场景，但无网络连接"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们产品里用户会互相看到对方发的内容，用户越多内容池越大。我该怎么判断这种「用户越多产品越好用」的效应到底成不成立？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-network-effects——用户在问网络效应是否成立（定性判断），而不是估算价值随规模增长的陡峭程度。",
+      "notes": "跨 skill 混淆诱饵：与 mm-network-effects 高度相邻，区分点在「定性成立与否」还是「定量增长多陡」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的论坛注册用户 200 万，但活跃发帖的只有 2000 人。按梅特卡夫定律我们不是应该价值巨大吗？",
+      "expected_behavior": "应激活本 skill 但给出修正结论：n² 只对数「有效连接着的节点」成立，200 万注册用户里绝大多数不连接、不产生价值，实际有效 n 接近 2000；应重算有效节点数，并指出这是定律「每个节点价值相同」假设失效的典型情形。",
+      "notes": "边界：注册数 ≠ 有效节点数"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

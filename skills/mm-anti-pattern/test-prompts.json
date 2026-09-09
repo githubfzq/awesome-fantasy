@@ -1,0 +1,52 @@
+{
+  "skill": "mm-anti-pattern",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "每次需求评审会，大家都在纠结按钮文案和配色，一吵就是一小时，真正的架构问题从来没人提。这明明是正常讨论，怎么会这样？",
+      "expected_behavior": "应激活 mm-anti-pattern，识别为自行车棚效应（在琐事上过度纠缠），并给出对应的设计模式替代（先评审架构决策、琐事限时并指定负责人事后定），而不只是抱怨。",
+      "notes": "正面场景：书中明示的反面模式"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们季度末冲业绩已经连续三个季度了，团队越拼产出反而越低，大家都在加班。销售激励也很到位啊。",
+      "expected_behavior": "应激活 mm-anti-pattern，识别为负收益（继续投入反而变差），指出这是有已知更好方案的反面模式，需要停止加码并寻找替代方案。",
+      "notes": "正面场景：直觉性加码反而变差"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要推一套新的绩效考核制度，能不能提前帮我预判一下通常会怎么失败？",
+      "expected_behavior": "应激活 mm-anti-pattern，有针对性地列出该领域已知的反面模式（指标被操纵、过度关注可量化部分、评审趋同），并逐条给出对应的设计模式与防复发装置。",
+      "notes": "正面场景：主动排雷"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们系统昨天宕机了，是因为运维同学误操作删了配置。以后要怎么避免？",
+      "expected_behavior": "不应激活本 skill，因为这是单次执行失误，不符合「反复出现的直觉性做法」；应走具体原因排查（权限、复核、备份）。",
+      "notes": "诱饵：看起来像出错，但不是模式性问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我要给新入职的同事写一份规范，关于我们的代码目录应该怎么组织、日志怎么打，有没有现成的成熟做法可以参考？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-design-pattern——用户要的是可复用的正面模板，不是识别陷阱；应直接给出既有设计模式。",
+      "notes": "跨 skill 混淆诱饵：与 mm-design-pattern 同章成对，区分点在要模板还是要避雷"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我觉得我们每周的站会完全是浪费时间，这肯定是个反面模式吧？",
+      "expected_behavior": "可以激活 mm-anti-pattern 但须先核对三条判据：站会是否有效率的已知替代方案（有），但是否「反复失败且直觉驱动」需要确认；若是参与人数过多导致，则根因是规模阈值（mm-group-size-thresholds）而非站会本身是反面模式。",
+      "notes": "边界：考验会不会把不喜欢的东西随便贴上反面模式标签"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

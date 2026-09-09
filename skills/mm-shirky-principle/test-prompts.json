@@ -1,0 +1,52 @@
+{
+  "skill": "mm-shirky-principle",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们想让员工自助报销，财务部门强烈反对，说风险不可控，可我觉得没那么复杂，怎么回事？",
+      "expected_behavior": "应激活 mm-shirky-principle，画出谁从「报销需人工审核」这个问题中获益，检验「若自助化实现谁受损」，把反对意见分成技术性与存在性两类，并设计一个让财务转型为规则制定与抽样审计角色的过渡方案。",
+      "notes": "正面场景：内部流程简化被卡"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "为什么这么多年都没有一个真正省事的报税方式？明明技术上都做得到。",
+      "expected_behavior": "应激活 mm-shirky-principle，援引书中 TurboTax 让报税变轻松却游说反对政府预填表制度（return-free filing）的案例，说明解决方案提供者的收入与存在感绑定在「问题仍在」上，因此会阻挠根除问题的更简单方案。",
+      "notes": "正面场景：行业性低效为何长期存在（书中原型）"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "团队里老同事什么改动都反对，一句「我们这儿一直是这么做的」就挡回来了。",
+      "expected_behavior": "应激活 mm-shirky-principle，指出这正是该原则在个人层面的表现；先检验其收益是否绑定在现有做法上（问题消失他是否受损），甄别哪些反对是真经验、哪些是存在性防御，并提醒用户照镜子：自己是否也靠某个本可消失的问题吃饭。",
+      "notes": "正面场景：个人层面的抗拒变革"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们给客服定了「通话时长越短越好」的指标，结果他们开始挂断客户电话，怎么改指标？",
+      "expected_behavior": "不应激活本 skill，因为这是激励设计导致行为扭曲，属于不当诱因；舍基原则特指组织因存在感受到威胁而维护问题本身。应改用 mm-perverse-incentives 或 mm-goodhart-s-law。",
+      "notes": "诱饵：激励扭曲而非护问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们公司就是节奏慢，大家不是反对改，就是懒得改，怎么推动？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-inertia。阻力来自无明确利益动机的惰性与维持现状倾向，而非「问题消失会损害收益」的结构性绑定；舍基原则要求先确认有人因问题消失而受损。",
+      "notes": "跨 skill 混淆诱饵：惯性（无动机 vs 有利益动机）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们想砍掉一个中间审批环节，被砍的那个团队确实会没活干，但他们说的安全风险听起来也很有道理，怎么办？",
+      "expected_behavior": "合理判断：两种情况可以同时成立，不应二选一。正确做法是把反对意见逐条分成技术性与存在性——真实的安全风险必须认真对待并设计补偿控制，而存在性防御部分则通过让该团队转型（转向规则制定、抽样审计）来解决。既不能把正当专业意见当阴谋，也不能因为有安全理由就忽略利益绑定。",
+      "notes": "边界：正当专业意见与存在性防御并存"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

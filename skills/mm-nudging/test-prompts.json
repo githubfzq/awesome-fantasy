@@ -1,0 +1,52 @@
+{
+  "skill": "mm-nudging",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我明明只是想买个基础版，最后却买了那个『热门推荐』的套餐。我是不是被套路了？",
+      "expected_behavior": "应激活 mm-nudging，还原当时的选项环境（推荐标签、排序、默认勾选），对提示元素做去除测试，并判断该助推服务谁的利益、退出成本多高。",
+      "notes": "正面场景：事后察觉自己被引导"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们想让更多员工参与企业年金，但不想强制。有什么办法不改变成本地提高参与率？",
+      "expected_behavior": "应激活 mm-nudging，给出不限制选择自由的选项环境改法（默认加入但可一键退出、简化说明、邮件措辞、同事参与提示），并强调保留退出自由。",
+      "notes": "正面场景：设计向善的助推"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要做用户调研，我准备问『您对我们新功能有多满意？』，这样问没问题吧？",
+      "expected_behavior": "应激活 mm-nudging，指出该措辞带有引导性（预设了满意），给出中性替代问法并说明措辞会改变回答分布。",
+      "notes": "正面场景：无意识的措辞助推"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个 App 的『免费试用』按钮点进去就自动续费，取消要到四级菜单里找客服才能办。",
+      "expected_behavior": "不应激活本 skill（至少不应停留在助推层面），因为退出成本极高、属于用阻碍退出进行操纵，应激活 mm-dark-patterns。",
+      "notes": "诱饵：越界的操控而非中性助推"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "同一份保险，销售说『保障覆盖 90% 的情况』比说『有 10% 情况不赔』时客户接受度高得多，这是怎么回事？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-framing（同一选项的得失表述改变评价），而不是选项环境层面的助推。",
+      "notes": "跨 skill 混淆诱饵：框架效应 vs 助推"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我把手机里的 App 通知全关了、把推荐位改成时间序，是不是就完全不会被助推了？",
+      "expected_behavior": "合理判断：可以激活并肯定其做法，但需指出助推无法被完全消除——界面语言本身、排序规则的存在、他人的措辞都带有推力；合理目标是『识别强推力、保留自主决定』而非追求零影响。",
+      "notes": "边界：能否彻底摆脱助推"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

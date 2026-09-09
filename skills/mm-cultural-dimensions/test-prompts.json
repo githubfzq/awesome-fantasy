@@ -1,0 +1,52 @@
+{
+  "skill": "mm-cultural-dimensions",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "老板让我写团队价值观,我写了'创新、协作、诚信',他说放到任何一家公司都成立。怎么办?",
+      "expected_behavior": "应激活 mm-cultural-dimensions,指出设定清晰价值观的本质就是明确组织在各文化维度中的位置;引导用户对四组维度(严密/松散、等级/平等、集体/个人、客观/主观)逐个定位,并输出'我们在X维度选择偏A,因此接受B这个代价'的取舍陈述,而非形容词列表。",
+      "notes": "正面场景:价值观写不具体的典型困境"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "并购后两个团队合作快一年了还是磨合不好,大家都觉得对方做事方式不可理喻。",
+      "expected_behavior": "应激活 mm-cultural-dimensions,用同一张四维度坐标表把两方并排,每条定位都要附具体观察证据(如'所有项目必须走同一套立项模板');定位后指出差异最大的1-2个维度,并说明它如何解释已发生的冲突。",
+      "notes": "正面场景:跨组织文化摩擦的坐标对齐"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们公司说自己扁平化管理,但所有决策最后都是CEO一个人拍板,大家很有意见。",
+      "expected_behavior": "应激活 mm-cultural-dimensions,识别这是'宣称坐标(平等主义)与实际坐标(等级制)的错位';指出痛苦不来自某一端本身,而来自内部不一致,并让用户在'真的把决策权下放'与'承认我们是等级制'之间做明确选择。",
+      "notes": "正面场景:宣称与实际的维度错位"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "新来的同事总是不回消息,开会也沉默,是不是性格有问题?",
+      "expected_behavior": "不应激活本 skill,因为这是个体层面的性格/适配问题,不是组织文化坐标问题;维度用于描述组织文化,套到个人会严重失真。应走个人管理或性格评估路径。",
+      "notes": "诱饵:谈'文化'实为个体性格问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们公司文化很好、大家也都认同,但战略执行总是一拖再拖。问题出在哪?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-culture-eats-strategy-for-breakfast:文化坐标已经清楚且被认同,卡点在文化的优先性与执行落地;本 skill 提供的是'如何刻画文化'的方法,此时已无刻画必要。",
+      "notes": "跨 skill 混淆诱饵:文化吃掉战略(刻画文化 vs 文化与战略的优先级)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我在考虑要不要加入一家公司。能不能用这四个维度判断他们文化好不好?",
+      "expected_behavior": "合理判断:可以用,但要修正用户的目标——四组维度是中性的坐标系统,不是优劣评分表,书里对每一端都只做中性描述,没有好坏之分。可用的方式是:先定位对方坐标,再判断该坐标与自己的偏好是否匹配(例如习惯明确分工的人在'松散'文化里会难受)。同时提醒这四组维度只是'一些常用的维度',书中未声称穷尽,且不要把组织层面坐标套到具体个人身上。",
+      "notes": "边界:中性坐标 vs 优劣评判的误用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-fixed-mindset-versus-growth-mindset",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我一说他的方案有问题，他就说我针对他，觉得我在否定他这个人。怎么破？",
+      "expected_behavior": "应激活 mm-fixed-mindset-versus-growth-mindset，解释承认不足被读成身份攻击的机制，建议直接与对方讨论该模型本身，并把反馈改写为指向行为与策略",
+      "notes": "正面场景：批评被当成身份攻击"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "孩子考了高分，我该夸他聪明还是夸他努力？",
+      "expected_behavior": "应激活本 skill，依据德韦克研究指出夸聪明会鼓励固定型思维（为维持形象而少冒险），应表扬勤奋努力与策略，并补充书中观点：更直接有效的是明确讨论该模型",
+      "notes": "正面场景：书中的表扬方式研究"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "I want to move into data work but I've never been a numbers person. I guess I'm just not built for it.",
+      "expected_behavior": "应激活本 skill，识别'我就是不行'的固定型表述，定位被固化的具体领域，并设计一个低风险的成长证据任务",
+      "notes": "正面场景：用户自身的固定型思维"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我客观评估一下，以我现在的背景转去做量化研究现实吗？",
+      "expected_behavior": "不应激活本 skill，因为这是需要客观能力盘点与职业可行性分析的场景，不是'相信能力不可变'的信念问题",
+      "notes": "诱饵：含'我不行'意味但实为理性评估"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们组那个新人，连着两次任务搞砸之后现在什么都不敢接了，说反正做了也错。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-learned-helplessness（习得性无助）：这是反复失败后的行为性放弃，需先恢复可控感与成功经验",
+      "notes": "跨 skill 混淆诱饵：同章相邻的潜能释放类模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我给团队讲了一次成长型思维，讲完大家都很激动，但一个月后什么都没变。",
+      "expected_behavior": "应激活本 skill 并援引书中证据：2018 年《心理科学》荟萃分析显示成长型思维干预有积极影响但影响不大，单次宣讲不足以改变行为，需配合刻意练习与反馈机制落地",
+      "notes": "边界：干预效果的量级限制"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

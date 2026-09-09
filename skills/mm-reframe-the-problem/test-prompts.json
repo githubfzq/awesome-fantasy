@@ -1,0 +1,52 @@
+{
+  "skill": "mm-reframe-the-problem",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "游客抱怨排队太久，但加设施成本太高根本做不了，还有什么办法？",
+      "expected_behavior": "应激活 mm-reframe-the-problem，把\"怎么减少排队时间\"重定义为\"怎么让人们在排队时更开心\"，产出快速通行证、等候时间公告牌、排队区游戏等解法。",
+      "notes": "最典型的正面场景：原路径不可行"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "老板要求把服务器成本降一半，但流量摆在那儿，怎么算都降不下来。",
+      "expected_behavior": "应激活本 skill，先追问真正目标（是降账单还是降单位成本/提升毛利），产出 3 种不同重定义并给出对应解法。",
+      "notes": "资源硬约束"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个需求技术上根本实现不了，产品那边又不肯让步。",
+      "expected_behavior": "应激活本 skill，把表述从\"实现这个技术\"转为\"达成这个用户目标\"，寻找等价但可行的替代路径。",
+      "notes": "技术方案不可行"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "线上服务又挂了，帮我查一下到底是什么原因导致的。",
+      "expected_behavior": "不应激活本 skill，这是根因分析场景，应转向 mm-root-cause 或 5-whys；把问题换个说法会掩盖真实缺陷。",
+      "notes": "诱饵：需要找根因"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "用户到底为什么要买我们的产品？他们真正想完成的是什么任务？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-jobs-to-be-done（待办任务），这是识别用户目标的具体框架，重定义问题是更通用的手法。",
+      "notes": "跨 skill 混淆诱饵：都在追问\"真正要解决什么\""
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "为了把客诉率降下来，我们把\"投诉\"的定义改窄了一点，指标立刻好看多了。",
+      "expected_behavior": "应激活并指出风险：这是偷换目标式重定义，只改了指标没改善真实体验；书中也警告重定义可能导向负面解法，应验证新解法是否真正服务于原目标。",
+      "notes": "边界：重定义 vs 改指标"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

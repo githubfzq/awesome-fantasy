@@ -1,0 +1,52 @@
+{
+  "skill": "mm-p-value",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "实验算出来 p=0.03，我们可以在报告里写「结论成立，只有 3% 的可能性是错的」吗？",
+      "expected_behavior": "应激活 mm-p-value，纠正定义：p 值是「假设原假设为真，得出等于或大于观测结果的概率」，不是原假设为真的概率；并建议同时报告效应量与置信区间。",
+      "notes": "正面场景：最经典的 P 值误读"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这次没做出显著性，p=0.2，是不是就证明新旧版本没有差别，可以放心回滚了？",
+      "expected_behavior": "应激活 mm-p-value，引用书中警告：未能找出显著结果不等于确信不存在效应，「没有证据证明存在」不等于「有证据证明不存在」；应看置信区间。",
+      "notes": "正面场景：阴性结果误读"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "p 值越小是不是说明效果越强？我们做出 p=0.001，是不是效果特别大？",
+      "expected_behavior": "应激活 mm-p-value，指出 P 值度量的是「数据的极端程度」而非效应大小，并提示 P 值对样本量敏感，应直接看效应量。",
+      "notes": "正面场景：把 P 值当效应量"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把实验组与对照组的差异算出来，用百分比表示就行。",
+      "expected_behavior": "不应激活本 skill，因为用户只要效应量本身，不需要显著性判定。",
+      "notes": "诱饵：实验数据任务但无显著性判断"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们试了 20 多个指标和切分方式，最后找到一个 p=0.02 的显著结果，这个发现靠谱吗？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-data-dredging：核心问题是多次检验导致假阳性率飙升，而非 P 值定义本身。",
+      "notes": "跨 skill 混淆诱饵：P 值与 P 值篡改高度相关"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "样本量做到 50 万，转化率差异只有 0.1 个百分点，p=0.001，这个结果值得上线吗？",
+      "expected_behavior": "应激活本 skill 并给出细致判断：统计显著 ≠ 实际显著；应把 0.1 个百分点的业务意义与上线成本并列评估，而不是被极小的 p 值驱动决策。",
+      "notes": "边界：统计显著与实际显著的区分"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

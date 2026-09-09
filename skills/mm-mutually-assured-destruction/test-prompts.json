@@ -1,0 +1,52 @@
+{
+  "skill": "mm-mutually-assured-destruction",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "几家大厂手里都握着上万项专利,天天互相指责,却谁也不起诉。为什么?",
+      "expected_behavior": "应激活 mm-mutually-assured-destruction,说明商业版的 MAD:起诉会引发连锁升级、破坏全行业稳定,进攻无收益,而单方面放弃专利又会丧失威慑,于是形成谁都不先动手的均衡;并指出其稳定依赖'反击可信'。",
+      "notes": "正面场景:书中专利案例"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "冷战时期美苏都有能力毁掉对方,为什么最后没打起来?",
+      "expected_behavior": "应激活 mm-mutually-assured-destruction,说明双方都囤积了足以摧毁对方的武器,进攻招致毁灭、裁军丧失威慑,结果双方都没有动机使用武器;并补充:这是恐怖平衡而非和平,对误判极其脆弱,需要热线等防误判机制。",
+      "notes": "正面场景:书中冷战案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要不要起诉竞对侵犯专利?他们手里也有能卡死我们的专利。",
+      "expected_behavior": "应激活 mm-mutually-assured-destruction,先验证三条支柱(双方都有反击能力、对方相信你会反击、双方都清楚),再检查是否存在先发制人诱惑;建议在此结构下理性选择是维持威慑+建防误判机制,若要打破僵局应改参数(交叉授权、第三方仲裁)而非试探。",
+      "notes": "正面场景:决策前的结构校验"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我想用法律手段吓住那些想抄袭我们小公司的人,我们没能力反制他们。",
+      "expected_behavior": "不应激活本 skill,因为只有一方握有威胁能力、另一方没有对等筹码,不存在'相互'确保毁灭;应激活 mm-deterrence(威慑)。",
+      "notes": "诱饵:同为威胁但不对称"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "两家公司在广告投放上不断加码,今年预算又翻了一倍,什么时候是个头?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-arms-race(或 mm-prisoner-s-dilemma):这是持续加码的**过程**与动态失衡,而 MAD 描述的是加码到顶点后的**稳定状态**;分析'为什么还在加码'应用军备竞赛。",
+      "notes": "跨 skill 混淆诱饵:军备竞赛"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "据说我们新系统能一次性瘫痪对方的反击能力,那是不是可以先发制人?",
+      "expected_behavior": "合理判断:这恰恰是 MAD 破裂的条件——结构依赖双方都相信对方能在挨打后反击,一旦有一方相信自己能先发制人,均衡即失效;应明确指出此时不是'占了便宜',而是进入最危险的窗口(对方可能因恐惧而被迫先动),强烈建议评估误判风险而非组织实施。",
+      "notes": "边界:可信性失效的极端情形"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

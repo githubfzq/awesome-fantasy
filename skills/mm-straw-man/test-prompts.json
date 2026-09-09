@@ -1,0 +1,52 @@
+{
+  "skill": "mm-straw-man",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我只是说这个需求本期先不做,他就回我'你就是不想让我们团队好过',我根本没这意思。",
+      "expected_behavior": "应激活 mm-straw-man,把用户原话与对方声称的版本并排对照,指出歪曲手法是替换动机(把'本期不做'换成'不想团队好过');帮用户重述不夸张的实际主张,并要求对方就这一句表态。",
+      "notes": "正面场景:动机被替换"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我跟孩子说别玩游戏了先做作业,他回我一句'你太死板了,什么都不让我做',我一下不知道怎么接。",
+      "expected_behavior": "应激活 mm-straw-man,直接引用书中同一案例:把'限制某一项活动'歪曲成'什么都不许做',属于推向极端;建议先把真正的主张钉死(是'先做作业再玩',不是'不许玩'),再继续谈。",
+      "notes": "正面场景:书中原型案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我要写篇回应对方观点的文章,怎么确保我批的真是他说的,而不是我自己脑补的版本?",
+      "expected_behavior": "应激活 mm-straw-man,给出自查方法:逐字引用对方原话、检验自己重述的版本能否被原话推出、先做最善意的解释再反驳;并提醒若发现自己的版本更易攻击,就说明已经建了稻草人。",
+      "notes": "正面场景:防止自己建稻草人"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "他两篇论文的数据对不上,我要把具体的数字矛盾列出来给他看。",
+      "expected_behavior": "不应激活本 skill,因为用户准备直接针对对方实际给出的数据与论证本身,不存在替换或歪曲论点的动作;属于正常的证据质询。",
+      "notes": "诱饵:争论场景但直指原论点"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "群里有人一开口就说'你一个刚毕业的懂什么,这个话题轮不到你发言',我该怎么回?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-ad-hominem:攻击指向提出者的资质与身份(刚毕业),完全没有触及论点本身;稻草人还能看到被歪曲的论点影子,而此处论点根本未被讨论。",
+      "notes": "跨 skill 混淆诱饵:人身攻击"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "同事把我的方案推到极端说'按你这套做到最后就是完全放弃质量',但我确实说过要缩短测试时间——他算不算稻草人?",
+      "expected_behavior": "合理判断:需看这是歪曲还是善意的极端化检验。若对方明确标注'这是检验你的方案在极端情况下是否稳健'且愿意回到你的实际主张,属于合法的推演检验;若他把这个极端版本当作你的立场去攻击、且拒绝回到原话,就是稻草人。建议先问清对方的意图,再要求对方就'缩短测试时间到何种程度、配套哪些保障措施'这一实际主张表态。",
+      "notes": "边界:极端化检验 vs 稻草人"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

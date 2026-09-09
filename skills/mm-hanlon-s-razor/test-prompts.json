@@ -1,0 +1,52 @@
+{
+  "skill": "mm-hanlon-s-razor",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我发了一大段项目进展，对方只回了一个『OK』，太不尊重人了，他肯定是故意冷落我。",
+      "expected_behavior": "应激活 mm-hanlon-s-razor，先把行为剥离为可观察事实（只回了 OK），用『忙/在路上/同时处理多件事』构造非恶意解释，做充分性检验后给出换取实质反馈的下一步话术。",
+      "notes": "正面场景：书中原例（只回 OK）"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "开周会的时候隔壁部门根本没通知我，结果我负责的部分没人讲。他们是不是故意排挤我们组？",
+      "expected_behavior": "应激活 mm-hanlon-s-razor，用『忘了/名单没更新/默认某人会转告』解释，判定是否已足以解释，再给出补提醒与修正名单的具体动作。",
+      "notes": "正面场景：漏通知被解读为排挤"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "报销被财务退回三次，每次理由都不一样。这就是在为难我吧？",
+      "expected_behavior": "应激活 mm-hanlon-s-razor，先用『规则复杂/系统提示不清/不同审核人标准不一』解释，再建议一次性要齐完整规则清单而不是继续猜测动机。",
+      "notes": "正面场景：流程摩擦被解读为刁难"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我同事把我的方案改了个标题拿去汇报了，还提前跟领导约了时间。这总不能是粗心吧？",
+      "expected_behavior": "不应激活本 skill，因为行为具有针对性、重复准备且对方明显获益，非恶意解释已不足以解释，应谈应对与边界。",
+      "notes": "诱饵：有针对性且有收益，不是粗心"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们组新人上手慢，我觉得就是能力问题，教了也教不会，是不是该换人？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-fundamental-attribution-error（把表现归因于内在能力而忽略培训、任务分配、环境等外部因素），而非判断是否存在恶意。",
+      "notes": "跨 skill 混淆诱饵：能力归因 vs 恶意归因"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我按汉隆剃刀想了想，觉得他不是故意的。但同样的失误这已经是第四次了，我还要一直这么想吗？",
+      "expected_behavior": "合理判断：肯定剃刀在单次事件上的有效性，但指出重复模式已改变判据——此时正确的归因不是『恶意』而是『他的系统/流程不可靠』；应转向设立机制（检查清单、提前确认、责任到人与升级路径），既不冤枉对方动机，也不继续容忍失误。",
+      "notes": "边界：单次粗心 vs 重复性失职模式"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

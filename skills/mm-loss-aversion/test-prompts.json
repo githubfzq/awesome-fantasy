@@ -1,0 +1,52 @@
+{
+  "skill": "mm-loss-aversion",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这只股票已经亏了 30%，我不想割肉，等它涨回来再说。",
+      "expected_behavior": "应激活 mm-loss-aversion，指出参照点被锁定在买入价，建议换到客观参照系、改用机会成本判断，并提示人通常要求两倍收益才肯赌。",
+      "notes": "最典型的正面场景：等回本"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "房子一定要卖到买入价以上，低于这个价我宁可不卖。",
+      "expected_behavior": "应激活本 skill，说明损失比等量收益更扎心的不对称正在影响判断，并重述为\"从今天起哪个选择机会成本更低\"。",
+      "notes": "不愿接受确定损失"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "谈判时对方一施压我就让步，我总怕谈崩了连现在这点都拿不到。",
+      "expected_behavior": "应激活本 skill，识别\"怕失去\"主导了决策，帮助换到客观参照系并给出基于机会成本的谈判底线。",
+      "notes": "谈判中被怕失去主导"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个项目已经投了两百万，现在停掉钱就全打水漂了，只能继续。",
+      "expected_behavior": "不应激活本 skill（作为主模型），用户在把不可收回的投入纳入当前决策，应激活 mm-sunk-cost-fallacy（损失规避可作为其成因一并提及）。",
+      "notes": "诱饵：决策错误 vs 情绪机制"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "同一个方案，说\"能救 90% 的人\"和\"会死 10% 的人\"，大家选的完全不一样。",
+      "expected_behavior": "不应激活本 skill，这是表述方式改变选择的问题，应激活 mm-framing（框架效应），虽然它往往通过损失规避起作用。",
+      "notes": "跨 skill 混淆诱饵：都与损失表述有关"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "公司现金流只够撑三个月了，我现在对每一笔支出都特别保守，这样对吗？",
+      "expected_behavior": "应谨慎判断：若确属生存级风险，规避损失是理性的而非偏差，不应套用本模型；应先处理现金流与生存风险本身。",
+      "notes": "边界：真实风险 vs 认知偏差"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -8,7 +8,10 @@ description: >-
   的场景。当用户提到 docsify、_sidebar、文档目录、mermaid、流程图、
   docsify-auto-sidebar、stat '/README.md'、ENOENT README.md、或要给 docs
   生成可按层级浏览的目录时，务必使用本技能——即使用户只说「帮我生成文档目录」
-  或「plans 里新文件怎么进侧边栏」也应触发。不要使用已损坏的
+  或「plans 里新文件怎么进侧边栏」也应触发。当用户报告「某篇 md 打开是空白页」
+  「某目录下的文档打不开，别的目录可以」「页面顶部显示 --- date 之类原始文本」
+  「mermaid 图不显示」时也要用本技能——这些几乎都是 mermaid 9.3 语法或
+  frontmatter/渲染器配置问题，本技能有对应诊断方法与校验脚本。不要使用已损坏的
   docsify-auto-sidebar，改跑本技能附带的生成脚本。
 agent_created: true
 ---
@@ -42,7 +45,7 @@ python3 <this-skill>/scripts/generate_sidebar.py /path/to/docs
 
 - 写入 `docs/_sidebar.md`（按目录层级嵌套列表）
 - 若没有 `index.html` 则创建一份 Docsify 4 入口（含侧边栏 + Mermaid 9.3 同步渲染）
-- 若已有 `index.html`，补上 `loadSidebar: true`、alias，以及 Mermaid 9.3 + `markdown.renderer.code`
+- 若已有 `index.html`，补上 `loadSidebar: true`、alias，以及 Mermaid 9.3 + `markdown.renderer.code`；旧版无 try/catch 的 renderer 会就地升级为防御版，并注入 frontmatter 剥离插件
 
 只预览不写文件：
 
@@ -99,10 +102,71 @@ flowchart LR
 
 1. 先加载 `mermaid@9.3.0/dist/mermaid.min.js`
 2. `mermaid.initialize({ startOnLoad: false })`
-3. 在 `code` renderer 里对 `lang === 'mermaid'` 调用 `mermaid.render(id, text)`，包进 `<div class="mermaid">`
+3. 在 `code` renderer 里对 `lang === 'mermaid'` 调用 `mermaid.render(id, text)`，包进 `<div class="mermaid">`，**并用 try/catch 包住**（见下）
 4. 再加载 Docsify 4
 
 生成脚本的 `index.html` 模板已经按这个顺序写好。`startOnLoad` 必须是 `false`，否则会在 Docsify 注入页面前空跑一遍。
+
+### renderer 必须 try/catch，否则一张坏图 = 整页空白
+
+`mermaid.render()` 遇到语法不兼容的图会抛异常。若 renderer 不接住，异常会中断整篇文档的 markdown 编译——页面主体空白，用户看到的就是「这篇 md 打不开」。症状特征：**同一目录里所有带 mermaid 图的文件都空白，不带图的文件正常**（比如 brainstorms 全灭、plans 幸存，因为 plans 里大多数没图）。
+
+renderer 的正确写法（脚本模板已内置）：
+
+```js
+if (language === 'mermaid') {
+  window.__mermaidSeq = (window.__mermaidSeq || 0) + 1
+  try {
+    return (
+      '<div class="mermaid">' +
+      mermaid.render('mermaid-svg-' + window.__mermaidSeq, text) +
+      '</div>'
+    )
+  } catch (e) {
+    // 单图失败降级为代码块，不让整页跟着白屏
+    console.error('mermaid render failed, showing code block:', e)
+    return this.origin.code.apply(this, arguments)
+  }
+}
+```
+
+### Mermaid 9.3.0 的语法禁忌（写图时避开，诊断时先查）
+
+9.3.0 的 parser 在 `flowchart` 的节点标签 `A[...]` 与 subgraph 标题 `subgraph id [标题]` 里遇到以下字符会直接 Parse/Lexical error：
+
+| 禁忌 | 例子（会挂） | 安全替代 |
+|---|---|---|
+| 全角括号 `（）` | `C[分配（冻结）]` | `C[分配-冻结]` 或逗号 |
+| 半角括号 `()` | `C[分配 (冻结)]` | 同上 |
+| 花括号 `{}` | `G[infer/{format}/x]` | `G[infer/format/x]` |
+| `→` 箭头 | `D[重新出现 → 处理]` | `D[重新出现-处理]` |
+| `@` | `I[eval@format@scene]` | `I[eval-format-scene]` |
+| 结尾 `/` | `N[annotations/scene/task/]`、`subgraph data [data/]` | 去掉结尾 `/` |
+
+不受限的位置：edge label（`-->|train / eval|`）、引号标签（`A["任何（字符）"]`）、决策节点 `{...}` 里的 `?`、`%`、中文、`\n`、`<br/>`。`sequenceDiagram` 的 message 文本也不受限。
+
+### 批量校验图语法（改图后必跑）
+
+本技能带校验脚本，用与 CDN 同版本的 mermaid 9.3.0 parser 扫全部文档：
+
+```bash
+NODE_PATH=/tmp/mmcheck/node_modules node <this-skill>/scripts/check_mermaid.js /path/to/docs
+```
+
+依赖装一次即可（见脚本头部注释）。输出每张坏图的文件与 md 行号；退出码 0 = 全部通过。
+
+## YAML frontmatter 会显示在页面上
+
+Docsify 核心不处理 YAML frontmatter。文档开头若是：
+
+```markdown
+---
+date: 2026-08-20
+topic: fixed-dataset-split
+---
+```
+
+正文顶部就会原样显示这几行 `---` 元数据。生成脚本会在 index.html 里加一个 `hook.beforeEach` 插件剥掉它（正则是「开头 `---` + 至少一行 `key: value` + `---`」，不会误伤正文里的分隔线）。已有 index.html 也会被自动补上；若手工检查，确认 docsify 主库脚本前有这段 `window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) { hook.beforeEach(...) })`。
 
 ## 手动改一行（可选）
 
@@ -127,6 +191,7 @@ flowchart LR
 ## 验证
 
 - `_sidebar.md` 存在，且每个收录文件都有对应链接
-- `index.html` 含 `loadSidebar: true`、`/.*/_sidebar.md` alias、`mermaid@9.3.0` 和 `mermaid.render`
+- `index.html` 含 `loadSidebar: true`、`/.*/_sidebar.md` alias、`mermaid@9.3.0`、`mermaid.render` 且 `try {` 在其外层、以及 frontmatter 剥离插件（`hook.beforeEach`）
+- 用 `check_mermaid.js` 扫全部文档，退出码 0
 - 在文档根执行 `--dry-run`，输出与写入文件一致
 - 不要出现 `/README.md` 这种对文件系统根目录的 stat 错误

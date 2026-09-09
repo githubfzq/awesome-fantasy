@@ -1,0 +1,52 @@
+{
+  "skill": "mm-wisdom-of-crowds",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "让大家各自估一下这个项目要多少人天,然后取平均,这样靠谱吗?",
+      "expected_behavior": "应激活 mm-wisdom-of-crowds,逐条核对三条件:参与者是否有不同知识与经验(多样性)、是否匿名同时提交互不干扰(独立性)、用什么规则合成(聚合性);再给出信任等级结论。",
+      "notes": "正面场景:用平均判断替代个体判断"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "为什么我们一群很聪明的人最后集体做了个特别蠢的决定?",
+      "expected_behavior": "应激活 mm-wisdom-of-crowds,用三条件反查哪一条被破坏;典型答案是独立性(成员互相看齐、看领导脸色、先公开讨论后统一口径),并指出此时已退化为群体思维。",
+      "notes": "正面场景:反查失效条件"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "集市上那么多人猜牛的体重,平均下来居然能精确到个位数,这到底是怎么做到的?",
+      "expected_behavior": "应激活 mm-wisdom-of-crowds,用书中 1906 年 800 人猜公牛体重、平均 1197 磅与实际相符的案例解释机制:分散信息互补、个体误差方向不同而相互抵消;同时强调作者明说不可能在所有情况下都得出类似结果。",
+      "notes": "正面场景:书中案例的机制解释"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这批零件的合格标准在国标里写得很清楚,我们按标准检验就行了吧?",
+      "expected_behavior": "不应激活本 skill,因为答案不依赖分散在多人手中的信息,有唯一权威数据源;群体判断在此毫无价值,直接按标准执行。",
+      "notes": "诱饵:涉及'一批人'但无分散信息"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "会上老板先表了态说看好 A 方案,然后让大家发言,结果所有人都说 A 好。这算群众的智慧吗?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-groupthink:权威先表态后成员附和,独立性已被彻底破坏,属于群体为了维持与权威和睦而自我审查;群体智慧要求各人表达意见不受他人影响,两者结论完全相反。",
+      "notes": "跨 skill 混淆诱饵:群体思维"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们让用户给新功能打分,高分就做。但参与打分的只有 8 个重度用户,而且彼此都在群里认识。能信吗?",
+      "expected_behavior": "合理判断:三条件中多样性与独立性均不满足——8 人样本同质、彼此认识会互相影响,平均只会把同质偏差放大而非抵消;结论至多等于其中一个体中位数水平,不能作为决策依据,建议扩大样本并改为匿名独立提交。",
+      "notes": "边界:人数少且同质"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

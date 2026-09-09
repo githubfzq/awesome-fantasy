@@ -1,0 +1,52 @@
+{
+  "skill": "mm-exit-strategy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "投资人给了我们一份 term sheet，条款里有五年锁定期。签之前我要想清楚什么？",
+      "expected_behavior": "应激活 mm-exit-strategy，要求用户在入场前设计退出路径：写可判定的退出触发条件、明确收益兑现形式（并购/IPO）、并用博弈论过一遍投资人反应",
+      "notes": "正面场景：入场前的退出设计"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个项目已经投了两年，明显起不来，但我就是不甘心，怎么办？",
+      "expected_behavior": "应激活本 skill，把'不甘心'识别为沉没成本绑定，转而帮用户设定退出触发条件、交接对象与告知方案",
+      "notes": "正面场景：舍不得退，需要退出视角"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我在这个董事会席位上坐了八年，想卸下来但组织离不开我。有什么办法？",
+      "expected_behavior": "应激活本 skill，指出退出不等于彻底离场，可采用'卸下繁重责任、保留喜爱部分'，并具体设计继任者的寻找与培养",
+      "notes": "正面场景：个人层面的继任交接"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "周末要不要去吃那家新开的川菜馆？不行就换一家。",
+      "expected_behavior": "不应激活本 skill，因为这是高度可逆的小决定，设计退出策略属于过度使用",
+      "notes": "诱饵：含'不行就换'但无实质投入"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们已经决定下周关掉这个业务，现在需要一份客户退款和系统下线的执行清单。",
+      "expected_behavior": "不应激活本 skill（退出决策已做出），应激活 mm-endgame（终局）或直接给执行清单；本 skill 处理的是'要不要退、怎么退'的方案设计而非已定决策的收尾执行",
+      "notes": "跨 skill 混淆诱饵：终局与退出策略语义接近"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "合伙人对我不地道，我退出的时候要不要把客户名单带走、把他坑我的事抖出去？",
+      "expected_behavior": "应激活本 skill 并明确援引书中警告：不要过河拆桥或使用焦土战术，那会断绝回头路并导致事态升级；同时给出保留关系与合法边界的替代退出方案",
+      "notes": "边界：退出策略与焦土战术的分界"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

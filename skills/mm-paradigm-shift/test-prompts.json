@@ -1,0 +1,52 @@
+{
+  "skill": "mm-paradigm-shift",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们行业这套增长模型连续两年预测全错，但业内大佬还在用，说只是执行不到位。这是怎么回事？",
+      "expected_behavior": "应激活 mm-paradigm-shift，列出旧框架预测与实际的偏差（反常计数），判断这些反常是被吸收还是被贴标签抹消，检查是否已有能同时解释新旧的替代框架，区分阻力是证据性还是既得利益性的，最后给出跟随/观察/建议及触发重评的信号。",
+      "notes": "正面场景：反常堆积 + 权威掩埋，典型危机期特征"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "有个外行提出了一套完全不同的方案，业内都说不靠谱。但我觉得它解释了好几个我们一直搞不懂的现象。要不要跟？",
+      "expected_behavior": "应激活本 skill，指出局外人因不深信现有范式、也不怕声誉受损反而容易突破；但仍要求检验替代框架是否也能解释旧框架解释得了的现象（第 3 步判停条件），允许新框架不完美但需区分可修补缺陷与根本性缺陷，再给出行动建议。",
+      "notes": "正面场景：局外人提出新框架，需评估真伪"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "为什么像洗手能救命这么简单的事，当年医生们就是死活不接受？",
+      "expected_behavior": "应激活本 skill，用塞麦尔维斯案例解释范式阻力的机制（既得利益、声誉投入、旧框架的免疫反应），说明转换速度受制于人员更替而非证据强度，并补充书中提醒：新范式初期往往不完善。",
+      "notes": "正面场景：书中直接案例，询问解释"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们把客服响应时间从 4 小时压到 1 小时，这算不算一次范式转换？",
+      "expected_behavior": "不应激活本 skill。这是常规科学期的渐进改良，不存在旧框架解释不了的反常堆积，也不涉及解释框架的更替。应直接肯定成果并避免过度升级概念。",
+      "notes": "诱饵：自称'转换'，但实为优化"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我提的方案被否了三次，但他们给的理由每次都不同，我怀疑他们只是不想承认我是对的。",
+      "expected_behavior": "不应激活本 skill（或仅作次要参考），应激活 mm-confirmation-bias / mm-devil-s-advocate-position：这是个体层面的证据筛选与立场问题，要求先主动寻找能推翻自己方案的证据、检验对方理由是否成立，而不是直接升级为'范式阻力'。",
+      "notes": "跨 skill 混淆诱饵：最易被误用为'我是魏格纳'的自我辩护"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "新框架确实解释了旧理论解释不了的现象，但它自己也有两处硬伤。该不该现在就全面转过去？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：援引书中提示（魏格纳与塞麦尔维斯的理论本身也有缺陷，新范式初期往往不完善），要求区分硬伤是可修补的还是根本性的；即便判定可跟随，也要提醒转换以数十年计、需评估自身能否撑过该时间尺度，建议分阶段投入而非全面转向。",
+      "notes": "边界：新范式不完美 ≠ 错误，但也不等于可以立刻全押"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-confirmation-bias。"
+}

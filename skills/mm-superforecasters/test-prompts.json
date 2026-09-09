@@ -1,0 +1,52 @@
+{
+  "skill": "mm-superforecasters",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我估计这个客户八成会签,但我的预测一直不准,怎么改进?",
+      "expected_behavior": "应激活 mm-superforecasters,先把'八成'改成带明确时限与判定标准的具体概率命题;再从基础比率起步(这类客户的一般签约率),要求列出三条'我错了会是因为什么'的具体情形,并写明'如果观察到 X 我就把概率调到 Y'的更新条件与复盘日期。",
+      "notes": "正面场景:提高个体预测准确度"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们想组个小团队专门做行业预测,怎么选人怎么组织?",
+      "expected_behavior": "应激活 mm-superforecasters,用八项特质选人(能迅速进入新领域、有专业知识、愿意向自己观念挑战、会看基础比率、肯按新信息修正);组织上必须独立提交后再汇总、按历史校准表现加权,并明确指出团队合作这一项的前提是避免群体思维。",
+      "notes": "正面场景:组建预测团队"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个专家去年准确地预测了一次危机,他今年的预测是不是就该信?",
+      "expected_behavior": "应激活 mm-superforecasters,指出超级预测家的定义是'反复'做出准确预测的人,单次命中无法区分能力与运气;应要求查看长期记录与校准情况(他标注 70% 的事实际发生了百分之多少),而不是凭一次成功背书。",
+      "notes": "正面场景:评估预测者可信度"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这三个供应商的报价和条款都在这儿,帮我算一下选哪个总成本最低。",
+      "expected_behavior": "不应激活本 skill,因为这是确定性计算问题,不涉及概率估计与校准;直接做成本加总与条款比较即可。",
+      "notes": "诱饵:涉及'选哪个'但无不确定性"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想知道全公司对这个项目能否按时交付的真实看法,是不是搞个内部押注市场最好?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-prediction-market:用户要的是把分散在众人身上的信息聚合成一个概率的装置(用价格聚合、用真钱过滤),而不是训练或挑选少数高手;超级预测家面向的是'谁预测得更准',预测市场面向的是'市场共识是多少'。",
+      "notes": "跨 skill 混淆诱饵:预测市场"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我做预测做得很认真,每次都仔细更新,但公司从来不回头看当初的预测对不对。这样练有用吗?",
+      "expected_behavior": "合理判断:八项特质中的'修正预测'做到了,但缺失'审视过去'与校准闭环——没有事后揭晓与回填,就无法知道自己标注的 70% 是否真的发生了约 70%;应建议建立预测记录与定期统计,否则训练无从谈起,能力只会原地踏步。",
+      "notes": "边界:缺反馈闭环时训练失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

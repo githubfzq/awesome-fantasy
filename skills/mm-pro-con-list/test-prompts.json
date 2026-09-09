@@ -1,0 +1,52 @@
+{
+  "skill": "mm-pro-con-list",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我在纠结要不要把现在的笔记本换掉，列了个优缺点清单，好处挺多、坏处想不出来，是不是就该换？",
+      "expected_behavior": "应激活 mm-pro-con-list，适用（选项两个、后果轻微），但针对「坏处想不出来」这一信号提醒书中缺陷四——好处比弊端显眼，会系统性高估积极面，要求强制补足弊端条目再决策。",
+      "notes": "正面场景：简单决策 + 补弊端"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "毕业后有个做风险投资的机会，我列了个清单：改变世界、回报高、不用承担创始人风险，全是好处，是不是可以去？",
+      "expected_behavior": "应激活 mm-pro-con-list，直接引用作者 2000 年的自身案例（同样的清单、同样只见好处），指出漏列的弊端：必须不断社交、持续拒绝别人的心理负担、入行极难、大部分时间耗在困境公司上，事后证明并不适合他。",
+      "notes": "正面场景：书中案例复现"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "要不要接受这个 offer，我列了张利弊表，帮我看看。",
+      "expected_behavior": "应激活 mm-pro-con-list，先做适用性检查（选项是否真的只有两个、后果是否轻微），穷举其他选项（谈条件、推迟、再面几家），再逐条补弊端并标记权重悬殊项。",
+      "notes": "正面场景：默认决策工具的引导"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我总结一下这次项目复盘里我们做对了什么、做错了什么。",
+      "expected_behavior": "不应激活本 skill，因为这是事后总结而非面向未来的二选一决策，不涉及权衡取舍。",
+      "notes": "诱饵：含「对/错」但非决策"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "要不要自研这套系统，有三种方案：自研、买现成的、先外包验证。每种都有不确定性和后续分支，怎么定？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-decision-tree：选项超过两个且含明显的不确定性与时序分支，已超出利弊清单（书中明示缺陷一、三）的能力，作者建议升级为决策树。",
+      "notes": "跨 skill 混淆诱饵：同为决策工具，升级路径易混"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我列的清单里有一条「可能危及用户数据安全」，其他都是些成本和时间的小事，是不是按条目数量算，好处多就该做？",
+      "expected_behavior": "应激活本 skill 并明确否定：这正是书中缺陷二（假定所有好坏同等重要）。存在压倒性的主导因素时不该按条目计数，应直接以该因素定夺，或升级为加权的成本收益分析。",
+      "notes": "边界：等权假设失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

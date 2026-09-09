@@ -1,0 +1,52 @@
+{
+  "skill": "mm-systems-thinking",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们想把客服响应时间压到 5 分钟以内，直接上考核指标行不行？",
+      "expected_behavior": "应激活 mm-systems-thinking,先画出客服系统的要素与反馈回路（工单量、人手、一次性解决率、重复咨询）再谈指标;推演二阶后果（只求快导致一次性解决率下降、工单回流反而更多）。",
+      "notes": "正面场景:局部指标优化前的全局校验"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们上次改了定价，结果供应链那边出问题了，怎么老是顾此失彼？",
+      "expected_behavior": "应激活 mm-systems-thinking,指出这是先做局部分析的结果;补画系统图,标出定价到供应链的传导路径与延迟,并据此重做决策。",
+      "notes": "正面场景:意想不到的后果已发生"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个决策牵扯到五个部门，我总觉得脑子里装不下，怎么办？",
+      "expected_behavior": "应激活 mm-systems-thinking,明确指出复杂系统不能靠脑补,必须画示意图或用仿真;引导列出要素与反馈回路后再做局部决策树。",
+      "notes": "正面场景:书中点名的脑补局限"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我比较一下这两个云服务器套餐哪个更便宜，其他都一样。",
+      "expected_behavior": "不应激活本 skill,因为这是边界清晰、无相互作用的一次性比较;直接比价或用成本收益分析即可。",
+      "notes": "诱饵:形似决策但无系统互动"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们已经找到的方案还行，但我想确认一下是不是还有更好的方向没看到。",
+      "expected_behavior": "不应激活本 skill（作为主 skill）,应激活 mm-local-optimum:用户的疑问正是“有没有更高的山”,这是局部最优的直接判据;系统思考是破解它的手段,但此处应先由 mm-local-optimum 接管,再按需引入系统图。",
+      "notes": "跨 skill 混淆诱饵:全局 vs. 局部最优"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "生产环境正在告警，我只有十分钟做决定，还要先画系统图吗？",
+      "expected_behavior": "合理判断:不应在紧急且不可逆的窗口里展开系统思考,先止血（stop-the-bleeding）稳住局面;系统图的收益来不及兑现。待事态稳定后再用本 skill 复盘,并尽量选择可逆动作以降低后续代价。",
+      "notes": "边界:时间压力下的适用性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

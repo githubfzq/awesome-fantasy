@@ -1,0 +1,52 @@
+{
+  "skill": "mm-availability-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "最近新闻天天报道飞机事故，我感觉坐飞机越来越危险了，是不是该改坐高铁？",
+      "expected_behavior": "应激活 mm-availability-bias，指出媒体曝光度与情绪强度让事故在记忆里格外可得；把问题转成可测量频率（每亿客公里死亡率的航空 vs 铁路），查基础比率做数量级对照，说明偏差方向是被系统性高估。",
+      "notes": "正面场景：典型'新闻密集→觉得危险'"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我身边三个朋友去年都创业了，看来现在创业成功率挺高的？",
+      "expected_behavior": "应激活本 skill，指出样本既小又经自我筛选，且'刚发生'提升了可得性；要求给出创业存活率的基础比率（如三年存活率），与用户印象做倍数对比，并说明'我知道这个偏差'不足以免疫。",
+      "notes": "正面场景：身边样本推断整体 + 近期性"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "要给团队写季度评估了，我脑子里全是这两周出的那几次错。怎么写才客观？",
+      "expected_behavior": "应激活本 skill，指出近因污染整体评价；要求把样本窗口拉长到完整季度，按时间段分别列举表现与贡献，用记录而非回忆重建样本，防止只凭最近几周下结论。",
+      "notes": "正面场景：书中明确举过的经理年度评估例子"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我这次面试被拒了，是不是说明我能力不行？",
+      "expected_behavior": "不应激活本 skill。这是对个人经历的价值判断，不需要频率估计，用可得性偏差分析属于答非所问。应转向具体复盘（mm-unforced-error）或归因分析。",
+      "notes": "诱饵：涉及'判断'，但不是频率/概率判断"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们后台有全部用户的完整日志，能直接统计出这个功能的使用率。你觉得大概多少？",
+      "expected_behavior": "不应激活本 skill，直接用数据算即可（必要时用 mm-base-rate）。用户拥有完整、未经筛选的样本，不存在记忆可得性污染，偏差提醒没有增量。",
+      "notes": "跨 skill 混淆诱饵：都涉及频率，但本例样本可靠"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们系统刚连续三次告警，我觉得故障率肯定超 5% 了。但查不到历史统计。",
+      "expected_behavior": "应激活本 skill 并走边界判断：一方面承认'刚发生'提升了可得性、很可能高估；另一方面指出连续三次告警是真实的近期信号，不能简单当作偏差打折扣。正确做法：先止血排查，同时建立可统计的记录，查不到数据时如实标注不确定性，禁止用印象顶替。",
+      "notes": "边界：近因既是偏差来源也是真实信号，需分开处理"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-base-rate。"
+}

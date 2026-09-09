@@ -1,0 +1,52 @@
+{
+  "skill": "mm-fundamental-attribution-error",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "新来的实习生连着三天交的东西都错，我看他就是能力不行，打算下周就让他走。",
+      "expected_behavior": "应激活 mm-fundamental-attribution-error，把'能力不行'改写为具体行为，列出他当时可能面对的情境因素（需求含糊、无人带、工具没权限），并做换位检验后再谈去留。",
+      "notes": "正面场景：品性/能力归因"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "今天会上老王对我特别刻薄，平时也不见他这样，我觉得他就是这号人。",
+      "expected_behavior": "应激活 mm-fundamental-attribution-error，指出'平时不这样'恰恰是情境信号（今天过得糟），要求先查情境再定性。",
+      "notes": "正面场景：书中案例类型"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "对方团队每次都拖到最后一刻才给数据，是不是就是不负责任？",
+      "expected_behavior": "应激活 mm-fundamental-attribution-error，分离行为与品性归因，排查流程与激励结构等情境因素，并做'情境消失后是否仍如此'的检验。",
+      "notes": "正面场景：跨团队归因"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我核对一下上周三那份报表到底是谁几点提交的。",
+      "expected_behavior": "不应激活本 skill，因为这是纯事实核对，不涉及对人的归因，套用归因模型是多余的。",
+      "notes": "诱饵：涉及他人行为但无归因"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我上次迟到是因为地铁故障，可同事迟到就是没有时间观念，这算双标吗？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-self-serving-bias：用户自己同时扮演行为者与观察者、用了两套标准，这是'自我—他人'双向偏差，不只是对他人的单向归因。",
+      "notes": "跨 skill 混淆诱饵：基本归因错误 vs 自利性偏差"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个同事过去两年换了四个团队，每个团队都投诉他的问题，我还能用'情境'来解释吗？",
+      "expected_behavior": "可以激活但需谨慎：长期稳定的跨情境行为模式本身就是品性的证据，不应再优先用情境开脱；可先做一次归因检查，但结论允许且应当指向品性。",
+      "notes": "边界：稳定模式 vs 单次行为"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-nocebo-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我吃了这个药之后看了说明书，上面写的头晕、恶心我这两天全感觉到了，是不是我不该吃这个药？",
+      "expected_behavior": "应激活 mm-nocebo-effect, 解释预期会产生真实负面效果（书中假手术例证），同时强调先排除器质性原因再考虑心理机制，并在不劝其擅自停药的前提下建议与开药医生核对、观察症状变化。",
+      "notes": "正面场景：典型自我报告的反安慰剂体验"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们要上线新的报销系统，宣导材料里要不要把'初期可能会有各种不便'写进去？写了怕大家都来找麻烦，不写又怕到时候被骂。",
+      "expected_behavior": "应激活 mm-nocebo-effect, 并给出措辞改写建议：保留必要信息但补充正面基线比例与应对方式（出现问题怎么办），把无助感换成掌控感，而不是简单建议删掉风险提示。",
+      "notes": "正面场景：制度化的负面预期投放"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "临床试验数据里，假手术组的副作用发生率居然跟真手术组差不多，这怎么解释？",
+      "expected_behavior": "应激活 mm-nocebo-effect, 用「即使进行的是假手术，预期副作用也会造成真正的负面效果」来解释，并提示检查两组被告知的副作用内容是否一致。",
+      "notes": "正面场景：书中核心证据的数据解读"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们宣布取消今年的团建之后，群里一片抱怨，怎么安抚？",
+      "expected_behavior": "不应激活本 skill, 因为这是对坏消息的真实失望与不满，属于情绪与沟通问题，不是预期驱动的生理性负面效果；贴上反安慰剂标签会变成对员工感受的否定。",
+      "notes": "诱饵：有负面情绪，但机制不符"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "临床试验里给对照组吃的是糖丸，但不少人说自己症状明显缓解了，还问能不能继续吃。这跟反安慰剂是一回事吗？",
+      "expected_behavior": "不应激活本 skill（结果方向为正，机制虽同源但方向相反）, 应激活 mm-placebo-effect。反安慰剂只处理「预期产生真实负面效果」，这一例是预期产生真实正面效果。",
+      "notes": "跨 skill 混淆诱饵：同源反向，最易混淆的一对"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "研究里'告知副作用'和'不告知'两组都出现了头痛，比例是 30% 和 22%，差距不算大但也存在。能说是反安慰剂效应造成的吗？",
+      "expected_behavior": "合理的判断是：可以判定存在反安慰剂成分（8 个百分点的差异提示告知有作用），但同时必须指出 22% 的基线说明大部分头痛来自药物本身或背景发生率，不能把全部症状归因于预期；建议进一步看症状分布是否随告知内容变化再下结论。",
+      "notes": "边界：真实效应与预期效应叠加，需拆分而非二选一"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

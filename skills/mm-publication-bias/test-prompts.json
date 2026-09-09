@@ -1,0 +1,52 @@
+{
+  "skill": "mm-publication-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我看了一篇论文,说这种补充剂能显著提升记忆力,期刊还是顶刊,我准备长期吃了。",
+      "expected_behavior": "应激活 mm-publication-bias,并追问:是否有做过同样实验但没得到显著结果、因而从未发表的团队;提示顶刊身份不等于免疫发表偏倚,把该效应量视为真实效应的上限,建议先小剂量试并设定验证指标。",
+      "notes": "正面场景:依赖已发表文献做个人决策"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我打算把我们行业所有关于这个工艺的研究做个系统综述,汇总出最优参数。",
+      "expected_behavior": "应激活 mm-publication-bias,并明确警告系统综述与荟萃分析同样受发表偏倚污染,因为它们只能涵盖已发表结果;建议先检查试验注册/未发表报告/行业内部阴性经验,再谈汇总。",
+      "notes": "正面场景:书中明说的荟萃分析陷阱"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个方向我查遍了文献,一篇支持的研究都没有,是不是说明它根本行不通?",
+      "expected_behavior": "应激活 mm-publication-bias,并指出'查不到'有两种解释——真没人做过,或做过但阴性结果没发表;建议去问一线从业者、查试验注册库、查公司内部报告,而不是直接判定不可行。",
+      "notes": "正面场景:阴性结果被埋没导致的错误否定"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我看看这份问卷的抽样方法有没有问题,样本是不是只覆盖了某一类人。",
+      "expected_behavior": "不应激活本 skill,因为偏倚发生在样本招募环节而非发表环节,应走抽样/选择性偏差类思路;回答后可补充一句'如果你接下来要汇总多个问卷研究,再看发表偏倚'。",
+      "notes": "诱饵:同为'偏倚'但作用环节不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我重复了三次那个著名实验,一次都没复现出来,是不是我的实验设计本身有问题?帮我检查变量控制和随机化。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-replication-crisis(现象层面)并进一步走实验方法类检查;发表偏倚可以作为一个背景解释被提及,但用户此刻问的是'我的实验哪里错了',不是'文献为什么偏'。",
+      "notes": "跨 skill 混淆诱饵:可重复性危机"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们公司自己跑了 30 次 A/B 测试,只有 2 次显著,老板让我把那 2 次写成案例发公众号。这算发表偏倚吗?",
+      "expected_behavior": "合理判断:属于同一数学结构的选择性上报,但严格说发生在企业内部而非期刊环节——可以借发表偏倚的框架分析(只报阳性会让外界严重高估效果),同时指出更贴切的问题是数据捕捞;建议把 30 次全量结果一并披露或至少给出总次数。",
+      "notes": "边界:机制相同但环节不属于学术发表"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

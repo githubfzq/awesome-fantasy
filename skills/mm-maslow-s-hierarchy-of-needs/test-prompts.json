@@ -1,0 +1,52 @@
+{
+  "skill": "mm-maslow-s-hierarchy-of-needs",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "组里那个最能干的人最近三个月像换了个人，活儿能干但就是不干。奖金也没少给。",
+      "expected_behavior": "应激活 mm-maslow-s-hierarchy-of-needs，先排除能力与流程问题，再从生理/安全/归属/自尊逐层排查，定位最低的未满足层级并给出该层补救动作",
+      "notes": "正面场景：能力强但发挥不出来"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我什么都有了，工作稳定收入也不错，但就是提不起劲，不知道差在哪。",
+      "expected_behavior": "应激活本 skill，逐层自诊（注意归属与自尊层常被忽略），定位阻塞层并给具体动作，同时提醒层级模型存在争议",
+      "notes": "正面场景：自我诊断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "Team morale is terrible and I can't figure out why. Pay is competitive. Any framework for diagnosing this?",
+      "expected_behavior": "应激活本 skill，用需求层级作为诊断清单从下往上检查（尤其安全与归属层），而不是只看薪酬",
+      "notes": "正面场景：英文 + 团队士气诊断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "他连基本的数据分析都不会，需要系统培训。",
+      "expected_behavior": "不应激活本 skill，因为这是明确的能力不足问题，应走培训与能力建设路径，需求层级诊断会掩盖真问题",
+      "notes": "诱饵：与'发挥不出潜力'相关但实为能力问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "她业绩得到大家一致认可，却总说自己是混进来的、迟早被发现。该怎么帮她？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-impostor-syndrome（冒名顶替综合征）：本模型只把该现象定位为自尊层未满足，具体干预（普遍性/重构犯错/连接同伴）来自另一 skill",
+      "notes": "跨 skill 混淆诱饵：同章相邻且书中互为解释关系"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "他现在收入很不稳定、下个月可能就没工作了，但还在拼命追求做一些有影响力的大项目。这不符合需求层次吧？",
+      "expected_behavior": "应激活本 skill 并诚实指出：层级顺序并非严格，现实中人会在底层未满足时仍追求高层需求；本模型是启发式诊断清单而非定律，且书中已记录批评家对其层级真实性与文化差异的质疑",
+      "notes": "边界：层级顺序不是铁律"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

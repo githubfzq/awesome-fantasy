@@ -1,0 +1,52 @@
+{
+  "skill": "mm-base-rate",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的反欺诈模型准确率 99%，但拦下来的单子里几乎没几个真欺诈，是不是模型坏了？",
+      "expected_behavior": "应激活 mm-base-rate，解释欺诈基础比率极低（如千分之一）时假阳性会淹没真阳性，用千分之一 × 1% 误报的假想总体算出精确率，并给出缩小筛查范围等改进杠杆。",
+      "notes": "正面场景：低基础比率导致低精确率"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这种病在人群中的发病率是万分之一，体检筛查准确率 99%，查出来阳性的人真的得病概率有多大？",
+      "expected_behavior": "应激活 mm-base-rate，用 10000 人假想总体算出真阳 1 人、假阳约 100 人，精确率约 1%，说明必须做二次确诊。",
+      "notes": "正面场景：罕见病筛查"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "安全部门想给全公司员工做一次内部威胁筛查，命中率能有多高？",
+      "expected_behavior": "应激活 mm-base-rate，先追问内部威胁的真实基础比率，说明在极低发生率下全量筛查会产生大量误伤，建议先锁定高危子群以提高局部基础比率。",
+      "notes": "正面场景：筛查方案设计"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这份销售报表按区域汇总一下，看看哪个区增长最快。",
+      "expected_behavior": "不应激活本 skill，因为这是描述性统计任务，不涉及命中判定与先验发生率。",
+      "notes": "诱饵：数据分析但无判定"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这种病检测准确率 95%，我阳性了，所以我有 95% 概率得病——我这样理解对吗？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-inverse-fallacy：错误的核心是条件概率方向倒置 P(阳性|患病) vs P(患病|阳性)，虽然与基础比率相关，但应先纠正推理方向。",
+      "notes": "跨 skill 混淆诱饵：书中相邻小节，极易混"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们只在被投诉过的用户里跑这个风险模型，基础比率是不是就能用全网的千分之一？",
+      "expected_behavior": "应激活本 skill 并指出不能：基础比率必须对应当前实际筛查人群，被投诉用户是高危子群，其发生率远高于总体，用总体比率会低估模型精确率；应重新估计该子群的发生率。",
+      "notes": "边界：基础比率的适用人群"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

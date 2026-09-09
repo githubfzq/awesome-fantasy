@@ -1,0 +1,52 @@
+{
+  "skill": "mm-inversion",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我想把我的小工作室做成一家真正的公司，但想了半年也不知道下一步该干嘛。",
+      "expected_behavior": "应激活 mm-inversion，把'怎样做成'反转为'怎样一定做不成'，穷举 8-15 条具体失败路径（如：80% 收入来自单一客户、没有签合同、创始人不敢定价），按致命性排序取前 3 条并为每条设防线。",
+      "notes": "正面场景：目标抽象、正向路径无从下手"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的新产品下周三上线，方案看着都挺顺的，但我心里总有点不踏实，说不上来哪里会出问题。",
+      "expected_behavior": "应激活 mm-inversion，做一次失败预演：'如果上线两周后这个项目被判定失败，最可能的三个原因是什么'，并针对每条给出可执行防线（灰度、回滚预案、监控阈值）。",
+      "notes": "正面场景：方案已定，需要最后一道防线"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我试过三次了，每次都说要开始健身，办了卡也去不了两周。你有没有什么办法？",
+      "expected_behavior": "应激活 mm-inversion，不正面设计理想健身计划，而是承认现有习惯不动，在其内部寻找阻力最小的逆向解（如：不去健身房而在通勤路上做、把运动绑定到已有行为上），给出'只有反转后才想得到'的策略。",
+      "notes": "正面场景：行为改变反复失败，正向解坚持不下来"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我算一下，把 20 万存三年定期和买三年期国债，哪个划算？",
+      "expected_behavior": "不应激活本 skill。目标明确、约束清晰、只需在两个既定方案间择优，直接用利率与流动性做成本收益/期望值比较即可；反转穷举失败路径只会增加噪音。",
+      "notes": "诱饵：也是'想做对决策'，但属于择优问题而非路径不明问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们上周的线上事故复盘完了，发现是发版时漏跑了一条数据库迁移脚本。该怎么处理？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-unforced-error（这是已发生的、本可避免的主动失误，需做事后归因）并配合 mm-5-whys 追到流程和制衡层面的根本原因。逆向思维是事前设计工具，这里是事后复盘。",
+      "notes": "跨 skill 混淆诱饵：都跟'犯错/失败'有关，但时态不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "帮我想个品牌 slogan，要那种让人一听就记住的。",
+      "expected_behavior": "可轻度借用反转（先想'什么样的 slogan 一定没人记得'作为排除项），但不应展开完整六步流程。正确判断：纯创造性问题没有可穷举的失败路径，反转不产生有效约束，应说明边界后转向发散性生成。",
+      "notes": "边界：创造性任务，反转只有弱提示价值"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-unforced-error（事前 vs 事后）。"
+}

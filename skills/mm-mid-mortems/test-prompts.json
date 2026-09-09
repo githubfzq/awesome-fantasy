@@ -1,0 +1,52 @@
+{
+  "skill": "mm-mid-mortems",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的 App 下个月要上线了，能不能在上线前先想想哪里可能会出问题？",
+      "expected_behavior": "应激活 mm-mid-mortems，以\"假设上线后这个项目彻底失败了，最可能的原因是什么\"开头，让各角色独立写下候选原因再汇总，按可能性×可控性排序，为前 3 项各配负责人与对策。",
+      "notes": "正面场景：上线前的事前分析"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个研究项目做了大半年，说不上顺利也说不上失败，要不要中途停下来看看？",
+      "expected_behavior": "应激活 mm-mid-mortems，援引书中临床研究报告每出一稿就与项目预定目标比较、评估团队是否应继续研究的做法，建议拿原始目标清单逐条比对当前进展，并明确回答\"该不该继续\"。",
+      "notes": "正面场景：项目中期体检（书中原型）"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我隐约觉得我们方向错了，但已经做这么久了不敢说，怕被当成唱衰。",
+      "expected_behavior": "应激活 mm-mid-mortems，说明主动认错是挽救项目的最佳方式——承认走错路能促使改变策略战术甚至请求增援；建议以\"假设失败已发生\"的框架把担忧变成中性的风险预判摆上台面，并视情况引入第三方视角。",
+      "notes": "正面场景：不敢开口的纠偏需求"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "项目上周已经彻底失败了，现在要写一份复盘报告给管理层，怎么总结教训？",
+      "expected_behavior": "不应激活本 skill，因为项目已结束、纠偏窗口已关闭，这属于事后分析；应改用 mm-postmortem。",
+      "notes": "诱饵：项目已结束的复盘"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想一个人静下来想想，这个项目要怎么做才能彻底搞砸，然后反过来避开它，有什么方法吗？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-inversion。用户要的是通用的「反过来想」思考技法（想成功就先想怎么搞砸），这是个人可随时使用的思维工具；mm-mid-mortems 是逆向思维在项目管理中的制度化应用——有固定时点、有参与人、要对照原始目标并产出纠偏动作。单人思考用逆向思维，组织化预判用本 skill。",
+      "notes": "跨 skill 混淆诱饵：逆向思维（通用技法 vs 制度化应用）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我想给团队做个事前分析，但我们公司文化是谁提问题谁背锅，这样还有用吗？",
+      "expected_behavior": "合理判断：在会被追责的氛围里做\"想象失败\"，参与者只会说安全的话，产出的是假清单，价值极低甚至有害（暴露问题的人被惩罚）。正确做法是先创造心理安全——可以引用书中\"主动认错是挽救项目的最佳方式\"来争取领导层的明确背书（承诺不追责），或先引入外部第三方视角收集风险再匿名汇总；若无法获得任何保障，应如实告知用户本 skill 在此环境下不适用。",
+      "notes": "边界：低心理安全感环境下的失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

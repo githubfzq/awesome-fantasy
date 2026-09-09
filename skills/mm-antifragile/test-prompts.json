@@ -1,0 +1,52 @@
+{
+  "skill": "mm-antifragile",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们团队每出一次事故就复盘一次，但同样的问题还是一再发生。是不是复盘方式有问题？",
+      "expected_behavior": "应激活 mm-antifragile，先判定系统是'脆弱/韧性'而非反脆弱（冲击后有记录但状态未优于冲击前），检查反馈回路三问（记录/归因/写进规则），指出纯磨损问题，并要求把获益沉淀到系统结构（自动化检查、预案库）而非只留在人脑。",
+      "notes": "正面场景：有冲击无反馈，冲击退化为磨损"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我想让自己在不确定性强的行业里越做越强，而不是每次被变化打得措手不及。有什么思路？",
+      "expected_behavior": "应激活 mm-antifragile，给出定性判据（冲击后是否优于冲击前），并设计'高频小剂量暴露 + 反馈回路'：界定每次试错的损失上限与可逆性，提高频率压低单次剂量，并要求每次产出结构性改善。",
+      "notes": "正面场景：主动设计从波动中获益的结构"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们系统这两年一次事故都没有，但我反而越来越慌，感觉不知道哪里会先垮。",
+      "expected_behavior": "应激活 mm-antifragile，指出长期无波动意味着没有修正信号、脆弱性在暗中积累，建议引入受控的小剂量冲击（故障演练、灰度压力测试、混沌工程）以换取信息，同时保留备份等韧性兜底。",
+      "notes": "正面场景：过度求稳导致看不见的脆弱"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的生产数据库目前只有一份，没有备份。要不要考虑搞点试错？",
+      "expected_behavior": "不应激活本 skill。这是'一次失效即归零'的场景，反脆弱的前提（损失有上限且可逆）不成立，应转向韧性方案：备份、冗余、恢复演练，对应 mm-murphy-s-law 与风险预防原则。",
+      "notes": "诱饵：都在谈风险，但该求稳而非求变强"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "团队这两年一直高强度加班，大家都快撑不住了，但我觉得这样能锻炼人。你怎么看？",
+      "expected_behavior": "不应激活本 skill。这是无信息产出的纯消耗性压力，只会磨损不会变强（反脆弱要求冲击携带信息且剂量可控）。若涉及具体失误复盘可转 mm-unforced-error；若是能力培养，应转 mm-deliberate-practice（受控环境下的针对性训练）。",
+      "notes": "跨 skill 混淆诱饵：'压力使人成长'的直觉与本模型相似但机制不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们要不要把新功能直接全量推给所有用户，出了问题再修？这样迭代最快。",
+      "expected_behavior": "应激活本 skill 但走边界判断：先界定冲击是否可逆、损失是否有上限。全量推送不可一键回滚且影响 100% 用户 = 单次剂量过大、不可控，判定不适用；应改为高频小剂量（灰度 1%、可回滚、带监控），这才是反脆弱的正确形态。",
+      "notes": "边界：试错方向对但剂量失控，需先压剂量再谈获益"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-deliberate-practice。"
+}

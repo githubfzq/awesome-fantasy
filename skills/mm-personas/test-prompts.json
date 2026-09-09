@@ -1,0 +1,52 @@
+{
+  "skill": "mm-personas",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "评审会上两边吵起来了,都说'用户肯定更喜欢这个方案'。怎么破?",
+      "expected_behavior": "应激活 mm-personas,指出抽象的'用户'可以被任意塑造、无人能反驳,应换成基于真人的具体角色;建立2-3个有名字、有具体处境与真实行为特征的角色,然后把待决方案逐一代入,明确回答'鲍勃或莎莉会做这件事吗'并给出理由;若出现'要看情况'说明角色刻画不够具体。",
+      "notes": "正面场景:用'用户会喜欢'互相说服"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "要写落地页文案了,我们目标客户是'中小企业'。这样够了吗?",
+      "expected_behavior": "应激活 mm-personas,指出'中小企业'这类标签无法回答'他会做这件事吗',真正有用的是实际行为与处境;引导从客户开发访谈/销售记录/客服工单等真人素材中提炼2-3个具名角色,并明确标注每个角色基于多少个真人。",
+      "notes": "正面场景:目标客户描述过于抽象"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "功能优先级排不出来,每个都有人觉得重要。有没有快的办法?",
+      "expected_behavior": "应激活 mm-personas,用具体角色裁决:把每个待排功能逐一代入2-3个具名角色,回答'鲍勃会做这件事吗'并给理由;同时提醒角色只能筛掉明显不靠谱的创意、不能替代真实测试,且角色数量不要超过3个否则会退化成'挑一个支持我的角色'。",
+      "notes": "正面场景:优先级的角色裁决"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们想估算这个细分市场到底有多大、能占多少份额。",
+      "expected_behavior": "不应激活本 skill,因为角色是定性工具,不能用来推算市场规模与份额;应走市场规模估算路径。",
+      "notes": "诱饵:谈目标客户但实为市场规模估算"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们还没接触过任何真实用户,但想先做几个用户画像出来指导设计。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-customer-development:书中明确要求角色基于真实客户开发所得的真人构建,凭空编造的角色只是刻板印象、会放大团队已有偏见;应先做几轮真实客户访谈获取素材,再回来建角色。",
+      "notes": "跨 skill 混淆诱饵:客户开发(真人素材来源 vs 角色使用方式)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们手上有几个深度访谈过的客户,能不能就按印象最深的那个来做用户画像?",
+      "expected_behavior": "合理判断:这正是书中明确警告的失效模式——切勿让可得性偏差限制构建角色时考虑的因素,只用最容易获得的数据会做出不实用的角色。可接受的做法是:该客户可以作为角色基础之一,但必须明确标注它只基于1个最容易想起的人,并补充其他真人素材做对照、检查是否被个例带偏;同时要求角色包含可观察的真实行为与处境,而非人口统计标签;设定复检周期,角色会随真实用户变化而失效。",
+      "notes": "边界:单一印象深刻的客户是否够用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

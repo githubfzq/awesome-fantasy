@@ -1,0 +1,51 @@
+{
+  "skill": "mm-flypaper-theory",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "对手一直在拿价格压我们,但我们在服务和交付速度上明显更强。怎么把话题拉过来?",
+      "expected_behavior": "应激活 mm-flypaper-theory,先列出所有可能战场并标注优劣,选定\"交付速度/服务响应\"这块既占优又有吸引力的地形,给出具体引导动作(公开交付时长数据、提供响应时效承诺、在提案中前置这部分),并确认对方真的会愿意来比;不要暴露真正的成本底线。",
+      "notes": "正面场景:换战场到己方优势区"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "下周的评审会上他们肯定会质疑我们的扩展性,那块我们准备得最充分。要不要主动先讲?",      "expected_behavior": "应激活 mm-flypaper-theory,建议主动设置议题:把扩展性作为开场重点并结合压测数据抛出,让讨论发生在准备充分的地形上;同时做压力推演——确认对方全力打过来时接得住,否则\"看起来占优\"会导致更彻底的失败。",
+      "notes": "正面场景:主动设置议题"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的防御资源有限,不可能每个入口都守死。能不能故意露一个口子让他们来?",
+      "expected_behavior": "应激活 mm-flypaper-theory,指出这是把对手吸引到可观测、可控位置上的思路;要求先确认该位置确实是隔离可控的、且我们能完整观测与接住,再给出暴露方式与配套监测;并明确只适用于对抗性场景,不能用在需要信任的内部协作上。",
+      "notes": "正面场景:防御资源布置中的诱敌"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们在性能和价格上都比对手强,直接正面打就行了,还要想什么策略?",
+      "expected_behavior": "不应激活本 skill,因为正面实力可以直接取胜、不需要设计诱饵;粘蝇纸的价值在于改变冲突发生的地点,当你已在所有维度占优时,直接推进即可。",
+      "notes": "诱饵:正面可直接取胜"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想在测试环境里放一台装着假数据的服务器,谁去动它我们就记录谁的手法。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-honeypot:目标是设一个假的隔离目标来观测与诱捕,这是蜜罐;粘蝇纸是把对手引到自己占优的真实地形上去打,靶子可以是真的。蜜罐在书中被明确列为粘蝇纸在计算机领域的对应物。",
+      "notes": "跨 skill 混淆诱饵:蜜罐"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们决定把\"定制化能力\"作为主推点来吸引客户比较,但真的大量定制需求涌进来时,交付团队其实接不住。",
+      "expected_behavior": "合理判断:这是诱饵摆成了自己的要害——该地形只是看起来占优、实际资源不足。应先做压力推演并补足交付能力(标准化模块、限售、排队与定价筛选),或改选一个既有吸引力又能接住的地形;在此之前不要把定制化推成主战场,否则是把优势拱手让人。",
+      "notes": "边界:诱饵地形其实接不住"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-filter-bubble",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我看了一圈网上的讨论，几乎所有人都认为远程办公必定是未来，没有例外。看来这事没什么好争议的了。",
+      "expected_behavior": "应激活 mm-filter-bubble，列出其信息来源并检查是否存在个性化推荐，要求做跨源对照（其他平台/其他立场的人/无痕搜索同一关键词），并列出至少 2 条被过滤掉的相反观点后再重新估计立场强度。",
+      "notes": "正面场景：『所有人都这么说』的样本可疑"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我刷到的一条条全是劝人裸辞创业的短视频，看得我热血沸腾，是不是该辞了？",
+      "expected_behavior": "应激活 mm-filter-bubble，指出信息流被同质内容占据（幸存者 + 平台推荐共同作用），要求跨源核对创业失败率等基础比率，而不是基于推送内容做人生决策。",
+      "notes": "正面场景：算法投喂直接影响重大决策"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我和同事聊同一个行业新闻，他看到的说法跟我看到的完全相反，我俩都觉得对方的信息是假的。",
+      "expected_behavior": "应激活 mm-filter-bubble，让双方各自列出信息来源与是否开启个性化推荐，做同一关键词的跨源/无痕对照，找出被各自过滤掉的部分。",
+      "notes": "正面场景：同一议题两人看到的世界不同"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "为什么我的购物 App 老是给我推猫粮？我明明只买过一次猫粮。",
+      "expected_behavior": "不应激活本 skill，因为这是单次推荐算法的结果，不构成系统性的信息过滤，直接解释推荐机制即可。",
+      "notes": "诱饵：单次推荐结果 ≠ 过滤气泡"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我搜资料的时候，只要是支持我观点的我就点进去看，反对的我基本跳过。我是不是有点问题？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-confirmation-bias（用户自己主动挑选信息），而不是由系统代为过滤的过滤气泡。",
+      "notes": "跨 skill 混淆诱饵：主动挑选 vs 被动过滤"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "为了打破信息茧房，我同时关注了立场完全对立的两派账号，结果现在每天看得特别累，而且更不知道该信谁了。",
+      "expected_behavior": "合理判断：激活并肯定破泡的意图，但指出破泡不等于『越多对立信息越好』；建议改为选择少量高质量、可核查的对立信源，并把重点从『看谁说得多』转为『看谁的证据和推理可被验证』，避免陷入信息超载。",
+      "notes": "边界：破泡的成本与副作用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

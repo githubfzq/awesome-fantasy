@@ -1,0 +1,52 @@
+{
+  "skill": "mm-lindy-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "新出来了好几个框架，我该学新框架还是继续用老方案？",
+      "expected_behavior": "应激活 mm-lindy-effect，确认对象属于不会老化的技术，按已存在时间给出预期剩余寿命量级，并转成投入配置建议。",
+      "notes": "最典型的正面场景：追新 vs 守旧"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这本三千年前的书，讲的道理现在还适用吗？",
+      "expected_behavior": "应激活本 skill，说明不会老化的思想每多存活一年预期剩余寿命就增加，存在时间是韧性的度量。",
+      "notes": "经典思想的长存"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "SQL 都几十年了，会不会很快被新东西取代？",
+      "expected_behavior": "应激活本 skill，判断它是否已被淘汰，给出预期剩余寿命量级并提醒需与趋势类模型交叉验证。",
+      "notes": "技术长期可靠性"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们这位老师傅干了四十年，还能再干几年？",
+      "expected_behavior": "不应激活本 skill，林迪效应不适用于会老化的人，人的预期剩余寿命随年龄下降，规律相反。",
+      "notes": "诱饵：会老化的对象"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "为什么这种管理方式在我们这个行业大行其道，换个行业就不灵了？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-natural-selection；用户在问为什么在当前环境下被选中，不是问还能存在多久。",
+      "notes": "跨 skill 混淆诱饵：都与长期留存有关"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这项技术用了三十年，但维护已经停了，社区也在往新方案迁移。",
+      "expected_behavior": "应激活但立即判停：已出现明显衰退信号时不应再用林迪效应硬撑，应转向 mm-peak 或 S 形曲线分析其衰退路径。",
+      "notes": "边界：存在久但已进入衰退"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

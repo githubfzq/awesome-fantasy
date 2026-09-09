@@ -1,0 +1,52 @@
+{
+  "skill": "mm-loyalists-versus-mercenaries",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们核心后端被竞对涨薪50%挖走了,要不要跟价把他留住?",
+      "expected_behavior": "应激活 mm-loyalists-versus-mercenaries,先用行为判据(逆境反应、是否主动承担份外事、谈论工作时焦点在事情还是报酬)定性他偏效忠者还是雇佣兵;若是雇佣兵且已拿更高报价,明确建议不跟价、做好交接与知识转移;若是效忠者,优先从领导力与使命层面挽留而非只谈钱。",
+      "notes": "正面场景:典型的挖角跟价决策"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "今年走了七八个人,离职面谈都说钱少。是不是该整体涨一轮薪?",
+      "expected_behavior": "应激活 mm-loyalists-versus-mercenaries,指出'只能靠加薪留人'说明领导力、使命、价值观和文化三要素已失效;先用四要素逐项诊断吸引力缺口(每项落到可观察事实),给出补非价格要素的具体动作,再谈钱;跟价只能买到时间。",
+      "notes": "正面场景:结构性流失的四要素诊断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想长期搭一支能打的十倍团队,该把什么放在第一位?",
+      "expected_behavior": "应激活 mm-loyalists-versus-mercenaries,给出书中的明确判据:若追求长期拥有十倍团队,打造文化应是首要目标,因为文化是吸引和留住效忠者的关键;并展开四要素(领导力、使命、价值观和文化、地点)说明如何吸引效忠者——有人愿为此放弃2~3倍薪酬。",
+      "notes": "正面场景:长期团队的搭建优先级"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "想请一个外包团队做三个月的一次性数据迁移,怎么谈价格和交付节点?",
+      "expected_behavior": "不应激活本 skill,因为短期项目制与外包本来就是雇佣兵结构,谈效忠与使命是错配;这是合同与交付管理问题。",
+      "notes": "诱饵:谈人但实为短期项目制用工"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们一年从60人涨到150人,最近老员工说'公司变了,不认识大家了'。这怎么回事?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-hypergrowth-dilutes-culture:问题是一年内规模扩大过半、太多未融入文化的新人冲淡了文化;本 skill 处理的是'文化用来吸引效忠者'的功能与四要素诊断,不解释文化被冲淡的机制。",
+      "notes": "跨 skill 混淆诱饵:超速增长稀释文化(文化被冲淡 vs 文化吸引效忠者)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "有个员工提出涨薪,我能不能直接说他是雇佣兵、不想干可以走?",
+      "expected_behavior": "合理判断:明确指出这是本模型最常见的滥用——用'雇佣兵'标签压制合理薪酬诉求。同时给出两条修正:(1)书中的观察是有人主动放弃2~3倍薪酬,前提是他们本来就值那个价,这不是压薪的依据;(2)效忠者/雇佣兵是状态变量而非人的固定属性,先自查四要素是否有缺口。若薪酬确实显著低于市场,应先解决公平性问题,此时谈使命感会显得虚伪。",
+      "notes": "边界:模型被用作压制工具的误用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

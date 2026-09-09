@@ -1,0 +1,52 @@
+{
+  "skill": "mm-observer-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要做一次员工满意度调研，HR 直接发问卷并要求实名填写，说便于跟进。这样能拿到真话吗？",
+      "expected_behavior": "应激活 mm-observer-effect，指出被观察者可感知观察（实名）且有动机做出反应（HR 有权力），属于社会型扰动；建议改为完全匿名或第三方代收，并做一次匿名 vs 记名的差异评估，同时在结论中声明残余扰动方向（结果偏正面）。",
+      "notes": "正面场景：记名调研设计"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "每次大老板去走访门店，一切都特别规范；他一走，问题就回来了。走访到底还有没有用？",
+      "expected_behavior": "应激活 mm-observer-effect，指出走访数据反映的是「被高层观察时的状态」而非日常基线，观察者权力越大扰动越强；建议改用无预告的第三方暗访、行为日志与延长观察期，并区分「走访的威慑价值」与「走访的诊断价值」。",
+      "notes": "正面场景：领导视察数据失真"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们上线了代码提交行为的看板，结果大家开始为了看板好看而拆提交。这个数据还能用吗？",
+      "expected_behavior": "应激活 mm-observer-effect，指出观察改变了行为本身（为了指标拆提交），说明数据已带有观察条件的印记；建议降低指标利害、改用不直接展示给被考核者的口径、延长观察期让行为回归基线，并在报告中声明残余扰动。",
+      "notes": "正面场景：监控上线后行为改变"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我拉了过去两年所有用户的历史订单日志做分析，这些数据是系统自动记录的，用户完全不知道被统计。会有观察偏差吗？",
+      "expected_behavior": "不应激活本 skill，因为被观察对象无法感知观察、也无动机做出反应，不存在行为扰动；此时应关注的是采样与口径问题，而非观察者效应。",
+      "notes": "诱饵：无感知的历史数据"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们做用户访谈时， interviewer 事先知道我们希望验证的假设，结果记录下来的回答几乎都在支持这个假设。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-observer-expectancy-bias。失真发生在观察者一侧（研究者的期待影响了提问与记录），而不是被观察者因被观察而改变行为，属于观察者期望偏差。",
+      "notes": "跨 skill 混淆诱饵：观察者期望偏差"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们在车间装了摄像头，目的是让大家遵守安全规程。装了之后违规确实少了，但有人说这数据说明不了安全意识提升。",
+      "expected_behavior": "合理的判断是：两种情况同时成立，需要分开看。若监控的目的本就是威慑（让人在被看见时守规矩），那么「行为改变」正是预期效果，不应作为偏差否定——只要安全规程的遵守本身是真实发生的，事故率下降就是真实收益。但若要用这些数据去推断「员工的安全意识/文化是否改善」，则属于典型的观察者效应：观察到的只是被观察状态下的合规，撤掉摄像头后是否维持未知。建议：把合规数据与一个不受观察直接驱动的结果指标（事故率、未遂事件上报数、无摄像头区域的行为）配对观察，并在报告中明确区分「合规的数据」与「意识的数据」。",
+      "notes": "边界：威慑即目的 vs 数据推断失真"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

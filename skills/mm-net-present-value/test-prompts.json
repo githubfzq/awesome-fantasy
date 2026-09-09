@@ -1,0 +1,52 @@
+{
+  "skill": "mm-net-present-value",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "中了彩票，每年给 100 万共给 20 年，或者现在一次性拿 1200 万，我该选哪个？",
+      "expected_behavior": "应激活 mm-net-present-value，按选定折现率把 20 年每年 100 万逐年折现后加总得出 NPV，与 1200 万并列比较；再用低/中/高三个折现率做敏感性检验，指出临界折现率，并说明\"若你能以高于折现率的利率投资，选一次性结款更划算\"。",
+      "notes": "正面场景：一次性结款 vs 分期领取（书中原型）"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "供应商给我们两个报价：现在付 500 万，或者分 5 年每年付 110 万，哪个实际更便宜？",
+      "expected_behavior": "应激活 mm-net-present-value，把 5 年分期款逐年折现加总，与 500 万对比，给出临界折现率并说明结论对该参数敏感。",
+      "notes": "正面场景：报价方案的现值比较"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个项目前期要投 300 万，后面五年每年回 80 万，值得做吗？",
+      "expected_behavior": "应激活 mm-net-present-value，把五年回款逐年折现加总、减去 300 万初始投入得到净现值，明确\"净现值为正才值得做\"，并做折现率敏感性检验。",
+      "notes": "正面场景：项目 NPV 是否为正"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这台设备 A 家卖 12 万，B 家卖 11 万 8，都是货到付款，买哪个？",
+      "expected_behavior": "不应激活本 skill，因为两笔付款发生在同一时点、不涉及跨期，不存在折现问题；直接比价即可。",
+      "notes": "诱饵：静态比价无需 NPV"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "明知道该存钱，可工资一发就想买东西，月底又后悔，我是不是有什么问题？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-hyperbolic-discounting。用户的问题是对未来的非理性高折扣导致即时满足偏好，是描述性的行为偏差；NPV 是规范性的计算工具，解释不了\"明知故犯\"。",
+      "notes": "跨 skill 混淆诱饵：双曲折现（同样涉及\"未来与现在\"）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我算出来一次性拿 1200 万的 NPV 更高，但我很清楚自己拿到钱半年就能花光，怎么办？",
+      "expected_behavior": "合理判断：这正是书中明示的非经济因素边界——很多中奖者后悔选一次性结款，因为拿到钱很快花掉。应告诉用户 NPV 只是必要条件而非充分条件，当自知自控力不足时，NPV 较低但分期锁定的方案实际效用更高；并可建议用强制函数（自动定投、锁定账户）弥补，而不是推翻 NPV 计算本身。",
+      "notes": "边界：NPV 最优但行为上不可执行"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

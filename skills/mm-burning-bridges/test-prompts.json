@@ -1,0 +1,52 @@
+{
+  "skill": "mm-burning-bridges",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "最后一天了,我想在离职告别邮件里把这几年积攒的问题全说出来,反正以后也不打交道了。",
+      "expected_behavior": "应激活 mm-burning-bridges,清点这座桥未来的价值(前同事会否出现在未来路径上、行业圈子大小、是否需要推荐与背书),把想说的话拆成'客观事实陈述'与'情绪性评判'两栏只保留前者,并给出一版不点名攻击、留有余地的措辞。",
+      "notes": "正面场景:典型离职拆桥冲动"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "合作方太不靠谱,我打算终止合作,然后在行业群里把他们的做法讲清楚,让大家知道。",
+      "expected_behavior": "应激活 mm-burning-bridges,指出公开表态是最难撤回的拆桥方式;要求评估未来是否仍需通过这个圈子(共同客户、转介、信息),分离事实与情绪,给出更克制的表述或建议改为私下沟通+正式函件。",
+      "notes": "正面场景:公开表态式拆桥"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "昨天跟合伙人吵翻了,我发了一通很冲的消息。现在有点后悔,要不要再补一句?",
+      "expected_behavior": "应激活 mm-burning-bridges,评估是否值得修复;若值得,给出简短、不辩解的致意措辞;若追加只会扩大冲突,则明确建议不再追加动作,把重点转到完成交接上——有时沉默比补救更好。",
+      "notes": "正面场景:已拆桥后的修复判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个供应商一直拖欠交付还隐瞒问题,我决定换掉他们,并且如实向公司内部说明换供应商的原因。",
+      "expected_behavior": "不应激活本 skill,因为这是基于事实的正常商业决策与内部说明,不是退出时的关系破坏;如实陈述不等于拆桥,不应劝用户为了体面而隐瞒。",
+      "notes": "诱饵:终止合作但无关系破坏成分"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我决定辞职创业,并且打算公开宣布日期、把退路彻底断掉,逼自己只能往前。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-burn-the-boats:这是主动切断**自己退路**以激励自己向前的策略,与破坏**与他人的关系**方向相反——书中特别澄清了这一混淆。",
+      "notes": "跨 skill 混淆诱饵:破釜沉舟(方向相反)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "前公司领导一直打压我,还克扣了我的提成。离职时我该忍着不说,还是把事情讲清楚?",
+      "expected_behavior": "合理判断:不能一律劝'忍'。先区分目的与方式——如实陈述事实、依法主张自己的权益(提成、绩效记录、劳动仲裁)是正当的,不属于拆桥;而在公开场合攻击人格、羞辱对方才是拆桥。建议:保留证据走正式渠道主张权益,对外表述只陈述事实不攻击人格;同时提醒在情绪最强烈时先不要在公开平台发布,避免在主张权益的同时付出不必要的声誉代价。",
+      "notes": "边界:正当维权与情绪性拆桥的分界"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

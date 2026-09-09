@@ -1,0 +1,52 @@
+{
+  "skill": "mm-polarity",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我这周有二十来件事，每件好像都有点重要，又都不是特别急。有没有办法快速分成「值得做」和「不值得做」两类？",
+      "expected_behavior": "应激活 mm-polarity，选一条有行动含义的属性（如「高杠杆/低杠杆」），给出可判定的切分阈值，确认两类对应不同行动，并标注这是人为简化、点名分界线附近的项。",
+      "notes": "正面场景：需要可执行的二值切分"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我想画个 2×2 矩阵来梳理手上的项目，但不知道两个轴该怎么定。有什么原则吗？",
+      "expected_behavior": "应激活 mm-polarity，说明矩阵的每个轴都必须是「只有两个可能值的属性」，指导用户按「切完两类要导向不同行动」来选轴，并给出可判定的阈值。",
+      "notes": "正面场景：为 2×2 矩阵定轴"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "团队讨论总是停在「看情况」，谁也说不出个标准。怎么让讨论继续？",
+      "expected_behavior": "应激活 mm-polarity，引入一条二值属性与可判定阈值，把「看情况」拆成「在哪些条件下归为 A、哪些条件下归为 B」。",
+      "notes": "正面场景：讨论需要切分才能推进"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我要给我的团队六个人做绩效评级，从最好到最差排个序，还要区分出中间的几档。",
+      "expected_behavior": "不应激活本 skill，因为绩效是连续分布、中间档有实质意义，强行二分会丢掉关键信息；应改用保留灰度的排序方法（mm-thinking-gray）。",
+      "notes": "诱饵：分类场景，但中间地带重要"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想把任务按重要和紧急分成四个象限来安排这周的工作，每个象限该怎么处理？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-2-2-matrices（或 mm-eisenhower-decision-matrix）——用户已经在用四象限思考，需要的是矩阵本身的处理规则，而不是如何构造一个二值轴。",
+      "notes": "跨 skill 混淆诱饵：与 mm-2-2-matrices 是零件与成品的关系，极易抢调用"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "在讨论里有人说「不支持这个方案就是反对我们」。这算不算在做极性切分？",
+      "expected_behavior": "不应把这句话当作合法的极性使用：应激活 mm-black-and-white-fallacy——这是把本有中间地带的立场错误地当成只有两个选项，属于谬误而非有意识的简化工具；可以顺带说明极性与黑白谬误的判别点。",
+      "notes": "边界：同样是非此即彼，一个是工具一个是错误"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

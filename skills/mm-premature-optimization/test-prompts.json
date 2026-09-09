@@ -1,0 +1,52 @@
+{
+  "skill": "mm-premature-optimization",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个需求还没跟用户确认过，但我准备先把架构重构成能扛百万并发的版本，反正迟早要做。",
+      "expected_behavior": "应激活 mm-premature-optimization，指出核心假设（会有百万并发、这个需求成立）尚未验证，把重构动作冻结到验证之后，并给出最便宜的验证动作。",
+      "notes": "正面场景：未验证即投入不可逆优化"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "亲戚下个月要来，我打算现在就把酒店、机票、行程全部订好规划好。",
+      "expected_behavior": "应激活 mm-premature-optimization，指出'亲戚一定会来'这个假设未验证，优化（预订）成本不可逆，建议先确认再投入。",
+      "notes": "正面场景：书中原始案例类型"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我在纠结用 Go 还是 Rust 重写这个服务，哪个性能更好，选错了就白干了。",
+      "expected_behavior": "应激活 mm-premature-optimization，把问题拉回'这个服务的性能是否真的是当前瓶颈、有没有人需要它'这个未验证假设，性能选型应后置。",
+      "notes": "正面场景：工具/方案最优性纠结"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "用户量已经稳定在百万级，接口 P99 延迟 800ms，现在要做的性能优化算不算过早优化？",
+      "expected_behavior": "不应激活本 skill，因为支撑优化的假设（用户量、延迟问题真实存在）已被验证，这是成熟期的常规性能优化，属于正常工程节奏。",
+      "notes": "诱饵：涉及优化但假设已验证"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个方案我改了十几版还是觉得不够好，一直不敢拿给客户看，怎么办？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-perfect-is-the-enemy-of-good：用户卡在质量标准过高导致不交付（出口），而不是在假设未验证时做了不可逆投入（入口）。",
+      "notes": "跨 skill 混淆诱饵：过早优化 vs 完美主义"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "支付接口要做加密改造，但我们还不确定下个月还用不用这个渠道，能不能先不做到最优？",
+      "expected_behavior": "应激活但需判停：加密属于安全与合规硬约束，是不可回退的底线要求，不能等验证；应说明此处不适用'避免过早优化'，同时渠道层面的定制优化可以延后。",
+      "notes": "边界：硬约束 vs 可推迟的优化"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

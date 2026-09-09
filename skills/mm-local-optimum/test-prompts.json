@@ -1,0 +1,52 @@
+{
+  "skill": "mm-local-optimum",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个方案已经是我们能想到的最好的了，准备定稿，你觉得呢？",
+      "expected_behavior": "应激活 mm-local-optimum,先追问比较过多少个备选、它们是否只是同一思路的变形;若是,判定为疑似局部最优,要求先用系统思考扩展视野再定案。",
+      "notes": "正面场景:方案定稿前的视野校验"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们这两年一直在调参数、改文案、改流程，但整体指标就是上不去。",
+      "expected_behavior": "应激活 mm-local-optimum,指出这是在同一座山上反复精修的典型症状;引导新增 2 个以上不同方向的候选（换山头而非换路线）,做粗粒度跨山头比较。",
+      "notes": "正面场景:持续微调但整体停滞"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们在 A 和 B 两个方案之间反复横跳，选不出来，帮我们定一个。",
+      "expected_behavior": "应激活 mm-local-optimum,先检查 A 和 B 是否属于同一座山（同一思路的变形）;若是,说明选哪个都到不了全局最优,应先扩展视野找出第三个方向。",
+      "notes": "正面场景:两难其实同山"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "今天中午吃什么？别想太多，随便定一个就行。",
+      "expected_behavior": "不应激活本 skill,因为这是需要立刻定案的小决策,搜索更优解的成本远超收益,够好即为正确。",
+      "notes": "诱饵:形似选择但 stakes 过低"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想知道为什么我们当年会走进这个技术栈，现在想换却换不掉。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-path-dependence:用户问的是“怎么走到这座山脚下”的历史成因,而局部最优解释的是“为什么下不了这座山”。",
+      "notes": "跨 skill 混淆诱饵:山脚 vs. 山顶"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们已经做了全面调研，确认没有更好的方向了，现在可以开始精修了吗？还要考虑局部最优吗？",
+      "expected_behavior": "合理判断:可以精修——作者说的是“如果可以的话”更希望全局最优,并非要求无限搜索。但应确认两件事:调研是否真的用系统思考覆盖了全系统（而非只在既有框架内枚举）,以及团队是否接受切换到更高山头时必然出现的短期下坡。若两者都满足,定案并投入细节优化。",
+      "notes": "边界:搜索终止条件"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-bandwagon-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "今年同行全在上这套系统,我们要不要也上?已经成为行业共识了吧。",
+      "expected_behavior": "应激活 mm-bandwagon-effect,追问这些同行的判断是独立做出的还是彼此可见、先后做出的;共识形成速度是否明显快于证据积累速度;再判断此处跟风是理性捷径(可验证、后果小、样本可比)还是放弃判断。",
+      "notes": "正面场景:用'行业共识'为决策辩护"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "今天会上那个方案五分钟就全票通过了,没人提一点反对意见,我总觉得哪里不对劲。",
+      "expected_behavior": "应激活 mm-bandwagon-effect,指出共识形成速度快于证据积累速度正是从众效应的特征;提醒'没人反对'不等于'没人有意见',并给出破环动作:先独立书面征集意见再公开、指定魔鬼辩护人、把共识降级为'当前最流行的假设'继续找反证。",
+      "notes": "正面场景:共识形成异常快"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个赛道现在特别火,所有人都在投,我不跟是不是就错过风口了?",
+      "expected_behavior": "应激活 mm-bandwagon-effect,区分可验证的从众(如依大量真实好评选产品,是理性捷径)与不可验证且存在正反馈的从众(资产泡沫式叙事,是放弃判断);本例属后者,应要求回到证据本身而非热度。",
+      "notes": "正面场景:热度值多少权重的判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这两个数据库我们该怎么选?我已经列了功能对比表和价格,帮我算一下哪个性价比高。",
+      "expected_behavior": "不应激活本 skill,因为用户已有确凿事实与数据并直接做比较,不涉及用'流行'代替论证;属于常规的成本收益比较,用 mm-cost-benefit-analysis 或直接计算即可。",
+      "notes": "诱饵:看似决策场景但无社会暗示成分"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们组为了不伤和气,谁都不愿意当面说方案的问题,最后硬着头皮执行了一个大家都知道有坑的方案。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-groupthink:驱动力是群体为维持和睦而压制异见(有明确的压制机制与集体压力),不是个体层面的概率性跟风;从众效应不需要任何人刻意施压也会发生,而这里的核心是'为了不伤和气'而自我审查。",
+      "notes": "跨 skill 混淆诱饵:群体思维"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们做电商的,商品页写'今年最流行'确实能提升转化,但这款其实销量一般。这样写有问题吗?",
+      "expected_behavior": "合理判断:从机制上说'流行'确能提升转化,但属于虚假陈述——既是广告合规风险,也破坏了流行本应携带的真实信号;建议改用真实可核验的数据(如真实的销量区间/真实的好评数),或改用其他非欺骗性的说服手段,并指出若无法真实陈述就不该使用这条杠杆。",
+      "notes": "边界:机制有效但性质是欺骗"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-managing-to-the-person",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我每周一对一复盘这一招对小陈特别管用，用到小林身上她反而更抵触了。为什么？",
+      "expected_behavior": "应激活 mm-managing-to-the-person，指出同一方法对不同人效果不同是常态；要求提取两人真正导致差异的维度（如内外向、尽责性、新老手），并针对小林重新设计管理动作（沟通频率、任务粒度、反馈场合）",
+      "notes": "正面场景：同一方法在两人身上效果相反"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我对每个人都一视同仁、标准统一，为什么还有人觉得不公平、怨气更大？",
+      "expected_behavior": "应激活本 skill，区分方法层与标准层：标准/目标/规则必须统一，沟通方式/节奏/支持力度应因人而异；'形式上的一视同仁'把适配成本转嫁给了被管理者",
+      "notes": "正面场景：公平与有效的张力"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "两个孩子性格完全相反，育儿书上说的方法总有一个不适用，怎么办？",
+      "expected_behavior": "应激活本 skill，把模型泛化为'具体关系具体应对'（书中明确它适用于父母养育孩子），建议为每个孩子分别设计方法，而非寻找通用技巧",
+      "notes": "正面场景：非管理场景的类比应用"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们要定今年的绩效考核标准和晋升规则，怎么保证公平？",
+      "expected_behavior": "不应激活本 skill，因为薪酬/考核/晋升规则属制度公平事项，必须统一标准；差异化会造成实质不公",
+      "notes": "诱饵：需要一刀切的公平场景"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "上次那个项目我用了敏捷，效果特别好，所以新项目我也直接上敏捷。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-maslow-s-hammer（马斯洛之锤）：这是拿一个方法套所有问题对象（项目），而非对同一岗位上的不同人调整方式；且书中明确马斯洛之锤与本 skill 冲突",
+      "notes": "跨 skill 混淆诱饵：一个是方法适配人，一个是方法套所有问题"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我对小李用了跟别人不一样的方式，结果其他人都说我偏心。",
+      "expected_behavior": "应激活本 skill 并指出差异化必须有配套动作：显式向当事人及团队说明'为什么对他用不同方式'、归因于具体处境而非偏好，并明确划出公平底线（标准/目标/规则统一，方法/节奏/支持力度可差异化）；若差异化的结果是降低要求，则已偏离模型本意（推导，非书中明示）",
+      "notes": "边界：差异化被感知为偏心"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

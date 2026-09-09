@@ -1,0 +1,52 @@
+{
+  "skill": "mm-aligning-incentives",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "客服按接单量计件发奖金，结果大家抢简单单、复杂问题一直拖着不解决，怎么办？",
+      "expected_behavior": "应激活 mm-aligning-incentives，指出结算单元（接单量）未覆盖完整后果（问题是否真正解决），重设为按一次解决率/满意度结算并做反向检验。",
+      "notes": "最典型的正面场景：结算单元错配"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "外包商按人天结算，我怀疑他们故意拖工期，该怎么改合同？",
+      "expected_behavior": "应激活本 skill，从对方自利倒推：人天结算下延长工期最划算，改为按里程碑/交付物打包结算，让对方承担工期成本。",
+      "notes": "合作与结算设计"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想让用户多邀请好友，打算给推荐奖励，规则怎么设计比较稳？",
+      "expected_behavior": "应激活本 skill，明确想要的度量结果，检查结算单元（按注册还是按有效留存结算），并列出最可能的钻空子方式。",
+      "notes": "面向用户的机制设计"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个方案成功率三成，成了能赚两百万，值得投吗？",
+      "expected_behavior": "不应激活本 skill，这是单一方案的概率与收益评估，应激活 mm-expected-value（期望值）。",
+      "notes": "诱饵：都是\"值不值得\""
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们把代码行数写进了考核，现在满仓库都是没用的冗余代码，这现象叫什么？",
+      "expected_behavior": "不应激活本 skill，这是对已发生的激励扭曲做诊断与命名，应激活 mm-perverse-incentives（不当诱因）或 mm-goodhart-s-law（古德哈特定律）。",
+      "notes": "跨 skill 混淆诱饵：事前设计 vs 事后诊断"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "团队氛围挺好，大家都是因为认可这件事在干活，我还要不要专门设计激励？",
+      "expected_behavior": "可激活但要先确认：若问题不在利益结构而在认同与意义，强行加结算单元可能挤出内在动机；建议先检查收益/成本归属是否真的错配，再决定。",
+      "notes": "边界：内在动机充足时的过度设计风险"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

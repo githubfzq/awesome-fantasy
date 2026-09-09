@@ -1,0 +1,52 @@
+{
+  "skill": "mm-outliers",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们有一批健康体检的体温数据，绝大部分在 97-99 之间，但有一个 100.8。要算正常区间的话，这个点怎么处理？",
+      "expected_behavior": "应激活 mm-outliers, 追问该点来源（是否病人数据混进健康人样本），按机制分类处置，并给出剔除前后的区间对比（书中剔除后为 96.3–100.0 华氏度）。",
+      "notes": "正面场景：书中原案例"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的平均响应时长被一个 30 秒的请求拖到了 1.2 秒，正常请求都在 200ms 左右。这个能剔掉吗？",
+      "expected_behavior": "应激活 mm-outliers, 先要求查该请求的日志来源（超时重试、冷启动、大批量导出），能找到机制才判为可剔除/单列，找不到则保留并单独说明，同时给出剔除前后均值对比。",
+      "notes": "正面场景：离群值污染汇总量"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "做数据清洗的时候，是不是直接去掉最大值和最小值就行了？",
+      "expected_behavior": "应激活 mm-outliers, 指出这种做法无差别地删掉了可能最重要的真实信息，正确做法是先可视化、追问每个点来源、按机制分类，并把规则写进流程。",
+      "notes": "正面场景：常见错误做法的纠正"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这批客户数据里只有付费客户，没有免费客户，会影响结论吗？",
+      "expected_behavior": "不应激活本 skill（问题是谁被选进了样本，而不是样本里有点格格不入）, 应激活 mm-selection-bias。",
+      "notes": "诱饵：数据代表性存疑，但属于入口问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "算完均值之后，我想知道这些值跟均值相差多少、分散程度如何，该看什么？",
+      "expected_behavior": "不应激活本 skill（诉求是离散程度，且离群值处理应在算它之前完成）, 应激活 mm-standard-deviation。",
+      "notes": "跨 skill 混淆诱饵：同一数据集上的相邻统计量"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们每月都有几笔异常大的订单，查下来是真实交易，来自一个大客户。算客单价的时候要不要把它们算进去？",
+      "expected_behavior": "合理的判断是：既然已确认是真实现象（有明确来源），按本 skill 应保留而非剔除；但同时指出它们会让均值对多数客户失去代表性，因此建议两者并列汇报（含这些订单的均值 + 中位数），而不是二选一地删掉。",
+      "notes": "边界：真实离群值——保留，但需改变汇报方式"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

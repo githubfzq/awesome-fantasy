@@ -1,0 +1,52 @@
+{
+  "skill": "mm-back-of-the-envelope-calculation",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "老板说明年要做到1个亿收入。这个目标现实吗?大家都在点头但我觉得悬。",
+      "expected_behavior": "应激活 mm-back-of-the-envelope-calculation,把1亿拆成2-4个可分别质疑的因子相乘(如客户数×客单价),并像书中那样给出两种对照结构(1000万只苍蝇×10美元 vs 1000头大象×10万美元);每个因子标注是'有依据'还是'纯猜测';用第二种分解交叉验证;最后把数字翻译回客户结构并检验'我们真能接触到这么多/这么大的客户吗'。",
+      "notes": "正面场景:宏大目标的可行性检验"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个方案我总觉得哪里不对,但说不上来。能不能帮我想想?",
+      "expected_behavior": "应激活 mm-back-of-the-envelope-calculation,指出价值在于迫使把隐含假设量化——一旦写成数字,隐含假设就暴露出来;引导把方案拆成可分别质疑的因子,逐项给数量级并标注哪些是猜测,从而定位'不对'的具体位置。",
+      "notes": "正面场景:模糊直觉转可检验假设"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "竞品宣称他们服务了500万企业客户。这个数字可信吗?",
+      "expected_behavior": "应激活 mm-back-of-the-envelope-calculation,用独立路径自上而下/自下而上对照估算(企业总数×渗透率×口径),看是否落在同一数量级;若相差超过10倍明确指出冲突并找出哪个因子错了;提示只求数量级不求精确。",
+      "notes": "正面场景:外部数字的交叉验证"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这份测算要交给董事会做投资决策,必须严谨、经得起追问。",
+      "expected_behavior": "不应激活本 skill,因为需要对外承诺与审批的精确数字;本 skill 是快速数量级估算,误差在一个数量级内都属正常,不能作为承诺依据。应转 mm-business-case 或 mm-discounted-cash-flow。",
+      "notes": "诱饵:谈测算但实为需要正式论证"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们估算下来利润在正负50%之间摆动,想知道结论到底卡在哪个假设上?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-sensitivity-analysis:用户的问题是结论对哪个不确定假设最敏感;粗略计算只求数量级,在结论高度依赖不确定假设时会给出虚假的确定感,应转敏感性分析。",
+      "notes": "跨 skill 混淆诱饵:敏感性分析(快速估算 vs 假设敏感度检验)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我粗略算下来这事能赚800万,是不是就可以拍板干了?",
+      "expected_behavior": "合理判断:不能。先提醒粗略计算的定位是快速数量级估算,误差在一个数量级内都属正常,不能作为承诺或拍板依据;再追问三项:(1)是否做了第二种分解的交叉验证,两条路径是否落在同一数量级;(2)哪些因子标为'纯猜测'——若结论依赖它们,应转 mm-sensitivity-analysis 检验敏感度;(3)是否完成了关键一步——把800万翻译回现实的客户/工作结构并检验可行性。若三条都通过且属可逆决策,可继续深挖;若是不可逆的大额投入,应转 mm-business-case。",
+      "notes": "边界:粗略估算能否支撑决策"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

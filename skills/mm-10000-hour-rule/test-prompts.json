@@ -1,0 +1,52 @@
+{
+  "skill": "mm-10000-hour-rule",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我练了半年琴了，怎么还是这么菜？是不是我根本没天赋？",
+      "expected_behavior": "应激活 mm-10000-hour-rule，用'顶尖水平是几千小时量级而非几百小时量级'校准预期：半年远未到量级，不是没天赋；并用用户每周真实可投入小时数反推到达不同水平所需年数",
+      "notes": "正面场景：进度焦虑与天赋怀疑"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "要多久才能真正成为这个领域的专家？我想两年内做到顶尖。",
+      "expected_behavior": "应激活本 skill，先说明这不是恒定定律、无法精确预测，再锁定四个变量（练什么、刻意程度、教练水平、目标精通程度），按用户每周真实投入反推年数，判断两年达到顶尖是否现实",
+      "notes": "正面场景：学习周期规划"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "Is the 10,000 hour rule actually true? Should we require it in our job postings?",
+      "expected_behavior": "应激活本 skill，明确作者特别提醒这不是一成不变的'定律'（艾利克森等人也指出过），并禁止把它当作招聘/晋升的量化门槛——小时数不等于水平，且实际所需因领域、刻意程度、教练与目标而异",
+      "notes": "正面场景：作为硬门槛的误用"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我安排一下这个月每天几点练、练什么内容。",
+      "expected_behavior": "不应激活本 skill，因为这是短期训练编排，应转 mm-spacing-effect（间隔效应：分散与间隔递增）与 mm-deliberate-practice（刻意练习：练什么怎么练）；一万小时只给总量参照",
+      "notes": "诱饵：需要的是排期而非总量"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他前两个月进步飞快，最近三个月怎么练都没长进，而且越来越没信心。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-learning-curve（学习曲线）：这是进步速度的形状问题（初期陡峭、后期平缓导致的信心骤减），不是总量估算问题",
+      "notes": "跨 skill 混淆诱饵：同为练习相关的阶段诊断"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "他在这个岗位上干了十年，按说一万小时早够了，为什么还是不是专家？",
+      "expected_behavior": "应激活本 skill 并指出关键在'刻意练习'而非'小时'（推导，非书中明示）：十年重复已掌握的内容不产生专家级提升；同时说明它是描述性统计而非承诺——花够小时不等于成为专家，因果方向不能倒置",
+      "notes": "边界：小时数与水平的因果倒置"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

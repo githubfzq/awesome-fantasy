@@ -1,0 +1,52 @@
+{
+  "skill": "mm-group-size-thresholds",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们从5个人涨到14个人了,现在什么事都要我拍板,累得不行。是不是该改改了?",
+      "expected_behavior": "应激活 mm-group-size-thresholds,判定已跨过10~15阈值(书中明示:人数达到10到15,人人参与最重要决策的简单体系就会崩溃);建议引入小群体、独立项目等架构,并列出仍在沿用的上一档做法(全员参与所有决策、靠口头同步)及其替代方案。",
+      "notes": "正面场景:刚跨过第一个阈值"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "刚拿了融资,计划一年内团队从80人扩到200人。有什么要提前准备的?",
+      "expected_behavior": "应激活 mm-group-size-thresholds,先跑优先级更高的扩张速度判据:一年内扩大超过一半(80→200为1.5倍),超速发展会带来大麻烦——太多未融入文化的新人冲淡文化;同时指出将跨过150人阈值,需要传统公司架构;给出减速或加强文化融入的具体措施。",
+      "notes": "正面场景:速度判据与绝对阈值同时触发"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "公司42个人了,还在靠群聊和口头同步,最近频繁漏球。要不要设一层经理?",
+      "expected_behavior": "应激活 mm-group-size-thresholds,判定落在30~50档位,该档位需要团队划分与正式管理;给出分阶段转型顺序,并提醒不要跳级(12人不要直接上公司级流程),按'先拆小群体/独立项目→再设正式管理→最后上公司级架构'推进。",
+      "notes": "正面场景:中间档位的架构补课"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个项目六个人做了三个月,再派六个人进去能不能一个半月做完?",
+      "expected_behavior": "不应激活本 skill,这是项目层面的人力与工期不可互换问题,应激活 mm-the-mythical-man-month;本 skill 处理的是组织规模与协作架构的匹配。",
+      "notes": "诱饵:谈加人但实为项目工期估算"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "为什么人类能维持的稳定社交关系上限刚好是150左右?这有什么进化上的依据吗?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-dunbar-s-number:用户问的是150这个数字的认知科学依据;本 skill 是把阈值转成架构动作(各档位该做什么),150只是其中一档。",
+      "notes": "跨 skill 混淆诱饵:邓巴数(解释150的来由 vs 按阈值换架构)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们现在正好15个人,是不是明天就要宣布重组、马上分组设经理?",
+      "expected_behavior": "合理判断:不必。书中明示这些阈值是经验性转折点而非精确临界值,不是'第15个人入职那天必须重组';正确做法是先观察是否真的出现症状(最重要决策已无法让所有人参与、信息开始不通),出现再按10~15档引入小群体与独立项目;同时警告反向误用——在十几人时照搬150人的公司级流程会扼杀效率,架构要匹配规模而非越正式越好。",
+      "notes": "边界:阈值的模糊性与提前套用的风险"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

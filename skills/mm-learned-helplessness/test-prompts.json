@@ -1,0 +1,52 @@
+{
+  "skill": "mm-learned-helplessness",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "投了三十份简历一个回音都没有。算了，我大概就不是做这行的料，不投了。",
+      "expected_behavior": "应激活 mm-learned-helplessness，先确认处境仍可改变（列出可行动作），区分'做不到'与'不相信做得到'，追溯无助在哪段经验里被习得，设计一个必定有效的最小行动（如改一份简历找 1 个人反馈并当天看到改进），执行后显式绑定'行为→结果'因果，再设计递进的 3-5 步。",
+      "notes": "正面场景：反复受挫后放弃尝试，机会仍存在"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "新来的下属交代什么都推不动，说两句就低头不说话。我怀疑他就是不上进。",
+      "expected_behavior": "应激活本 skill 并指出书中明示的警告：不要犯基本归因错误，把不行动归因为品性。要求追溯其过往是否处于'做了也没用'的环境，先改变处境（给资源、降低阻力、配指导）再要求行动，设计必定有效的最小任务让其重新体验行为有效。",
+      "notes": "正面场景：观察者误判，需避免基本归因错误"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我给团队讲了很多次道理也鼓励了，为什么他们还是不肯提改进建议？",
+      "expected_behavior": "应激活本 skill，指出讲道理与鼓励不能替代'行为有效'的真实体验；建议先设计一个提了建议必定被采纳并被明确归因的小场景（如一条当天就能落地的建议），把因果显式化，再逐步扩大。",
+      "notes": "正面场景：认知说服无效，需重建行为—结果联结"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "政策已经明文规定这个资质我们公司拿不到了，我还要不要继续准备材料？",
+      "expected_behavior": "不应激活本 skill。处境客观上已不可改变，此时需要接受与止损（mm-exit-strategy）并重新定向，设计'必定有效的小行动'会变成廉价鼓励，第二次失效反而加深无助。",
+      "notes": "诱饵：语气像放弃，但这是理性止损"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我知道健身好，但每次一想到要去健身房换衣服就懒得动了。怎么破？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-activation-energy：这是启动门槛太高导致不开始，而不是'认为做了也没用'。对策是降低第一步的活化能（在家练 5 分钟、提前把衣服穿好），而非重建行为—结果联结。",
+      "notes": "跨 skill 混淆诱饵：都表现为'不动'，但机制不同（门槛高 vs 预期为零）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "他连续三个月情绪低落，什么都提不起劲，连以前喜欢的事也不想做了。是不是习得性无助？",
+      "expected_behavior": "应谨慎处理边界：可指出习得性无助的机制作为可能解释之一，但明确说明本 skill 不能替代临床判断，若持续时间长、涉及全面兴趣丧失，应建议寻求专业心理健康帮助，不得据此下诊断。",
+      "notes": "边界：与临床抑郁的区分，需转介而非套模型"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-activation-energy。"
+}

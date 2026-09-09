@@ -1,0 +1,52 @@
+{
+  "skill": "mm-radical-candor",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "下属汇报时经常讲不清楚重点，我一直说'你沟通可以再好一点'，但他没变化。怎么说才有用？",
+      "expected_behavior": "应激活 mm-radical-candor，指出原话属于模糊抽象（非右上象限），改写为直接挑战：指出具体哪句话叫人摸不着头脑 + 给出应该怎么说，并先确认关怀轴（关系基础）",
+      "notes": "正面场景：书中给出的措辞对照"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "同事代码评审意见写得很冲，我心里不舒服但也知道他说得对。我该怎么回应？",
+      "expected_behavior": "应激活本 skill，判断为'可憎的侵犯'象限（有挑战无关怀），建议先建立关系基础再谈改进，并可用最善意的解释接收内容部分",
+      "notes": "正面场景：象限诊断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "How do I tell my co-founder his product decisions are hurting us without blowing up the relationship?",
+      "expected_behavior": "应激活本 skill，检查关怀轴（共同创始人关系基础）后给出直接挑战的具体措辞，指向具体决策行为而非品质标签，并约定后续复盘",
+      "notes": "正面场景：英文 + 高利害关系反馈"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这份报告里第三页的营收数字写错了，帮我改掉。",
+      "expected_behavior": "不应激活本 skill，因为这是纯事实性纠正，不存在评价成分，也不需要关怀轴",
+      "notes": "诱饵：与'改进'相关但无评价"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想让组员快速提升客户沟通能力，需要设计一套带教和反馈机制。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-deliberate-practice（刻意练习）：核心是训练设计（极限/递增/实时反馈），坦诚相待只解决其中反馈的质量",
+      "notes": "跨 skill 混淆诱饵：同章相邻且高度关联"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "团队刚被裁了一半，留下的人情绪都很低落。周会上要不要直接指出最近交付质量下降的问题？",
+      "expected_behavior": "应激活本 skill 并给出条件化判断：关怀轴在当前状态下极脆弱，此时直接挑战易落入'可憎的侵犯'；建议先补关系基础与情绪支持，把具体反馈延后到一对一场合，并标注此为基于机制的推导（书中未明示）",
+      "notes": "边界：关怀轴不足时的时机问题"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-prior",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "新来同事第一次汇报就把数据搞错了，我觉得这人不靠谱，但老同事说他一直很稳，我该怎么看？",
+      "expected_behavior": "应激活 mm-prior，指出「一次汇报」构成的是弱先验（书中类比第一印象），不应赋予高权重；老同事的长期观察才是强先验，建议继续积累观测再下结论。",
+      "notes": "正面场景：弱先验不该强用"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "同一份用户调研数据，我和合伙人读出来的结论完全相反，是我傻还是他固执？",
+      "expected_behavior": "应激活 mm-prior，说明同一证据下结论不同往往源于先验不同，未必是谁不理性；引导双方把各自先验写出来并追问其证据基础，再判断谁的先验更站得住。",
+      "notes": "正面场景：分歧的结构来源"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我一开始就觉得这个方向不行，现在跑了几周数据确实一般，是不是可以砍掉了？",
+      "expected_behavior": "应激活 mm-prior，要求先说清初始判断的证据基础是强先验还是成见，并检查是否存在证实偏差（只挑支持「不行」的数据看），再判断这轮数据是否足以更新结论。",
+      "notes": "正面场景：先验与证实偏差的区分"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我算一下这批订单的退款率是多少。",
+      "expected_behavior": "不应激活本 skill，因为有确定的客观答案，直接查数据即可，不涉及信念更新。",
+      "notes": "诱饵：可查证事实，无需概率化"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们只挑了几个满意客户做了访谈就得出产品很成功的结论，这样有问题吗？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-selection-bias：问题出在样本选择而非信念更新起点。",
+      "notes": "跨 skill 混淆诱饵：同属判断质量问题"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我跟我爸一起生活了四十年，我很了解他，但他最近的行为让我很意外，我该坚持原来的判断还是重新认识他？",
+      "expected_behavior": "应激活本 skill 并说明：这是书中「持续终身的关系」式的强先验，一次意外行为不应推翻四十年观察，但也不该无视；应看作小幅更新，并明确说出「什么样的行为模式重复出现才会真正改变我的判断」。",
+      "notes": "边界：强先验的合理顽固与松动条件"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

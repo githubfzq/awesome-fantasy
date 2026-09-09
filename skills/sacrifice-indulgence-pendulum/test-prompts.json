@@ -1,0 +1,69 @@
+{
+  "skill": "sacrifice-indulgence-pendulum",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我为这个家牺牲了一切，他却觉得理所当然",
+      "expected_behavior": "调用本 skill，做喜悦度与接受能力检测",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "家里的事都是我在做，凭什么每次都是我让步",
+      "expected_behavior": "调用本 skill，识别钟摆结构与放纵端",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我白天拼命付出，晚上就忍不住报复性熬夜、刷手机到凌晨",
+      "expected_behavior": "调用本 skill，识别钟摆独角戏（同一人扮演牺牲端与放纵端）",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我期待他能多陪陪我，但他总是加班",
+      "expected_behavior": "不应调用本 skill；应命中 expectation-tracing（不满指向'他该是什么样'）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我总是那个被牺牲的人，换了两段关系都是这样",
+      "expected_behavior": "不应调用本 skill；应命中 victim-prison-exit（长期角色困局）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "怎么跟老板谈加薪",
+      "expected_behavior": "完全无关",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "他赌博欠了几十万，我一直在替他还",
+      "expected_behavior": "成瘾导致的剥削，不是钟摆失衡；应停止本 skill，转安全评估与专业/法律支持",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "别人夸我的时候我总说'哪里哪里'，特别不自在",
+      "expected_behavior": "接受能力问题，正是本 skill 的核心指标，应调用并聚焦'练习接受'",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "should-not-trigger-04",
+      "type": "should_not_trigger",
+      "prompt": "我忍了他三年了。我搞不清我这是接纳他了，还是只是服气了。",
+      "expected_behavior": "不应调用；应命中 acceptance-or-tolerance（接纳/容忍/无奈的判别）",
+      "notes": "诱饵：跨册混淆（应命中第 2 册 skill）"
+    }
+  ]
+}

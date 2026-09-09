@@ -1,0 +1,52 @@
+{
+  "skill": "mm-utility-values",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "泳池派对前承包商说要拖两周，加钱能插队。多付的钱差不多，但我一想到要天天催他就烦，怎么决定？",
+      "expected_behavior": "应激活 mm-utility-values，把「担忧与催促」这类无形负担按主观价值计入对应结果（书中：+1000 美元），把每个结果折算成一个效用值再比较，并说明书中同类案例纳入效用后结论发生了反转。",
+      "notes": "正面场景：书中案例迁移"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "方案 A 便宜 8000 但要我自己盯三个月，方案 B 贵 8000 但全包，账面上 A 划算，可我本能想选 B。",
+      "expected_behavior": "应激活 mm-utility-values，指出账面上的直觉偏差就是未被计价的效用差，用「愿意付多少钱免除这个麻烦」的替换检验给盯场成本估值，加回后重算并做敏感性检查。",
+      "notes": "正面场景：便宜但折腾 vs 贵但省心"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的决策树算出来选新供应商，但我总觉得「搞砸了要重来」这一支的代价被低估了，这种感觉怎么纳入计算？",
+      "expected_behavior": "应激活 mm-utility-values，说明效用值正是计入决策树树叶的数值，把重做带来的焦虑、协调、声誉等无形项估值后加回该分支（书中：3000 → 5000 美元），并重算期望值看结论是否翻转。",
+      "notes": "正面场景：决策树树叶计价"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这两家云厂商配置一样，一个一年 12 万一个 15 万，选哪个？",
+      "expected_behavior": "不应激活本 skill，因为所有因素都有明确市场价格且用户未提任何无形项，直接比价即可。",
+      "notes": "诱饵：纯价格比较"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个方案有 30% 概率赚 100 万、70% 概率亏 20 万，期望值该怎么算？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-expected-value：结果已经有明确金额，问题在于概率加权而非给无形项计价。",
+      "notes": "跨 skill 混淆诱饵：同属决策计算，极易混"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "涉及家人健康的风险，我觉得根本不该用钱来衡量，还能算效用值吗？",
+      "expected_behavior": "应激活本 skill 并诚实回应：作者承认效用值可能难以估算，是功利主义的弊端之一；若用户拒绝量化，不应强行赋值，可改为把该项作为「未计价项」单独列出，与货币结论并列呈现，由用户按价值观定夺。",
+      "notes": "边界：拒绝量化主观价值"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

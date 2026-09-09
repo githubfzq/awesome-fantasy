@@ -1,0 +1,52 @@
+{
+  "skill": "mm-spacing-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "下周认证考试，我打算这个周末集中突击两天。可行吗？",
+      "expected_behavior": "应激活 mm-spacing-effect，指出填鸭式通常不是最佳策略；若目标是长期记住，应把内容切块排到多个时间点，并给出递增的回想间隔（当天→次日→3天后→1周后→1月后），每次只回想不重学",
+      "notes": "正面场景：填鸭式突击"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "学完就忘，是不是我记性太差了？",
+      "expected_behavior": "应激活本 skill，指出问题通常在于缺少'回来回想'这个动作而非记忆力；只安排学新内容的时间表无论总量多大都不是间隔学习，需补上主动回想与递增间隔",
+      "notes": "正面场景：学完就忘"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "Should I master skill A completely before moving on to skill B, or practice them together?",
+      "expected_behavior": "应激活本 skill，明确不要'彻底掌握一项再练下一项'，而要轮流练习各项技能（健身房类比：逐步加量、轮流锻炼每块肌肉），并给出具体轮换顺序",
+      "notes": "正面场景：多技能训练顺序"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个命令的参数我记不住，每次用的时候查一下手册就行。",
+      "expected_behavior": "不应激活本 skill，因为属即刻使用且无需长期保留的信息，临时查阅即可；排间隔是浪费",
+      "notes": "诱饵：不需要长期记忆"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他练了三年还是没什么长进，是不是一直在重复已经会的东西？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-deliberate-practice（刻意练习）：这是'练什么、怎么练'的问题（是否针对弱点、有无反馈、是否走出舒适区），不是'什么时候练'的排期问题",
+      "notes": "跨 skill 混淆诱饵：同属训练但维度不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我把复习间隔设成一个月一次，结果每次回想都完全想不起来，等于重学一遍。",
+      "expected_behavior": "应激活本 skill 并指出间隔过长导致完全遗忘、回想失败，等于重新学习反而降低效率（推导，非书中明示）；应缩短初始间隔、随掌握程度逐步拉长，并确保执行的是主动回想而非分散的重复阅读",
+      "notes": "边界：间隔长度的失效区间"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

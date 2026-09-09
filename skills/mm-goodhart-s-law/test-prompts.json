@@ -1,0 +1,52 @@
+{
+  "skill": "mm-goodhart-s-law",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们打算把客服的绩效和每天处理的工单量挂钩，多劳多得，这样合适吗？",
+      "expected_behavior": "应激活 mm-goodhart-s-law，指出工单量只是服务质量的代理变量，挂钩后会催生挑简单单、抢单、快速关闭未解决工单等钻法，要求列出钻空子清单并配护栏（解决率、满意度、抽检）与指标复查周期。",
+      "notes": "正面场景：KPI 设计"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们内容团队的阅读量涨了三倍，但我总觉得内容质量在下降，是我多虑了吗？",
+      "expected_behavior": "应激活 mm-goodhart-s-law，验证指标与真实价值的脱钩：检查是否出现标题党、拆条、低质铺量等钻法，并建议补充质量类对偶指标与留存/完读率，而不是只看阅读量。",
+      "notes": "正面场景：数字好看但事实变差"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要用 A/B 实验决定首页改版，选什么指标做唯一判断标准比较好？",
+      "expected_behavior": "应激活 mm-goodhart-s-law，警告单一可量化指标在与决策（高利害）挂钩后会被优化，建议用指标组合并设置护栏指标，同时对唯一主指标做钻空子推演。",
+      "notes": "正面场景：实验指标选择"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我只是想看看上个月的销售总额是多少，纯统计，不跟任何人考核挂钩。",
+      "expected_behavior": "不应激活本 skill，因为这是描述性度量、不与奖惩挂钩，不存在优化压力，谈不上指标腐蚀。",
+      "notes": "诱饵：涉及指标但无利害"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们按发现的漏洞数量给安全团队发奖金，结果有人开始自己埋漏洞再去发现，漏洞总数反而变多了。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-cobra-effect。这里不只是指标失真，而是问题本身被放大、且出现了「靠问题存在而获利」的群体，属于干预反效果，需要反套利设计加退出预案。",
+      "notes": "跨 skill 混淆诱饵：眼镜蛇效应"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的核心指标是营收，这个是真实价值本身，不是代理变量。还需要担心古德哈特定律吗？",
+      "expected_behavior": "合理的判断是：即使度量对象是价值本身，只要存在跨期与结构操作空间（提前确认收入、渠道压货、牺牲长期换短期），仍会被腐蚀；但相比代理指标，可操纵空间小得多，因此应做轻量防护（配对的留存/毛利/现金流护栏）而非重度流程。同时提醒：任何指标都会随时间被腐蚀，需预设复查与更换机制。",
+      "notes": "边界：指标即价值时的腐蚀程度"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

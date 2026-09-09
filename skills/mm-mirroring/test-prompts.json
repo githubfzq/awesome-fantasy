@@ -1,0 +1,52 @@
+{
+  "skill": "mm-mirroring",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "明天的客户谈判,我要不要跟着对方的坐姿和语速走?听说这样更容易被当成自己人。",
+      "expected_behavior": "应激活 mm-mirroring,说明模仿小动作与口头禅会被视作同类的机制,并给出使用边界:只允许同步非欺骗性的表层节奏(语速、音量),禁止伪造立场或经历,提醒过度模仿会被视作嘲弄。",
+      "notes": "正面场景:主动使用镜映"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "复盘一下今天那个电话,对方一直在重复我说的话,连我抱臂他也抱臂,现在回想有点怪。",
+      "expected_behavior": "应激活 mm-mirroring,指出高频多维度的同步(尤其是出现在提出请求之前的同步)属于刻意镜映而非自然融洽;要求把注意力从'这个人很像我'拉回'这个要求本身合不合理',并建议冷静期或第三方复核。",
+      "notes": "正面场景:识别对方在使用镜映"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们做反诈培训的,想讲讲骗子是怎么在几分钟内让陌生人信任他们的,镜映这块怎么讲?",
+      "expected_behavior": "应激活 mm-mirroring,把它定位为社会工程中建立信任的具体手段之一,说明同步姿态/语速/用词会让受害者产生'同类'错觉,并建议培训中强调'同步感'是可被人为制造的这一关键点。",
+      "notes": "正面场景:安全/反欺诈语境"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我看看这份合同里哪几条对我们不利,我逐条对照了模板但还是拿不准。",
+      "expected_behavior": "不应激活本 skill,因为场景是纯文本的条款分析,不存在姿态、语速、用词同步等任何模仿维度;属于合同审阅任务,应直接做条款比对。",
+      "notes": "诱饵:涉及沟通但无镜映成分"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们老板是行业里公认的技术大牛,他一开口大家基本就不反驳了,这正常吗?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-authority:影响力来自纵向的身份与专业权威(公认的技术大牛),不是横向的相似性/同步行为;镜映靠'我们像',权威靠'他比我懂'。",
+      "notes": "跨 skill 混淆诱饵:权威"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我和那位客户聊了一下午,俩人说话节奏越来越像,但我确实没刻意模仿,这算不算镜映?",
+      "expected_behavior": "合理判断:这属于自然发生的同步,是相处融洽的表现而非操纵——判据在于它是在相处中自然流出、而非在提要求前刻意提高频率;不必因此否定这段关系,但仍建议在涉及实质决策时把'合拍'与'条款'分开评估。",
+      "notes": "边界:自然同步 vs 刻意镜映"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

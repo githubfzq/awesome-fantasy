@@ -1,0 +1,76 @@
+{
+  "skill": "family-loyalty-attachment",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我变成了我妈那样，我发现自己吼孩子的语气跟她一模一样",
+      "expected_behavior": "调用本 skill，检测反向死忠",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我发誓绝不像我爸，但我觉得我在重复他的模式",
+      "expected_behavior": "调用本 skill，检测反向死忠（以'不像他'定义自己仍是死忠）",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我不敢说真实想法，怕他不高兴离开我",
+      "expected_behavior": "调用本 skill，依附情结分支",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "我一直在讨好，已经不知道自己真正想要什么了",
+      "expected_behavior": "调用本 skill，恢复'知道自己想要什么'的能力",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我就是受不了同事那种人，一看到他就来气",
+      "expected_behavior": "不应调用本 skill；应命中 shadow-figure-integration（投射，不是复制）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我为家里牺牲了一切，可没人看见",
+      "expected_behavior": "不应调用本 skill；应命中 sacrifice-indulgence-pendulum（当前失衡，不是模式来源）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "春节回家怎么应对亲戚催婚",
+      "expected_behavior": "技巧性需求，不应调用本 skill",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "我爸小时候打我打得进医院，我现在想起来还发抖",
+      "expected_behavior": "这是创伤不是模式；应转介专业创伤治疗，本 skill 必须停用",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我每周给父母打电话，逢年过节都回去，这算不算死忠",
+      "expected_behavior": "应调用本 skill 并用 B 段澄清：正常家庭责任不等于死忠，不得病理化",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "should-not-trigger-04",
+      "type": "should_not_trigger",
+      "prompt": "我就是不敢跟他说我真实的偏好，怕他觉得我难伺候。",
+      "expected_behavior": "不应调用；应命中 two-boats-differentiation（当下的压抑判据，不是原生家庭溯源）",
+      "notes": "诱饵：跨册混淆（应命中第 2 册 skill）"
+    }
+  ]
+}

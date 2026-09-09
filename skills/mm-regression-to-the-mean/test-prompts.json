@@ -1,0 +1,52 @@
+{
+  "skill": "mm-regression-to-the-mean",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "上个月销售冠军拿了 300 万，这个月只做了 120 万，是不是被表扬之后就松懈了？要不要找他谈谈？",
+      "expected_behavior": "应激活 mm-regression-to-the-mean，指出极端成绩中含大量不可重复的运气成分，回落是数学必然；要求先给出历史波动与回归后的预期区间，再判断是否需要干预，而非归因于松懈。",
+      "notes": "正面场景：极端后回落被错误归因"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们新人第一个月表现特别惊艳，第二个月就一般了，是不是动力下降了？",
+      "expected_behavior": "应激活 mm-regression-to-the-mean，引用书中二年级生症候群逻辑：新秀赛季亮眼之后下滑多数是均值回归而非心理压力。",
+      "notes": "正面场景：书中案例迁移"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "上周投诉量创了历史新高，我们紧急做了整改，这周降下来了，说明整改非常有效吧？",
+      "expected_behavior": "应激活 mm-regression-to-the-mean，提示最差时刻之后的回升本身就在预期内；要证明整改有效需对照组或超出回归预期幅度。",
+      "notes": "正面场景：干预归因陷阱"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个月的产量和前三个月基本持平，没什么波动，正常吗？",
+      "expected_behavior": "不应激活本 skill，因为没有出现极端观测值，也不涉及回落问题。",
+      "notes": "诱饵：绩效波动类问题但无极端值"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "轮盘连开十把黑，下一把总该开红了吧？概率肯定偏向红色了。",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-gambler-s-fallacy：这是把大数定律错用到短期的补偿预期，独立事件概率并未改变。",
+      "notes": "跨 skill 混淆诱饵：两者都讲「会回来」，机制完全不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "他连续三个季度都是销冠，而且我们确实给他换了更好的区域和培训，这还能用均值回归解释吗？",
+      "expected_behavior": "应激活本 skill 并做出细致判断：连续多期的极端表现降低了纯运气解释的可能性，但回归仍会使其向自身（已提升的）均值靠拢；应分离「真实水平提升」与「运气成分」，而不是简单套用回归否定培训效果。",
+      "notes": "边界：极端持续存在时，需区分真实变化与回归"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

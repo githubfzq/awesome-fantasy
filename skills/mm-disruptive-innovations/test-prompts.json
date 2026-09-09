@@ -1,0 +1,52 @@
+{
+  "skill": "mm-disruptive-innovations",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们做的工业检测设备精度是行业第一，最近冒出来一家小公司，精度只有我们的一半，但价格是我们的十分之一，而且不用装机、手机拍照就能出结果。现在只有一些小微企业买，我们要不要紧张？",
+      "expected_behavior": "应激活 mm-disruptive-innovations, 并锁定主流性能指标（精度）、确认新技术在主流维度更差、找出它更优的维度（价格/免装机/手机可用）、识别边缘用户（小微企业）、估算精度差距收敛速度与临界点，最后给出含触发条件的决策建议。",
+      "notes": "正面场景：低端切入 + 边缘用户 + 主流指标更差，教科书式触发"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们内部在吵要不要自己做一个低价版本。做了会明显吃掉现在这个高毛利产品的销量，不做又怕被人从下面抄。我该怎么想这件事？",
+      "expected_behavior": "应激活 mm-disruptive-innovations, 并量化「现在自我颠覆」的代价（收入骤减、团队重训、转型动荡）与「等临界点过了再动」的代价（市场被清场），指出哪一边不可逆，输出带触发条件的建议。",
+      "notes": "正面场景：在位者的自我颠覆决策，书中核心的组织困境"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "柯达当年其实早就发明了数码相机，为什么还是死了？这里面有没有什么能套用到我们公司的结构性问题？",
+      "expected_behavior": "应激活 mm-disruptive-innovations, 用「主流指标更差 + 新属性更优 + 差距持续缩小」路径解释，并指出在位者理性地选择「再等等」的机制，再迁移到用户公司的具体指标上。",
+      "notes": "正面场景：书中原案例的迁移提问"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们这个月的营收比预期低了 12%，主要丢了两个大客户。帮我分析一下哪里出了问题。",
+      "expected_behavior": "不应激活本 skill, 因为这是一个季度级业绩归因问题，时间尺度与驱动力都不匹配；应转向客户流失/成本收益类分析而非行业颠覆判断。",
+      "notes": "诱饵：短期业绩问题，尺度不匹配"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们新发布的软件在性能、稳定性、功能数量上全面碾压上一代产品，但上市三个月了，只有极客在买，大众市场完全没动静。这是不是颠覆性创新不够颠覆的问题？",
+      "expected_behavior": "不应激活本 skill, 应激活 mm-technology-adoption-life-cycle（或 mm-crossing-the-chasm）。理由是它在主流指标上全面更强，属于延续性创新 + 采纳曲线问题，不是「主流指标更差的边缘切入」这一颠覆路径。",
+      "notes": "跨 skill 混淆诱饵：把「采纳慢」误当成「颠覆」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "有个新技术在我们的核心指标上确实比我们差 30%，但它免费的，而且是开源的，看不到明显的改进团队和路线图。这算颠覆吗？",
+      "expected_behavior": "合理的判断是：先用 mm-disruptive-innovations 做初步筛查（主流指标更差 ✓、另类维度更优 ✓），但因看不到改进斜率而判停在步骤 4，明确告知「缺乏收敛速度证据，无法判定为颠覆，可能只是低价替代品」，并给出需要监测的临界点信号，而不是强行下结论。",
+      "notes": "边界：三项判据中缺少可验证的改进斜率"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

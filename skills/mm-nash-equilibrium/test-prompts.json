@@ -1,0 +1,52 @@
+{
+  "skill": "mm-nash-equilibrium",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "全行业都在疯狂补贴抢用户,每家都在亏钱,可没有一家敢先停。这个局会停在哪?",
+      "expected_behavior": "应激活 mm-nash-equilibrium,摆出收益矩阵,找出'大家继续补贴'这个没人愿单方面偏离的稳定点;明确指出均衡不等于最优(这是集体亏损的双输点),并给出改参数的出路(监管、行业协调、差异化、资本约束)。",
+      "notes": "正面场景:识别稳定但糟糕的均衡"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "军备竞赛为什么停不下来?双方都知道继续加码对谁都没好处。",
+      "expected_behavior": "应激活 mm-nash-equilibrium,指出'双方都继续增加军备'正是该博弈的均衡点——任一方单方面裁军都会让自己处境恶化;强调均衡只是稳定点不是好结果,要打破必须改参数(裁军协议、核查机制、降低进攻价值)。",
+      "notes": "正面场景:书中军备竞赛案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们平台想改规则,让商家别再刷单。怎么预判新规则下大家最后会变成什么样?",
+      "expected_behavior": "应激活 mm-nash-equilibrium,先摆出新规则下的收益矩阵,逐个格子检查是否有人能单方面变好,找出新均衡;并指出若刷单仍是均衡,规则就是无效的,需要继续改参数(提高查处确定性、改变排序权重)。",
+      "notes": "正面场景:规则设计中的均衡预测"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "要不要给服务器加容灾?一年多花 8 万,故障概率 5%,一次损失 100 万。",
+      "expected_behavior": "不应激活本 skill,因为这是单方面面对自然随机性的决策,没有策略互动、不存在均衡;应激活 mm-decision-tree 配合 mm-expected-value。",
+      "notes": "诱饵:涉及权衡但无博弈"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "两个同案犯被分开审,先招的释放。这里面谁会怎么选?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-prisoner-s-dilemma:用户问的是这个具体博弈的结构与占优策略推理,虽然双重背叛就是该博弈的均衡,但分析入口应是囚徒困境;纳什均衡在此作为其求解工具被调用。",
+      "notes": "跨 skill 混淆诱饵:囚徒困境"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我算出这个博弈有两个均衡点,到底会落哪一个?",
+      "expected_behavior": "合理判断:模型本身不告诉你会落在哪个均衡,它只保证一旦落在那里就没人愿单方面离开;需要靠历史路径、惯例、 focal point(显著点)或协调机制来判断,并建议设计明确的协调信号把参与人引向较好的那个均衡。",
+      "notes": "边界:多重均衡的选择问题"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

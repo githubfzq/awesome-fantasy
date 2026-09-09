@@ -1,0 +1,52 @@
+{
+  "skill": "mm-replication-crisis",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们照着一篇心理学论文的方法重做了一遍，效果完全没出现，是我们哪里做错了吗？",
+      "expected_behavior": "应激活 mm-replication-crisis，区分三种可能（原始为假阳性 / 本研究功效不足 / 效应趋小），先算本研究的检出概率，并说明该领域重现率不到 50% 属常见现象。",
+      "notes": "正面场景：复现失败"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "有篇新研究说喝咖啡能延长寿命 20%，样本 80 人，我们要不要据此调整健康产品线？",
+      "expected_behavior": "应激活 mm-replication-crisis，提示单一小样本惊艳效应很可能远小于表面值（趋于均值），应先查重复研究与荟萃分析再决策。",
+      "notes": "正面场景：依据单篇研究做重大决策"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们内部第一次实验效果特别惊艳，第二次完全没效果，是不是第一次有人造假？",
+      "expected_behavior": "应激活 mm-replication-crisis，用书中算术说明无需造假也能出现低重现率（假阳性基础比率 + 重复研究功效不足），并建议先检查第二次的功效。",
+      "notes": "正面场景：内部实验无法重现"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "同样的代码在我机器上能跑，在 CI 上跑不起来，帮我看看环境差异。",
+      "expected_behavior": "不应激活本 skill，因为这是工程环境的可复现性问题，与统计结论的可重复性无关。",
+      "notes": "诱饵：「复现」一词的歧义"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们试了 20 多种切分和指标组合，终于找到一个显著的，是不是说明我们挖掘得很彻底？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-data-dredging：核心问题是多次检验制造假阳性的手法本身，而非整体重现率低的现象。",
+      "notes": "跨 skill 混淆诱饵：书中同节，因果相连"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个结论已经有 5 个独立团队、每个都是大样本预注册重复验证过了，我还是该怀疑它吗？",
+      "expected_behavior": "应判定不必再套用本 skill 的怀疑框架：多次独立、大样本、预注册的重复验证已把假阳性与功效不足的风险大幅压低，应转而正常采信。",
+      "notes": "边界：证据已足够强时的处理"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}
