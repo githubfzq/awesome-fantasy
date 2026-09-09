@@ -1,0 +1,52 @@
+{
+  "skill": "mm-luck-surface-area",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "同期入职的同事跳槽去了一家很不错的公司，说是偶然在一次聚会上聊到机会。我就是没这种运气。",
+      "expected_behavior": "应激活 mm-luck-surface-area，把「运气」拆解为接触面变量（接触人数 × 场景多样性），指出对方为出现在正确地点付出了努力，并给出扩大表面积的具体方向。",
+      "notes": "正面场景：把运气变成可操作变量"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这周末有三个行业活动邀请，都挺想去，但我手上还有个重要的项目要交。该怎么选？",
+      "expected_behavior": "应激活 mm-luck-surface-area，用「会不会遇到平时遇不到的人 / 成本多少 / 是否挤掉重要工作」三条判据逐个评估，并给出明确的去/不去结论与理由。",
+      "notes": "正面场景：活动筛选与折中策略"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我最近三个月几乎每周都出去社交两三次，微信加了几百人，但什么实际进展都没有，工作也耽误了。",
+      "expected_behavior": "应激活 mm-luck-surface-area 并触发判停：识别出这是「忙着奔赴不同地点、无法完成任何重要工作」的失衡状态，跳过扩面建议，先给收缩方案与拒绝原则。",
+      "notes": "正面场景：表面积过大而无效的失衡"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "三个月后有个认证考试，我该怎么安排复习计划？",
+      "expected_behavior": "不应激活本 skill，因为这是靠确定性技能积累就能解决的问题，扩大接触面只会分心；应直接给学习计划建议。",
+      "notes": "诱饵：自我提升类场景，但机制是积累而非运气"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我和几个行业里的关键人物已经建立联系了，现在有个明确的机会正在谈。接下来该怎么把它拿下？",
+      "expected_behavior": "不应激活本 skill，因为已有明确机会、需要的是深耕执行，此时该收网而非撒网；应转向谈判与执行层面的分析（mm-batna 等）。",
+      "notes": "诱饵：涉及人脉，但阶段已从扩面转入执行"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我想转行做投资，但完全不认识那个圈子的人。是不是该想办法多认识些人？",
+      "expected_behavior": "应激活 mm-luck-surface-area 但同时提醒：跨入全新领域时，单纯扩面不够——需要先具备可被交换的价值（否则接触不产生交换、表面积无效）；建议「先建立一项可交换的专长 + 定向接触」的组合，而非泛泛社交。",
+      "notes": "边界：表面积有效性的前提条件"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

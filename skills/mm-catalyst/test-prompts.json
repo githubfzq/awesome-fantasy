@@ -1,0 +1,52 @@
+{
+  "skill": "mm-catalyst",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的开源项目代码质量不错，文档也全，但就是没人来贡献。再招两个全职推广有用吗？",
+      "expected_behavior": "应激活 mm-catalyst，指出招人是增加反应物而非催化剂，并给出降低贡献门槛的候选（good first issue 标签、一键本地环境脚本、贡献模板），再用三条件筛掉伪催化剂。",
+      "notes": "正面场景：找杠杆物而非加大投入"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "团队决定每周做一次知识分享，但每次都要我催。有没有什么办法能让他们自己转起来？",
+      "expected_behavior": "应激活 mm-catalyst，建议用承诺与强制函数类催化剂（固定日历占位、轮值表预先排满、分享者公开认领）改变默认状态，而非加强催促。",
+      "notes": "正面场景：书中明示「承诺与强制函数是强大催化剂」"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "产品功能做完了，用户反馈也好，但增长很慢。我们准备把市场预算翻倍，你觉得呢？",
+      "expected_behavior": "应激活 mm-catalyst，先区分预算翻倍是加反应物还是能降低门槛，并引导寻找自带扩散的催化剂（邀请机制、模板、分享后可见的价值），再评估预算投向。",
+      "notes": "正面场景：投入 vs. 催化的判别"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们还没想清楚这个产品到底该做给谁用，但先想让它快点起来。有没有什么能加速的？",
+      "expected_behavior": "不应激活本 skill，因为目标反应尚未确定，催化剂只会加速到达可能错误的地方；应先做客户与方向判断（mm-what-type-of-customer-are-you-hunting 或 mm-product）。",
+      "notes": "诱饵：出现了「加速」但方向未定"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想每天早起，但一直起不来。能不能帮我算算到底是我动力不足还是别的原因？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-activation-energy——用户在诊断「为什么启动不了」（量门槛），而不是问「用什么来降低门槛」。",
+      "notes": "跨 skill 混淆诱饵：与 mm-activation-energy 一体两面，区分在诊断 vs. 处方"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们想让内部安全规范更快被采纳。有人提议搞个「安全违规排行榜」公示，用同伴压力当催化剂，你觉得怎么样？",
+      "expected_behavior": "应激活 mm-catalyst 但提出明确警告：催化剂不问方向，公开羞辱类催化剂同样会加速「隐瞒违规」这一坏变化；应建议改用正向可见的催化剂（默认安全配置、一键合规检查），并指出此场景属于书中「天气既能助营火也能助山火」的中立性风险。",
+      "notes": "边界：催化剂的中立性与副作用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

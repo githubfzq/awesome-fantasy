@@ -1,0 +1,52 @@
+{
+  "skill": "mm-guerrilla-marketing",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们是个三人小团队,竞品在几个平台疯狂投流,我们一年市场预算不到十万。怎么推?",
+      "expected_behavior": "应激活 mm-guerrilla-marketing,先确认对手的钱花在哪、靠什么机制生效(竞价曝光),再找对手因审批链长/品牌风险/ROI太小而不愿碰的传播位;设计2-3个可自传播的素材(钩子、制作成本、传播机制),小成本快测7天看转发率与获客成本,再放大赢家。",
+      "notes": "正面场景:典型低预算对抗大预算"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "想做一支病毒视频把产品带火,预算只够拍个手机短片。有什么思路?",
+      "expected_behavior": "应激活 mm-guerrilla-marketing,指出病毒传播不可规划、只能提高概率;要求明确核心钩子和传播机制(靠什么人传给什么人),做2-3个最小版本分渠道快测,而不是押一支视频;并提醒低成本省的是媒体采买费,代价是创意密度。",
+      "notes": "正面场景:病毒视频诉求"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的对手都是大品牌,门店开在商场里。我们开在老小区,怎么让人知道?",
+      "expected_behavior": "应激活 mm-guerrilla-marketing,把竞争维度从'曝光量'换成'话题性与邻里关系',给出具体非常规动作(社区场景化物料、老板亲自出镜、与周边小店互换流量、本地社群运营),并确认产品已被部分用户验证。",
+      "notes": "正面场景:本地小商家的低成本获客"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "产品刚上线,还没有一个用户用过。我想先投二十万做品牌广告打知名度。",
+      "expected_behavior": "不应激活本 skill,因为产品-市场匹配尚未成立、没有任何用户验证,此时做任何营销都会把钱花在留不住的人身上;应先用客户开发验证需求与产品。",
+      "notes": "诱饵:营销诉求但前置条件缺失"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "大厂要进我们这个细分领域了,我们在犹豫要不要正面跟他们抢。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-punching-above-your-weight:这是'要不要主动越级参战'的前置战略判断(收益与风险权衡),而游击营销是决定参战后在营销预算维度上的具体打法。",
+      "notes": "跨 skill 混淆诱饵:挑战重量级(参战决策 vs 营销打法)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们去年靠一支爆款视频起来了,今年想复制,能不能把全部预算押在再拍一支上?",
+      "expected_behavior": "合理判断:不建议。病毒传播是概率事件而非可规划的增长模型,把全部预算押在单支视频上等于把不可控事件当成增长策略。建议:先复盘上次爆款中可复用的机制(钩子类型、分发路径、受众)而非只复制形式;用少量预算并行做多个最小版本快测;同时把已验证的常规渠道搭起来形成基本盘,让非常规动作成为增量而不是全部。",
+      "notes": "边界:游击营销的可复制性与规模化上限"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

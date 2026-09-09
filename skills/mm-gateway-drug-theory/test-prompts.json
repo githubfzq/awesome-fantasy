@@ -1,0 +1,52 @@
+{
+  "skill": "mm-gateway-drug-theory",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "数据显示,玩过我们轻度小游戏的用户,后来玩重度游戏的比例明显更高。能不能说轻度游戏把人带进重度游戏了?",
+      "expected_behavior": "应激活 mm-gateway-drug-theory,指出这是把相关性读成因果链;列出可能的共同原因(用户本身偏好、推荐曝光、活跃度)并逐条问\"控制后关联还在吗\";按书中态度保持怀疑、从第一性原理出发评估,给结论时标注强度并说明需要什么证据才能升级。",
+      "notes": "正面场景:相关性 vs 递进因果"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "家长群里在传:小孩先玩休闲手游,迟早会沉迷大型网游。这个说法靠谱吗?",
+      "expected_behavior": "应激活 mm-gateway-drug-theory,指出该主张的证据相当含糊(书中明示);要求区分\"先后发生\"与\"导致发生\",寻找推动第二步的真实机制(时间占用、社交绑定、成就系统),并提醒即使证据含糊也不等于已被证伪,结论应落在\"需要更多证据\"而非\"必须禁止\"。",
+      "notes": "正面场景:典型入门毒品式主张"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们担心免费用户会一直白嫖,永远不付费;也有人觉得免费是付费的入口。怎么看?",
+      "expected_behavior": "应激活 mm-gateway-drug-theory,同时指出书中明确给出的对照:商业上的亏本销售策略确实是入门毒品理论的真实版本(机制明确:低价入门品锁定后提高高毛利消费);因此这里要找的是机制——免费版是否真的形成了锁定与使用习惯,再据此判断而不是靠直觉。",
+      "notes": "正面场景:免费到付费的递进是否成立"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "打印机卖 299,墨盒卖 199,这个商业模式到底怎么赚钱?",
+      "expected_behavior": "不应激活本 skill,因为这里的递进机制是明确的(适配性锁定 + 必需配套品),属于书中指出的\"真实版本\";应激活 mm-loss-leader-strategy 分析入门品亏损、配套品利润与回收周期。",
+      "notes": "诱饵:机制明确,是真实版本"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "有人说\"今天允许远程办公,明天就没人来公司了,最后团队就散了\"。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-slippery-slope-argument:这里需要检验的是论证链条每一环是否必然,属于滑坡论证;入门毒品理论处理的是\"温和项是否通向危险项\"的因果递进主张,重点在相关性与因果性。",
+      "notes": "跨 skill 混淆诱饵:滑坡论"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "统计显示,用过 AI 辅助编程工具的工程师,提交量平均高 30%。能说是工具提高了效率吗?",
+      "expected_behavior": "合理判断:同样存在共同原因问题——可能本就更高效或更愿意尝试新工具的工程师先用了它。不能仅凭该统计推出因果。正确做法:控制基线产出与人岗因素,或做随机分组的对照实验;若随机化后差异仍在,才可判定为真实递进/增益。这与入门毒品理论的结构完全一致:先后发生不等于导致发生。",
+      "notes": "边界:共同原因 vs 真实因果"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

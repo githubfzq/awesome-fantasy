@@ -1,0 +1,52 @@
+{
+  "skill": "mm-market-power",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们想给老产品涨 20% 的价，但又怕客户流失。到底能不能涨？",
+      "expected_behavior": "应激活 mm-market-power，把问题转成可检验的支配力问题：先列出客户真实的可替代品集合（含'凑合用/延迟购买'），再估算转换成本构成；然后设计小幅度新客提价实验或复盘历史提价留存数据，给出'流失率低于某阈值才算有支配力'的判定线；最后给出提价幅度与节奏建议，或指出已被商品化需先做差异化。",
+      "notes": "正面场景：典型定价权问题"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "客户每次都拿竞品的报价来压我，我们的功能和他们差不多。这场价格战怎么打？",
+      "expected_behavior": "应激活本 skill，指出这是缺乏市场支配力的表现——产品已被商品化，只能接受市场价。应要求分析替代品可接受度与转换成本，并给出能提高转换成本或降低替代品可接受度的具体方向（而不是讨论降价幅度）；若两者都无法改变，则建议退出该细分市场而不是继续血拼。",
+      "notes": "正面场景：被商品化"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我带的这个岗位在市场上很难招到人，是不是我就可以多要点薪水了？",
+      "expected_behavior": "应激活本 skill 并迁移到个人：稀缺技能是获得市场支配力的必要条件，但仍要用'如果我提价（要求更高薪水）雇主会不会另找人'来检验；同时必须验证市场对该技能的需求是否充足，以及雇主寻找替代者的成本。不能简单回答'稀缺就能涨价'。",
+      "notes": "正面场景：书中的个人层面迁移"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我查一下这个岗位在一线城市的市场薪资中位数大概是多少？",
+      "expected_behavior": "不应激活本 skill。这是行情调研，用户只要一个市场价数字，不涉及自己有没有偏离市场价的能力。直接给数据即可，最多顺带提一句'你能否高于这个数取决于你的议价能力'。",
+      "notes": "诱饵：都涉及'市场价格'，但诉求不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "一家公司占了九成以上的市场份额还能随便提价，监管部门为什么会坐视不管？",
+      "expected_behavior": "不应激活本 skill（或仅作为背景引用），应激活 mm-regulatory-capture：问题问的是监管者为何没有采取有效监管行动，属于监管机构被利益集团俘获的成因分析。市场支配力只能解释这家公司'为什么能提价'，解释不了'监管为什么没管'。",
+      "notes": "跨 skill 混淆诱饵：同一现象（EpiPen 类提价）的两个不同切面"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我在一个小众领域是顶尖水平，几乎没有人能做得跟我一样好，但收入一直上不去。问题出在哪？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：这正是书中明确提醒的情形——市场支配力需要'市场对你的特殊技能有需求'才能发挥。应分别检验两边：稀缺性（替代者少）说明有获得支配力的必要前提，但需求不足（愿意付费的客户总量太小）会让它无法变现。结论应指向'换到需求更大的场景重新定位'，而不是继续在稀缺性上加码。可引用书中奥运选手的例子。",
+      "notes": "边界：稀缺但不具备支配力的典型情形"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-regulatory-capture。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-payoff-matrix",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们降价他们跟不跟?几种组合的结果能列出来看一下吗?",
+      "expected_behavior": "应激活 mm-payoff-matrix,点名双方各自 2-3 个选项,逐格填入(我的收益, 他的收益),标出双方各自的最佳回应并找出重合的均衡格子,最后比较均衡与是否存在对双方都更优的结果。",
+      "notes": "正面场景:把博弈结构摊开"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "为什么供应商总是选那个对我们不利的方案?怎么才能让他换一条路?",
+      "expected_behavior": "应激活 mm-payoff-matrix,指出结果由收益结构决定而非态度;给出具体改动(押金、违约条款、返点、第三方仲裁、把单次变重复)并说明它把对方哪一格的收益改成了多少。",
+      "notes": "正面场景:通过改数字改变对手决策"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "合作好还是先下手好?我想把这几种情况一次看清。",
+      "expected_behavior": "应激活 mm-payoff-matrix,列出'合作/背叛 × 合作/背叛'的矩阵,填入双方收益,标出均衡;若均衡不理想,明确指出这就是需要改规则的信号。",
+      "notes": "正面场景:两难结构可视化"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我要不要带伞?如果下雨带伞比较划算,不下雨带伞有点累赘。",
+      "expected_behavior": "不应激活本 skill,因为没有会回应的对手,只是个人在不同自然状态下的取舍;属于决策树/期望值问题。",
+      "notes": "诱饵:也是'几种情况'但无对手"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们和竞品是同时出价的,谁也看不到对方的报价。这种情况该用什么思路分析?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-game-theory:用户尚未确定分析视角,问题本质是'存在一个会回应的玩家、结果取决于双方选择';收益矩阵是确认这是博弈之后用来摊开计算的工具,此时的第一步是建立博弈视角而非直接填表。",
+      "notes": "跨 skill 混淆诱饵:博弈论"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个决策涉及面子和信任,收益根本没法用数字衡量,还能画矩阵吗?",
+      "expected_behavior": "合理判断:可以用相对排序(1 最差、4 最好)代替精确数字,并明确标注这是排序不是绝对值;若连相对排序都给不出,应停止建模改用定性讨论,避免制造假精确;同时提醒矩阵给出的是在给定收益结构下的稳定结果,而收益结构本身可能估计错了。",
+      "notes": "边界:收益无法赋值时"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

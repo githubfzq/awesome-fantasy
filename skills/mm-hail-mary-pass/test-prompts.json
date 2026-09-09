@@ -1,0 +1,52 @@
+{
+  "skill": "mm-hail-mary-pass",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "投标明天截止,正常方案肯定没戏了。我们要不要直接报一个非常规的方案搏一把?反正现在这样也是陪跑。",
+      "expected_behavior": "应激活 mm-hail-mary-pass,确认基线为最差(不搏必输)、穷举常规方案确已无效、核失败代价是否为零(不搏也会发生的损失才算),然后限定投入上限与止损时点,并准备失败后的收场动作。",
+      "notes": "正面场景:典型最后一搏"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "产品下个月就要关停了,团队想做一次大改版搏一次,我拿不准。",
+      "expected_behavior": "应激活 mm-hail-mary-pass,先按'什么都不做最可能的结果'确认基线;检查是否还有3个以上未尝试的常规动作(若没有先做常规);若判定成局则设定时间盒与资源上限,并写下失败后48小时内的收场清单,同时提醒'一条路走到头'长期结果更糟。",
+      "notes": "正面场景:关停边缘的最后一搏"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "只剩最后一家公司没回音了,我想给他们的负责人发一封很不一样的邮件,不管成不成。",
+      "expected_behavior": "应激活 mm-hail-mary-pass,判断成本极低、失败无额外损失、基线已是最差,因此成立;给出邮件要点(具体、与对方真实相关、不卑不亢)并提醒不要群发同一套,以及不要押上全部期待。",
+      "notes": "正面场景:个人申请中的最后一搏"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "产品刚上线三个月,数据一般。我在想要不要直接转型做另一个方向。",
+      "expected_behavior": "不应激活本 skill,因为还有大量未尝试的常规选项(迭代、获客、定价、定位调整),基线并非最差;此时转型是把可挽救的局面押上去,属于赌博而非最后一搏。应先做常规努力。",
+      "notes": "诱饵:似绝境但常规选项未穷尽"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个业务还能维持,只是增长慢。我在考虑趁现在还值钱把它卖掉,体面退出。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-exit-strategy:局面尚可、可以体面退出并保住大部分价值,作者明确说'一条路走到头'长期结果更糟,此时应做退出方案而非最后一搏。",
+      "notes": "跨 skill 混淆诱饵:退出策略(体面收手 vs 最后一搏)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们这两年每次遇到危机都是靠一次大动作翻盘的。是不是说明我们就该这么打?",
+      "expected_behavior": "合理判断:不能据此下结论。这是典型的幸存者偏差——搏输的团队不会写复盘,成功案例被系统性放大;而且若每次都要靠孤注一掷,说明中局的规划与执行出了问题,依赖绝招不是能力。建议:复盘每次'翻盘'中真正起作用的因素(是那一搏本身,还是此前积累的基本盘);统计所有类似大动作的成功率而非只记赢的;把重点转回中局布局能力,只在确认基线最差时才保留这一手段。",
+      "notes": "边界:反复使用最后一搏与幸存者偏差"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

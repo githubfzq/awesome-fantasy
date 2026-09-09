@@ -1,0 +1,52 @@
+{
+  "skill": "mm-bayes-theorem",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "已知这个检测的灵敏度是 90%、误报率是 5%，人群发病率是 1%，帮我算算检测阳性时真得病的概率。",
+      "expected_behavior": "应激活 mm-bayes-theorem，固定 A=有病、B=阳性，代入先验 1%、似然 90% 与 5%，算出后验并说明它与直觉的差距来自基础比率。",
+      "notes": "正面场景：标准逆概率换算"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "酒驾比例是 1/1000，检测仪对清醒司机的误报率是 5%，那测出「醉」的时候司机真醉的概率是多少？",
+      "expected_behavior": "应激活 mm-bayes-theorem，复现书中计算，给出约 2% 的后验，并指出直觉中的 5% 错在把 P(测出醉|清醒) 当成了 P(真醉|测出醉)。",
+      "notes": "正面场景：书中原案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我原先判断这个项目成功概率 30%，现在拿到了一个新的正面信号，该怎么把它加进去更新判断？",
+      "expected_behavior": "应激活 mm-bayes-theorem，把 30% 作为先验，要求给出该信号在成功/失败两种情形下的似然，再合成后验，而不是简单相加。",
+      "notes": "正面场景：信念更新"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我统计一下上周每天的访问量，做个汇总表。",
+      "expected_behavior": "不应激活本 skill，因为这是纯描述性频率统计，不涉及条件概率反推。",
+      "notes": "诱饵：数据任务但无逆概率问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "检测准确率 95%，所以阳性的 95% 都是真有病吧？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-base-rate-fallacy：用户尚未意识到需要先验，当前错误是忽略基础比率，应先纠正谬误再谈换算。",
+      "notes": "跨 skill 混淆诱饵：书中同一酒驾例子，一个是错误一个是正解"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我完全不知道这个病在人群里有多常见，还能算阳性后的患病概率吗？",
+      "expected_behavior": "应激活本 skill 并说明先验缺失时无法给出单一后验；应改为输出不同先验取值下的敏感性表，或先去获取基础比率的估计。",
+      "notes": "边界：先验不可得时的处理"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-economies-of-scale",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "同行能把同款产品卖到我们成本的八折，还赚钱。他们到底怎么做到的？",
+      "expected_behavior": "应激活 mm-economies-of-scale，拆分双方固定成本与变动成本，估算对方产量摊薄后的单位成本，并反推我们需要多大量才能持平。",
+      "notes": "正面场景：分析对手成本优势"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们在考虑投两千万建自动化仓储，但不确定值不值。怎么判断？",
+      "expected_behavior": "应激活 mm-economies-of-scale，把两千万作为固定成本，反推需要的单量阈值才能把单位履约成本压到有竞争力，并与可达单量对比后再决策。",
+      "notes": "正面场景：固定成本投入的规模阈值"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的 SaaS 生意为什么每个客户的服务成本几乎不随客户数下降？不是说做大了成本就低吗？",
+      "expected_behavior": "应激活 mm-economies-of-scale，指出成本以变动成本（实施、客户成功人力）为主时规模经济不成立，需要提高标准化程度或产品化程度才能摊薄。",
+      "notes": "正面场景：规模经济不成立的诊断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的产品越多人用越好用，老用户拉新用户，形成正循环。这是不是规模经济？",
+      "expected_behavior": "不应激活本 skill 作为主模型，因为描述的是需求侧的网络效应；应激活 mm-network-effects，并说明区分判据：停止新增用户但产量不变时优势是否仍在。",
+      "notes": "诱饵：优势确实随规模增长，但机制在需求侧"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们每周导出报表要花 6 小时，想改成脚本自动跑。有什么要注意的？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-automation——用户在做「设置成本 vs. 持续节省」的自动化决策，规模经济讨论的是产量摊薄固定成本，不是这个场景。",
+      "notes": "跨 skill 混淆诱饵：与 mm-automation 同章相邻，区分点在结果现象与实现手段"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们从 50 人涨到 300 人，按说规模上去了，但人均产出反而降了，单位成本还升了。规模经济失灵了吗？",
+      "expected_behavior": "应激活 mm-economies-of-scale 并承认边界：规模经济在成本侧成立，但规模超出管理半径后协调成本上升会抵消收益（规模不经济，书中未明示，需标明推导）；建议同时用 mm-group-size-thresholds 检查组织层级问题。",
+      "notes": "边界：规模收益被协调成本抵消"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

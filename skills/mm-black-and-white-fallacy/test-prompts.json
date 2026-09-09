@@ -1,0 +1,52 @@
+{
+  "skill": "mm-black-and-white-fallacy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我现在的工作干得很痛苦，感觉要么忍着要么裸辞，没有别的办法了。你说我该选哪个？",
+      "expected_behavior": "应激活 mm-black-and-white-fallacy，把二元表述显式化，对「忍着」和「裸辞」各做程度化拆解（减负、转岗、休假、先找好下家再走），并生成真正的第三选项再给出推荐。",
+      "notes": "正面场景：典型假两难"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "对方在谈判里说，要么接受他们的报价，要么就别谈了。我们是不是只能二选一？",
+      "expected_behavior": "应激活 mm-black-and-white-fallacy，识别这是对方施加的假两难框架，拆解报价的各组成部分（价格、付款节奏、范围、期限）以生成中间选项。",
+      "notes": "正面场景：他人制造的二元框架"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "评审会上对这个功能只有「全做」和「不做」两个提案，两边吵得不可开交。",
+      "expected_behavior": "应激活 mm-black-and-white-fallacy，提示中间方案（分期交付、只做核心子集、先做试点、降配版本），并把原有两项与新增选项放在一起比较后给出推荐。",
+      "notes": "正面场景：方案评审中的选项坍缩"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个合同条款是否违反了新的数据合规要求？请帮我确认一下。",
+      "expected_behavior": "不应激活本 skill，因为合规判定在结构上只有「是/否」两个互斥答案，强行找中间选项无意义；应给出明确的合规判断与依据。",
+      "notes": "诱饵：看似二选一，但结构上是真两难"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们和供应商在谈价格，他们涨我们就亏。这场谈判感觉谁都拿不到好处，总有一方要吃亏。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-zero-sum——用户的错误在于认定收益结构必然一方所得等于另一方所失，而不是选项只有两个；应转向寻找可交换的多维度（付款周期、量、服务等级）。",
+      "notes": "跨 skill 混淆诱饵：与 mm-zero-sum 常同时出现，区分在选项数量 vs. 收益结构"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个决策我们已经讨论了三轮，「做」和「不做」之外又列了五个中间方案，现在谁也不敢拍板了。",
+      "expected_behavior": "应激活 mm-black-and-white-fallacy 但触发反向警告：书中明确说不要走到另一个极端——不可能对每种可能都逐一权衡，必须慎重选择哪些真正值得讨论；应收敛到 2-3 个候选并给出决断建议，引用 mm-analysis-paralysis 的风险。",
+      "notes": "边界：书中明示的反面极端（过度展开导致无法决断）"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-algorithms",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "客服每天要判断工单该转给哪个组，全靠个人经验，新人经常转错。能不能定个流程？",
+      "expected_behavior": "应激活 mm-algorithms，把老员工的实际判断拆成显式步骤（关键词 → 产品线 → 严重级别 → 目标组），每步写明输入输出，并用历史工单验证。",
+      "notes": "正面场景：重复性问题需要系统性解法"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们要给仓库拣货做路径规划，是先用固定规则按货架顺序走，还是上智能调度算法？",
+      "expected_behavior": "应激活 mm-algorithms，按复杂度层级逐层评估（固定顺序 → 按订单聚合 → 实时路径优化），明确选定一级并说明为何不再升级，而不是默认上最复杂的。",
+      "notes": "正面场景：复杂度层级选择"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "资深采购同事要离职了，他判断供应商靠不靠谱的那套经验能不能固化下来？",
+      "expected_behavior": "应激活 mm-algorithms，把他的隐性判断依据（交期波动、质检返工率、响应速度、财务稳定性）提取为显式步骤，形成可交接的流程。",
+      "notes": "正面场景：把人的经验固化为可重复过程"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们要给下周的年会设计一个创意主题，帮我给个系统的创意生成流程。",
+      "expected_behavior": "不应激活本 skill，因为这是一次性且依赖审美的任务，输入无法结构化，硬写步骤会丢失真正起作用的东西；应转向发散思维类方法。",
+      "notes": "诱饵：要求「流程」但问题不适合流程化"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们用的这个推荐系统，我完全不知道它内部怎么算的，我把商品数据喂进去它就给出推荐。这种东西有什么要注意的？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-black-boxes——用户关心的是「只需关心输入输出、不必了解内部运作」的封装系统的使用与风险，而不是如何设计分步骤过程。",
+      "notes": "跨 skill 混淆诱饵：与 mm-black-boxes 同章相邻，区分点在「设计过程」还是「使用封装」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的业务模式半年变了三次，但我还是想把销售打分的流程固化下来，可以吗？",
+      "expected_behavior": "可以激活 mm-algorithms 但须先提示风险：问题定义尚未稳定时流程会立刻失效，建议先固化其中稳定的部分（数据录入与记录），把打分规则设为可快速替换的模块。",
+      "notes": "边界：重复性与稳定性冲突"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

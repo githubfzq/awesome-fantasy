@@ -1,0 +1,52 @@
+{
+  "skill": "mm-frame-of-reference",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "同一个项目，我看到的全是进度风险，我们销售看到的却全是客户承诺。开会的时候我们说的完全不是一件事，我觉得他根本不了解情况。",
+      "expected_behavior": "应激活 mm-frame-of-reference，标出用户『被交付指标驱动』的坐标，列出销售的坐标（被客户与提成驱动、掌握客户侧信息），用两个参照系各复述一遍项目状态，并识别分歧是角色差还是信息差。",
+      "notes": "正面场景：跨角色对同一事实描述迥异"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我刚从大公司跳到创业公司，发现以前我深信不疑的『流程规范』在这里全被当成负担。我该怎么判断谁对？",
+      "expected_behavior": "应激活 mm-frame-of-reference，指出用户的判断来自旧坐标（大公司规模下的协调成本），要求列出新坐标下的约束（资源、速度、容错），并说明『谁对』取决于坐标而非绝对。",
+      "notes": "正面场景：自身坐标变化导致判断失准"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们和美国同事对『这个需求急不急』永远谈不拢，他们觉得可以下周再说，我觉得必须今天。",
+      "expected_behavior": "应激活 mm-frame-of-reference，检查双方所处时区/客户结构/考核周期等坐标差异，再判断是否存在可验证的事实分歧。",
+      "notes": "正面场景：跨文化/跨地区视角差异"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我核对一下这份报表里的三个数字，看看到底哪个是对的。",
+      "expected_behavior": "不应激活本 skill，因为这是有唯一答案的事实校验任务，不存在参照系差异，直接核算即可。",
+      "notes": "诱饵：与视角无关的事实核对"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个方案说『有 90% 的成功率』和『有 10% 的失败率』，我老板听了前者很想做，听了后者就不想做了。明明是同一件事。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-framing（同一信息的表述方式改变决策），而非参照系（观察者坐标不同）。",
+      "notes": "跨 skill 混淆诱饵：框架效应 vs 参照系"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我和合伙人在公司要不要融资上吵了三个月。我知道他站在保守的立场看，我也理解他的角度，但我们要的真的是不一样的东西。",
+      "expected_behavior": "合理判断：参照系仍可激活用于厘清分歧来源，但应在第 4 步判定为『利益/价值冲突而非视角差异』并明确退出——换视角解决不了目标分歧，应转向谈判类模型（如 batna、win-win）而非继续做视角复述。",
+      "notes": "边界：视角差异 vs 真实利益冲突"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

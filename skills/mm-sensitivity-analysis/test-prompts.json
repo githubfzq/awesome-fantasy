@@ -1,0 +1,52 @@
+{
+  "skill": "mm-sensitivity-analysis",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我算出这个项目的净收益是 5839 美元,准备投了。不过折现率是我拍脑袋定的 6%。",
+      "expected_behavior": "应激活 mm-sensitivity-analysis,引导只改折现率一个参数、用 4%/6%/8% 重算,指出 4% 时净收益大幅上升、8% 时变负数,并给出结论翻转的临界折现率;最终以区间而非单点呈现。",
+      "notes": "正面场景:书中债券案例的直接迁移"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "两个方案算下来差不了几百块,我是不是随便选一个就行?",
+      "expected_behavior": "应激活 mm-sensitivity-analysis,指出期望值接近正说明决策对输入高度敏感,恰恰不能随便选;引导列出不确定输入、逐个施压,找出让排序翻转的那个参数并优先核实它。",
+      "notes": "正面场景:差距小=更脆弱而非更省心"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我时间只够去核实一件事,我这个模型里有七八个估算值,该查哪个?",
+      "expected_behavior": "应激活 mm-sensitivity-analysis,引导对每个估算参数取低/中/高三档施压、按对结论的影响力排序,明确指出排名第一的关键驱动因素,并给出具体核实动作。",
+      "notes": "正面场景:定位关键驱动因素"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我想知道明年行业会不会出现颠覆性技术,帮我构几种可能的未来图景。",
+      "expected_behavior": "不应激活本 skill,因为用户还没有量化模型,要的是自洽的未来图景而非拨动单个参数;应激活 mm-scenario-analysis。",
+      "notes": "诱饵:同为处理不确定性但层次不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "两个承包商,老的报 2500,新的报 2000 但有 50% 概率拖期,拖期还要加钱。怎么选?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-decision-tree:首先要按概率分叉、算出每条支路的期望值,这是建模阶段;算完之后才轮到敏感性分析去检验概率估计。",
+      "notes": "跨 skill 混淆诱饵:决策树"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我所有输入都是合同里的白纸黑字和官方税率,一个估计值都没有,还需要做敏感性分析吗?",
+      "expected_behavior": "合理判断:对确凿数字施压意义不大,但仍应检查两类隐性假设——(1) 时间跨度与折现率是否已被默认设定,(2) 有没有被漏记的成本项(那不是参数敏感性而是模型完整性问题);结论是可以简化,但别跳过'默认值'检查。",
+      "notes": "边界:输入全部确定时的适用性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

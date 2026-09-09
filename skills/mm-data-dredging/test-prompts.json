@@ -1,0 +1,52 @@
+{
+  "skill": "mm-data-dredging",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们把用户按城市、年龄、设备、注册渠道切了个遍，终于在「iOS + 二线城市 + 25-30 岁」这组找到了 p=0.01 的显著提升，可以写进汇报吧？",
+      "expected_behavior": "应激活 mm-data-dredging，清点检验次数（指标×切分组合），说明多重检验下「至少一次显著」的概率大幅上升（书中 20 面骰 21 次的类比），要求把它降级为待验证假设并用独立数据验证。",
+      "notes": "正面场景：典型的切分挖掘"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们测了 22 个指标，只有一个变好了，这说明这次改动还是有价值的对吧？",
+      "expected_behavior": "应激活 mm-data-dredging，指出 5% 假阳性率只对单次检验成立，22 次检验下出现一个「显著」结果在预期之内，不能作为改动有效的证据。",
+      "notes": "正面场景：多指标挑显著"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "先测了软糖和粉刺没关系，后来把软糖按颜色分成 20 多种再测，发现绿色的显著了，是不是可以发论文了？",
+      "expected_behavior": "应激活 mm-data-dredging，复述书中 XKCD 绿色软糖案例与 20 面骰掷 21 次的算术，说明这是典型的数据捕捞。",
+      "notes": "正面场景：书中原案例"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们实验前就登记了唯一一个主指标，做完只测了这一项，p=0.04。",
+      "expected_behavior": "不应激活本 skill，因为假设事前登记、仅做了一次预先声明的检验，不存在多重检验问题。",
+      "notes": "诱饵：显著性判定但无捕捞"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们照着去年的实验重做了一遍，效果完全没出现，是不是原来那个结果是假的？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-replication-crisis：问题在于重现率低的整体机制（假阳性基础比率 + 功效不足），而非多次检验的手法。",
+      "notes": "跨 skill 混淆诱饵：书中同节，因果相连"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们确实是从数据里偶然发现这个规律的，但只是想把它列为下一步实验的假设，不打算直接下结论，这样可以吗？",
+      "expected_behavior": "应判定为正当用法：书中明确说数据启发提出全新假设本身意图是好的、且可能极具启发性；只要不夸大这些额外测试的结果，并用独立数据验证即可。",
+      "notes": "边界：探索性发现 vs 夸大为结论"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

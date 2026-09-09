@@ -1,0 +1,52 @@
+{
+  "skill": "mm-supply-and-demand",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "有两个offer,一个传统行业一个AI方向,哪个长期更有前景?",
+      "expected_behavior": "应激活 mm-supply-and-demand,分别估计两边的需求端(买方/雇主数量与趋势)与供给端(合格提供者数量、进入门槛、供给增速),做相对比较而非只看哪边更热门;并给出两条杠杆之一'选择长期需求大的行业',同时提示不要用当下紧缺外推未来(供给涌入存在时滞)。",
+      "notes": "正面场景:行业选择的供求判断"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我想报个班学一门很冷门的技术,学会了应该能要高价吧?",
+      "expected_behavior": "应激活 mm-supply-and-demand,指出供给少本身不值钱、供给相对于需求少才值钱;用历史学博士案例(人数少但终身教职更少)校准;关键检验:市场对该技能是否有真实需求——书中明示光有独特技能不够,若市场无需求(如奥运选手的技能)仍无支配力。",
+      "notes": "正面场景:冷门=高价的错觉"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我每天加班到十点,能力也不比别人差,为什么薪水就是上不去?",
+      "expected_behavior": "应激活 mm-supply-and-demand,明确价格由供求相对关系决定、与努力程度或投入成本无关;引导用户判断自己当前技能组合的可替代性(可结合完全竞争),并落到两条可操作杠杆:转向长期需求大的领域、培养市场重视的独特技能。",
+      "notes": "正面场景:努力无法解释薪酬"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "下季度这个原材料价格会涨还是会跌?给个明确判断。",
+      "expected_behavior": "不应激活本 skill,因为本模型解释价格的结构性水平,不做短期波动预测;需要的是行情与周期分析,且本 skill 明确不用于短期价格预测。",
+      "notes": "诱饵:谈价格但实为短期预测"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们公司要进入一个市场,主要想搞清楚新玩家进得去进不去。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-barriers-to-entry:用户问的是进入难度;本 skill 解释市场价格如何由供求决定,不回答'能不能进得去'。",
+      "notes": "跨 skill 混淆诱饵:进入壁垒(进入难度 vs 价格形成)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "现在AI人才极度稀缺,我all-in学AI,是不是稳了?",
+      "expected_behavior": "合理判断:需求端确实强,但要用供求的相对关系而非单端判断。三点修正:(1)杠杆之一是'长期需求大'的行业,用当下紧缺外推未来会踩到供给涌入的时滞——今天稀缺的技能几年后可能供给过剩;(2)供给端要估进入门槛与供给增速,而非只看现在的稀缺;(3)独特性必须被市场重视才转化为支配力,泛泛的AI技能很快会商品化(可结合 mm-perfect-competition 提醒可替代即无溢价)。结论:方向可用,但应具体到细分且难复制的技能,并保留重估节点。",
+      "notes": "边界:当下稀缺的外推风险"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

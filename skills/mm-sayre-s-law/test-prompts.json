@@ -1,0 +1,52 @@
+{
+  "skill": "mm-sayre-s-law",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "评审会上为了这个字段叫 userId 还是 user_id 吵了四十分钟，正事一点没推进。",
+      "expected_behavior": "应激活 mm-sayre-s-law，测量情绪强度（耗时、参与人数、语气），估算议题价值（可逆、影响面小、持续短），确认成反比后标记为低价值高情绪议题并给出降热处理（限时/指定一人拍板）。",
+      "notes": "最典型的正面场景：低价值议题高情绪"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "社区里因为换了个图标颜色吵翻了，我要不要下场回应？",
+      "expected_behavior": "应激活本 skill，指出情绪强度与实际价值成反比，建议降级处理——限时回应或指定负责人拍板，而不是持续跟进。",
+      "notes": "对外争议是否值得投入"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个季度复盘下来，感觉精力都花在吵架上了，产出很少，问题出在哪？",
+      "expected_behavior": "应激活本 skill，用情绪强度与议题价值的反比关系做诊断，找出被高估的低价值议题并给出处理节奏上的调整。",
+      "notes": "复盘精力错配"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "要不要裁掉整个业务线，管理层吵得很凶，但这事确实关系到几百人。",
+      "expected_behavior": "不应激活本 skill，议题重大且影响面大、不可逆，情绪激烈是合理的，不属于低价值高情绪。",
+      "notes": "诱饵：情绪激烈但议题重大"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "会上花了两小时讨论自行车棚怎么建，核反应堆方案十分钟就过了，这叫什么？",
+      "expected_behavior": "不应激活本 skill，这是时间分配与议题复杂度成反比，应激活 mm-parkinson-s-law-of-triviality（帕金森琐碎定律/自行车棚效应）。",
+      "notes": "跨 skill 混淆诱饵：都解释群体关注错东西"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "同事提了个我觉得很离谱的方案，我忍不住想跟他争到底，这样是不是不对？",
+      "expected_behavior": "可激活但要注意：判据应落在可逆性、影响人数、持续时长三问上，而不是只看情绪；同时本模型用于降低处理成本（限时、指定人拍板），不是用来禁止表达不同意见。",
+      "notes": "边界：别当成压制不同意见的工具"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

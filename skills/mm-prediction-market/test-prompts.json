@@ -1,0 +1,52 @@
+{
+  "skill": "mm-prediction-market",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "想估计一下新版本能不能在 Q3 结束前上线,信息散在各组手里,有什么办法?",
+      "expected_behavior": "应激活 mm-prediction-market,先把事件改写成可判定的二元命题(明确判定时间与判定来源,如'以上线公告为准'),再检查参与者是否多样且独立,最后说明看当前价格即可读出市场共识概率。",
+      "notes": "正面场景:聚合分散信息成概率"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "预测市场上这个事件现在的价格是 0.72,这到底是什么意思?能当真吗?",
+      "expected_behavior": "应激活 mm-prediction-market,把价格直接翻译成概率(0.72 → 72%),并说明这是'当下愿意出价的那群人的共识'而非事实;建议用户先给出自己的独立估计再与市场价对照,同时查看价格变动历史。",
+      "notes": "正面场景:解读价格即概率"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "为什么那些预测市场 2016 年都预测错了?它们平时不是挺准的吗?",
+      "expected_behavior": "应激活 mm-prediction-market,引用书中归因:参与者观点缺乏多样性、与特朗普或脱欧支持者缺乏直接联系,且预测者并非独立行事、受最初赔率影响;强调这个数字只在参与者多样且独立时才可信。",
+      "notes": "正面场景:书中失败案例的归因"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的新战略会不会成功?想在内部开个盘口赌一把。",
+      "expected_behavior": "不应激活本 skill,因为'战略会不会成功'没有明确的判定时间、判定来源与判定标准,无法兑付;应先把它改写成可判定的具体命题(如'年度营收是否超过 X,以审计报告为准'),否则盘口无意义。",
+      "notes": "诱饵:形式像预测市场但事件不可判定"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想提高自己对行业趋势的判断准确率,是不是多练就行?有哪些具体做法?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-superforecasters:用户要的是个体预测能力的训练路径(八项特质:先看基础比率、开放心态、按新信息修正预测、事后校准),而不是搭建一个价格聚合装置;预测市场面向所有人开放靠价格加权,超级预测家靠筛选与训练高手。",
+      "notes": "跨 skill 混淆诱饵:超级预测家"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们部门 30 个人全是同一个岗位,想用内部预测市场预测竞品会不会降价,能用吗?",
+      "expected_behavior": "合理判断:参与者高度同质、与竞品决策圈缺乏直接联系,多样性条件不满足,预测会系统性失准——这正是 2016 年失手的同一类原因;建议扩大参与面、引入与事件直接相关的人群,或在无法扩面时明确标注结果仅供参考而不是决策依据。",
+      "notes": "边界:群体同质导致系统性失准"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

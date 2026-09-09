@@ -1,0 +1,52 @@
+{
+  "skill": "mm-heat-seeking-missiles",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们讨论两个月了还在纠结方向对不对,总想着再调研清楚再动手,结果一直没上线。",
+      "expected_behavior": "应激活 mm-heat-seeking-missiles。指出核心判据:现在多做的一周思考是在产生新数据还是重复已有假设——若只是再讨论一遍,就是拖延而非审慎。引用书中原话:导弹在发射前瞄准哪里并不重要,待在发射架上得到的不是精确而是零信息。要求定义最小发射物与要采集的 2-3 个关键数据(没有热源的发射不是导弹,是烟花),并在确实存在关键外部信息时才允许等待、且给出截止日。",
+      "notes": "正面场景:发射架上的分析瘫痪"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "上线三个月,发现企业客户比我们原定的个人用户付费意愿高得多。要不要转过去?",
+      "expected_behavior": "应激活 mm-heat-seeking-missiles。肯定修正本身——成功者总在收集数据、不断寻找更大更好的目标、必要时调整轨迹;但要求为'更大更好'设定可比较的量化判据(市场规模、留存、付费意愿、增长斜率),能明确回答新目标是否真的更大更好,而不是凭感觉;同时给出单次转向的资源上限与固定复盘节奏,避免随机漂移。",
+      "notes": "正面场景:数据驱动的轨迹调整"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们三个月改了四次方向,团队都快散了。这算灵活还是算没主见?",
+      "expected_behavior": "应激活 mm-heat-seeking-missiles,并明确判定这是误用而非灵活。修正必须朝'更大更好的目标'移动,需要有量化判据与转向代价上限;四次改动若无判据支撑就是随机漂移。要求补齐:为'更大更好'设定可比较标准、设定单次转向的资源上限与固定复盘节奏,并指出修正的终点是在拥挤市场中锁定目标,而不是永远在路上。",
+      "notes": "正面场景:轨迹漂移的纠偏"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这条产线我们要投两千万建厂,签了就不能改。现在需要把方案一次性论证透。",
+      "expected_behavior": "不应激活本 skill,因为决策不可逆、转向代价极高,此时必须先在发射架上瞄准,'瞄准不重要'不适用;应改用一次性严密论证(可结合 mm-sensitivity-analysis、mm-scenario-analysis、mm-reversible-vs-irreversible-decisions)。",
+      "notes": "诱饵:提到方向选择但不可逆"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们准备进入这个行业,得先搞清楚以前谁做过、怎么死的、现在都有谁在场上。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-idea-maze。用户还在发射前阶段,要做的是画迷宫——行业发展史、迷宫中的玩家及其位置、过去的事故与死因、可能移动墙壁的技术,并列出至少三条已知死路。本 skill 处理的是发射之后的持续修正,此时用它会导致忽视别人已经撞过的墙、把重复踩坑当成快速迭代。",
+      "notes": "跨 skill 混淆诱饵:创意迷宫(发射前地图) vs 热源追踪导弹(发射后修正)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们有个大客户明确说,三个月内如果我们做不出来他们就选别家。这时候是先随便发一版还是继续打磨?",
+      "expected_behavior": "合理判断:不能简单套用'先发射再说'。存在真实的、有截止日的外部信息源,此时等待有明确的信息收益,不属于拖延——但必须设定等待截止日(对齐大客户决策时点),且等待期应主动向该客户索取反馈而非闭门打磨。折中方案:发射一个只针对该客户的最小版本(缩小客群而非缩小质量),把'最小发射物'的范围收窄到这一家,既保留了持续修正能力,又不至于用半成品丢掉单子。",
+      "notes": "边界:存在硬截止日时'发射优先'的适用调整"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

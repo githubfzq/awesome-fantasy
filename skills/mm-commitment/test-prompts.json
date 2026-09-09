@@ -1,0 +1,52 @@
+{
+  "skill": "mm-commitment",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "销售先问我'你希望团队效率更高吗',我说当然想,聊着聊着就签了一年的合同。现在觉得不对劲,但话都说出去了。",
+      "expected_behavior": "应激活 mm-commitment,指出这是先拿小赞同(人人都会答'是')再推进大请求的典型路径;帮用户分离'合同本身的好处'与'不想显得前后不一致',给出把反悔重述为'基于新信息修正'的脱身话术,并指出冷静期/试用条款。",
+      "notes": "正面场景:书中床垫推销员案例"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我在做注册流程,想把'不用了,谢谢'改成'稍后再说',转化率应该能上去吧?",
+      "expected_behavior": "应激活 mm-commitment,解释'稍后'让用户在拒绝的瞬间作出了承诺因而提高转化;同时明确警告这属于被用作操纵手段的写法,给出伦理判据(用户知道全貌还会同意吗、拒绝路径是否同等容易)。",
+      "notes": "正面场景:书中网站按钮案例 + 设计方视角"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "免费试用点了个同意,现在到期自动扣年费,我其实早就不用了,但我当时确实点过同意。",
+      "expected_behavior": "应激活 mm-commitment,指出那个'同意'就是最初的承诺锚点,并把它与'我已经付过钱所以不想浪费'的沉没成本区分开;给出退订路径与后续防止复发的具体做法(关闭自动续费、试用即设提醒)。",
+      "notes": "正面场景:承诺与沉没成本交织"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "同事上周帮我加了个通宵的班,这周他让我帮忙,我不好拒绝。",
+      "expected_behavior": "不应激活本 skill,因为驱动力是亏欠感而非一致性;应激活 mm-reciprocity(互惠),并讨论如何恰当地回馈而不被套牢。",
+      "notes": "诱饵:同为'不好拒绝'但机制不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个项目我已经投了 200 万和两年时间,现在明知没前景也停不下来。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-sunk-cost-fallacy:锚点是已经花掉的钱和时间(经济性投入),不是表过的态(身份性承诺);处理方式也不同——要算的是边际收益而非自我形象。",
+      "notes": "跨 skill 混淆诱饵:沉没成本谬误"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我在全员会上公开承诺了今年要做的三件事,现在其中一件证明是错的。改口会不会显得我很不靠谱?",
+      "expected_behavior": "合理判断:这是承诺机制在起作用,但要区分两件事——一致性应指向'我是一个讲道理、按证据行事的人',而不是'我是一个永不改口的人';建议公开说明新证据与修正理由,这反而强化可信度;同时提醒真正的风险是承诺升级(escalation of commitment)。",
+      "notes": "边界:健康的一致性与被绑架的一致性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

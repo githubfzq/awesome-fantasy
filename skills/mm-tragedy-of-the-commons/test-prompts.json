@@ -1,0 +1,52 @@
+{
+  "skill": "mm-tragedy-of-the-commons",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的共享测试环境越来越卡，各个小组都在上面跑压测，谁都不肯让。怎么办？",
+      "expected_behavior": "应激活 mm-tragedy-of-the-commons，确认共享池无排他性，写出激励结构（多跑一次的收益归本组、卡顿由全体承担），给出过载证据，确定由谁限制（管制者：配额/预约/限流），并给出量化阈值与执行者、检查频率。",
+      "notes": "正面场景：典型共享资源被用爆"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "公司 wiki 越来越没人信了，谁都能改，改完也没人维护，但大家都在查。",
+      "expected_behavior": "应激活本 skill，指出这是质量型公地（书中明确把维基百科词条可靠性列为例子，影响远超环境问题）；验证收益私有成本共担（改的人省事、可信度损耗由全体承担），设计机制（页面责任人、修改留痕、定期审核）并明确执行者与频率。",
+      "notes": "正面场景：非环境型的公地，最易被忽略"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "销售同事为了冲业绩群发了大批营销邮件，现在整个域名的送达率都掉了。",
+      "expected_behavior": "应激活本 skill，指出垃圾邮件是书中明示的公地例子（共享的是域名信誉与收件人注意力）；验证激励结构，说明自觉无效（激励未变），给出限制机制（发送配额、审批、独立发信域隔离）与量化阈值。",
+      "notes": "正面场景：信誉型公地，书中直接列举"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我自己的云主机想开多大就开多大，反正账单我自己付。要不要考虑资源节制？",
+      "expected_behavior": "不应激活本 skill。产权明确、成本完全自担，不存在无排他性的共享池与收益私有成本共担结构——书中明示反例：产权明确或存在有效管制时不成立。这是普通的成本收益问题。",
+      "notes": "诱饵：涉及资源使用，但结构不成立"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "团队建了个内部知识库，但只有两个人往里写，其他人都在看。怎么让大家贡献？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-free-rider-problem：这是'不为公共品做贡献'（贡献不足），而不是'过度取用共享资源'（消耗过度）。二者常共现但处方不同——搭便车需要激励贡献，公地悲剧需要限制取用。",
+      "notes": "跨 skill 混淆诱饵：同一个知识库，但问题方向相反"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们给共享环境定了配额，但没人负责测量也没人处罚，还是卡。问题出在哪？",
+      "expected_behavior": "应激活本 skill 并定位为执行缺口：先确认悲剧结构与配额本身没问题，再指出限制机制必须有执行者与检查频率，定了没人测、没人罚等于没有；同时提醒阈值需参考承载上限并定期复核，避免限制过度导致闲置。",
+      "notes": "边界：机制存在但无执行，需区分结构问题与治理问题"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-free-rider-problem。"
+}

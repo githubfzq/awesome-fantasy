@@ -1,0 +1,52 @@
+{
+  "skill": "mm-strategy-tax",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "明知道加这个功能是更好的选择，但公司说不符合战略定位，只能放弃。",
+      "expected_behavior": "应激活 mm-strategy-tax，追溯背后的战略与起始时间，量化放弃的代价，并给出降低锁定程度的建议。",
+      "notes": "最典型的正面场景：为战略放弃更优选项"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们当年公开承诺过不做这块业务，现在市场变了，要不要改口？",
+      "expected_behavior": "应激活本 skill，评估公开承诺带来的惯性、扭转代价与窗口，并建议避免不可撤回的公开承诺。",
+      "notes": "公开承诺的代价"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "竞品没有我们这种历史包袱，做起来比我们灵活多了，我们是不是被自己套住了？",
+      "expected_behavior": "应激活本 skill，识别组织正在支付的战略税，量化代价并给出复审点与豁免通道等降低锁定的做法。",
+      "notes": "与无包袱对手对比"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "新流程推行不下去，大家就是不配合，是不是抵触改变？",
+      "expected_behavior": "不应激活本 skill，这是一般性的改变阻力，未涉及长期战略或公开承诺，应激活 mm-inertia。",
+      "notes": "诱饵：改变阻力但无战略因素"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们当年选了这个技术栈，现在想换成本太高根本换不动。",
+      "expected_behavior": "不应激活本 skill，这是历史选择限制当前可选项、且离开成本过高的问题，应激活 mm-path-dependence 或 lock-in。",
+      "notes": "跨 skill 混淆诱饵：历史包袱类模型互相重叠"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "按战略我们不该做这个客户，但这个客户利润很高，接不接？",
+      "expected_behavior": "应激活但要区分：若战略仍在创造价值，聚焦本身就要求放弃部分机会，那是纪律不是缴税；只有当拒绝理由纯粹是维护战略、且没有业务依据时，才算战略税。",
+      "notes": "边界：战略纪律 vs 战略税"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

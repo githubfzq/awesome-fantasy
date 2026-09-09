@@ -1,0 +1,52 @@
+{
+  "skill": "mm-second-law-of-thermodynamics",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们花三个月把发布流程梳理清楚了，结果半年不到大家又开始各干各的。为什么流程总是维持不住？",
+      "expected_behavior": "应激活 mm-second-law-of-thermodynamics，指出秩序不会自行维持、需要持续供能，量化退化时间尺度（多久出现第一个走形信号），定位最大熵源（人员进出/需求变更/无人负责），并给出短于退化周期的维护频率与具体维护机制。",
+      "notes": "正面场景：典型的秩序自然退化"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的接口文档写完就过时，一年下来没人信了。能不能一次性搞成自动同步，一劳永逸？",
+      "expected_behavior": "应激活 mm-second-law-of-thermodynamics，明确否定「一劳永逸」这一前提，估算文档腐化速率，并按此设定维护周期与责任人；自动化能降低但不能消除维护需求。",
+      "notes": "正面场景：要求一劳永逸"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我有个合作了三年的客户，最近半年没怎么联系，感觉明显淡了。这是正常的吗？要不要做点什么？",
+      "expected_behavior": "应激活 mm-second-law-of-thermodynamics，说明维持信任水平需要持续构建（书中明示），把「关系维护」重新定义为持续投入而非一次性建立，并给出基于退化速度的联系频率。",
+      "notes": "正面场景：关系与信任的熵增"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的测试环境最近总出问题，我查了日志，发现是上周那次配置变更引入的。怎么彻底修掉？",
+      "expected_behavior": "不应激活本 skill，因为退化有明确、单一的具体破坏源，这是根因问题；笼统归因于「熵增」会掩盖真正可修的 bug。应转向 mm-root-cause。",
+      "notes": "诱饵：系统退化场景，但有明确破坏源"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们团队的节奏会自动稳定在一个水平：业务量突然涨了，过几周又会自己回到原来的产出速度。这是怎么回事？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-homeostasis——这是系统通过负反馈自动维稳的现象，与「不供能就失序」方向相反。",
+      "notes": "跨 skill 混淆诱饵：与 mm-homeostasis 都在讲秩序与稳定，方向一正一反"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "既然一切都会自然失序，那整理房间、维护文档这些事是不是都没意义，反正还会乱？",
+      "expected_behavior": "应激活 mm-second-law-of-thermodynamics 但纠正推论：定律的含义是「维持需要持续投入」，不是「维持没有价值」；同时提醒它只对封闭系统成立，开放系统靠持续输入能量可以维持甚至提升局部秩序。",
+      "notes": "边界：考验 agent 是否会让用户滑向虚无结论"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

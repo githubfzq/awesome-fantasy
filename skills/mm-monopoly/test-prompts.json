@@ -1,0 +1,52 @@
+{
+  "skill": "mm-monopoly",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们生产线上必须的那种设备全球只有一家能做,今年直接涨价60%,我们完全没办法。",
+      "expected_behavior": "应激活 mm-monopoly,先穷举客户的替代集(不消费、二手、自建、跨品类替代、灰色渠道)确认是否真的只剩'放弃';判定该设备对产线是否属刚需以评估支配力强度;追溯垄断来源(专利/审批/资源独占);并按'垄断并非永存'给出时间窗口与应对——培育第二供应源、锁定长约、评估自建。",
+      "notes": "正面场景:唯一供应商大幅提价"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这家药企毛利90%,靠一款专利药。值得长期投资吗?",
+      "expected_behavior": "应激活 mm-monopoly,指出其支配力来源不是做得更好而是专利保护;重点跑可持续性检查:专利何时到期、法规是否可能演变、是否有潜在进入者;关键结论——高毛利在垄断消失后是否站得住,不能把当前垄断外推到永久。",
+      "notes": "正面场景:用垄断状态外推未来估值"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "救命药被独家供应商卡脖子,患者根本不能等。这跟普通商品涨价是一回事吗?",
+      "expected_behavior": "应激活 mm-monopoly,给出书中最关键的强度判据:刚需(如救命设备)场景下'放弃'不是有吸引力的选项,因此支配力最强;说明垄断的伤害不均匀——救命药的提价空间远大于可选消费品。",
+      "notes": "正面场景:刚需放大支配力"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们品牌市占率35%,是行业第一,但第二名也在追。该怎么定价?",
+      "expected_behavior": "不应激活本 skill,因为存在实质竞争者、只是份额不均,这是市场支配力(连续谱上的中间态)问题而非垄断;本 skill 只适用于'缺乏竞争者'到接近唯一供给的极端情形。",
+      "notes": "诱饵:谈定价权但实为普通市场支配力"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的产品跟竞品几乎一模一样,客户只看价格。还能怎么做出溢价?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-perfect-competition:这是完全竞争/商品化情形——众多竞争者提供完全相同的完全替代品,提价就等于把客户送给对手;它位于本 skill 所在轴的另一个极端。",
+      "notes": "跨 skill 混淆诱饵:完全竞争(同一根轴的另一端点)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们开发了一个新工具,目前市面上没有同类产品。这算是垄断了吗?",
+      "expected_behavior": "合理判断:不能仅凭'暂时没有看到对手'就判定为垄断。正确做法是先穷举客户的替代集——包括不消费、用现有工具凑合、手工完成、跨品类替代——真垄断的判据是替代集里只剩'放弃';若存在两个以上实质替代,说明只是暂时领先而非垄断。即便成立,也必须立即跑可持续性检查(专利到期、法规演变、潜在进入者),因为书中明示垄断并非永存。同时提醒不要混淆:高份额或暂时无对手不等于缺乏竞争者。",
+      "notes": "边界:'暂时没有对手'与真垄断的分界"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

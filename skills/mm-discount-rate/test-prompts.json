@@ -1,0 +1,52 @@
+{
+  "skill": "mm-discount-rate",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "公司给我两个补偿方案:现在一次性拿 30 万,或者分 5 年每年拿 7 万。哪个更值?",
+      "expected_behavior": "应激活 mm-discount-rate,引导先确定用户主体(个人)的折现率,把 5 年每年 7 万逐年折成现值加总,再与 30 万比较;并用不同折现率重算给出临界点。",
+      "notes": "正面场景:现在 vs 未来的典型比较"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我想贷款 50 万去扩产,预期年回报 6%,现在贷款利率 7%。借不借?",
+      "expected_behavior": "应激活 mm-discount-rate,直接给出书中判据——若投资回报率低于折现率(此处可用借贷利率近似),就不该借钱做这项投资;并指出大企业的折现率通常是借贷利率加历史投资回报率,所以门槛还要更高。",
+      "notes": "正面场景:书中明示的借钱准则"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "看一份政府基建评估报告,结论说项目不划算。我怀疑他们动过什么手脚,该查哪里?",
+      "expected_behavior": "应激活 mm-discount-rate,指出首先查折现率取值——书中明说游说团体常施压政府选用特定折现率,且不同取值能让同一项目从净收益 5839 美元变成负数;建议用 4%/6%/8% 重算看结论是否翻转。",
+      "notes": "正面场景:折现率作为被操纵的参数"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这两款手机一款 3999 一款 4299,配置差不多,买哪个?",
+      "expected_behavior": "不应激活本 skill,因为不涉及跨时间比较,折现的影响可以忽略;直接比较配置差异与价差即可,套用折现率属于虚假精确。",
+      "notes": "诱饵:静态价格比较"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我明知道熬夜不好、存钱重要,但每次还是选眼前的爽,是不是我意志力有问题?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-hyperbolic-discounting(或现时偏好 mm-present-bias):这是描述人实际如何非理性高估当下的行为偏差,不是要你去算一个规范性折现率;用折现率去'计算'反而会合理化短视。",
+      "notes": "跨 skill 混淆诱饵:双曲折现/现时偏好"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我要不要现在开始每天运动?用 25% 的折现率算,十年后的健康收益现在几乎等于零,那是不是不用运动了?",
+      "expected_behavior": "合理判断:数学上没错但用错了场景——折现率适用于跨时间金钱/项目比较,给健康与生命质量定价会把'未来的自己'折成廉价,得出系统性损害长期利益的结论;建议不用折现,改用习惯与复利视角(健康是累积的),并说明这是工具误用。",
+      "notes": "边界:折现率在个人健康议题上的伦理失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

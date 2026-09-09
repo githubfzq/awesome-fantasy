@@ -1,0 +1,52 @@
+{
+  "skill": "mm-standard-deviation",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的接口平均响应 200ms，想定一个报警阈值，超过多少算异常比较合理？",
+      "expected_behavior": "应激活 mm-standard-deviation, 先确认离群值已处理，检查分布是否近似正态，算出 σ 后给出 ±1σ / ±2σ 的具体区间，并换算成业务语言（如每 20 个请求约有 1 个超过上限）。",
+      "notes": "正面场景：用 σ 定正常区间与阈值"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "A 团队和 B 团队平均交付周期都是 5 天，但感觉 A 更靠谱。除了均值还能比什么？",
+      "expected_behavior": "应激活 mm-standard-deviation, 指出应比较 σ（或相对离散度）而非均值，并提醒若两组均值差异大则比较变异系数，从而量化「稳定性」差异。",
+      "notes": "正面场景：均值相同下比稳定性"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "报告里写我们的指标是 98.25 ± 0.73，这个 ±0.73 到底是什么意思？包含多少数据？",
+      "expected_behavior": "应激活 mm-standard-deviation, 解释它是标准差、与原始数据同量纲，在近似正态下约 2/3 的值落在 ±1σ 内、95% 落在 ±2σ 内，并给出书中体温数据集的具体区间示例。",
+      "notes": "正面场景：读懂带 σ 的表述"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们这批数据里有个值明显跟别的不在一个量级，先处理它还是先算别的？",
+      "expected_behavior": "不应激活本 skill（主体是离群值本身的识别与处置）, 应激活 mm-outliers。虽然 σ 会被它撑大，但本 skill 的正确顺序是先处理离群值再来算 σ。",
+      "notes": "诱饵：与 σ 相关，但主体是前置步骤"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们民调显示支持率是 52%，误差范围 ±3%。这个 ±3% 和数据的波动是一回事吗？",
+      "expected_behavior": "不应激活本 skill（这是估计精度而非数据离散度）, 应激活 mm-margin-of-error。误差范围描述估计值离真值可能差多少，标准差描述数据集内部的分散。",
+      "notes": "跨 skill 混淆诱饵：同为 ±X 表述，含义不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的订单金额分布是典型的长尾，大部分小额、极少数巨额。能用均值加减两个标准差来定'异常订单'的阈值吗？",
+      "expected_behavior": "合理的判断是：可以算出 σ，但明确告知 68–95–99.7 换算在严重偏斜/肥尾分布下失效，用它定阈值会产生大量误报或漏报；建议改用分位数（P95/P99）或对金额取对数后再算，并在结论中说明这一替换。",
+      "notes": "边界：σ 可算但换算规则不适用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-hindsight-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个项目失败了，复盘的时候大家都说'信号那么明显，早该看出来'。我们要不要以后都别做这类项目？",
+      "expected_behavior": "应激活 mm-hindsight-bias，先分离决策质量与结果好坏，查当时记录，做反事实推演与幸存者偏差检查，并指出据此改掉某做法可能汲取了错误经验",
+      "notes": "正面场景：典型事后可预见错觉"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "客户签了又反悔，老板说我当时就该预见到了，要扣我绩效。可签约时所有指标都正常。",
+      "expected_behavior": "应激活本 skill，指出'结果越糟越认为本该预见'的实验发现，用当时可得信息与记录还原决策质量，把问法从'能不能预见'改为'风险评估有多准确'",
+      "notes": "正面场景：因结果追责决策"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "Every postmortem meeting turns into 'we should have seen it coming'. How do we fix that?",
+      "expected_behavior": "应激活本 skill，给出三种缓解手段：反事实思维、幸存者偏差检查、事件发生时做记录（会议记录/备忘录），并建议改用连续问法",
+      "notes": "正面场景：复盘机制改进"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "上线前我就在三封邮件里警告过这个接口有并发问题，结果真出事了。这次必须查清楚。",
+      "expected_behavior": "不应激活本 skill，因为结果确实可预见且已有明确预警，属于真实决策失误，援引后见之明偏差会变成开脱",
+      "notes": "诱饵：看似'事后诸葛'但预警确实存在"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们只研究了成功企业家的共同习惯，得出'退学才能成功'的结论。这靠谱吗？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-survivorship-bias（幸存者偏差）：核心是只看成功样本导致结论偏差，后见之明偏差只在复盘场景中把它当作缓解手段之一",
+      "notes": "跨 skill 混淆诱饵：两者共用同一检查手法"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我自己那个项目失败了，我觉得确实无法预见；但隔壁组那个失败，我一眼就看出他们判断有问题。",
+      "expected_behavior": "应激活本 skill 并直接指出这是书中警告的自利性偏差双重标准：用后见之明指责别人、却用不可预见为自己的失误开脱；应要求两套判断采用同一把尺子（当时可得信息 + 当时记录）",
+      "notes": "边界：模型被选择性使用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

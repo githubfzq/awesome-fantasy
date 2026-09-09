@@ -1,0 +1,52 @@
+{
+  "skill": "mm-ultimatum-game",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "合伙创业我出钱出力最多,我拿 90% 他拿 10%,他应该会接受吧?毕竟白给的。",
+      "expected_behavior": "应激活 mm-ultimatum-game,指出纯逻辑上对方该接受任何正数,但大多数文化中低于 30% 会被拒绝;警告这个方案大概率被掀桌、你会连本来能拿到的也失去;建议重设为不低于 30% 并用可解释的贡献规则支撑比例。",
+      "notes": "正面场景:典型悬殊分配"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "遗产分配我打算给弟弟留一小部分,反正他也不缺钱,应该不会闹吧?",
+      "expected_behavior": "应激活 mm-ultimatum-game,特别引用书中提醒——涉及家人(家务、遗嘱)的决策尤其要顾及对公平的强烈渴望,千万别假设'都是自己人不会计较';建议用可解释的分配规则与事先沟通,而不是留一小部分了事。",
+      "notes": "正面场景:书中点名的家庭场景"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我给合作方报了个条件,明明是净赚,他居然宁可不做也要拒。这人是不是不理性?",
+      "expected_behavior": "应激活 mm-ultimatum-game,说明对方不是非理性——公平感的驱动力足以让人牺牲自身利益去惩罚提出不公平方案的一方,这是在维护'不接受不公平'的规范;建议重启时先修复尊重感再谈数字。",
+      "notes": "正面场景:被否决后的复盘"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "供应商报价八万,市场上同类的六万就能做,我该怎么压价?",
+      "expected_behavior": "不应激活本 skill,因为有可比的外部市场价格、双方都能自由议价、对方拒绝不等于归零;这是普通议价,应走谈判与 BATNA 思路,30% 阈值不适用。",
+      "notes": "诱饵:形似利益分配但是可议价市场"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们和竞对都在考虑要不要降价,谁先涨谁吃亏,结果两家都在亏。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-prisoner-s-dilemma(配合 mm-nash-equilibrium):这是双方同时选择、互不信任导致的集体变差,不存在'一方提案另一方否决'的序贯结构与公平感受;补救方式也是改参数而非调比例。",
+      "notes": "跨 skill 混淆诱饵:囚徒困境"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我算出给对方 35% 刚好过线,是不是就稳了?",
+      "expected_behavior": "合理判断:30% 是跨文化的大致经验阈值而非精确常数;35% 降低了被否决的风险,但公平观因具体情境、关系与解释方式而异——是否'稳'还要看比例能否被合理解释、对方对贡献的认知;建议同时给出可解释的分配规则,而不是只卡数字。",
+      "notes": "边界:阈值不是常数"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

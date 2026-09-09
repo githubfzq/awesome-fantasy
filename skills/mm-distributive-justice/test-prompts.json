@@ -1,0 +1,52 @@
+{
+  "skill": "mm-distributive-justice",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "年终奖发下来了,我跟他同岗位,他比我多两万,凭什么?这不公平。",
+      "expected_behavior": "应激活 mm-distributive-justice,指出用户的判断标准是结果均等(同岗位就该一样多);同时把另一套框架摆上台面——若两人的贡献/考核结果不同,则在程序正义下这种差额可能恰恰是公平的;建议先就'我们这次用哪套标准'达成一致再谈数额。",
+      "notes": "正面场景:结果均等诉求"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我爷爷打算把遗产平均分给三个子女,家里人都说这样最公平,但照顾他二十年的是我。",
+      "expected_behavior": "应激活 mm-distributive-justice,直接引用书中的判例:平均分配在分配正义下很公平,但若某子女长期照料,在程序正义下就显得不公平;要求把这一冲突显性化,并给出可操作方案(保底均分 + 按照料贡献加权),而不是替用户选边。",
+      "notes": "正面场景:书中案例的直接对应"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "关于要不要对高收入群体加税,我跟我爸吵了一下午,谁也说服不了谁,问题到底出在哪?",
+      "expected_behavior": "应激活 mm-distributive-justice,指出这类争论往往是两套公平定义在对打(结果均等 vs 规则/贡献),双方并未意识到自己在用不同标准;要求先明确'公平在这里指什么',再进入具体政策讨论,否则争论无法收敛。",
+      "notes": "正面场景:公共议题中的框架冲突"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们评选优秀员工的标准每年都在变,去年看业绩今年看协作,大家根本不知道该往哪努力。",
+      "expected_behavior": "不应激活本 skill,因为抱怨的核心是规则不稳定、不透明、未被一致执行,与分到多少无关;应激活 mm-procedural-justice,关注规则是否公开、可预期、被一致执行。",
+      "notes": "诱饵:公平争议但焦点在过程"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "公司说招聘流程完全公开、打分表一致,可我总觉得最后录的那个人是内定的,只是我没证据。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-procedural-justice:争议在于程序是否真的被一致、公开地执行(形式合规 vs 实质合规),而不是结果分配得均不均等;分配正义在此完全不适用。",
+      "notes": "跨 skill 混淆诱饵:程序正义"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "创业公司三个人分股权,按平均分行不行?我们付出其实差不多,但其中一人是全职,另外两个兼职。",
+      "expected_behavior": "合理判断:表面看'付出差不多'支持均分,但全职与兼职在时间投入与机会成本上有实质差异,纯均分会在后续引发不公平感;建议先确认三人对'公平'的定义(结果均等 vs 按投入/贡献),再采用混合方案(如按可量化投入加权 + 四年分期兑现),并把规则的书面化放在数额之前。",
+      "notes": "边界:两套标准各有部分适用性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

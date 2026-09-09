@@ -1,0 +1,52 @@
+{
+  "skill": "mm-selection-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "数据显示，用了我们新引导流程的用户，次月留存比没用的高 20%，所以这个流程确实提升了留存吧？",
+      "expected_behavior": "应激活 mm-selection-bias，指出「用不用流程」是用户自选的，更活跃/更愿意探索的用户本来就更可能完成引导，要求确认分组机制、列出伴随特征，并把因果结论降级为相关结论。",
+      "notes": "正面场景：产品数据归因"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "有研究说孕期吸烟的妈妈生的宝宝体重更低，但这是她们自己选择继续吸烟的，这研究还能信吗？",
+      "expected_behavior": "应激活 mm-selection-bias，复述书中逻辑：研究中观察到的吸烟者是「选择继续吸烟」的人，她们可能同时做出其他医学上存疑的选择，因此「是否吸烟」不是组间唯一区别；结论应谨慎解读而非直接否定。",
+      "notes": "正面场景：书中原案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "名校毕业的人收入更高，是不是说明名校教育真的有用？",
+      "expected_behavior": "应激活 mm-selection-bias，指出父母经济实力与对教育的重视同时驱动「进名校」和「高收入」，很大一部分差距可由选择性偏差解释。",
+      "notes": "正面场景：择校案例迁移"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们把 2000 个用户完全随机分成两组做了 A/B 测试，B 组转化率高 3%，p=0.02，这个结果可靠吗？",
+      "expected_behavior": "不应激活本 skill，因为分组是随机指派的，自选择问题已被消除；应转向统计显著性与置信区间相关判断。",
+      "notes": "诱饵：同为数据可信度问题，但随机分组消除了选择偏差"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们做了员工敬业度调研，结果显示 85% 的人很满意。但那些做得不开心的人早就离职了，根本没填这份问卷。",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-survivorship-bias：失败者整批从未进入样本，这是幸存者偏差的典型结构。",
+      "notes": "跨 skill 混淆诱饵：书中两节相邻，极易混淆"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们按用户注册时间前后分组，比较老用户和新用户的付费率，这样算不算有选择性偏差？",
+      "expected_behavior": "应激活本 skill，但需判断方向：分组由注册时间决定、非用户自选，严格说不是「自选择」；然而两组在生命周期阶段上系统性不同，仍属非可比分组，应提示混淆并建议匹配或分层比较。",
+      "notes": "边界：非随机但非自选择，考验判据精度"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

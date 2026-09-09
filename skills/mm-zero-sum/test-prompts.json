@@ -1,0 +1,52 @@
+{
+  "skill": "mm-zero-sum",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "供应商坚持涨价 15%，我们坚持不涨。谈了三轮了，感觉只能有一方让步，没有双赢的可能。",
+      "expected_behavior": "应激活 mm-zero-sum，先检验是否真零和，再展开维度清单（付款周期、采购量、合同期、服务等级、排他性），找出双方偏好错配的项并构造具体交换提案。",
+      "notes": "正面场景：价格谈判被压缩成单维"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "年度预算总额固定，三个部门都在抢，怎么分都有人不满意。有没有别的思路？",
+      "expected_behavior": "应激活 mm-zero-sum，识别出总额固定确实是零和约束，但指出可通过引入非金额维度（优先级排序、资源共享、分阶段释放、用非金钱资源补偿）来缓解，并明确不虚构「总额能变大」。",
+      "notes": "正面场景：真实零和约束下的处理"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "竞品刚拿下一个大客户，我们是不是就少了一个？这个市场是不是就这么大？",
+      "expected_behavior": "应激活 mm-zero-sum，检验市场总量是否真的固定（是否可开拓新客群、是否可做大品类），并指出零和是例外而非常规的判据。",
+      "notes": "正面场景：竞争分析中的零和误判"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们部门今年只有两个晋升名额，但有五位符合条件的同事。该怎么处理比较公平？",
+      "expected_behavior": "不应激活本 skill 寻求双赢方案，因为名额在结构上固定、是真零和；应转向公平程序与分配正义的分析（mm-procedural-justice、mm-fair-share-versus-fair-play）。",
+      "notes": "诱饵：分配场景，但是真实零和"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "老板说这个项目要么我们接要么外包，只能二选一，没有中间方案。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-black-and-white-fallacy——错误在于选项被坍缩成两个，而不是收益结构被认定为零和；应生成中间方案（部分外包、试点合作）而非寻找交换维度。",
+      "notes": "跨 skill 混淆诱饵：与 mm-black-and-white-fallacy 常同时出现，区分在收益结构 vs. 选项数量"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "对方谈判代表一直说「我们要的是双赢」，但每次具体条款都是我们在让。这是双赢吗？",
+      "expected_behavior": "应激活 mm-zero-sum 并给出明确警告：「双赢」话语可能被用作要求单方面付出的工具；判据是双方是否都在各自高优先级维度上有所获得——若只有一方持续让步，那就是伪装成双赢的单方让利，应停止交换并重新审视 BATNA。",
+      "notes": "边界：双赢话语被滥用的识别"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

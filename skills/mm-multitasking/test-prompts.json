@@ -1,0 +1,52 @@
+{
+  "skill": "mm-multitasking",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我一边写代码一边回 Slack 消息，一天下来代码几乎没推进，是我效率太差了吗？",
+      "expected_behavior": "应激活 mm-multitasking，指出这不是能力问题而是注意力切换成本：把写代码标为需持续注意力的任务，给出串行安排与防打断措施。",
+      "notes": "最典型的正面场景：忙但没进展"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "开会的时候我习惯顺便把邮件处理掉，这样算不算高效利用时间？",
+      "expected_behavior": "应激活 mm-multitasking，说明大脑无法同时专注两件需要注意力的事，只是在来回切换；判断会议与邮件各自的后果等级后再决定。",
+      "notes": "用户自认为高效的并行行为"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们团队每个人手上同时挂着三四个项目，进度全都卡着，要怎么改善？",
+      "expected_behavior": "应激活 mm-multitasking，把并行项目按出错后果分级，强制高后果项目串行并给出整块时间与防打断机制。",
+      "notes": "团队层面的并行过载"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "边跑步边听播客，会不会影响锻炼效果？",
+      "expected_behavior": "不应激活本 skill，因为跑步与听播客组合的后果轻微、认知负荷低，属于书中明确归为可容忍的组合，套用本模型是过度反应。",
+      "notes": "诱饵：低认知负荷组合"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "手上一堆事，实在不知道先做哪个，怎么排优先级比较好？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-eisenhower-decision-matrix；用户的问题是选哪一件，而不是能不能同时做。",
+      "notes": "跨 skill 混淆诱饵：排序问题 vs 并行问题"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "客服岗位要求同时接待 3 个对话窗口，这是硬性工作要求，怎么才能少出错？",
+      "expected_behavior": "可部分激活：模型能解释错误来源（切换与监控代价），但不应把结论落在\"不要多任务\"上，而应转向流程与工具手段（模板、批处理、分流规则、窗口数量上限）。",
+      "notes": "边界：并行由工作要求强加，非个人选择"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

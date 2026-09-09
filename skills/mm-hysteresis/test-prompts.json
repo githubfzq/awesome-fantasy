@@ -1,0 +1,52 @@
+{
+  "skill": "mm-hysteresis",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们先把价格涨上去试试，卖不动再降回原价，反正能改回来。",
+      "expected_behavior": "应激活 mm-hysteresis,指出这可能不成立:用户一旦经历过涨价,价格锚点与信任已被改变,降回原价不等于回到原来的销量;应找出被历史改变的状态量并把该改动按不可逆决策处理。",
+      "notes": "正面场景:默认可无损回退"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "自动扩缩容一直在扩容和缩容之间抖来抖去，怎么解决？",
+      "expected_behavior": "应激活 mm-hysteresis,指出这是临界点缺少迟滞的典型症状;按书中恒温器的例子设计阈值区间（如 CPU 80% 扩容、60% 缩容）,让开与关不在同一点。",
+      "notes": "正面场景:临界抖动,利用迟滞"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "同样的流程和参数，这次跑出来的结果和上次完全不一样，见鬼了。",
+      "expected_behavior": "应激活 mm-hysteresis,先排除更简单的解释（外部条件是否真的相同）,再检查系统是否保留了历史痕迹（数据分布、缓存、模型状态、团队默契）。",
+      "notes": "正面场景:同参数不同结果"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我算一下这两个数的乘积，输入一样结果应该一样吧？",
+      "expected_behavior": "不应激活本 skill,因为这是无记忆的纯计算,状态完全由当前输入决定,不存在历史依赖。",
+      "notes": "诱饵:形似状态问题但无记忆"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们想把数据迁到新平台，但迁移成本太高，现在想换也换不动了。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-lock-in:这里是转换成本太高导致走不掉（锁定效应）,而不是系统状态本身被历史改变;即使成本归零,锁定也会消失,磁滞不会。",
+      "notes": "跨 skill 混淆诱饵:回不去的两种成因"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们团队改用了新流程三个月，现在想改回老流程，但大家说已经回不去了。这是磁滞吗？",
+      "expected_behavior": "合理判断:部分是——团队默契、习惯与协作模式确实是被历史改变了的状态量（磁滞）;但也要拆开看,若有部分原因是“重新培训太麻烦/工具已切换”则是转换成本（锁定效应）。建议分别处理:状态性回不去要按不可逆决策重做设计,成本性回不去要算清是否值得付转换成本。",
+      "notes": "边界:两种机制并存"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

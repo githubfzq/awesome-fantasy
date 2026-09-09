@@ -1,0 +1,52 @@
+{
+  "skill": "mm-broken-windows-theory",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "代码库里到处是 TODO 和没修的小警告,新人来了也跟着写,反正大家都这样。要不要先清理一遍?",
+      "expected_behavior": "应激活 mm-broken-windows-theory,列出可见的具体\"破窗\"(长期未处理的警告、公开的绕过行为)并给出低成本、可见的修复动作;同时明确引用书中保留——干预效果尚不明确、只靠传染类比不足为证,要求配套衡量与\"无效则停止\"的条件。",
+      "notes": "正面场景:团队规范的可见失序"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "老板要求对所有迟到一分钟的人一律通报,说小错不严就压不住。这个措施值不值得?",
+      "expected_behavior": "应激活 mm-broken-windows-theory,区分机制主张(环境线索会影响行为)与效果主张(严管小错能减少大错),明确指出后者证据尚不明确、只靠传染类比不足为证;要求评估副作用(误伤、信任下降、执行成本)并配套衡量,而不是靠直觉认定有效。",
+      "notes": "正面场景:零容忍类措施评估"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "公共区域没人收拾,垃圾越堆越多,感觉大家越来越不在乎了。从哪入手?",
+      "expected_behavior": "应激活 mm-broken-windows-theory,建议先做几个低成本、高可见度的修复(清理堆点、补齐设施、明确归属),用可见的改变重置\"没人管\"的信号;同时提醒这可能是结构性问题(没人负责、没有清洁排班),修窗户解决不了机制缺失,需要一并处理。",
+      "notes": "正面场景:环境秩序修复"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个月出现了三起重大安全违规,每起都造成了实际损失,必须严肃处理。",
+      "expected_behavior": "不应激活本 skill,因为这些是重大违规而非轻罪痕迹;破窗理论讨论的是\"可见的小失序是否会鼓励更大的违规\",重大事件应直接进入事故处理与根因分析。",
+      "notes": "诱饵:重大违规不是\"破窗\""
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "有人说给实习生开权限,明天就人人都得开,最后谁都能改生产数据。这话我该怎么驳?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-slippery-slope-argument:这是需要被检验的论证形式(逐环检查是否必然),破窗理论则是一个关于秩序信号的具体主张;破窗式论证常常正是需要被滑坡论检验的对象。",
+      "notes": "跨 skill 混淆诱饵:滑坡论"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们把所有历史遗留的小 bug 都清零了,团队气氛确实好些了,但线上重大事故数量这季度没什么变化。说明什么?",
+      "expected_behavior": "合理判断:这正符合书中的保留意见——环境线索可能影响行为感受,但\"治理小恶能降低重罪\"这一层并不可靠。不应据此断言破窗理论成立或失败;正确动作是把它当假设继续检验:扩大样本周期、做分组对比,同时把资源重新分配到重大事故的根因(架构、发布流程、监控)上,而不是继续加大清理小 bug 的投入。",
+      "notes": "边界:机制层见效但效果层未证实"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

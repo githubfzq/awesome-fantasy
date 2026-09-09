@@ -1,0 +1,52 @@
+{
+  "skill": "mm-parallel-processing",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要在五个城市分别做落地活动，现在排期是一件件按顺序做，总共要五个月。能不能快一点？",
+      "expected_behavior": "应激活 mm-parallel-processing，确认五个城市的筹备相对独立，建议并行推进并定义统一交付物格式与合并检查点（统一的物料标准、复盘模板）。",
+      "notes": "正面场景：可独立切分的大任务"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个批处理任务要跑 10 万条数据，单机要 8 小时。我想拆分一下。",
+      "expected_behavior": "应激活 mm-parallel-processing，先确认数据分片之间无依赖，再设计分片策略与结果合并方式，并估算加速比。",
+      "notes": "正面场景：计算任务的并行化"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们从 3 个人加到 9 个人，工期却一点没缩短，反而更慢了。为什么？",
+      "expected_behavior": "应激活 mm-parallel-processing，指出问题出在依赖关系与协调开销而非人数：需先画出依赖清单，只并行独立部分，并强化合并检查点。",
+      "notes": "正面场景：并行失效的诊断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我一个人要写周报、回消息、还要改 bug，我打算三件事来回切换着做，效率最高。",
+      "expected_behavior": "不应激活本 skill，因为这是同一执行单元的来回切换，应激活 mm-multitasking——切换本身有成本，通常不是并行而是串行碎片化。",
+      "notes": "诱饵：同时做多件事但不是并行处理"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个项目太大了，我想先把它拆成几个独立的部分分别解决，这样能更快完成更多任务。怎么拆？",
+      "expected_behavior": "不应激活本 skill 作为主模型，应激活 mm-divide-and-conquer——用户问的是「如何分解」这一上位策略，并行只是分解之后的一种执行方式（也可以串行）。",
+      "notes": "跨 skill 混淆诱饵：与 mm-divide-and-conquer 高度重叠，区分点在「分解策略」还是「同时执行」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个需求要先定方案、再设计、再开发、再测试，环环相扣。能并行吗？",
+      "expected_behavior": "应激活 mm-parallel-processing 但给出有条件的答案：主线串行不可并行，但可以在阶段间做重叠（设计定稿前先做技术预研、开发期间并行准备测试用例），并明确不能把强依赖环节硬拆。",
+      "notes": "边界：强依赖链条上的部分并行"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

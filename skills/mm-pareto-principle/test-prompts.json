@@ -1,0 +1,52 @@
+{
+  "skill": "mm-pareto-principle",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "客户太多了维护不过来，哪些值得重点投入？",
+      "expected_behavior": "应激活 mm-pareto-principle，按销售额排序算出累计占比，标出贡献绝大部分的关键少数并给出集中投入与削减动作。",
+      "notes": "最典型的正面场景：识别关键少数"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "预算要砍，产品线太杂了，该砍掉哪些？",
+      "expected_behavior": "应激活本 skill，按成本/收益贡献排序，找出占用大部分预算的少数产品并建议削减长尾。",
+      "notes": "削减与收敛"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "功能做了一堆，用的人就那几个，感觉白做了。",
+      "expected_behavior": "应激活本 skill，用使用数据排序找出被高频使用的少数功能，建议聚焦优化并停止投入低使用率功能。",
+      "notes": "投入被摊薄"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这份方案已经改到第八版了，还要继续打磨吗？",
+      "expected_behavior": "不应激活本 skill，这是判断继续投入是否划算的问题，应激活 mm-law-of-diminishing-returns。",
+      "notes": "诱饵：投入程度 vs 投入方向"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "手上有 A、B 两个机会，各自要花多少钱、能赚多少，帮我算算哪个值。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-opportunity-cost（或成本收益分析）；这是在有限选项间标价比较，不是识别分布不均。",
+      "notes": "跨 skill 混淆诱饵：都与\"投入效果\"有关"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我按二八砍掉了一批小客户，但现在担心里面有未来会长大的大客户。",
+      "expected_behavior": "应激活并补一层判断：二八基于历史贡献，长尾可能承载战略价值与未来增长，建议结合趋势（动量/拐点）重新评估，而非只看当前占比。",
+      "notes": "边界：历史贡献 vs 未来潜力"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

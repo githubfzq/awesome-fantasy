@@ -1,0 +1,52 @@
+{
+  "skill": "mm-unknown-unknowns",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我老婆下个月生第一胎,婴儿床、安全座椅、产假都安排好了,还有啥要准备的吗?",
+      "expected_behavior": "应激活 mm-unknown-unknowns,按四象限盘点:产假与安全座椅是已知已知;孩子的吃睡偏好是未知已知(该问儿科医生和长辈);襁褓这类技巧是别人告诉你的未知未知;孩子是否有学习障碍则没人能提前知道;并强调要去问过来人。",
+      "notes": "正面场景:书中原案例"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我第一次创业,商业计划写得很完整了,风险那栏也列了七八条,应该没问题吧?",
+      "expected_behavior": "应激活 mm-unknown-unknowns,指出'写得很完整'恰恰是盲区信号——经验边界决定了你列不出你没概念的东西;引导逐格填四象限,特别是借外部视角(做过同类创业的人)填'未知已知',并对每条风险给出转成已知已知的去风险化动作。",
+      "notes": "正面场景:首次进入陌生高风险情境"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "项目上线前我要做风险盘点,但队友们想来想去都是那几条老问题,怎么突破?",
+      "expected_behavior": "应激活 mm-unknown-unknowns,指出内部团队共享同一套经验,填不满'未知已知'这一格;建议引入外部视角(顾问、其他团队、用户),并用'如果……会怎么样'的思维实验往'未知未知'格填。",
+      "notes": "正面场景:团队视角同质化"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "中午吃盖饭还是面条?帮我做个风险盘点。",
+      "expected_behavior": "不应激活本 skill,因为这是低风险且可轻易逆转的日常选择,全面盘点的成本高于风险本身,会造成分析瘫痪。",
+      "notes": "诱饵:形似决策但风险可忽略"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "供应商有五成概率拖期,拖期要加钱,我想知道该不该换供应商。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-decision-tree(配合 mm-expected-value):风险已经识别清楚,现在需要的是量化概率与后果、算期望值;四象限矩阵给不了数字。",
+      "notes": "跨 skill 混淆诱饵:决策树"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我按四象限盘完了,最后一格'未知未知'我填了五条。是不是这样就安全了?",
+      "expected_behavior": "合理判断:不能说安全——'未知未知'在定义上无法穷尽,能填出五条说明这些其实已被结构化提问转化成了'已知的未知';必须承认残余不确定性,并强调真正的安全来自后续去风险化动作(小实验、保险、触发线),而不是填满格子。",
+      "notes": "边界:模型自指的悖论"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

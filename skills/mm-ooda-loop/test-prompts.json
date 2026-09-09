@@ -1,0 +1,52 @@
+{
+  "skill": "mm-ooda-loop",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的投放策略一改，对手两天内就跟上来，然后再想办法把我们挤下去。总觉得我们慢半拍。",
+      "expected_behavior": "应激活 mm-ooda-loop，先确认这是对手会回应的真实对抗环境；然后把现状拆成观察/调整/决策/行动四段并测出每段耗时、算出整圈周期；找出耗时最长的一环做具体压缩（如审批链、数据滞后）；强化容易被跳过的调整环节；最后估计对手完成一圈的时长并对比，指出这是结构问题而非努力问题。",
+      "notes": "正面场景：典型实时对抗"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "公司每次遇到问题都要开会、上报、再开会，等结论出来机会早跑掉了。",
+      "expected_behavior": "应激活本 skill，把决策链条按四步拆开测量周期，识别卡点（多数在行动段的审批链），给出具体压缩动作如设定一线免请示阈值、事后报备替代事前审批；并设定 2-3 个必须重走一圈的可观测触发信号。",
+      "notes": "正面场景：组织决策节奏"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "新业务完全没跑通过，谁也不知道正确答案。是该做一份详细计划还是边做边看？",
+      "expected_behavior": "应激活本 skill，指出在快速学习能带来优势的领域应靠高频小步循环的迭代逼近；同时提醒边做边看不等于跳过调整步骤——必须每次明确刷新对局面的理解，否则只是应激反应式乱动。",
+      "notes": "正面场景：不确定环境中的摸索"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们要把整套核心系统迁到新架构上，迁移完几乎不可逆。要不要快决策、边迁边看？",
+      "expected_behavior": "不应激活本 skill。书中明确说并非所有情境都瞬息万变（书中原话是有些情况确实如此，暗示稳定情境未必适用），而这是不可逆的高风险决策，快速循环意味着跳过验证，代价远大于收益。应建议先做充分评估与小规模试点。",
+      "notes": "诱饵：用户主动要求快"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们团队为了这个方案已经开了六次会，还在纠结用哪个模型，一直决定不下来。",
+      "expected_behavior": "不应激活本 skill（或仅作背景），应激活 mm-analysis-paralysis：问题卡在循环内部无法进入决策和行动，属于过度分析导致的瘫痪；OODA 给的是完整节律，不针对出不来这个病症。可补充说明症状定位后仍可用 OODA 重建节奏。",
+      "notes": "跨 skill 混淆诱饵：都是关于决策速度，但一个卡住一个不转"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "老板要求我们这边数据一有异常就立刻调整策略，团队现在每天改好几版投放，反而效果越来越差。",
+      "expected_behavior": "应激活本 skill 并给出边界判断：这属于把速度当成目标本身的误用——包以德的结论是比对手快而非越快越好。应指出缺少了调整这一步：每天对最新数据做应激反应而没有刷新对整体局面的理解，也没有设定必须重走一圈的触发信号，导致振荡。建议恢复完整的四步、把响应频率改为基于有意义的变化阈值而非任意波动。",
+      "notes": "边界：速度过度导致的振荡"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-analysis-paralysis。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-fair-share-versus-fair-play",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "同事跟我争助学政策,他说'规则对所有人一样就行了',我说'他们起点就不一样',吵了半天谁也没服谁。",
+      "expected_behavior": "应激活 mm-fair-share-versus-fair-play,指出这是两套公平框架在对打而非事实分歧:一边是 fair play(规则一样即公平),一边是 fair share(应有份额需修正);要求先把'起点是不是平的'变成可核查的经验问题(机会可及性、执行是否无差别、历史累积差距),再谈政策。",
+      "notes": "正面场景:典型框架之争"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "公司想给某些岗位设置专项招聘名额,有人说这是破坏公平竞争,有人说这才叫公平,我怎么跟两边沟通?",
+      "expected_behavior": "应激活 mm-fair-share-versus-fair-play,把双方隐藏的前提摆上台面(现有渠道是否真的对所有人可及),不替用户选边;建议把政策目标改写成可度量的表述(如把某群体的面试转化率从 A 提到 B),绕开'公平'一词的语义争用。",
+      "notes": "正面场景:组织内的政策争议"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我自己都纠结:一边觉得该一视同仁,一边又觉得有些人确实连起步的机会都没有。",
+      "expected_behavior": "应激活 mm-fair-share-versus-fair-play,说明两套框架各自自洽、结论方向相反,分歧出在'起点均不均'这个未说出口的前提;建议用户先就这个事实前提做出判断(去查可验证的指标),再决定站哪一边,而不是在两套框架之间反复摇摆。",
+      "notes": "正面场景:用户自身的两难"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这笔拆迁补偿款三个人怎么分才合理?大家出力都一样。",
+      "expected_behavior": "不应激活本 skill,因为场景里只有单一公平标准在场(结果要不要均分),不存在两套框架对打;应激活 mm-distributive-justice 或做常规分配方案比较。",
+      "notes": "诱饵:公平话题但无框架冲突"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "评委里有人跟候选人是师生关系却没回避,这个评选结果我不认。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-procedural-justice:不满来自规则未被一致、无利益冲突地执行(回避程序被违反),属于单一的过程侧公平问题,不涉及'应有份额 vs 规则公平'的框架之争。",
+      "notes": "跨 skill 混淆诱饵:程序正义"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们想给偏远地区的学生加分,但城里家长说这对他们孩子不公平。两边说的'公平'到底哪个对?",
+      "expected_behavior": "合理判断:没有哪个'更对'——两套框架的前提不同,若偏远地区在教育可及性上确实存在结构性差距,则加分是修正起点不均(fair share 成立);若差距已被消除,则加分确实构成反向不公(fair play 成立)。建议把判断锚定在可核查的指标上(师生比、入学率、师资流动性),并设定日落条款定期复核该政策是否仍有必要。",
+      "notes": "边界:两套框架的部分成立"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

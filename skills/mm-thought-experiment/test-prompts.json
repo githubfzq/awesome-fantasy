@@ -1,0 +1,52 @@
+{
+  "skill": "mm-thought-experiment",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "如果人的预期寿命突然延长 40 年，我们的养老业务会变成什么样？",
+      "expected_behavior": "应激活 mm-thought-experiment,确认这在现实中无法实验后,把假设写得极端且具体,沿因果链推演至少三层（储蓄周期、退休定义、代际结构）,并明确它打开了哪些新情景而非给出定论。",
+      "notes": "正面场景:书中点名的典型提问"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "如果资金雄厚的巨头直接抄我们的产品还打三折，我们还有活路吗？",
+      "expected_behavior": "应激活 mm-thought-experiment,构造可判定的具体假设（三个月内上线、价格 1/3）,推演二阶后果,并把结果并入情景分析作为一套预案。",
+      "notes": "正面场景:无法试错的竞争假设"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "团队为“该不该做这个功能”吵了两周，谁也说服不了谁，都是靠感觉。",
+      "expected_behavior": "应激活 mm-thought-experiment,用极端假设打破僵局（如“如果这个功能完全免费且零维护成本，我们还做吗”“如果竞争对手明天就上了呢”）,并说明思维实验打开情景空间、不等于论证。",
+      "notes": "正面场景:争论僵局需要新角度"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个按钮放左边还是右边点击率高？我们流量足够。",
+      "expected_behavior": "不应激活本 skill,因为这个问题完全可以用 A/B 测试回答,真实实验成本更低、可信度更高;应走 mm-ab-testing。",
+      "notes": "诱饵:形似假设但可做真实验"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们要为未来三年构造三套完整的行业图景，每套都要自洽并写出应对。",
+      "expected_behavior": "不应激活本 skill（作为主 skill）,应激活 mm-scenario-analysis:用户要的是把多个思维实验组织成几套完整自洽图景的系统工程;思维实验只是其中的生成零件。",
+      "notes": "跨 skill 混淆诱饵:零件 vs. 整机"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我用思维实验推演出“如果我们降价，对手一定会跟”，这算不算证明了对手会跟？",
+      "expected_behavior": "合理判断:不算——构造一个虚构情形不等于证明,思维实验打开的是可能性空间,不是概率。应说明它证明了“在何种前提下对手会跟”,而非“对手会跟”;若要确证,需收集对手历史定价行为等真实证据,并避免给推演结果附上似是而非的概率。",
+      "notes": "边界:思维实验不能替代论证"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

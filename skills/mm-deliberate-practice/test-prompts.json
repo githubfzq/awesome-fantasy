@@ -1,0 +1,52 @@
+{
+  "skill": "mm-deliberate-practice",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我做销售三年了，每天都在打电话，但成单率一直没变。怎么突破？",
+      "expected_behavior": "应激活 mm-deliberate-practice，指出重复劳动不等于练习，要求定位能力极限、拆到可反馈粒度、安排实时反馈来源并设定递增阶梯（如连续 1/3/5 次达标后提高难度）",
+      "notes": "正面场景：投入时间但无进步"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我想让团队新人快速上手客户沟通，有什么带教方法？",
+      "expected_behavior": "应激活本 skill，设计成极限+递增+实时反馈的结构，并强调须征得指导者与受训者双方认同，选择影响不大的项目作练习场",
+      "notes": "正面场景：带教/培训设计"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "I practice coding every day on side projects but my skills seem flat. Am I missing something?",
+      "expected_behavior": "应激活本 skill，检查三要素（是否触及极限、难度是否递增、有没有实时反馈），大概率指出缺反馈来源并建议教练/导师或可提供反馈的模拟环境",
+      "notes": "正面场景：自学停滞"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个 Python 库的函数参数是什么？给我一个调用示例就行。",
+      "expected_behavior": "不应激活本 skill，因为用户需要的是信息查询，不需要结构化训练",
+      "notes": "诱饵：与技能相关但需求是信息"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我要给同事提个反馈，怕说重了伤感情又怕说轻了没用。该怎么说？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-radical-candor（坦诚相待）：核心是反馈的给法（直接挑战 × 个人关怀），不是训练设计",
+      "notes": "跨 skill 混淆诱饵：同章相邻，且与反馈高度相关"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们是急诊团队，想让年轻医生通过实战练习气管插管。可以直接在病人身上练吗？",
+      "expected_behavior": "应激活本 skill 并明确拒绝在真实高后果场景直接练：书中要求挑影响不大的项目或业余时间练习；应改用模拟环境与导师反馈，达标后再进入真实场景（并指出书中未直接覆盖医疗伦理，此为合理推导）",
+      "notes": "边界：高后果场景下练习场的限制"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

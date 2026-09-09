@@ -1,0 +1,52 @@
+{
+  "skill": "mm-scenario-analysis",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要做未来五年的战略规划,老板让我先想清楚行业会怎么变。",
+      "expected_behavior": "应激活 mm-scenario-analysis,引导先列重大事件(监管、技术、并购、宏观冲击)再构造 3-4 套彼此不同且自洽的未来图景;明确指出乐观/中性/悲观三档不算三套情景,并检查每套的前提假设。",
+      "notes": "正面场景:典型长期战略"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "新监管政策刚下来,我们这条业务线可能要变天,后面会怎么样?",
+      "expected_behavior": "应激活 mm-scenario-analysis,用'如果……会怎么样'推演几种可能的后续走向(严格执行/过渡期/豁免落地/行业集体转型),逐套写出影响与应对,并设可观测的前兆信号与触发阈值。",
+      "notes": "正面场景:突发事件后的连锁推演"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我觉得未来就是现在的延续,增长会一直这样下去,没什么好想的。",
+      "expected_behavior": "应激活 mm-scenario-analysis,指出这正是锚定——抓住第一个念头、只是现状的直接外推,不挑战任何前提假设;用列重大事件和思维实验两个技巧逼出不同的未来图景。",
+      "notes": "正面场景:书中点名的锚定陷阱"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这个季度两个方案的成本收益算一下,哪个更省。",
+      "expected_behavior": "不应激活本 skill,因为这是当期、确定性的成本比较,不涉及未来图景构造;应激活 mm-cost-benefit-analysis。",
+      "notes": "诱饵:形似决策但无未来不确定性"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "下个季度销量会是多少?给我一个带概率的估计,要尽量准。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-superforecasters 或用 mm-prediction-market 的思路:用户要的是单一事件的概率化预测,而情景分析刻意不给概率、只构造多套自洽未来。",
+      "notes": "跨 skill 混淆诱饵:预测方法"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我一个人闭门想了三套未来,分别是乐观、中性、悲观。这样算做好情景分析了吗?",
+      "expected_behavior": "合理判断:不算——这只是同一模型的三档参数,无法发现真正的未知未知;而且作者明说独自一人做会很困难、必须引入外部视角并警惕群体思维;建议改为按'不同前提假设'构造图景,并找外部人各做一版再汇总。",
+      "notes": "边界:退化用法与独自完成的局限"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

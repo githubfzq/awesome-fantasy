@@ -1,0 +1,52 @@
+{
+  "skill": "mm-secret",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我注意到身边很多人有大量闲置的东西从来不用，但又舍不得扔。感觉这里藏着机会，但我说不清是什么。",
+      "expected_behavior": "应激活 mm-secret，引导把这个直觉写成'关于世界如何运作的陈述'（如：人们愿意把闲置资产短期让渡给陌生人，只要信任问题能被解决）；要求用公开信息验证它是否成立、再到目标人群聚集处检查是否已被察觉；归入三种形态之一；最后提醒必须配 mm-why-now 检查时机是否成熟。",
+      "notes": "正面场景：典型秘密雏形"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我在上一个行业里这套做法人人都用、很平常，换到现在的行业居然没人这么做。这算不算别人不知道的机会？",
+      "expected_behavior": "应激活本 skill，明确指出这正是书里点出的秘密生成机制——一个领域的常识往往是另一个领域的秘密（跨领域迁移）；然后要求写清迁移后的具体陈述、并检查目标行业是否真的没人察觉（可能只是本公司没察觉），再提示检查时机。",
+      "notes": "正面场景：跨领域迁移式秘密"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "圈内都说这条路走不通，风险太大。可我算下来其实是可以的。我该放弃还是坚持？",
+      "expected_behavior": "应激活本 skill，将其识别为第二种秘密形态——别人觉得风险太大但其实可行的做法；要求把'算下来可行'的依据具体化并与大众的风险估计逐条对比，判断是否真有其他人对风险的高估；若成立则说明这是可押的方向，同时提示还需要检查时机。",
+      "notes": "正面场景：第二种形态的秘密"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们核心算法的源码要怎么防止被员工带走？要不要签保密协议？",
+      "expected_behavior": "不应激活本 skill。这里的'秘密'指需要封锁的商业机密，与书中'公开但尚未被察觉的真相'几乎相反——书里的秘密恰恰不需要保密。应走合规/知识产权保护路径。",
+      "notes": "诱饵：同一个'秘密'一词的两种含义"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我的产品方向和同行几乎一模一样，功能也差不多。怎么才能比他们卖得好？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-product（产品/市场匹配）或 mm-customer-development：点子已是人尽皆知的常识，不存在'未被察觉的真相'。此时该讨论的是执行、匹配与客户需求，而不是继续寻找秘密。",
+      "notes": "跨 skill 混淆诱饵：都追问'怎么赢'，但一个缺地基一个缺执行"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我发现第一批深度学习可以做 X，查了论文确认可行，但整个行业还在用老办法。我想立刻 All in，是不是晚了就没了？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：先确认这是公开可查但未被普遍察觉的真相（符合秘密定义，且论文可查说明不是私有信息）；然后必须提醒本书明示的约束——仅有秘密不够、时机必须恰当，引用苹果牛顿 1993 年过早推出最终停产的教训，转由 mm-why-now 检查底层技术采纳度是否已成熟；不鼓励立刻 All in，建议先做小规模可行性验证。",
+      "notes": "边界：秘密成立但时机未必成熟"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-product。"
+}

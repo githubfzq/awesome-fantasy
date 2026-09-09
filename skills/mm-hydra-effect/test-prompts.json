@@ -1,0 +1,52 @@
+{
+  "skill": "mm-hydra-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们封了三千个刷单账号，结果一周后又冒出五千个，而且更分散。是不是我们打击力度还不够？",
+      "expected_behavior": "应激活 mm-hydra-effect，判定为再生型问题（源头数上升、间隔缩短、形态更分散），定位需求侧（谁在买刷单、单位收益多少），测算进入成本与收益的比值，指出加大力度只是加速换血，建议优先削需求（刷单流量不计入推荐/排序）并抬高注册与验证门槛。",
+      "notes": "正面场景：封禁治理的再生"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们清退了一批不合规的小供应商，结果市场上冒出更多更小的作坊，反而更难管了。",
+      "expected_behavior": "应激活 mm-hydra-effect，指出被清退的位置是空缺生态位、需求（采购需求与成本压力）未变因而被填补，且新进入者更分散；建议从需求侧入手（调整采购标准与结算方式）并提高进入门槛，而不是继续清退。",
+      "notes": "正面场景：清退后的分散化再生"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个岗位换了好几个人了，问题还是一样。要不要把这个团队整个砍掉重来？",
+      "expected_behavior": "应激活 mm-hydra-effect，指出换人是在打「角色」而不是产生这个角色的机制（流程、激励、信息结构），砍掉团队只会让问题换个名字重现；建议先定位让问题反复出现的结构性成因再决定。",
+      "notes": "正面场景：组织内问题的反复再生"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们有个接口因为默认值写错了导致一批订单异常，改掉默认值之后就正常了。",
+      "expected_behavior": "不应激活本 skill，因为根因可被一次性消除、不存在持续的需求侧拉力，修掉即结束，不存在再生与替代者填补生态位。",
+      "notes": "诱饵：可一次性修复的问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们按发现的违规账号数量给外包结算，后来发现他们自己注册小号来刷，违规量反而比治理前更高了。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-cobra-effect。这里再生的驱动力是激励扭曲——有人开始主动生产问题以领取报酬，而不是需求侧拉力造成的空缺填补；应由眼镜蛇效应处理（重点是获利群体与退出预案）。",
+      "notes": "跨 skill 混淆诱饵：眼镜蛇效应"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们知道黑产是靠需求活着的，但短期内需求侧我们改不动。是不是只能一直封下去？",
+      "expected_behavior": "合理的判断是：需求侧改不动时，不要退回单纯的「持续打击」，而应把战术从消灭转为成本压制与可控化。具体：把主目标定为抬高单位收益的获取成本（提高处罚确定性而非力度、设备与身份连坐、延长收益兑现周期），同时设定明确的终止判据（新源头出现率低于某阈值并持续 N 周即算达成；长期无改善则承认此路不通并重估需求侧方案）。关键判断是：接受问题不会归零，把「封」从目标降级为维持成本的工具，并持续测算收益成本比作为是否继续的决策依据。",
+      "notes": "边界：需求侧短期不可改时的策略定位"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

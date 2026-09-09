@@ -1,0 +1,52 @@
+{
+  "skill": "mm-keep-it-simple",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们准备做一个内部知识库，已经设计好了权限体系、标签体系、全文检索、AI 摘要和积分激励，准备开发三个月。你觉得怎么样？",
+      "expected_behavior": "应激活 mm-keep-it-simple，逐条追问哪些模块删掉不影响『让人找到资料』这一核心结论，输出一个能先验证的最小版本（如一个共享文档 + 搜索），并配最低成本验证。",
+      "notes": "正面场景：未验证先搭完整系统"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我要向老板解释为什么这个季度要砍掉那条业务线，我写了三页材料，讲了市场环境、竞品、组织、财务……有没有更简单的说法？",
+      "expected_behavior": "应激活 mm-keep-it-simple，把材料拆成条目，删掉不影响结论的部分，压出一句话核心论点 + 一条最关键证据。",
+      "notes": "正面场景：解释臃肿，需要一句话版本"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的发布流程有 14 个环节和 6 个审批人，但过去一年好像没人真的拦过任何一次发布。",
+      "expected_behavior": "应激活 mm-keep-it-simple，识别『以防万一但从未触发』的环节，要求逐条说明触发场景，删掉说不出场景的。",
+      "notes": "正面场景：流程堆积、从未被使用"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的支付系统需要设计幂等、对账和防重放，这块能不能简单点，先上线再说？",
+      "expected_behavior": "不应激活本 skill，因为复杂性在支付场景下是被证明必需的（安全/正确性优先），此时简化等于制造事故；应改用风险评估而非 KISS。",
+      "notes": "诱饵：看似臃肿但复杂性必需的场合"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "同事没回我消息，我觉得他是在故意冷落我，也可能他只是忙，或者是被别的事拖住了，我该怎么判断？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-hanlon-s-razor 或 mm-most-respectful-interpretation（动机归因层面选善意解释），而不是方案层面的简化。",
+      "notes": "跨 skill 混淆诱饵：『简单』vs『善意解释』"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我想把我们的推荐算法从 12 个特征砍到 2 个，简单点肯定更好维护，对吧？",
+      "expected_behavior": "合理判断：可激活但需加限定——KISS 的前提是『删掉不影响结论/效果』，所以应先问这 12 个特征里哪些有独立证据支撑效果贡献；正确动作是做消融实验逐个删，而不是按数量一刀切。若砍到 2 个导致效果显著下降，则应保留复杂性。",
+      "notes": "边界：简化偏好 vs 效果证据"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

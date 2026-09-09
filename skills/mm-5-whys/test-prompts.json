@@ -1,0 +1,52 @@
+{
+  "skill": "mm-5-whys",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "昨天的线上事故复盘，结论写的是'张某操作失误'。我觉得还得往下挖，怎么挖？",
+      "expected_behavior": "应激活 mm-5-whys，确认处于复盘阶段，把现象写成可观察陈述，逐层追问且每层要求证据（禁止推测不标注），从'人'推向流程/结构层，允许问超过五层，最后用'消除它同类事故还会不会发生'检验终点并输出改进项。",
+      "notes": "正面场景：结论停在人身上，需继续下探"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的产品昨天出了个严重质量问题，原因是某个零件没检出来。帮我追一下到底为什么。",
+      "expected_behavior": "应激活本 skill，从可观察事实起步逐层追问（为什么没检出 → 检测标准缺失/设备未校准/抽检比例过低 → 为什么……），每层要求证据，终点停在可行动的结构层，明确记录实际问了几层。",
+      "notes": "正面场景：典型事后分析场景"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "五问法一定要问满五次吗？我第三层就觉得差不多了。",
+      "expected_behavior": "应激活本 skill，引用书中明示：'五'只是默认值，可替换为任何数字，作者自己用了 7 问。说明停的标准是'到了可行动的结构层'且通过根本原因判据（消除它还会不会再发生），而不是凑够次数；同时提醒停太早的后果。",
+      "notes": "正面场景：方法本身的用法询问"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "服务现在还在 500，快点！赶紧告诉我先做什么！",
+      "expected_behavior": "不应激活本 skill。书中明示五问法是'事后分析中常用的技巧'，事故现场应先止血恢复服务（mm-stop-the-bleeding），复盘阶段再做追问；在压力下追问会得到仓促答案。",
+      "notes": "诱饵：涉及'为什么出问题'，但阶段错误"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "用户流失是价格、竞品、产品体验多个原因同时造成的，怎么理清楚？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-systems-thinking（或鱼骨图/多因分析）：五问法是单链线性追问，遇到多因并发会强行排成一条链从而漏掉分支。本例明确存在多个并列原因。",
+      "notes": "跨 skill 混淆诱饵：都在找原因，但结构不匹配（单链 vs 多因）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们一直问到'因为人就是会犯错'，还要再往下问吗？",
+      "expected_behavior": "应激活本 skill 并给出边界：这已是无法行动的层面，应停在上一层（那个可改动的具体流程/机制），不要继续。同时检查上一层是否真的可行动——若'人都会犯错'是唯一答案，正确结论应是设计容错机制（双人复核、自动化校验）而非继续追问。",
+      "notes": "边界：防止追到不可行动层或无限上溯"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-systems-thinking。"
+}

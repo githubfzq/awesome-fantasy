@@ -1,0 +1,52 @@
+{
+  "skill": "mm-resonant-frequency",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "投放预算翻了一倍,转化率几乎没动。要不要再加一倍试试?",
+      "expected_behavior": "应激活 mm-resonant-frequency,先确认这是非线性现象(投入增幅与产出增幅不成比例);然后判断是'力度不够'还是'频率不对'——投入持续增加而反馈始终微弱说明频率不对;此时明确建议停止加力,改为扫频:设计2-3个小的替换实验(换受众、换信息、换场景),找到对齐点前不加大投入。",
+      "notes": "正面场景:加力无效的典型情形"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们改了一版首页,突然订单暴涨、备货都售罄了。这说明了什么?",
+      "expected_behavior": "应激活 mm-resonant-frequency,指出这是匹配频率上的能量累积带来的爆发,而非小幅改善——书中标准:真正的共振不是好上一两倍,而是好上许多倍;引导用户提取是哪个维度(目标用户/核心场景/信息)刚刚对齐,并确认共振信号后再集中资源放大。",
+      "notes": "正面场景:共振已发生的识别与复制"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "招人、开会、推制度都很用力,组织却一点反应都没有。该继续加大力度吗?",
+      "expected_behavior": "应激活 mm-resonant-frequency,把'频率'落到可检验维度——对组织而言是激励与成员真实动机的对齐程度;判断为频率不对而非力度不够;建议改为扫频(换激励方式)而非继续加力,并提醒在对齐前加力只会放大浪费。",
+      "notes": "正面场景:组织层面的共振缺失"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们现在就三个人,活干不完,客户还在排队。是不是该多招人?",
+      "expected_behavior": "不应激活本 skill,因为投入与产出大致成比例(加人就能多产出),这是线性资源不足问题,应走招聘与产能规划;本 skill 只适用于投入产出严重不成比例的非线性情形。",
+      "notes": "诱饵:谈效果不佳但实为线性资源不足"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的产品需要积累多少用户才能自己转起来?还差多远?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-critical-mass:用户问的是需要积累到多少'量'才能自持;本 skill 讲的是输入的'频率'是否对齐——堆到临界量但频率不对依然不会共振。",
+      "notes": "跨 skill 混淆诱饵:临界量(量的门槛 vs 质的匹配)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "试了七八个方向都没爆,是不是说明这个市场根本不行,该放弃了?",
+      "expected_behavior": "合理判断:先用第1步排除三种被忽略的可能——(1)这其实是线性问题,投入本身远低于必要水平而非频率不对;(2)执行质量差,同样的方向没做到位;(3)物体自然频率会变,需要重新扫频而非判死刑。同时给出可中止的判据:若扫频实验均显示目标用户对该场景无真实需求,则应结合 mm-product 判断尚未实现产品/市场匹配,此时退出是合理选项;但不应无限期换方向——应预设扫轮次与预算上限。",
+      "notes": "边界:扫频的限度与退出判据"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

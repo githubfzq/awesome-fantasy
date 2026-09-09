@@ -1,0 +1,52 @@
+{
+  "skill": "mm-clustering-illusion",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这一周连续出了三起线上事故，以前一个月才一起，肯定是什么地方有系统性问题，你帮我找找规律。",
+      "expected_behavior": "应激活 mm-clustering-illusion，先把「三起事故扎堆」翻译成可计算问题，估算在既有事故率下出现该强度簇的随机概率，再决定是否需要寻找成因，而不是默认一定有规律。",
+      "notes": "正面场景：事故扎堆"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们小区这两年有四个人得癌，这肯定是附近那个基站害的，不可能只是巧合。",
+      "expected_behavior": "应激活 mm-clustering-illusion，引用书中癌症群数据：美国每年调查 1000 多起可疑癌症群，绝大多数只是随机；40 多万家 50 人以上企业中几人同时患癌并不罕见。",
+      "notes": "正面场景：书中癌症群案例迁移"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "看这个用户流失地图，明显集中在东南几个区，肯定那边有竞争对手在挖人。",
+      "expected_behavior": "应激活 mm-clustering-illusion，提示需要先算随机基线（真随机分布本身看起来就是抱团的，书中平克两幅图），并要求先定义簇再判断是否超基线。",
+      "notes": "正面场景：地图成簇判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我统计一下上个月每天的下单量，画个折线图看看趋势。",
+      "expected_behavior": "不应激活本 skill，因为用户只是要描述性统计与可视化，没有对簇做因果解读。",
+      "notes": "诱饵：数据可视化任务但无模式误读"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我先看了全部 30 个指标，发现只有「夜间活跃用户」这个显著，而且还是我把数据按 8 个城市、5 个年龄段切完之后才显著的。",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-data-dredging（或得州神枪手谬误）：错误在于事后反复切分挑选显著性，而不是把随机产生的簇当信号。",
+      "notes": "跨 skill 混淆诱饵：多重检验与聚集性幻觉常被混为一谈"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "连续 15 个客户都在同一环节流失，真的是随机的吗？我总觉得这里有问题。",
+      "expected_behavior": "应激活本 skill 并做出细致判断：先算随机基线；若强度远超基线（15 连同一环节的概率极低），则应转向真实的因果排查而不再视其为幻觉。",
+      "notes": "边界：簇强度可能已超基线，需双向判断"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-boiling-frog",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们产品的月活这一年每季度跌 2%，每次开会都觉得还好，可现在回头一看已经掉了快一成，我说不清是从哪天开始的。",
+      "expected_behavior": "应激活 mm-boiling-frog，把「感觉还好」翻译成客观指标，拉长到 12-36 个月窗口重设基线，呈现「单次 2% 无感 vs 累计近一成」的落差，并设定绝对阈值与强制复查周期。",
+      "notes": "正面场景：渐变无法察觉"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这三年来合作方一点一点地提高分成比例、压缩我们的账期，每次幅度都很小，我当时都同意了。现在才发现已经很被动了。",
+      "expected_behavior": "应激活 mm-boiling-frog，重设长期基线并做「如果一次到位我会不会接受」的测试，指出感知机制对变化率不敏感，并建议外置警报线与定期复核。",
+      "notes": "正面场景：关系/利益的渐进侵蚀"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的安全策略三年前定的，一直没复查过，好像也没出什么事。有必要现在动吗？",
+      "expected_behavior": "应激活 mm-boiling-frog，指出「没出事」正是感知失灵的典型表现，要求拉长窗口检查假设是否已被环境变化侵蚀，并设定强制复查节奏。",
+      "notes": "正面场景：长期未复查的假设"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "昨晚服务器突然宕机，现在全站不可用，先救火！",
+      "expected_behavior": "不应激活本 skill，因为这是突发性事件，需要应急响应，不涉及「渐变难以察觉」的机制。",
+      "notes": "诱饵：问题严重但非渐变"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我每天都会多买点小东西，每笔都不贵，但这个月账单吓到我了。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-tyranny-of-small-decisions。用户每次都清楚自己在花钱、只是觉得无所谓，问题在同类决定的数量累积与无人核算，而不是变化率太低导致察觉不到。",
+      "notes": "跨 skill 混淆诱饵：小决定泛滥"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们这两年为了赶进度一直在打补丁、跳过测试，现在加个小功能都要一周。这算温水煮青蛙还是技术负债？",
+      "expected_behavior": "合理的判断是：两者叠加，但应以 mm-technical-debt 为主——因为它带有明确的债务结构（本金、利息、偿还、重写）与解法语言；温水煮青蛙描述的是「为什么没人早点发现」这一段。建议先按技术负债记账、估算利息排序、设定偿还节奏，同时借温水煮青蛙的教训外置指标防止再次无感累积。",
+      "notes": "边界：与技术负债的接缝"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

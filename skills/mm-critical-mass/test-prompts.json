@@ -1,0 +1,52 @@
+{
+  "skill": "mm-critical-mass",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们在公司推内部问答社区，注册了八百人，但每天发帖不到五条，冷清得没人愿意来。还差多少人才有意义？",
+      "expected_behavior": "应激活 mm-critical-mass，先确认存在阈值结构，再估算「最小可用规模」（如需要多少日活才不显得冷清），然后给出压低阈值的手段和切出高密度子社群（如先在单个部门做透）的方案。",
+      "notes": "正面场景：典型冷启动阈值问题"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们想在公司内部推一套新的 API 规范，大家都说好，但没人真的用，都说等别人先用起来看看。",
+      "expected_behavior": "应激活 mm-critical-mass，识别「每个人都在等别人先用」的死锁，建议切出一个小团队/单条业务线先达到局部阈值，再向外扩散。",
+      "notes": "正面场景：等待博弈与子群体先达标"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "有个客户投诉在社交媒体上发酵，转发量两小时涨了十倍。我们该从哪下手？",
+      "expected_behavior": "应激活 mm-critical-mass，判断负面事物是否已达临界量（已自持扩散），并指出应切断链条的关键环节、降低传播阈值，而不是逐条删帖。",
+      "notes": "正面场景：书中明示「负面事物同样会达到临界量」"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我一个人写一份竞品调研报告，需要多久？怎么安排进度？",
+      "expected_behavior": "不应激活本 skill，因为这是单人、价值不随规模变化的线性任务，不存在阈值结构；应直接给任务拆解与排期建议。",
+      "notes": "诱饵：无规模依赖"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个市场今年突然爆发了，所有竞品都在抢用户。我想知道它大概会在什么时间点彻底定型、之后就没机会了。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-tipping-point——用户在问「急剧变化并获得动量的那个时刻/时机」，而不是「还差多少量」。",
+      "notes": "跨 skill 混淆诱饵：与 mm-tipping-point 因果相邻，区分在量 vs. 时刻"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的产品在一个三线城市已经有六成商户在用了，效果很好。现在想复制到全国，是不是直接照着推就行？",
+      "expected_behavior": "应激活 mm-critical-mass 并指出关键：局部达标不等于可复制——每个城市都是独立的阈值系统，应按照「城市逐个击穿」而非「全国平摊」的顺序推进；同时提醒达到阈值后惯性会锁定早期设计，复制前应修正已暴露的问题。",
+      "notes": "边界：局部临界量与复制策略"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

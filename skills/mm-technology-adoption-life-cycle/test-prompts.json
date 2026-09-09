@@ -1,0 +1,52 @@
+{
+  "skill": "mm-technology-adoption-life-cycle",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的开发者工具在技术社区口碑很好，但企业客户一直签不下来。我们一直强调架构多先进，他们好像不感兴趣。",
+      "expected_behavior": "应激活 mm-technology-adoption-life-cycle，指出当前主力是创新者/早期采纳者，下一层早期大多数要的是已验证结果、同行案例与服务保障，并重写面向企业客户的核心信息。",
+      "notes": "正面场景：话术与目标人群错配"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "公司要推一套新的协同方式，技术同事马上用起来了，但业务部门就是不配合。我该怎么分层推进？",
+      "expected_behavior": "应激活 mm-technology-adoption-life-cycle，按采纳阶段对内部人群分层，明确下一层的真实顾虑，并为该层设计不同的说服证据与触发条件。",
+      "notes": "正面场景：组织内部变革的分层推进"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "还剩大约两成用户死活不肯迁移到新系统，我们已经推了一年。还要继续投入吗？",
+      "expected_behavior": "应激活 mm-technology-adoption-life-cycle，识别这部分人是落后者（只因觉得有必要才动），建议改用必要性/强制类手段或接受低优先投入，而不是继续用愿景说服。",
+      "notes": "正面场景：落后者的处理策略"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们五个人的小组要统一一下代码格式，怎么跟大家说比较好？",
+      "expected_behavior": "不应激活本 skill，因为面向的是单一同质小群体，分层框架无意义；直接给沟通与工具化建议即可。",
+      "notes": "诱饵：涉及「推广」但人群同质"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们已经拿下了不少尝鲜用户，接下来要进入主流市场，中间感觉有道坎过不去。这道坎具体怎么过？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-crossing-the-chasm——用户已明确知道自己在哪、卡在哪，问的是那道断裂带的具体打法，而不是整体人群分层图谱。",
+      "notes": "跨 skill 混淆诱饵：与 mm-crossing-the-chasm 高度相邻，区分在全局地图 vs. 单段过桥"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们做的是给核电站用的专业检测软件，全国客户就三十家。用这个五类人群框架来规划推广有意义吗？",
+      "expected_behavior": "应激活 mm-technology-adoption-life-cycle 但明确判停：这是规模极小的利基市场，五个比例层根本不成立，不存在「打穿大众市场」的路径；建议转向深耕存量客户与进入壁垒分析（mm-barriers-to-entry）。",
+      "notes": "边界：框架适用性边界，考验 agent 是否会主动说「不适用」"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

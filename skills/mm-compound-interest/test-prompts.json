@@ -1,0 +1,52 @@
+{
+  "skill": "mm-compound-interest",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我今年 30 了才开始存钱投资，是不是太晚了？每月能存的不多，还有意义吗？",
+      "expected_behavior": "应激活 mm-compound-interest，确认存在再投入（收益继续留在账户里生息），用具体数字演示第 1/5/10 年的差别，量化「早开始 vs 晚开始」的差额，并说明时间比金额更关键。",
+      "notes": "正面场景：长期储蓄"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我坚持写技术公众号半年了，粉丝才几百，是不是没什么用，要不要放弃？",
+      "expected_behavior": "应激活 mm-compound-interest，指出复利需要长时间持有才显著（盖茨：人们高估两年、低估十年），半年太短；同时检查是否存在再投入环节（内容沉淀、人脉与机会回流），并给出继续或调整的判据。",
+      "notes": "正面场景：能力/内容复利的时间尺度"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "同行之间差距越拉越大，明明大家起点差不多，也都很努力，为什么？",
+      "expected_behavior": "应激活 mm-compound-interest，指出差异来自增长结构而非勤奋程度：能力、人脉、资本都有再投入效应，早年积累抬高了后续每个周期的基数；并说明「富人更容易更富」的同构机制。",
+      "notes": "正面场景：解释差距扩大"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我接了个项目，干完一次性收 5 万，钱到手就花掉了。这个收益怎么算？",
+      "expected_behavior": "不应激活本 skill，因为收益没有再投入、不产生后续收益，属于一次性线性收入，复利模型不适用。",
+      "notes": "诱饵：有收益但无复投"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们团队很努力，但做的事情方向好像不太对，越做越偏。该从哪开始理？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-north-star。首要矛盾是方向未定（往哪走），而不是增长机制（多快）；方向错了，复利只会让人更快到达错误的地方。",
+      "notes": "跨 skill 混淆诱饵：北极星"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们这周开始做用户增长，希望能看到复利效果，下周能涨多少？",
+      "expected_behavior": "合理的判断是：明确告知复利框架不适用于数周尺度——书中提醒复利需要长时间持有才显著（盖茨：人们高估两年、低估十年）。应先检查是否存在再投入闭环（用户带用户、内容沉淀），若有，给出以季度/年为单位的时间尺度与早期观察指标；若关注短期效果，建议改用渠道测试、转化率等线性分析工具，而不是套用复利。",
+      "notes": "边界：短期尺度不适用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

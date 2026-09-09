@@ -1,0 +1,52 @@
+{
+  "skill": "mm-butterfly-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我花了一个月做了详细的五年职业规划，结果入职半年行业就变了，计划完全作废。我是不是做错了什么？",
+      "expected_behavior": "应激活 mm-butterfly-effect，把问题从「计划不够好」重构为「系统不可长期精确预测」，建议改用短周期循环复盘，并列出在多种未来下都有价值的投入。",
+      "notes": "正面场景：长期规划失效后的重构"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我总是在想，如果三年前我接了另一家公司的 offer，现在会不会完全不同。越想越难受。",
+      "expected_behavior": "应激活 mm-butterfly-effect，先承认敏感依赖确实存在、止住无解的反刍，再明确指出人有自由意志、过去分岔不可重来，把注意力转到可影响的当下接触面。",
+      "notes": "正面场景：反事实纠结 + 书中「不要宿命」的明示立场"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们在这个新市场做业务，环境变化极快，两周前的判断现在就过时了。还要不要做规划？",
+      "expected_behavior": "应激活 mm-butterfly-effect，建议放弃长期精确预测、改用短周期（周/月）循环复盘，并强调这不等同于「不做计划」而是更频繁地重做计划。",
+      "notes": "正面场景：高不确定环境下的规划策略"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们上季度转化率是 3.2%，历史数据很全。下季度大概能做到多少？",
+      "expected_behavior": "不应激活本 skill，因为有充分历史数据、可建立可靠预测的重复性场景，应当做常规预测与基线推算。",
+      "notes": "诱饵：涉及「预测」但系统可预测"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "既然未来不可预测，我该怎么增加自己被好机会撞上的概率？是不是该多出去见人？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-luck-surface-area——用户已经接受了不可预测的前提，正在问应对之道（扩大被机会撞上的面积），这正是幸运表面积模型的职责。",
+      "notes": "跨 skill 混淆诱饵：与 mm-luck-surface-area 诊断-处方成对，区分点在提问层级"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的支付系统对参数极其敏感，改一个数值就可能引发大问题。有人建议既然不可预测，就快速上线然后随时调整。",
+      "expected_behavior": "应激活 mm-butterfly-effect 但明确拒绝该建议：安全关键系统恰恰需要冗余、灰度与保守设计，「不可预测」不等于「可以快速试错」；应先做敏感性分析确定敏感参数，再用灰度与回滚机制处理。",
+      "notes": "边界：不可预测性不能成为安全关键场景的免责理由"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

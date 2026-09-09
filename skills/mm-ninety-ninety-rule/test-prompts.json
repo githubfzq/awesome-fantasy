@@ -1,0 +1,52 @@
+{
+  "skill": "mm-ninety-ninety-rule",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "功能代码三周就写完了，结果联调加修 bug 又搞了三周还没上线，正常吗？",
+      "expected_behavior": "应激活 mm-ninety-ninety-rule，说明最后 10% 花的时间与前面 90% 相当是常态而非异常；建议枚举剩余收尾事项、按与主体同量级重新估时，并定期追问\"哪些部分算完成了\"以主动划定交付边界。",
+      "notes": "正面场景：收尾吃掉一半时间"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "周报上这个项目已经连续一个月写\"进度 90%\"了，到底还剩多少？",
+      "expected_behavior": "应激活 mm-ninety-ninety-rule，指出\"90% 完成\"几乎无法推算剩余时间（分母通常是写代码而非交付），要求把剩余 10% 逐项枚举出来并重新估算，给出真实的剩余工作量而非百分比。",
+      "notes": "正面场景：进度停在 90%"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "报告内容我都写好了，就是润色改格式改了两周，怎么这么久？",
+      "expected_behavior": "应激活 mm-ninety-ninety-rule，说明收尾（润色、格式、校验、评审返工）被系统性低估是普遍规律，建议明确本次交付的完成标准、把非必需项移出范围，并为下次排期回填收尾/主体耗时比。",
+      "notes": "正面场景：文档类收尾黑洞"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们刚启动一个新项目，老板要我给个整体排期，我该估多久？",
+      "expected_behavior": "不应激活本 skill，因为这是整体项目估算、尚未进入收尾阶段，应改用 mm-hofstadter-s-law 做全局校准；九九定律特指收尾那一段被低估。",
+      "notes": "诱饵：整体排期而非收尾低估"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "东西早就够用了，但我总觉得还能再打磨得更好一点，一直不想发布，怎么办？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-perfect-is-the-enemy-of-good。用户的核心困境是质量标准过高、不肯接受\"够好\"，属于取舍心态问题；九九定律处理的是收尾工作量被漏算的估算问题。",
+      "notes": "跨 skill 混淆诱饵：完美乃优秀之敌（质量取舍 vs 估算）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们做的是一个每周固定发布的例行更新，流程都标准化了，最后收尾阶段也要按九九定律留一半时间吗？",
+      "expected_behavior": "合理判断：不需要。九九定律描述的是含大量未知项的新工作，其收尾成本之所以高，是因为联调、边界情况、返工等未被算入。标准化流水线的收尾成本已知且稳定，应按历史均值排期；强行套用会人为拉长交付周期并诱发时间膨胀。建议按历史数据确定固定的收尾时间块即可。",
+      "notes": "边界：标准化例行交付不适用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

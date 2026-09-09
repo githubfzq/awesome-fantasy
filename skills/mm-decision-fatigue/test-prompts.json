@@ -1,0 +1,52 @@
+{
+  "skill": "mm-decision-fatigue",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我一天要面六个候选人，到最后一个我基本就是走流程随便问问就让他过了，怎么办？",
+      "expected_behavior": "应激活 mm-decision-fatigue，指出连续决策导致质量下降并退化到默认项，建议在中间插入休息、把最重要的候选人排在前段、并为后半场设置结构化评分表以对抗退化。",
+      "notes": "正面场景：连续决策后的质量下降"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "每天光是决定穿什么、吃什么、先回哪封邮件就耗掉我一大半精力，重要的事反而没心思想。",
+      "expected_behavior": "应激活 mm-decision-fatigue，建议削减日常决策数量（固定着装、固定午餐）并在低压力时段预先决定一周的穿着饮食，把决策能力留给重要事项。",
+      "notes": "正面场景：琐事耗尽决策资源"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们审批流程里默认选项是「通过」，最近通过率突然高得离谱，是不是有问题？",
+      "expected_behavior": "应激活 mm-decision-fatigue，指出疲劳时人们倾向接受默认项，因此默认值的设置在高疲劳流程中属于高杠杆设计，建议同时做两件事：调整审批排布与休息，以及重新审视默认选项本身。",
+      "notes": "正面场景：默认项被大量采用"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我今天状态很好，只做了一个决定，但判断错了，因为关键信息我没有拿到。",
+      "expected_behavior": "不应激活本 skill，因为这是单次孤立决策且原因是信息缺失，不涉及连续决策导致的资源耗竭。",
+      "notes": "诱饵：决策失误但非疲劳"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我对比了二十款相机的参数，越看越不知道买哪个，已经拖了一个月。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-analysis-paralysis。症状是信息过多与选项过多导致的停滞（休息后仍不会好转），而不是连续决策后的资源耗竭。",
+      "notes": "跨 skill 混淆诱饵：分析瘫痪"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我连着三天高强度做决策，今天明显感觉不行了，但今晚必须拍一个重要决定。有什么办法？",
+      "expected_behavior": "合理的判断是：优先推迟，因为书中明确恢复靠休息而非意志力硬撑；若确实无法推迟，则采取降低风险的组合——先做短暂精神休憩（书中指出短暂休憩后可有效恢复）、把决定拆成可逆的小步、使用结构化清单对抗「退化到默认项」、并请一位未疲劳的人复核。同时应指出这是权宜之计，不能替代休息。",
+      "notes": "边界：无法推迟时的缓解手段"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

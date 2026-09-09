@@ -1,0 +1,52 @@
+{
+  "skill": "mm-nonresponse-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们发了全员敬业度调查，只有 23% 的人填了，结果显示大家都很满意、平均分 4.6。能拿这个结果去做汇报吗？",
+      "expected_behavior": "应激活 mm-nonresponse-bias, 先问不回应的原因是否与敬业度相关（漠不关心者最可能不填），推演结论偏乐观，建议补访一小批不回应者并核对部门/司龄覆盖度，最终结论须标注未覆盖群体与偏差方向。",
+      "notes": "正面场景：书中原案例的变体"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们 App 的评分是 4.8 分，但下载量在掉。是不是评分有问题？",
+      "expected_behavior": "应激活 mm-nonresponse-bias, 指出主动评分的人本身就是有情感投入的一批，已经失望离开的用户根本不会打分，建议去查沉默/流失用户一侧的反馈而不是只看评分。",
+      "notes": "正面场景：自愿评分机制天然带无反应偏差"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我要做一次客户满意度调查，发放前有没有什么能提前规避的坑？",
+      "expected_behavior": "应激活 mm-nonresponse-bias, 给出发放前建议：预设不回应原因的追踪字段、保留未回应者名单以便补访、核对覆盖度分布、避免只在单一渠道发放。",
+      "notes": "正面场景：设计阶段的预防"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "调查回收率 96%，基本全员都填了，结果可信吗？",
+      "expected_behavior": "不应激活本 skill, 因为回应率极高时缺失部分对结论影响可忽略；这里若有可信度问题应转向问题措辞或回答真实性（反应偏差）而非无反应。",
+      "notes": "诱饵：涉及调查可信度，但缺失量太小"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "问卷里我们问'您对我们的服务是否满意'，98% 都选满意。是不是问法有问题？",
+      "expected_behavior": "不应激活本 skill（人都填了，问题出在填了的人给出的答案失真）, 应激活 mm-response-bias。补访不回应者无法解决诱导性措辞造成的失真。",
+      "notes": "跨 skill 混淆诱饵：调查失真，但偏差在回应内容而非缺失"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的调查回应率只有 35%，但那阵子正好赶上公司集体休假两周。这个数据能直接用吗？",
+      "expected_behavior": "合理的判断是：按书中判据，不回应原因是休假、与调查主题无关，属于随机缺失，样本只是变小而非变偏，结论基本可用；但需确认休假分布是否与某些部门/岗位高度重合（若重合则又变成相关缺失），并在结论中标注样本量下降带来的误差范围扩大。",
+      "notes": "边界：书中明说的「无关则无害」情形，但需验证随机性假设"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

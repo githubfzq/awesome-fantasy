@@ -1,0 +1,52 @@
+{
+  "skill": "mm-heuristic",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "生产环境报错了，日志量巨大不可能全看，我从哪儿开始查？",
+      "expected_behavior": "应激活 mm-heuristic，用先验给候选原因排序（最近一次发布、最高频历史故障、依赖服务变更），产出按概率降序的排查清单，并要求记录每次排查结果以修正排序。",
+      "notes": "正面场景：大空间中按概率找答案"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的内容审核规则从最初一条「不许出现裸露」加了两年，现在文档 20 多页，审核员根本记不住，误判投诉越来越多。怎么办？",
+      "expected_behavior": "应激活 mm-heuristic，指出这是书中明示的规则膨胀失控（脸书 27 页案例），建议设规则上限、加一条删一条，或转向模型替代规则堆叠。",
+      "notes": "正面场景：书中明示的失败模式"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "客户信息不全，我得今天之内决定要不要接这个单。有没有什么快速判断的经验法则？",
+      "expected_behavior": "应激活 mm-heuristic，提供 2-3 条可操作的经验规则（如回款历史、需求清晰度、对接人权限），并明确说明这些规则不保证正确、只用于快速收敛。",
+      "notes": "正面场景：信息不全时快速决策"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这批药品的批次检验必须确认每一支都合格，不能有漏网。我们用抽检规则来判断行不行？",
+      "expected_behavior": "不应激活本 skill 支持启发式，因为该场景不能接受漏检，启发式不提供保证；应转向全检或统计上可论证的抽样方案（mm-randomized-controlled-experiment 思路）。",
+      "notes": "诱饵：需要保证的场景误用捷径"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个三位数密码锁我想起来了，可能组合只有几百个，干脆全试一遍最稳妥吧？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-exhaustive-search——搜索空间小到可枚举，直接穷举保证找到答案，不需要用不保证最优的启发式。",
+      "notes": "跨 skill 混淆诱饵：与 mm-exhaustive-search 相邻，区分点在能否保证找到"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "风控规则每次被骗一次就加一条，现在有 80 多条了，效果时好时坏。是该继续加还是怎么办？",
+      "expected_behavior": "应激活 mm-heuristic 但明确拒绝「继续加规则」：指出这正处于规则膨胀失控阶段，正确动作是先评估是否已到重构/换模型的临界点，设上限并定期清理，而非再加第 81 条。",
+      "notes": "边界：模型适用但正确动作是收缩而非扩张"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

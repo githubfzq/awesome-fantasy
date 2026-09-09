@@ -1,0 +1,52 @@
+{
+  "skill": "mm-trojan-horse",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "展会上有人送了我们一个品牌 U 盘,同事想直接插到办公电脑上看看里面资料。",
+      "expected_behavior": "应激活 mm-trojan-horse,指出这是主动送上门的意外好处,且接受它需要绕过分内的安全检查;给出处理动作:绝不直接插入办公终端,先在隔离/沙箱环境检查,走完既定流程再使用,必要时直接弃用。",
+      "notes": "正面场景:典型硬件木马"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "有个合作方说先免费给我们接一套他们的系统,'手续后面再补',条件好得我都不太敢信。",
+      "expected_behavior": "应激活 mm-trojan-horse,抓住两个判据:好处在需求之前主动出现、且接受它要求你降低检查标准(先接入后补手续);执行'好得难以置信'过滤,并明确拒绝'先接入后补'的要求。",
+      "notes": "正面场景:线下形态的木马"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要给公司定个收受第三方软硬件的流程,怎么设计才不容易被绕过?",
+      "expected_behavior": "应激活 mm-trojan-horse,给出流程设计要点:任何来源不明或主动送来的软硬件一律先隔离检查、禁止'先接入后审批'、要求可独立验证的来源与签名、访客与展会物品的登记与禁入区域规定;强调守住的是流程本身,不是礼物。",
+      "notes": "正面场景:流程设计防木马"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个 SaaS 我想停用,但官网找不到取消入口,打客服还要排队,太折腾了。",
+      "expected_behavior": "不应激活本 skill,因为问题出在退出环节的摩擦力,不涉及'用诱人的东西绕过防御检查'这一入口机制;应激活 mm-dark-patterns(退出障碍形态)。",
+      "notes": "诱饵:同为操纵但机制不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "看房时广告写的是这个价,到了现场销售说那个户型早就没了,带我看的全是加价升级款。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-bait-and-switch:广告上的低价房源根本不打算卖给你,目的是先引你来看房、抬高心理预算再调包;木马的礼物是真的给你、危险藏在里面,诱购的诱饵则是假的、只用于引流。",
+      "notes": "跨 skill 混淆诱饵:诱购／偷梁换柱"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "长期合作的供应商过年照例给我们寄了礼盒,里面有他们新出的小设备让我们试用,这个也要按木马处理吗?",
+      "expected_behavior": "合理判断:不必按木马处理,但需走分级处理——意图透明、长期关系正常往来的商务赠礼不构成木马;不过涉及接入公司网络的硬件设备,仍应一律走既定的安全检查流程,不因关系好而豁免。原则是:怀疑的是'绕过检查',不是'送礼的人'。",
+      "notes": "边界:正常赠礼 vs 木马"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

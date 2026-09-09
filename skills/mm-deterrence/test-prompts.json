@@ -1,0 +1,52 @@
+{
+  "skill": "mm-deterrence",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "平台上总有人刷单,我打算把处罚从封号 7 天改成永久封禁,应该能吓住吧?",
+      "expected_behavior": "应激活 mm-deterrence,指出效力主要来自'被抓到的确定性'而非惩罚的严厉程度;建议先提高识别率与抽查覆盖率并公开通报,而不是单纯加重处罚;同时预判规避路径(换号、更隐蔽、转移阵地)。",
+      "notes": "正面场景:典型'加大处罚'冲动"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们设置了很高的违约金,但合作方还是经常违约,为什么?",
+      "expected_behavior": "应激活 mm-deterrence,指出若对方认为自己不会被追究(确定性低),再高的违约金也只是纸面数字;建议提高违约的发现与追偿确定性(留痕、自动触发、快速仲裁),并设可观测指标验证威慑是否真的有效。",
+      "notes": "正面场景:惩罚很重但无效的诊断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想阻止新玩家进这个市场,能不能靠展示我们的规模和压价能力来吓退他们?",
+      "expected_behavior": "应激活 mm-deterrence,引用书中沃尔玛以规模压价阻止新进入者的例子;并提醒必须评估威慑是否真的有效、会不会带来意外后果(引发价格战、引来监管关注),以及威胁需要可信。",
+      "notes": "正面场景:书中沃尔玛案例"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "员工老是填错表,我打算罚钱减少出错。",
+      "expected_behavior": "不应激活本 skill,因为填错表多半是能力或流程缺陷导致的无心之失,不是算计后的选择;威慑惩罚不了无心之失,应改流程、加校验、做培训。",
+      "notes": "诱饵:形似违规但根因是无心之失"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们和对手手里都有能卡死对方的筹码,谁都不敢先动。这算威慑吗?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-mutually-assured-destruction:这是双方互相握有毁灭性能力的对称结构,而威慑通常是单方面的;MAD 可视为一种极强的威慑,但分析框架(三条支柱、先发制人诱惑)不同。",
+      "notes": "跨 skill 混淆诱饵:相互确保毁灭"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我把惩罚定得特别狠,而且还公开宣传,是不是威慑力最强?",
+      "expected_behavior": "合理判断:不一定——书中明说确定性比严厉程度更重要,且作者强调必须评估意外后果;过度严厉且公开可能带来两种反效果(被认定不可信而不被执行、或诱发更极端的规避与对抗);建议先测算对方感知的被抓概率,再决定力度,并做小范围试点验证。",
+      "notes": "边界:严厉与可信的张力"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

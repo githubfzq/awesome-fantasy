@@ -1,0 +1,52 @@
+{
+  "skill": "mm-power-law-distribution",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们发现 5% 的客户贡献了 85% 的收入，服务策略该怎么调？",
+      "expected_behavior": "应激活 mm-power-law-distribution，确认呈幂律并量化头部占比，把资源集中到头部少数项，同时提醒不能用均值做客户画像。",
+      "notes": "最典型的正面场景：收入集中度"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "平均故障间隔看起来不错，但偶尔一次宕机损失特别大，该怎么评估？",
+      "expected_behavior": "应激活本 skill，指出这符合书中停电影响范围这类幂律现象，改用尾部视角：均值不具代表性，给出极端事件量级估计与应对准备。",
+      "notes": "尾部风险"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "基金大部分回报其实来自两只票，这种分布正常吗？",
+      "expected_behavior": "应激活本 skill，说明书中把风险投资回报列为典型幂律现象，判断头部稳定性后决定集中度策略。",
+      "notes": "投资回报分布"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这批零件尺寸误差基本围绕标准值对称分布，均值很有代表性。",
+      "expected_behavior": "不应激活本 skill，分布对称且均值有代表性，应按正态分布处理。",
+      "notes": "诱饵：都是分布话题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我知道 20% 的工作产生 80% 的价值，这个说法叫什么来着？",
+      "expected_behavior": "不应激活本 skill，只需经验性的 80/20 启发式，应激活 mm-pareto-principle（帕累托法则）。",
+      "notes": "跨 skill 混淆诱饵：80/20 的两个来源"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们只有十来个客户，看着好像也是两三家占大头，能按幂律处理吗？",
+      "expected_behavior": "可激活但要先验证：小样本上很多分布都会显得头部集中，应检查样本量与量级跨度（幂律通常跨多个数量级），不足时不要据此下重注。",
+      "notes": "边界：小样本误判"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

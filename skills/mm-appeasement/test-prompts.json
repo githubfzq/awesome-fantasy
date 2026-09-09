@@ -1,0 +1,52 @@
+{
+  "skill": "mm-appeasement",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "大客户又提了个不在合同里的要求,不做就威胁明年不续约。我们现在没有替代客户,要不要先答应?",
+      "expected_behavior": "应激活 mm-appeasement,先确认威慑/遏制不可用(确实缺乏筹码),再给让步定价(金额、先例、团队士气)并比较不让步的当下代价;要求写明买到的时间用来做什么(开拓替代客户),并划出下一次不再退让的红线;同时引用核心警告——你可能只是把不可避免的事推迟了。",
+      "notes": "正面场景:弱势下的让步决策"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "孩子一闹我们就放宽零食和看电视的限制,旅行的时候尤其明显。这样会不会有问题?",
+      "expected_behavior": "应激活 mm-appeasement,对应书中作者一家的例子;说明让步换来的平静是真实的短期收益,但要检查:买到的时间被用来做什么、有没有划出不再退让的边界、对方(孩子)的索取是变小还是变大;建议设置明确规则与替代方案,避免让步成为默认模式。",
+      "notes": "正面场景:书中的日常案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们已经让了三次步了,对方每次都提新要求。是不是该继续忍?",
+      "expected_behavior": "应激活 mm-appeasement,判断对方需求是有限还是持续索取——若每次让步都增强了对方下一次索取的能力,继续让步只会加速失败;要求立刻划出红线并明确触发时的动作,把\"策略性让步\"与\"无限退让\"区分开。",
+      "notes": "正面场景:是否已经落入无限让步"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们手里握着他们的违约证据,也有备用的供应商,他们现在来提无理要求。",
+      "expected_behavior": "不应激活本 skill,因为筹码充足、威慑可用;绥靖是威慑与遏制都不适用时的无奈选项,有力量时应先使用力量而不是默认让步。",
+      "notes": "诱饵:有筹码,不该退让"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他们已经在三个渠道上散布我们的不实信息,删不掉了,现在要想办法别让它继续扩散到更多平台。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-containment:损害已经发生且不可撤销,诉求是守住扩散边界;绥靖是主动给出东西换对方停手,一个守、一个给,动作方向不同。",
+      "notes": "跨 skill 混淆诱饵:遏制"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们答应了平台今年抽成再让两个点,换来一年的稳定合作期。团队觉得憋屈,但这一年我们准备把自有渠道做起来。这算绥靖吗?",
+      "expected_behavior": "合理判断:结构上确实是绥靖(让步换时间),但是否合理取决于两件事——买到的时间是否安排了具体动作(自有渠道建设有明确目标与时间点),以及是否划出了红线(明年不再让步的条件)。若两者都有,属于有收益的绥靖;若只是\"先拖一年再说\"而无具体安排,那就是书中警告的\"把不可避免的事推迟\"。建议把渠道目标写成可考核指标并设定中期检查点。",
+      "notes": "边界:有安排的绥靖 vs 单纯推迟"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

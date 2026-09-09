@@ -1,0 +1,52 @@
+{
+  "skill": "mm-scarcity",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个课显示只剩最后 8 个名额了,今天报名还减 500,我要不要现在就付?其实我还没搞清课程讲什么。",
+      "expected_behavior": "应激活 mm-scarcity,先剥离稀缺与价值:若名额充足、随时可报,是否还愿意付同样的价?再核查稀缺真伪(刷新/隔天后数字是否复位),并指出'仅剩8个'同时暗示了'别人在抢'的社会认同信号;给出冷静动作(固定等待期、先查替代方案)。",
+      "notes": "正面场景:稀缺驱动的仓促决策"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们活动页想加个'限时 24 小时'的倒计时提升转化,这样合规吗?",
+      "expected_behavior": "应激活 mm-scarcity,区分真实限量与可无限复位的倒计时:允许陈述真实可核验的截止时点,禁止'刷新后重置'或永不真正结束的倒计时;并提醒虚构抢购人数属于叠加社会认同的欺骗。",
+      "notes": "正面场景:设计促销文案"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "中介说这套房还有另外两组客户在谈,让我今天给定金,我心里有点慌。",
+      "expected_behavior": "应激活 mm-scarcity,指出'别人也在抢'是稀缺信号叠加社会认同的双重放大;要求核查可验证证据(真实带看记录、业主报价变更记录),并给出反制动作:预设自己的上限价、设定冷静期、同时看备选房源。",
+      "notes": "正面场景:被稀缺施压"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这款芯片为什么今年涨了三倍?上游产能到底卡在哪?",
+      "expected_behavior": "不应激活本 skill,因为用户在问客观的供需与产能如何决定价格,属于 mm-supply-and-demand 的范畴;稀缺模型解释的是主观紧迫感从哪来,不解释价格形成机制。",
+      "notes": "诱饵:看似稀缺实为供求"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "竞品的销售天天跟客户说'用了别家的方案会出大事',客户被吓得不敢换,我们该怎么破?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-fear(FUD):驱动力是描绘'不选我的可怕后果'的恐惧诉求,不是'名额/库存快没了'的抢手诉求;稀缺卖紧迫,FUD 卖恐惧,破解方式也不同——前者靠冷静期,后者靠剥离情绪框架、要求对方给出可检验的证据。",
+      "notes": "跨 skill 混淆诱饵:惧、惑、疑"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们确实只剩 20 个库存了,是真实数字。写'仅剩 20 件'可以吗?还是也算操纵?",
+      "expected_behavior": "合理判断:陈述真实可核验的数字本身不构成操纵,问题在于是否附加了虚假的紧迫或虚假的抢购暗示;建议同时披露补货情况(如'预计 X 月补货')以免制造本不存在的紧迫,并把数字做成可验证的。真实稀缺产生的紧迫感是理性的,不必消除。",
+      "notes": "边界:真实稀缺的合法使用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

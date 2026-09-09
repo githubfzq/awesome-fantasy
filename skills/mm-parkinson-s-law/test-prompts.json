@@ -1,0 +1,52 @@
+{
+  "skill": "mm-parkinson-s-law",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个活给了一周时间，结果还是最后一天才赶完，是不是应该把期限缩短？",
+      "expected_behavior": "应激活 mm-parkinson-s-law，说明工作会膨胀占满可用时间，建议压缩期限并用时间框锁死，把腾出的时间划为缓冲。",
+      "notes": "最典型的正面场景：期限过长"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我每天都在赶死线，一点余量都没有，一有突发就全乱了。",
+      "expected_behavior": "应激活本 skill，指出提前完成可腾出缓冲应对第一象限的突发重要事件，并提醒缓冲不得再被新任务填满。",
+      "notes": "缺乏缓冲"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "排计划的时候 deadline 到底该设紧一点还是松一点？",
+      "expected_behavior": "应激活本 skill，说明期限设得越松工作膨胀越多，建议按历史实际耗时设紧，同时区分可压缩的执行工作与不可压缩的思考工作。",
+      "notes": "期限设定策略"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个需求要开发多久？我总觉得每次估算都不准。",
+      "expected_behavior": "不应激活本 skill，这是工期估算偏差问题，应转向 mm-hofstadter-s-law 或 ninety-ninety-rule（侯世达定律/九九定律）。",
+      "notes": "诱饵：估算 vs 膨胀"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "会上大家为一个小图标争论不休，真正重要的方案反而没人讨论。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-parkinson-s-law-of-triviality；名字相近但讲的是组织重小轻大，与时间膨胀无关。",
+      "notes": "跨 skill 混淆诱饵：同为\"帕金森定律\"系列，极易误调"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们把这个研究课题的周期从三个月压到一个月，团队已经开始抱怨质量下降了。",
+      "expected_behavior": "应激活并提示：帕金森定律挤的是膨胀出来的水分，不是必要的思考时间；创造性/研究性工作被压缩会牺牲质量，应区分两者后重新设定期限。",
+      "notes": "边界：压缩过度"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-mean",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们老板想看平均客单价，我算出来是 860 元，但感觉大部分客户只买两三百的东西。这个数能报吗？",
+      "expected_behavior": "应激活 mm-mean, 要求同时算中位数并与均值对比，判断分布是否右偏、是否被少数大单拉高，做去掉最大 1% 的敏感性检验，最后给出均值/中位数并列汇报的口径建议。",
+      "notes": "正面场景：均值与体感不符，典型偏斜问题"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "新闻说平均家庭收入八万多，但我身边没几个家庭到这个数，是数据造假吗？",
+      "expected_behavior": "应激活 mm-mean, 解释均值被少数极高收入拉高、与中位数相差甚远的机制（书中 2016 年美国家庭收入例），说明这不是造假而是口径差异。",
+      "notes": "正面场景：书中原案例的迁移"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的接口平均响应时间是 200ms，但用户老说慢。平均值看着挺好的啊。",
+      "expected_behavior": "应激活 mm-mean, 指出决策依赖尾部时应看 P95/P99 而非均值，均值会系统性掩盖最慢那批请求的体验问题，建议改口径。",
+      "notes": "正面场景：均值掩盖尾部问题"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们数据集里有个值明显不对劲，比别的都大一个数量级，要不要删掉？",
+      "expected_behavior": "不应激活本 skill（核心问题是那个异常点本身如何识别与处置）, 应激活 mm-outliers。虽然在算均值前应处理离群值，但这个问题的主体不是均值口径选择。",
+      "notes": "诱饵：与均值相关，但主体是离群值处理"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们想知道这批响应时间数据的分散程度有多大，大部分请求落在什么范围里，该看什么指标？",
+      "expected_behavior": "不应激活本 skill（诉求是离散程度而非中心位置）, 应激活 mm-standard-deviation。均值给位置，标准差给围绕该位置的分散程度。",
+      "notes": "跨 skill 混淆诱饵：同一数据集上的相邻统计量"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的用户明显分成两拨：免费用户体验很浅，付费用户用得很深。算一个全体用户的平均使用时长有意义吗？",
+      "expected_behavior": "合理的判断是：指出这是多峰分布，均值会落在两群之间的空地上、对谁都不典型，因此这个均值没有描述价值；建议按用户群分层分别汇报均值，或直接给出分布。",
+      "notes": "边界：均值在数学上可算但在语义上无代表对象"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

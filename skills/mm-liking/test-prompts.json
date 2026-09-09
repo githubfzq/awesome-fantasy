@@ -1,0 +1,52 @@
+{
+  "skill": "mm-liking",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个供应商的报价我没细比,但老板跟我是一个县城出来的,聊得特别投缘,我觉得交给他放心。",
+      "expected_behavior": "应激活 mm-liking,指出'老乡/投缘'属于共同点带来的好感,不构成报价合理性的证据;要求把'关于人的理由'与'关于事的理由'分成两列,并给出对事不对人的复核动作(如与其他报价对比、要求书面重述核心承诺)。",
+      "notes": "正面场景:共同点驱动的信任"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "今天那个销售一上来就问我喜欢哪个球队、老家哪儿的,聊了半小时才讲产品,我最后稀里糊涂就签了。",
+      "expected_behavior": "应激活 mm-liking,识别这是主动挖掘并宣告共同点的典型动作(呼应书中'你是棒球迷吗''你是哪里人'的推销员案例);检查这些共同点与决策事项有无实质关联,并要求去掉好感后重新评估条款本身。",
+      "notes": "正面场景:好感被刻意制造"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "两个候选人能力看着差不多,我就是更想录用那个聊得来的,说不出什么硬理由。",
+      "expected_behavior": "应激活 mm-liking,承认'聊得来'在长期协作中确有价值(合理信任),但同时要求补上可检验的差异项(作品、试做任务、过往成果引用),避免把好感当成唯一的录用依据。",
+      "notes": "正面场景:好坏参半的日常判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这两家 SaaS 的功能清单和报价我都导出来了,帮我按我们实际的用量算一下哪个更划算。",
+      "expected_behavior": "不应激活本 skill,因为决策完全建立在可比较的事实与数据上,不存在人际好感或共同点成分;属于常规成本收益比较,用 mm-cost-benefit-analysis 即可。",
+      "notes": "诱饵:决策场景但无好感成分"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他一发言我就下意识地调整坐姿和语速去跟他一样,这么做对建立信任真的有用吗?",
+      "expected_behavior": "不应激活本 skill(主角应是 mm-mirroring):用户问的是'模仿对方小动作和口头禅'这一具体手法及其有效性,而不是'因为投缘所以接受了建议'这一结果状态;镜映是喜好的生成器,但此处直接命中镜映的定义与案例。",
+      "notes": "跨 skill 混淆诱饵:镜映"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我打算在客户拜访前先翻翻对方的朋友圈,找几个真实存在的共同话题开场,这样算不算操纵?",
+      "expected_behavior": "合理判断:寻找**真实存在**的共同点属于正常的建立信任,越界的是虚构或表演共同点;建议给出自测标准——如果对方知道你是刻意挑的这些话题,你是否愿意坦白?若不愿,就说明已经越线。同时提醒开场后必须把对话拉回业务实质。",
+      "notes": "边界:合理建立信任 vs 操纵性说服"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

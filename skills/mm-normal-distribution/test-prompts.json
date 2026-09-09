@@ -1,0 +1,52 @@
+{
+  "skill": "mm-normal-distribution",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的接口响应时间平均 200ms，标准差 30ms，那响应时间超过 260ms 的请求大概占多少？算异常吗？",
+      "expected_behavior": "应激活 mm-normal-distribution，先确认形状，再用 68-95-99.7 经验法则判断 260ms 约为均值 +2σ，超出部分约占 2.5%，并说明该结论依赖正态假设。",
+      "notes": "正面场景：用 sigma 判断罕见度"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "想给用户身高/体重这类指标设一个「正常范围」，覆盖大多数人，该怎么定？",
+      "expected_behavior": "应激活 mm-normal-distribution，引用书中身高案例范式：先确认钟形分布，再用均值加减 1~2 个标准差给出覆盖约 68% 或 95% 的区间。",
+      "notes": "正面场景：区间设定"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这批订单金额画出来的直方图中间高两边低，是不是就能按正态分布来估比例了？",
+      "expected_behavior": "应激活 mm-normal-distribution，肯定形状提示但提醒「通常表明」不等于证明，特别要检查尾部是否过厚（金额类数据常偏斜），再决定是否套用。",
+      "notes": "正面场景：形状判断咨询"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们一共只有 6 个数据点，帮我算一下平均数。",
+      "expected_behavior": "不应激活本 skill，因为样本极少、无法判断分布形状；直接给出均值并提示信息有限即可。",
+      "notes": "诱饵：同为统计量任务但样本过小"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "每个人的回答只有「支持/不支持」两种，我想知道问 30 个人之后，支持率的分布长什么样，能用钟形曲线近似吗？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-central-limit-theorem：这里问的是样本均值的抽样分布为何趋近正态，而非原始数据本身是否正态。",
+      "notes": "跨 skill 混淆诱饵：书中同一节，极易混淆"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的用户付费金额，中位数和均值差了 5 倍，还能用均值±2σ覆盖 95% 吗？",
+      "expected_behavior": "应激活本 skill 但判定不适用：均值与中位数严重偏离说明分布高度偏斜/厚尾，应停止套用正态经验法则，改用肥尾或幂律视角，并改用分位数描述。",
+      "notes": "边界：分布假设失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

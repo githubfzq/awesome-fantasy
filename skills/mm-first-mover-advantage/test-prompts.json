@@ -1,0 +1,52 @@
+{
+  "skill": "mm-first-mover-advantage",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "竞品下周就要发布了,我们要不要把测试砍一半、这周就上线抢个先?",
+      "expected_behavior": "应激活 mm-first-mover-advantage,先列出为抢先将被砍掉/压缩的东西及其具体风险;再用'产品/市场匹配'取代'发布时间'作为决策指标——明确评估当前离匹配多远(用户是否主动推荐、留存、自然增长);指出书中最关键的一句:抢先进入市场并非关键,真正的胜负手是率先实现产品/市场匹配,未匹配就抢先等于把错误公开犯一遍并替跟随者付学费。",
+      "notes": "正面场景:为抢先牺牲质量"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们明明是第一个做这个的,现在却被后进来的公司超过了。为什么?",
+      "expected_behavior": "应激活 mm-first-mover-advantage,给出先发劣势机制:先行者承担教育市场成本与试错成本,收益却被全行业共享,跟随者可以复制其做法并规避其踩过的坑;同时检查是否从未真正实现产品/市场匹配——抢先进入市场并非关键,匹配才是胜负手。",
+      "notes": "正面场景:先行者被反超的复盘"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "作为后来者,该不该等先行者把市场教育完再进?怎么跟随才有效?",
+      "expected_behavior": "应激活 mm-first-mover-advantage,说明跟随者的有利位置:先行者付了教育市场与试错两类成本;给出具体动作——明确复制哪些已被验证的做法、规避哪些已暴露的坑;并提醒真正的胜负手仍是率先实现产品/市场匹配,而非等待本身。",
+      "notes": "正面场景:后来者的跟随策略"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们已进入成熟市场,份额稳定,现在主要想优化成本结构。",
+      "expected_behavior": "不应激活本 skill,因为已进入稳定期、进入时序不再可变,本 skill 无操作空间;这是运营效率问题。",
+      "notes": "诱饵:谈竞争但时序已不可变"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个技术方向看起来很新,现在进场是不是太早了?条件成熟了吗?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-why-now:用户问的是时机是否成熟;本 skill 处理的是时机成熟之后要不要抢第一个,时机未成熟就抢先恰是先发劣势的典型来源。",
+      "notes": "跨 skill 混淆诱饵:为什么是现在(时机成熟度 vs 进入时序)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的产品有很强的网络效应,用户越多越好用。这时候抢先是不是就绝对正确了?",
+      "expected_behavior": "合理判断:不能简单套用。本模型的核心判据是'抢先进入市场并非关键,率先实现产品/市场匹配才是胜负手',但在强网络效应或赢家通吃结构下,抢先的价值远超模型一般描述——需要结合 mm-network-effects 与 mm-winner-take-most-markets 重新评估。即便如此,仍要满足两条约束:(1)为抢先所砍掉的东西不能导致产品根本无法达到匹配;(2)应设明确检查点,避免'已经抢了只能继续抢'的承诺升级。",
+      "notes": "边界:网络效应下模型的适用性上限"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

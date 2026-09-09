@@ -1,0 +1,52 @@
+{
+  "skill": "mm-blinded-experiment",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要在内部评选两个首页设计方案，评审都是同事，他们一眼就能看出哪个是设计总监做的。怎么保证评分公平？",
+      "expected_behavior": "应激活 mm-blinded-experiment, 并判断知情会污染评分（需盲化）、给出匿名化/统一包装的具体遮蔽方案、明确谁在何时解盲，并要求事后检验盲化是否被识破。",
+      "notes": "正面场景：主观评分 + 身份可识别，典型盲化需求"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们在做一次新口味饮料的用户测试，包装上一看就是我们自己的牌子。用户说新口味更好喝，这个结论能信吗？",
+      "expected_behavior": "应激活 mm-blinded-experiment, 并指出品牌偏好会污染口味判断，要求去掉品牌标识做盲评，并说明若无法遮蔽则结论需大幅打折。",
+      "notes": "正面场景：书中点名的口味盲测场景"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个疗效验证我做了双盲，是不是就可以放心下结论了？",
+      "expected_behavior": "应激活 mm-blinded-experiment, 承认双盲有效，同时明确指出它并不能完全避免偏差——准备与分析阶段的选择性读文献、预先构想假设、选择性汇报仍会渗入，并要求给出事前约束。",
+      "notes": "正面场景：对双盲的过度信任需要被校准"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们新版接口的平均响应时间从 800ms 降到了 300ms，需要盲测吗？",
+      "expected_behavior": "不应激活本 skill, 因为响应时间是完全客观的系统计数指标，不受「知情」影响，盲化收益接近零，不值得增加流程复杂度。",
+      "notes": "诱饵：提到了实验/对比，但无主观污染通道"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的实验结论是新版更好，但后来发现两组用户是按注册时间先后分的，新用户全在新版组。这个结论的问题出在哪？",
+      "expected_behavior": "不应激活本 skill（问题出在分组不可比而非知情污染）, 应激活 mm-randomized-controlled-experiment 或 mm-selection-bias。盲测防的是期望偏差，解决不了选择偏差。",
+      "notes": "跨 skill 混淆诱饵：实验可信度问题，但漏洞不在盲化"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们要对比'线上课程'和'线下培训'的效果。学员肯定知道自己上的是哪种，盲不了，怎么办？",
+      "expected_behavior": "合理的判断是：承认分组客观上无法遮蔽，盲测不适用；转而建议至少对评分者/评估者做盲化（由不知分组的第三方评分）、尽量采用客观行为指标而非自我报告，并明确在结论中标注「未盲化，主观指标存在期望偏差风险」。",
+      "notes": "边界：参与者无法盲，只能部分盲化 + 明示局限"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

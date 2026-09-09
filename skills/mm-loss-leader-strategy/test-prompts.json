@@ -1,0 +1,52 @@
+{
+  "skill": "mm-loss-leader-strategy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们想做硬件,主机按成本价卖,靠耗材赚钱。这个模式要算什么?",
+      "expected_behavior": "应激活 mm-loss-leader-strategy,确认\"入门品—配套品\"是必然组合,并给出三个数:主机单位亏损、单用户在耗材上的预期利润、回收周期;检查锁定机制(适配性、第三方兼容耗材的威胁),并设监测指标与未达标时的调价触发条件。",
+      "notes": "正面场景:硬件+耗材定价设计"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "超市把牛奶价格压到比进价还低来引流,这招到底赚不赚钱?",
+      "expected_behavior": "应激活 mm-loss-leader-strategy,对应书中\"超市靠打折牛奶引流\"的例子;说明低价品不赚钱但带动其他日用品消费,利润在配套品上回收;要求核算引流转化率与被带动品类的毛利,并指出若用户只买低价品就走则模式失效。",
+      "notes": "正面场景:书中原型案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "免费 App 靠内购变现,我们打算照做,免费功能该给到多少?",
+      "expected_behavior": "应激活 mm-loss-leader-strategy,对应书中\"免费 App 靠程序内购买变现\";要求明确免费版形成习惯与数据沉淀(锁定)后再触发付费点,给出转化路径与单用户生命周期利润核算,并提醒免费版必须真实可用,不能做成诱购。",
+      "notes": "正面场景:免费+内购设计"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个月做活动,全线商品八折,冲一下销量。",
+      "expected_behavior": "不应激活本 skill,因为没有\"入门品—配套品\"结构,只是单品降价促销;应激活 mm-switching-costs 或按常规定价与促销分析处理。",
+      "notes": "诱饵:无配套品的单纯促销"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他们广告上那款 1999 的永远显示售罄,进去就被推荐 4999 的版本,这是不是低价引流?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-bait-and-switch:低价品根本不打算出售、长期不可购且系统性地导向高价款,构成诱购;亏本销售的低价品必须真实可购(只是不赚钱,靠配套回收),这是两者的分界线。",
+      "notes": "跨 skill 混淆诱饵:诱购"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的设备卖得很便宜,但耗材被第三方兼容品抢走了大半,现在整体在亏。还能救吗?",
+      "expected_behavior": "合理判断:这正是亏本销售的致命失效——锁定被打破,引流亏损无法回收。可回收路径只有几条:提高配套品的不可替代性(技术绑定、质保条款、订阅服务)、把利润点从耗材转向服务与软件、或改为按使用量计费;同时必须重新核算单位经济,若三条都不可行,应停止补贴并上调主机价格,否则规模越大亏得越多。",
+      "notes": "边界:锁定失效后模式是否成立"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

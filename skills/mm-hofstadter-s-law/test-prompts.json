@@ -1,0 +1,52 @@
+{
+  "skill": "mm-hofstadter-s-law",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "老板问我这个新功能多久能上线，我心里想两周，该报多久？",
+      "expected_behavior": "应激活 mm-hofstadter-s-law，说明做事花的时间总是比预期长、且知道这条定律也无法抵消偏差；建议先给出乐观估算，再把任务拆到 2 天以内以暴露隐藏琐事，用团队历史\"实际/估算\"比值校准，最后给出乐观—校准—悲观三个数而非单点。",
+      "notes": "正面场景：给工期承诺"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "上次说两周做完，结果做了六周，我已经按上次的经验加了缓冲了，这次该加多少？",
+      "expected_behavior": "应激活 mm-hofstadter-s-law，明确指出\"把定律纳入预期后仍然会超期\"——加缓冲是必要但不充分的；建议改用历史比值校准，并引用作者的抓手：主动选择何时宣布项目完成、用定义完成标准来改变时间要求。",
+      "notes": "正面场景：延期复盘与重新估算"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我季度计划排得满满的，看起来刚好能做完，是不是有点悬？",
+      "expected_behavior": "应激活 mm-hofstadter-s-law，指出排期建立在乐观估算上、几乎必然超期，建议对每项用历史系数校准，并主动砍范围或重新定义完成标准，而不是等到超期后被动加班。",
+      "notes": "正面场景：排期过满"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我每天时间都排得很满但还是做不完事，有没有什么安排一天时间的技巧？",
+      "expected_behavior": "不应激活本 skill，因为这是日程管理技巧问题，不涉及项目工期估算；本 skill 针对的是任务/项目的时长估算偏差。",
+      "notes": "诱饵：日程管理而非工期估算"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "功能都写完了，就剩修修 bug 和补文档，怎么这点收尾搞了两周还没完？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-ninety-ninety-rule。用户已明确处在收尾阶段，九九定律正是指前 90% 花 90% 时间、剩余 10% 再花 90% 的现象；侯世达定律讲的是整体普遍低估。",
+      "notes": "跨 skill 混淆诱饵：九九定律（收尾段的低估）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们这个报表是每月例行做的，做了两年了，每次都是三天，还要按侯世达定律加缓冲吗？",
+      "expected_behavior": "合理判断：不需要。高度标准化、有成熟历史数据的重复任务，估算误差已被历史均值吸收，再加系数属于虚假精确，反而会诱发帕金森式的时间膨胀。本 skill 适用于缺乏历史数据、含大量未知琐事的新任务；对例行任务应直接用历史均值加小范围波动区间。",
+      "notes": "边界：标准化重复任务不适用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

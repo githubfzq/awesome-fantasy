@@ -1,0 +1,52 @@
+{
+  "skill": "mm-business-case",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我要说服领导批准买这套系统,帮我写个材料说明为什么该买。",
+      "expected_behavior": "应激活 mm-business-case,按结构组织:先把结论/决定放最前(我建议买 X),再逐条列出前提并区分'已知事实'与'假设',然后演示从前提到结论的推导,补上被放弃的替代方案及理由、证伪条件与复盘点,最后按决策层读者裁剪篇幅。",
+      "notes": "正面场景:立项/说服"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我在考虑要不要从大厂跳到创业公司,自己也没想清楚为什么想去,怎么把这个决定想明白?",
+      "expected_behavior": "应激活 mm-business-case,指出它不只适用于商业、个人重大决定同样适用;引导用户把结论与前提分开写、把直觉转成可检查的论证,并建议先用情景分析想象两条路的展开、再用成本收益分析比较。",
+      "notes": "正面场景:个人重大决定"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "领导问我这个方案凭什么成立,我只会说'我觉得这样更好',怎么办?",
+      "expected_behavior": "应激活 mm-business-case,把直觉拆成可检查的前提链:列出推理依赖的每条前提、标注哪些是事实哪些是假设,并演示推导;提醒先有结论再倒推前提是本模型最常见的误用。",
+      "notes": "正面场景:直觉转论证"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "系统已经上线三个月了,领导让我补一份当时的立项说明走一下归档流程。",
+      "expected_behavior": "不应激活本 skill,因为决定已执行完毕、文档只是事后追认,写出来的不是推理而是辩解;应说明此时重点是复盘(事后分析)而非商业案例。",
+      "notes": "诱饵:也叫'立项说明'但已无决策价值"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们该不该自建这套系统?帮我从第一性原理出发,把成本拆到最基本的组成部分再重新推一遍。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-arguing-from-first-principles:用户要的是一种推理方法(拆到不可再拆的基本事实再重建),而不是一份作为讨论起点、用于说服的书面文档;从第一性原理出发是推理方法,商业案例是它的书面产物。",
+      "notes": "跨 skill 混淆诱饵:从第一性原理出发"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我只是想给同事发条消息说下周一用新流程,要不要写一份完整的商业案例?",
+      "expected_behavior": "合理判断:作者明确形式可短可长,几段话也算;对于低成本可逆的小决定,写详尽报告的成本高于决定本身的价值;建议只写几句备忘(结论 + 两条核心理由),把完整结构留给真正的重大决定。",
+      "notes": "边界:小决定不应过度文档化"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

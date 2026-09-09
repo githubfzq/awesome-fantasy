@@ -1,0 +1,52 @@
+{
+  "skill": "mm-principal-agent-problem",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "中介一直催我接受这份报价，说再等就没人要了。可我觉得再挂挂能多卖十几万，他为什么这么急？",
+      "expected_behavior": "应激活 mm-principal-agent-problem，做边际收益对比（多卖十几万对经纪人只多几千块分成，却要多付出数周时间），指出这是幅度错配而非人品问题，并给出对齐方案（延后兑付、阶梯佣金、自行设底价）。",
+      "notes": "正面场景：书中的经纪人结构"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的外包商按人天计费，我总觉得他们在磨时间，交付质量也一般。该换一家还是改合同？",
+      "expected_behavior": "应激活 mm-principal-agent-problem，定位错配点（按投入计费 vs 想要的是结果），建议改为按结果/里程碑计费并加质量下限，同时说明换供应商不改计费方式仍会复发。",
+      "notes": "正面场景：计费方式导致的行为"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "公司给销售定的提成是签单当月发，结果他们疯狂压价、过度承诺，后面交付全炸了。这是人的问题吗？",
+      "expected_behavior": "应激活 mm-principal-agent-problem，指出这是时间错配（代理人先拿钱、委托人后承担后果），并建议延后兑付到回款/交付后、加入坏账追回与毛利挂钩。",
+      "notes": "正面场景：时间错配"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我和合伙人各出一半钱、各担一半风险一起做事，最近分工上有点摩擦，怎么协调？",
+      "expected_behavior": "不应激活本 skill，因为双方共担成本与收益、激励基本一致，不存在委托代理结构，属于普通的协作与分工问题。",
+      "notes": "诱饵：涉及两方但不构成代理关系"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我买的重疾险，签完以后我开始经常熬夜、懒得体检了，反正有保险兜着。这样是不是不太好？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-moral-hazard。描述的是签约后因为有兜底而行为更冒险，属于委托代理问题中的「不承担下行」这一支，应走自担比例与免赔额设计，而非佣金/分成对齐。",
+      "notes": "跨 skill 混淆诱饵：道德风险"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我请的装修队活干得挺差，但他确实已经很辛苦了，每天来得最早走得最晚。要不要给他加点钱激励一下？",
+      "expected_behavior": "合理的判断是先区分能力问题还是激励问题：如果「把他自己的房子换成客户的房子他会做得更好」不成立（他本来就没这能力），加钱也解决不了，应换人或引入第三方监理/验收节点；如果确认是激励导致（如按工时结算、材料以次充好能省成本），才改激励结构。同时提醒对齐方案本身可能催生新扭曲（为赶工期牺牲质量），需配质量护栏。",
+      "notes": "边界：能力 vs 激励的区分"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

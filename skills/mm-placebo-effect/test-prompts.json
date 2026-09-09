@@ -1,0 +1,52 @@
+{
+  "skill": "mm-placebo-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们给客服加了个「智能助手正在分析」的加载提示，其实后台没变。结果用户满意度评分涨了不少。这算作弊吗？",
+      "expected_behavior": "应激活 mm-placebo-effect，解释预期触发真实积极效果的机制，说明这不是作弊而是真实效应，同时提醒：若要评估后台真实改进的效果，必须设安慰剂对照才能剥离。",
+      "notes": "正面场景：产品体验中的安慰剂效应"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个疗法的研究只有「治疗前 vs 治疗后」的对比，没有对照组。他们说有效，可信吗？",
+      "expected_behavior": "应激活 mm-placebo-effect，指出缺少「看起来感觉一样但本该无效」的对照就无法剥离期望效应，并说明应如何设计安慰剂对照。",
+      "notes": "正面场景：无对照的疗效评估缺陷"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "医生说我爸的膝盖手术后疼痛缓解很多，但我看到有研究说假手术也有类似效果。该怎么理解？",
+      "expected_behavior": "应激活 mm-placebo-effect，引用 BMJ 的 53 项研究（74% 假手术组改善、51% 与真实手术相当）说明比较的必要性，同时明确安慰剂对骨折愈合这类器质性结果几乎无效，不要泛化为「手术都没用」。",
+      "notes": "正面场景：书中明示案例 + 边界（器质性结果例外）"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们在评估一个新的骨折固定方案对愈合速度的影响，需要设安慰剂对照组吗？",
+      "expected_behavior": "不应激活本 skill 作为主要考量，因为书中明示安慰剂对治愈骨折这类器质性结果几乎毫无作用；应转向常规临床终点评估。",
+      "notes": "诱饵：疗效评估场景，但落在边界之外"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们要验证新算法能不能提升点击率，需要随机分组、单一变量、预先定义指标。这套该怎么搭？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-randomized-controlled-experiment——用户在问完整实验设计方案（随机化、变量控制、终点定义），而非「为什么需要安慰剂对照」这一组件性理由。",
+      "notes": "跨 skill 混淆诱饵：与 mm-randomized-controlled-experiment 相邻，区分在完整方案 vs. 组件性理由"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们告诉用户新版本可能有点卡顿，结果抱怨卡顿的人明显变多了，但实际性能没变。这是怎么回事？",
+      "expected_behavior": "应激活 mm-placebo-effect 并指出这是其镜像——反安慰剂效应（mm-nocebo-effect）：负面预期本身就能产生真实的负面体验；同时说明两者都靠盲测控制，并建议在发布说明中谨慎措辞。",
+      "notes": "边界：安慰剂效应的镜像（反安慰剂）"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

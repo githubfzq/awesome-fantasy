@@ -1,0 +1,52 @@
+{
+  "skill": "mm-fear",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "供应商说竞争对手的产品'很不安全,谁也说不准会出什么事',还让我们对对方的数据存疑,但一直没给具体案例。",
+      "expected_behavior": "应激活 mm-fear,逐项标注三要素:惧(不安全的可怕后果)、惑(后果模糊、不可验证)、疑(怀疑被引向竞争对手);指出议题已从'功能/成本'被劫持成'不选的后果',要求对方给出具体会发生什么、概率、机制与已发生案例。",
+      "notes": "正面场景:典型 FUD 三要素齐备"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这段竞选演讲我听完心里发毛,一直讲'如果通过这项法律,后果不堪设想',但又从没说清到底是什么后果。",
+      "expected_behavior": "应激活 mm-fear,识别这是书中给出的政治演说 FUD 原型:提供宏大、模糊、无时限定的后果,靠恐惧取代理性评估;要求把威胁具体化为可核验的因果与概率,并把讨论拉回'这项法律本身好不好'。",
+      "notes": "正面场景:政治演说中的 FUD"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们做竞标,同事想在方案里加一段'选别家可能面临数据风险',我觉得不太妥当,但说不清为什么。",
+      "expected_behavior": "应激活 mm-fear,给出自用边界:真实、可核验风险的披露可以,虚构或不可核验的威胁不可以;建议改为陈述我方已做的具体安全措施与可验证的合规资质,把竞争重新拉回方案本身的优势比较。",
+      "notes": "正面场景:考虑使用 FUD 的边界"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个库上个月刚爆了一个远程代码执行的 CVE,我们线上正好在用,得赶紧排期修。",
+      "expected_behavior": "不应激活本 skill,因为恐惧来自真实、可核查、有具体机制与已发生案例的安全风险,属于正常的风险沟通而非 FUD;判据是可核验性——此处 CVE 编号与影响版本都可查证。",
+      "notes": "诱饵:恐惧诉求但风险真实"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我要买的那款显示器写着'仅剩 3 台,今日特价',我怕抢不到是不是该马上下单?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-scarcity:压力来自数量稀缺与唯恐错过(FOMO),不存在'不选我的可怕后果'这一恐惧诉求;稀缺卖抢手,FUD 卖恐惧,两者的拆解方式也不同(前者核查库存真伪,后者要求威胁具体化)。",
+      "notes": "跨 skill 混淆诱饵:稀缺"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "安全部门确实发现新架构有个潜在风险,但目前没有实测数据,只有理论上的可能。汇报时要不要提?提了会不会变成 FUD?",
+      "expected_behavior": "合理判断:应当提,但要按'非 FUD'的方式提——明确标注这是理论推演而非实测结论、说明不确定性来源、给出验证计划与时间表、不把怀疑引向提出方案的同事。这样保留了真实风险的可核验性,与 FUD 的区别恰恰在于是否坦白'惑'而不利用'惑'。",
+      "notes": "边界:真实不确定性 vs 利用不确定性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

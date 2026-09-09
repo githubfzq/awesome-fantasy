@@ -1,0 +1,52 @@
+{
+  "skill": "mm-commandos",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的新产品刚验证完需求，接下来要铺量了。原来那个从 0 到 1 的同学还想继续带，但他特别讨厌写流程文档。",
+      "expected_behavior": "应激活 mm-commandos，判定项目已从抢滩进入推进阶段，指出步兵型人格需求，并给出换岗/搭档/引入流程负责人的具体调整",
+      "notes": "正面场景：典型阶段切换"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "把一个最能折腾、总能拿下新客户的销售提成了区域经理，结果半年里团队离职率飙上去了。",
+      "expected_behavior": "应激活本 skill，识别为突击队员被放到警察角色（管理/治理）造成的心生叛逆与混乱，给出人格—岗位错配的诊断与调整",
+      "notes": "正面场景：书中明确描述的错配"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "Our platform is stable now. Do we still need the same people who built the prototype, or different ones?",
+      "expected_behavior": "应激活本 skill，区分守成阶段（警察型：厌恶改变、建立体系）与原型阶段（突击队员型）的人格需求差异",
+      "notes": "正面场景：英文 + 阶段判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个月有 5 个需求要排期，我该先做哪个？",
+      "expected_behavior": "不应激活本 skill，因为这是单纯的任务排期与优先级问题，不涉及项目阶段与人格匹配",
+      "notes": "诱饵：与'谁来做'相关但实为任务排序"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们小团队人少，遇到专业难题是该招个专职的，还是大家都会一点然后外包？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-generalists-versus-specialists（通才与专家）：核心是问题频率能否养全职岗位，而非项目阶段与人格匹配",
+      "notes": "跨 skill 混淆诱饵：同章相邻的人才配置模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们同时在做三件事：一个全新业务、一个正在放量的业务、一个要长期维护的老系统。人只有六个。",
+      "expected_behavior": "应激活本 skill 并指出三类阶段并存时不能只按单一阶段配置：应把人按阶段分桶，每桶配对应人格的人，并明确跨桶轮换会造成的错配风险；同时提示书中警告——在需要保住成果时用突击队员弊大于利",
+      "notes": "边界：多阶段并存下的配置"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

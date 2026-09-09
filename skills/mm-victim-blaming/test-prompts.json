@@ -1,0 +1,52 @@
+{
+  "skill": "mm-victim-blaming",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "车间出了工伤，调查结论是工人没按流程操作，这事不就结了吗？",
+      "expected_behavior": "应激活 mm-victim-blaming，对'没按流程'做可控性检验（培训是否到位、流程是否可执行、是否有赶工压力），并追问环境与制度该改什么。",
+      "notes": "正面场景：事故归因停在个人"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "网上都在说那个被骚扰的女生不该那么晚还出门，我觉得也有点道理。",
+      "expected_behavior": "应激活 mm-victim-blaming，拆解'不该那么晚出门'这一指责句，列出当事人不可控因素，并把焦点转到加害者与环境改进项。",
+      "notes": "正面场景：书中案例类型"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "那些长期领社会救助的人，说白了就是懒，不愿意工作。",
+      "expected_behavior": "应激活 mm-victim-blaming，做可控性检验（就业市场、健康、照护负担、地域机会），指出把结构问题归为个人品性会掩盖该改的东西。",
+      "notes": "正面场景：贫困归因"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我整理这次事故的时间线和责任方清单，供法务后续处理。",
+      "expected_behavior": "不应激活本 skill，因为这是事实调查与责任认定的准备工作，需要证据与程序；归因偏差校正不能替代调查。",
+      "notes": "诱饵：涉及受害者但属程序性调查"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我一直觉得善有善报恶有恶报，所以看到别人倒霉我总觉得事出有因。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-just-world-hypothesis：用户描述的是'世界公平'这一底层信念本身，尚未落到对具体受害者的指责行为上，应先拆信念。",
+      "notes": "跨 skill 混淆诱饵：指责受害者 vs 公正世界假说"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这次是我自己签错了合同吃了大亏，我一直在自责，是不是都怪我？",
+      "expected_behavior": "可以激活但需先处理情绪再谈归因：把责任还给环境（对方是否隐瞒信息、是否有专业协助义务），同时保留用户的能动性——不把'不是你的错'变成'你毫无选择空间'。",
+      "notes": "边界：受害者自责 vs 责任归属"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

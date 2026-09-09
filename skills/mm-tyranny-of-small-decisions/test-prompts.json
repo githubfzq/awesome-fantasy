@@ -1,0 +1,52 @@
+{
+  "skill": "mm-tyranny-of-small-decisions",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我这个月信用卡又刷爆了，但我想不起来买过什么大件，每笔都是几十块的小东西，怎么就超了这么多？",
+      "expected_behavior": "应激活 mm-tyranny-of-small-decisions，把散点消费聚成一个类别做全局核算（总额/频次），并推动设置不依赖当场判断的硬约束（预算、额度、免密上限），而不是纠结某笔该不该花。",
+      "notes": "正面场景：典型的累积型失控"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们团队五个人共用一个测试环境，每个人图方便都多起几个实例、多留几天不清理，现在环境天天崩，可谁都觉得自己只是多用了「一点点」。",
+      "expected_behavior": "应激活 mm-tyranny-of-small-decisions，识别这是多人各自决策导致的累积问题，因此不靠呼吁自觉，而要引入第三方硬规则（配额、自动回收、预约制）并指定能做全局核算的主体。",
+      "notes": "正面场景：多人场景，需第三方介入"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "合作方每次谈判都要我再让一小步，每次我都想「这点就算了」，结果三年下来我们的分成比例已经完全不可接受了。",
+      "expected_behavior": "应激活 mm-tyranny-of-small-decisions，把连续让步聚成一类核算总量，指出阈值已越过且不可逆，并建议设置需要更高层级审批的让步门槛。",
+      "notes": "正面场景：连续小让步的累积"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我在纠结要不要花 30 万读一个 MBA，一次性支出，值不值？",
+      "expected_behavior": "不应激活本 skill，因为这是一次性大额决策，不存在「同类决定累积」的结构，应改用成本收益分析 / 期望值类模型。",
+      "notes": "诱饵：涉及钱但非累积型"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "公司这两年增长一年比一年慢，但我说不清是从哪天开始的，感觉每个月都差不多，好像也没什么大变化，就是不知不觉不行了。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-boiling-frog。此处的关键是「变化率太低导致感知不到」，而不是「同类决定数量太多没人核算」；用户没有在做重复的小决定。",
+      "notes": "跨 skill 混淆诱饵：温水煮青蛙"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们鼓励工程师做技术实验，每个人每周可以花半天做自己喜欢的项目。有人担心这样太散，要不要改成审批制？",
+      "expected_behavior": "合理的判断是先核算总量：若这半天确实在预算内且带来正向产出，就不属于小决定泛滥，不应上硬约束，因为探索期过度约束会压制信息收集；只有当实验占用开始挤占主线且无人核算时才引入约束。应说明这是推导性判断而非书中明示。",
+      "notes": "边界：需要区分「有意为之的可控分散」与「失控的累积」"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

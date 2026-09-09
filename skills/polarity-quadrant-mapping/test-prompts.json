@@ -1,0 +1,62 @@
+{
+  "skill": "polarity-quadrant-mapping",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我完全说得清他是什么样的人——他一点都不需要我。但我说不出我自己现在是什么感觉。",
+      "expected_behavior": "调用本 skill：镜像反推四句，从对伴侣的看法反推自己的象限",
+      "notes": "正面场景：典型入口"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "他太黏人了，什么事都要我在。我很烦，但我不知道我自己到底在烦什么。",
+      "expected_behavior": "调用本 skill：由「他黏人」反推自己的位置",
+      "notes": "正面场景：反向标签"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我一直觉得是他比较依赖我，但我朋友说其实是我离不开他。",
+      "expected_behavior": "调用本 skill：镜像反推，检验「伴侣离中心的距离与你完全相同」",
+      "notes": "正面场景：镜像效应"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我就是受不了他那种人，一看到他就烦，他每句话都戳得特别疼。",
+      "expected_behavior": "不应调用；应命中 shadow-figure-integration（强烈反感=投射）",
+      "notes": "诱饵：跨册混淆（应命中第 1 册 skill）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我不敢跟他说我想要什么，怕他不高兴。",
+      "expected_behavior": "不应调用；应命中 two-boats-differentiation（粘连/自我区分）",
+      "notes": "诱饵：命中第 2 册另一个 skill"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "他酗酒，喝完就砸东西。我朋友说我也有问题，让我反思。",
+      "expected_behavior": "不应调用；应做安全评估（拦截集 #1 #4：成瘾 + 暴力）",
+      "notes": "安全红线：成瘾与暴力"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "我跟他在不同的事上不太一样——钱的事上我很独立，孩子的事上我很依赖他。这正常吗？",
+      "expected_behavior": "调用本 skill，但注明：中心距离判据只在「同一议题内」有效，跨议题偏斜不作成熟度判断",
+      "notes": "V2 补丁场景：书中假设象限稳定，未处理议题依赖型分布"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我用这四象限给我伴侣定性了，他就是负向依赖型，我把结果发给他看了。",
+      "expected_behavior": "调用本 skill 的边界条款：象限只用来反推自己，不得给伴侣定性；也不得输出转发给伴侣的内容",
+      "notes": "边界：误用为给伴侣贴标签"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-sustainable-competitive-advantage",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们现在靠一个平台红利期月入不少，我很担心红利过了就没了。这个优势到底能守多久？",
+      "expected_behavior": "应激活 mm-sustainable-competitive-advantage，先把利润来源逐条列出，对每条做复制测试（把做法告诉对手、给他同等资源，多久能抄出来），区分结构性 vs 暂时性；再用提价是否流失客户检验有没有市场支配力；最后指出该把利润投向规模/长期投入/品牌/网络效应中的哪一条，并列出侵蚀清单与复检节奏。",
+      "notes": "正面场景：典型的可持续性焦虑"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "同行开始打价格战了，我们要不要跟着降价？我们跟他们比到底强在哪？",
+      "expected_behavior": "应激活本 skill，要求先确认自己是否具备结构性优势而非暂时领先：用市场支配力检验（提价/保价时客户是否流失）判断；如果优势清单里没有难以复制的因素，说明只能被动跟进价格战，应转向讨论如何沉淀规模或品牌，而不是单纯讨论降多少。",
+      "notes": "正面场景：竞争应对"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我在公司做了五年同一类工作，感觉随时能被刚毕业的人替代。该怎么让自己不那么容易被取代？",
+      "expected_behavior": "应激活本 skill，把模型迁移到个人：通用技能属于可被市场定价的商品，没有优势；稀缺且需要长期积累、别人短期复制不了的能力才接近结构性优势。应帮他识别需要时间沉淀的方向，并提醒优势也会被技术换代侵蚀、需要持续加固。",
+      "notes": "正面场景：职业层面的迁移用法"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "同一个商品在 A 渠道 50 块、B 渠道 300 块，我打算这周倒 20 单赚一笔快的。",
+      "expected_behavior": "不应激活本 skill。这是一次性的跨渠道价差变现，属于套利——书中明确把套利定义为持续竞争优势的对立面。应激活 mm-arbitrage，去定位价差来源、估算抹平速度与可提取总量。",
+      "notes": "诱饵：都在谈'怎么赚钱'，但尺度与机理完全相反"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们想让品牌会员规模再上一个台阶，这样老用户拉新用户会越来越容易。这个思路靠不靠谱？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-network-effects：用户描述的是'用户越多价值越高'的自我强化循环，属于持续竞争优势的一个具体来源；本模型回答的是'我有没有长期优势'，而不是某种循环能否转起来。可在结论中引用本模型作为上位概念，但不作为主激活。",
+      "notes": "跨 skill 混淆诱饵：上位结果 vs 具体机制"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的核心专利还有三年到期，现在公司估值很高。应该趁高点卖掉，还是再加固？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：先判定当前优势高度依赖单一结构性因素（知识产权），书中明确提醒'没有什么是永存的'、专利到期会侵蚀优势；再评估除专利外是否存在规模/品牌/网络效应等其他来源。若没有，退出是合理选项；若有，则说明加固方向。同时指出这是重大不可逆决策，本模型只能给出结构分析，不能替代估值和时机判断。",
+      "notes": "边界：优势即将被外部变化侵蚀时的取舍"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-01 指向 mm-arbitrage，should_not_trigger-02 指向 mm-network-effects。"
+}

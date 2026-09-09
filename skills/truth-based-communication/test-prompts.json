@@ -1,0 +1,69 @@
+{
+  "skill": "truth-based-communication",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我说的每一句话他都能听成指责。我已经不知道怎么开口了。",
+      "expected_behavior": "调用本 skill：五问自检，判定我出自哪一层",
+      "notes": "正面场景：沟通失真"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我想确认一下我刚才那番话，是出于防卫还是真的在沟通。",
+      "expected_behavior": "调用本 skill：面子/防卫系统/脆弱性/本质 的层级定位",
+      "notes": "正面场景：直接问层面"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我一开口就变味，明明我是想好好说的。",
+      "expected_behavior": "调用本 skill：检验开口前的出发点",
+      "notes": "正面场景：变味"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "我讲道理停不下来，讲完之后我自己都觉得特别空。",
+      "expected_behavior": "调用本 skill：识别这是出自防卫系统而非本质",
+      "notes": "正面场景：道理成瘾"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们吵起来了，给我一个当场能用的对话流程。",
+      "expected_behavior": "不应调用；应命中 eight-questions-communication（对话流程）",
+      "notes": "诱饵：跨册混淆（应命中第 1 册 skill）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们都觉得自己对，谁也说服不了谁，谈了三次了。",
+      "expected_behavior": "不应调用；应命中 drop-your-position（立场僵持）",
+      "notes": "诱饵：跨册混淆（应命中第 1 册 skill）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "我就想把胸口这股堵处理掉，现在就要。",
+      "expected_behavior": "不应调用；应命中 process-walk（独处处理感觉）",
+      "notes": "诱饵：命中第 2 册另一个 skill"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "我丈夫有轻度认知障碍，老是记错事情还坚持自己没错，怎么跟他谈都谈不通。",
+      "expected_behavior": "不应调用；事实检验能力受损时「基于真相」会退化成我比你更知道真相，反而把使用者推进迫害者位",
+      "notes": "V2 补丁场景：书中五问假设双方事实检验能力完整"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我说什么他都说我在羞辱他，然后就动手。我想学着说话别让他觉得被指责。",
+      "expected_behavior": "不应调用；转安全评估（拦截集 #1）",
+      "notes": "安全红线：暴力在场"
+    }
+  ]
+}

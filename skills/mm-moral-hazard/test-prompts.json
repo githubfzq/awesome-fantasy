@@ -1,0 +1,52 @@
+{
+  "skill": "mm-moral-hazard",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们准备给所有线上变更加一键回滚，这样大家就能放心发布了。这样会不会有什么副作用？",
+      "expected_behavior": "应激活 mm-moral-hazard，指出回滚能力覆盖了下行风险，会让人减少发布前验证、更激进地变更；建议保留一部分下行（灰度比例、发布者的故障连带指标），而不是取消回滚。",
+      "notes": "正面场景：安全机制的行为反弹"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我请了个理财顾问帮我管钱，他推荐的组合波动特别大，比我自己操作激进多了，为什么？",
+      "expected_behavior": "应激活 mm-moral-hazard，用「谁承担失败的代价」判据说明：代理人的下行由客户承担，只剩上行，因此结构性更激进；建议让顾问跟投、延后兑付或提高透明度。",
+      "notes": "正面场景：代理关系中的风险偏好"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "销售团队说如果给他们设保底提成，他们就敢去啃大客户。这个保底该不该给？",
+      "expected_behavior": "应激活 mm-moral-hazard，分析保底会覆盖哪部分下行、会导致什么行为变化（过度承诺、压低价、强行签不可交付的单），并设计共担机制（回款后兑付、坏账追回条款）。",
+      "notes": "正面场景：保底激励设计"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我自己拿自己的积蓄投资，最近有点想加大杠杆，这样做风险大吗？",
+      "expected_behavior": "不应激活本 skill，因为决策者完全自担下行风险，不存在风险转移，属于一般的风险偏好与仓位管理问题。",
+      "notes": "诱饵：涉及风险但无兜底"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们卖的手机延保，来买的人几乎都是那些手机已经摔过、快要坏的人，赔付率一直降不下来。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-adverse-selection。这是签约前的筛选问题（高风险者更积极购买），不是签约后的行为改变，应走差异化定价或信息核查，而非调整自担比例。",
+      "notes": "跨 skill 混淆诱饵：逆向选择"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们给团队上了完备的灾备和监控，结果上线事故反而变多了。是不是应该把灾备收紧一点，逼大家更谨慎？",
+      "expected_behavior": "合理的判断是：先验证行为确实因保护而改变（例如发布前验证时长下降、灰度比例提高），而不是灾备本身不足或曝光率提高导致的统计错觉；若确认为道德风险，正确做法是让发布者保留一部分下行（故障连带指标、变更冻结权），而不是削弱灾备。同时需权衡：保留过多下行会让团队过度保守、放弃有价值的变更。",
+      "notes": "边界：确认因果 + 矫枉过正的权衡"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-stop-the-bleeding",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "刚发的新版本有严重 bug,用户一打开就白屏,投诉每几分钟就涨一波。团队还想讨论最优修复方案。",
+      "expected_behavior": "应激活 mm-stop-the-bleeding,先量化失血速率(每分钟受影响用户/订单),按生效速度而非优雅程度排序候选动作(回滚 > 热修 > 下线功能),立即执行最快的那个;确认指标归零后才谈根因,并书面标记这是临时手段。",
+      "notes": "正面场景:线上事故持续扩大"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "客户在社交媒体上发了一篇投诉长文,两小时转发过万,法务说等调查清楚再回应。",
+      "expected_behavior": "应激活 mm-stop-the-bleeding,指出舆情正以小时级扩散、等调查结果等于持续失血;建议先做不完美但立刻生效的动作(公开承认已知情、给出时间承诺、开通一对一沟通渠道),对应书中\"危机时先做出明确道歉\";同时明确这只是止血,后续仍需完整回应与根因整改。",
+      "notes": "正面场景:舆情危机需要先表态"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个项目已经投了两年,每个月还在烧钱,团队人心也散了。要不要现在就砍掉?",
+      "expected_behavior": "应激活 mm-stop-the-bleeding,估算每月失血额度与继续下去的总代价,把\"终止项目\"作为候选止血动作之一(书中明示必要时关闭问题区域);给出决策节点与止损线,并明确稳定后要回到为什么项目会拖两年的根因复盘。",
+      "notes": "正面场景:持续失血的项目要不要砍"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "上周那个事故已经处理完了,系统稳定运行了三天,现在想搞清楚到底为什么会出这个错。",
+      "expected_behavior": "不应激活本 skill,因为局势已稳定、损失不再增长;应激活 mm-root-cause 做根因分析。强行\"止血\"(如下线功能)只会造成不必要的牺牲。",
+      "notes": "诱饵:已稳定,该找根因了"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "数据泄露已经发生了,删不回来,接下来几周我们要防止它在更多渠道被转发。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-containment:这是已经发生且无法撤销、需要持续守卫边界的状态;止血是短促的急救动作(回滚、熔断、道歉),这里的诉求是长期控制扩散,属于遏制。",
+      "notes": "跨 skill 混淆诱饵:遏制(持续守卫边界)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "线上有个小概率的计费错误,一天大概影响二十单,但彻底修好要重构计费模块,至少两周。是先打补丁还是先重构?",
+      "expected_behavior": "合理判断:失血速率不高(20 单/天),不构成立刻动粗的理由。应先用轻量手段把损失按住(临时校验、人工核对与赔付),把重构作为根因方案排期;同时设定升级条件——若影响量级或客诉开始上升,立即升级为紧急止血(关闭自动计费)。关键是不要因为\"情况紧急\"而跳过算账,也不要因为速率低就放着不管。",
+      "notes": "边界:低速失血要不要用紧急手段"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

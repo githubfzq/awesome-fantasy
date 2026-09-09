@@ -1,0 +1,52 @@
+{
+  "skill": "mm-short-termism",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "已经连续三个季度说要重构了，每次都因为要赶需求往后推，要不要就这么算了？",
+      "expected_behavior": "应激活 mm-short-termism，标出即时收益（按时交付）与递延成本（缺陷率、迭代速度、招聘难度），把递延成本量化成可监控指标，并给出不可跳过的重构配额。",
+      "notes": "最典型的正面场景：长期投入被反复推迟"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "老板只看季度利润，我们是不是干脆别做什么人才培养了？",
+      "expected_behavior": "应激活本 skill，指出收益立刻可见而成本被推迟且无人记账，推演三到五年后被持续投入的对手甩开的相对位置。",
+      "notes": "组织层面的季度指标压力"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "软装我每次看到喜欢的就买一件，买了一大堆怎么摆都乱，问题出在哪？",
+      "expected_behavior": "应激活本 skill，说明每步单独合理但缺少统一设计语言，累积成\"大杂烩\"，这正是书中给出的短视主义例子。",
+      "notes": "局部增量决策累积失控"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个产品线已经投了三年了，现在砍掉前面全白费，你说还要不要继续？",
+      "expected_behavior": "不应激活本 skill，因为讨论的是已发生、不可收回的投入，应激活 mm-sunk-cost-fallacy（沉没成本谬误）。",
+      "notes": "诱饵：都是\"过去 vs 未来\"的时间话题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我明知道该开始写论文，却一直刷手机拖到最后一天，这是怎么回事？",
+      "expected_behavior": "不应激活本 skill，这是个人当下冲动与心理折现问题，应激活 mm-present-bias（现时偏好）或 mm-hyperbolic-discounting（双曲折现）。",
+      "notes": "跨 skill 混淆诱饵：都与时间偏好有关"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们公司可能活不过一年，还该不该投长期技术底座？",
+      "expected_behavior": "可激活但要先验证时间跨度假设：若存活期本身不确定，五年期投入可能根本无法兑现，此时不投是理性的；建议先判断现金流能否支撑到长期收益兑现。",
+      "notes": "边界：短期优先可能是理性的"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

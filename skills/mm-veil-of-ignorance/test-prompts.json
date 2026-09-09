@@ -1,0 +1,52 @@
+{
+  "skill": "mm-veil-of-ignorance",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "公司打算取消远程办公，要求全员回办公室。我是管理者，通勤才二十分钟，觉得没什么问题。这样定合适吗？",
+      "expected_behavior": "应激活 mm-veil-of-ignorance，指出用户把自己的通勤处境当成了默认处境；列出受影响位置（需照护老人的、单身母亲、住得远的、跨城的、有慢性病需定期就医的），代入最弱势位置做可接受性测试，并给出兼顾方案（核心协作时段 + 例外申请机制），同时说明幕布不必然推翻决定。",
+      "notes": "正面场景：书中明确举过的组织政策例子"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们要给平台写一套违规处罚规则，一刀切封号七天。会不会太狠？",
+      "expected_behavior": "应激活本 skill，列出各类用户处境（误触规则的、依赖平台谋生的、账号被封就无法申诉的小商家），对最弱势位置做可接受性测试，给出分档处罚与申诉通道等替代方案，并把'代价由谁承担'显式化。",
+      "notes": "正面场景：算法/平台规则设计"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "部门只有一个晋升名额，两个人条件差不多，但其中一个刚休完产假回来。怎么定？",
+      "expected_behavior": "应激活本 skill，要求先在不确定性下思考评价标准（休产假是否应计入绩效缺口），列出受影响位置，对最不利者做可接受性测试，并建议把评价窗口拉长或调整口径，而不是简单二选一。",
+      "notes": "正面场景：稀缺资源分配，最弱位置易被平均值掩盖"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我今晚想吃辣的，但胃不太舒服，是吃火锅还是喝粥？",
+      "expected_behavior": "不应激活本 skill。纯私人偏好与自身健康权衡，不涉及对不同处境人群分配规则，幕布无从落下，直接给建议即可。",
+      "notes": "诱饵：也是'换个角度想'，但不涉及制度与分配"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个方案能让公司整体利润提升 20%，虽然会让一个小部门被裁掉。从整体看是不是该做？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-utilitarianism（优化总量，允许少数承受代价）。无知之幕恰恰是用来对抗这种'用平均值改善抵消个别位置不可接受'的思路——两者在分配问题上给出相反答案，本例问的是功利主义式的取舍。",
+      "notes": "跨 skill 混淆诱饵：都处理'多数/少数'取舍，但评价基准相反"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我用无知之幕想过了，即使可能是被裁的那个人，出于公司生存我还是决定执行裁员。这样对吗？",
+      "expected_behavior": "应给出边界性判断：承认这是合规使用（书中明示即使全面考虑后仍可能批准该政策），但要求验证代入是否真实——是否算过被裁者的具体处境（年龄、家庭负担、再就业难度），并把代价显式化、设计过渡方案，而不是用'幕布下我也会同意'作为放弃思考的挡箭牌。",
+      "notes": "边界：幕布不否决决策，但需检验代入真实性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-utilitarianism。"
+}

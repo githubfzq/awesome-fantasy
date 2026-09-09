@@ -1,0 +1,52 @@
+{
+  "skill": "mm-reversible-vs-irreversible-decisions",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们想改一下首页的按钮文案，产品说得走完整评审流程、三个部门会签，要两周。有必要吗？",
+      "expected_behavior": "应激活 mm-reversible-vs-irreversible-decisions，判定这是双向门（文案可随时改回），应压缩决策成本、指定单一决策人并允许灰度试错，同时指出把重流程套在可逆决策上会导致行动迟缓与创新减少。",
+      "notes": "正面场景：流程过重的双向门"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "有家公司想收购我们，对方希望尽快答复。我们该怎么决定？",
+      "expected_behavior": "应激活 mm-reversible-vs-irreversible-decisions，判定这是单向门（卖掉一手创立的公司不可逆），投入系统性深思熟虑与意见征询；同时尝试把它降级为可逆（先战略投资、分阶段交易、保留回购条款）。",
+      "notes": "正面场景：不可逆决策"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们打算把历史订单数据做一次结构性迁移，跑起来就回不去了。要不要先小范围试？",
+      "expected_behavior": "应激活 mm-reversible-vs-irreversible-decisions，指出这是近乎不可逆的操作，应先尝试降级（备份、双写、灰度、可回滚脚本），再按不可逆流程做审慎准备。",
+      "notes": "正面场景：尝试把单向门改造成双向门"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "午饭吃什么？随便，哪家都行，反正我也没什么偏好。",
+      "expected_behavior": "不应激活本 skill，因为所有选项后果都极其轻微、分类不产生任何行动差异，直接快速决定即可。",
+      "notes": "诱饵：决策但无分类必要"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我要不要跳槽我已经想了八个月了，资料越查越多，越想越不敢动。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-analysis-paralysis。核心症状是信息过多导致的决策停滞与滞留现状，而非「该为这个决定投入多少流程」；虽然跳槽本身有一定可逆性，但此处需要的是设停止规则。",
+      "notes": "跨 skill 混淆诱饵：分析瘫痪"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们公开宣布了下季度上线某个功能，现在发现做不完。这算可逆决策吗？",
+      "expected_behavior": "合理的判断是：功能上线本身是双向门（可延后），但「公开宣布」引入了不可逆的信誉成本，因此应按混合情况处理——技术层面仍可快速调整，但对外承诺的变更需要走审慎流程（提前沟通、给出替代方案）。这提示可逆性判断必须把连带后果（公开承诺、第三方依赖、法律义务）算进去，不能只看技术层面能否回退。",
+      "notes": "边界：可逆性判断中的连带后果"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

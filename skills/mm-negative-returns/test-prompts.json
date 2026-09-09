@@ -1,0 +1,52 @@
+{
+  "skill": "mm-negative-returns",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "为了赶上线我们已经连着加班一个月了，最近 bug 越改越多，大家状态都很差，但leader说再坚持两周就好。",
+      "expected_behavior": "应激活 mm-negative-returns，指出追加投入后产出已净下降（bug 越改越多）且健康/动力信号亮起，属于已越过临界点的负收益；建议停止加码，改为砍范围或延长期限，并给出明确的停手时间点与替代方案。",
+      "notes": "正面场景：团队赶工进入负收益"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个方案我改了十几版了，越改越不满意，可总觉得还差最后一版就能完美。",
+      "expected_behavior": "应激活 mm-negative-returns，说明这是追求完美反而适得其反的典型形态，建议设定客观中止条件（如\"这版再不满意就发上一版\"）并宣布完成，而不是继续打磨。",
+      "notes": "正面场景：完美主义导致越改越糟"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "孩子练棒球一年到头不停，最近手肘疼，我该让他休息还是咬牙坚持？",
+      "expected_behavior": "应激活 mm-negative-returns，援引书中少年棒球投手因全年高强度训练接受手肘韧带置换手术、很多孩子两年后因伤或失去兴趣再也不打球的例子，说明继续投入会摧毁未来继续做这件事的能力与意愿，建议立即减量休整。",
+      "notes": "正面场景：训练过量的负收益代价"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们加了两个人之后产出是多了，但没之前加得那么明显了，还要继续加人吗？",
+      "expected_behavior": "不应激活本 skill，因为总量仍在上升、只是边际变缓，属于收益递减；应改用 mm-law-of-diminishing-returns 判断是否继续投入。",
+      "notes": "诱饵：边际递减但总量仍在涨"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个项目已经投了两千万，明摆着回不了本，但停了前面的钱就全白花了，是不是该再投一点撑到转机？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-concorde-fallacy（或 mm-sunk-cost-fallacy）。用户的核心谬误是因已投入太多而继续追加，属于沉没成本导致的承诺升级；负收益描述的是\"继续投入的客观后果\"，不是这里的诊断入口。",
+      "notes": "跨 skill 混淆诱饵：协和谬误/沉没成本"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我在备考，每天学 10 小时，学到想吐，但成绩确实还在一点点涨，要不要减量？",
+      "expected_behavior": "合理判断：产出仍在上升说明还没进入负收益，此时不该简单减量；但\"学到想吐\"是动力信号，说明接近临界点。建议先进行体检式观察——记录每日有效产出，一旦出现成绩掉头或睡眠/健康恶化立即减量，也就是在进入负收益之前主动退出，而非等到崩溃再撤。",
+      "notes": "边界：尚未进入负收益但已接近临界点"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

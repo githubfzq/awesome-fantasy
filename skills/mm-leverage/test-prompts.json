@@ -1,0 +1,52 @@
+{
+  "skill": "mm-leverage",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "预算和人手就这么多，往哪个方向投效果最大？",
+      "expected_behavior": "应激活 mm-leverage，列出多个可施力位置，估算各自杠杆率（效果÷投入）并排序，同时标注下行风险。",
+      "notes": "最典型的正面场景：找施力点"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "要不要贷款把生意盘子做大？反正收益翻倍。",
+      "expected_behavior": "应激活本 skill，说明金融杠杆同时放大损失，要求用户把最坏情况与损失放大后的敞口一起算。",
+      "notes": "金融杠杆场景"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "谈合作的时候我总感觉自己没筹码，怎么判断谁更强？",
+      "expected_behavior": "应激活本 skill，用\"谁更能付出/承担\"来判断谈判杠杆，并给出增强杠杆的具体路径。",
+      "notes": "谈判杠杆场景"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个功能只有一种实现方式，我就想知道要花多少钱。",
+      "expected_behavior": "不应激活本 skill，因为不存在多个施力位置可选，本模型无法凭空造出杠杆，应转向成本估算。",
+      "notes": "诱饵：唯一方案"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们 80% 的销售额来自 20% 的客户，该怎么处理长尾客户？",
+      "expected_behavior": "不应激活本 skill（作为主模型），应激活 mm-pareto-principle；用户在处理分布不均与长尾收敛问题，不是选择施力点或放大手段。",
+      "notes": "跨 skill 混淆诱饵：都在讲\"投入产出\""
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "杠杆率最高的那个方案风险大到可能让我们破产，但收益也确实最大，要选它吗？",
+      "expected_behavior": "应激活并明确提醒：书中明示杠杆率最高的选项并非总是最适合的；下行风险不可承受时不应追求最高杠杆，建议先做去风险化或找可逆路径。",
+      "notes": "边界：高杠杆 vs 可承受性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

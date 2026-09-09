@@ -1,0 +1,52 @@
+{
+  "skill": "mm-inertia",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "都说要转型，道理都懂，但组织就是推不动，为什么？",
+      "expected_behavior": "应激活 mm-inertia，估算组织惯性的\"质量\"（时间、人数、是否被质疑过），并给出持续施力方案而非一次性宣布。",
+      "notes": "最典型的正面场景：改不动"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我一直觉得鸡蛋不能多吃，虽然知道说法早变了，但心里还是犯嘀咕。",
+      "expected_behavior": "应激活本 skill，指出这是观念惯性——早年形成的、从未被质疑的核心信念，建议主动审视前提假设。",
+      "notes": "观念惯性"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们流程一直这么走，也没人问过为什么，是不是该重新看看？",
+      "expected_behavior": "应激活本 skill，把流程拆成事实与假设，逐条追问出处并判断哪些该打破、哪些该保留。",
+      "notes": "未被质疑的默认做法"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "转型方案已经定了，就是执行节奏排不明白。",
+      "expected_behavior": "不应激活本 skill，方向已定、问题在执行排期，应转向项目管理/优先级类 skill。",
+      "notes": "诱饵：方向已定只有执行问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "明知道加这个功能是更好的选择，但公司说不符合战略定位，只能放弃。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-strategy-tax（战略税）；这是长期战略带来的持续性非最优代价，惯性只是其机制。",
+      "notes": "跨 skill 混淆诱饵：机制 vs 账单"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们好不容易把\"客户第一\"变成了大家的共识，现在有人想改，要不要听？",
+      "expected_behavior": "应激活并提醒：书中明示惯性并非全是坏事，作者建议主动为组织的观念与规范创造惯性（即文化）使之长期留存；应先判断这是该打破的旧观念还是该固化的文化。",
+      "notes": "边界：惯性的正面用途"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

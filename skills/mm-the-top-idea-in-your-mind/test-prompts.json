@@ -1,0 +1,52 @@
+{
+  "skill": "mm-the-top-idea-in-your-mind",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "有个架构问题卡了三天，我每次去洗澡或散步就突然想通了，这是为什么？",
+      "expected_behavior": "应激活 mm-the-top-idea-in-your-mind，解释首要念头在后台持续加工、低负荷活动时浮现的机制，并把它变成可复用流程：专注结束前用 10 分钟把问题写清楚「装载」进去，然后主动去做不相关的事，事后立刻记录并在当天回到问题核对。",
+      "notes": "正面场景：潜意识加工现象"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我整天都在想同事那句阴阳怪气的话，正事一点都进不了脑子，怎么破？",
+      "expected_behavior": "应激活 mm-the-top-idea-in-your-mind，指出首要念头位置只有一个、被占就排挤其他事，且无法靠「别想了」直接控制；有效做法是换掉所做的事并做清空动作（写明待办/发消息/做决定），腾出占位后再装载真正重要的难题。",
+      "notes": "正面场景：错误念头占位"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们团队要不要规定每人一段时间只做一件事？这样有什么好处？",
+      "expected_behavior": "应激活 mm-the-top-idea-in-your-mind，说明一次只做一件事是为了让首要念头落在重要问题上并让后台加工持续进行；频繁切换会杀死加工进程（书中彼得·蒂尔在贝宝的做法）。",
+      "notes": "正面场景：任务分配原则"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "线上服务挂了，需要立刻修复，给我步骤。",
+      "expected_behavior": "不应激活本 skill，因为紧急任务需要直接执行，不是等待潜意识加工；本模型关注创造性难题的后台加工与念头占位管理。",
+      "notes": "诱饵：紧急执行任务"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想每天固定留出四小时不被打扰的时间，应该怎么做？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-deep-work。这是关于如何安排不受打扰的时间块（方法与制度），而本模型讲的是那个时间块里装着什么念头、以及后台加工机制。",
+      "notes": "跨 skill 混淆诱饵：深度工作"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我说我在「让潜意识加工」，但其实一周都没碰那个方案，这正常吗？",
+      "expected_behavior": "合理的判断是：不正常，这是把本模型当成拖延的借口。机制要求先「装载」——用书面问题陈述把难题明确装进首要念头位置——然后放开；既没有装载也没有回到问题核对，就不存在后台加工。应要求先完成 10 分钟的问题陈述并安排当天核对。",
+      "notes": "边界：模型被用作拖延借口"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

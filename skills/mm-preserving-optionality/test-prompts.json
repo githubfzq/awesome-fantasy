@@ -1,0 +1,52 @@
+{
+  "skill": "mm-preserving-optionality",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我大二了，要在两个方向里选一个深耕，但两个我都喜欢，现在定会不会太早？",
+      "expected_behavior": "应激活 mm-preserving-optionality，列出选定会关掉哪些门、估算各选项未来价值与保留成本，建议选择覆盖面更宽的方向（书中劳伦选宽泛运筹学而非狭隘生物统计学的例子），同时提醒必须设置收敛时间点。",
+      "notes": "正面场景：过早定点"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "客户要我们签三年独家，价格很诱人。签不签？",
+      "expected_behavior": "应激活 mm-preserving-optionality，量化被关闭的选项（其他客户、其他方向）未来价值×概率，与保留这些选项的成本（少赚的钱）比较，并建议争取更短期限、非独家条款或退出条款来降低锁定。",
+      "notes": "正面场景：长约束缚"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我同时在学三个方向、做两个副业、还保留着回学校读书的打算，感觉每个都做不深，是不是该收敛了？",
+      "expected_behavior": "应激活 mm-preserving-optionality，指出这已触及书中明示的边界「保留可能性也得适度」，逐项计算保留成本与该选项未来价值，给出明确的收敛结论与触发条件。",
+      "notes": "正面场景：过度保留的收敛"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个配色方案选 A 还是 B？选错了明天改一下就行，不用存档。",
+      "expected_behavior": "不应激活本 skill，因为决定完全可逆、没有任何选项被关闭，也不需要为保留付出成本，直接快速试错即可。",
+      "notes": "诱饵：可逆且无保留成本"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们打算换掉用了五年的核心系统，但数据迁移要半年、全公司要重学，算下来根本动不了。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-path-dependence。重点是被过去选择锁定的客观约束与切换成本估算，而不是「要不要保留未来选项」的策略选择。",
+      "notes": "跨 skill 混淆诱饵：路径依赖"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "信息还没收集完，但对方催着要答复，我能不能一直拖着等更多信息？",
+      "expected_behavior": "合理的判断是：推迟拍板是保留可能性的正当手段（书中明确列出「在信息更充分前推迟拍板」），但必须同时评估推迟本身的代价——拖延会产生的成本、对方是否会撤回offer、以及信息增加的速度。正确做法是给推迟设一个明确的截止点，并在截止前主动补齐最关键的那 1-2 项信息，而不是无限期等待；到了截止点就用现有信息做可逆的小步决定。",
+      "notes": "边界：推迟拍板 vs 无限拖延"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-power",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们想测一个能把入睡率提升 5 个百分点的功能，A/B 测试要跑多少人才够？",
+      "expected_behavior": "应激活 mm-power，固定假阳性率与期望功效（如 α=5%、power=80%），确定最小有意义效应 5 个百分点，算出所需样本量并对照时间/成本约束。",
+      "notes": "正面场景：实验前样本量估算"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "实验跑了两周没测出显著差异，是不是说明这个改动真的没用？",
+      "expected_behavior": "应激活 mm-power，指出「没测出」不等于「没效应」，先算当前样本量下的功效有多高；若功效不足，结论只能是「数据不足以判断」。",
+      "notes": "正面场景：阴性结果的误读"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "为了少招点受试者，我们把预期改善幅度从 15% 改成 30% 写进方案，这样样本量就够了，可以吧？",
+      "expected_behavior": "应激活 mm-power，引用书中助眠应用案例警告：若真实差异只有 15%，检出概率会跌到 32%，实验基本白做；应调整方案而非夸大假设。",
+      "notes": "正面场景：书中原案例"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把两份实验数据表按用户 ID 合并一下。",
+      "expected_behavior": "不应激活本 skill，因为这是数据整理任务，不涉及实验设计与检出能力。",
+      "notes": "诱饵：实验相关数据但无功效问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的告警系统每天误报几十次，把运维折腾惨了，是不是该把阈值收紧一点？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-false-positive：问题是对误报（假阳性）与漏报（假阴性）的容忍度权衡，而非实验检出能力。",
+      "notes": "跨 skill 混淆诱饵：同节内容，假阴性与功效高度相关"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "实验没做出显著性，我能不能用观测到的效应量反算一下功效，来证明「功效足够所以是真没效果」？",
+      "expected_behavior": "应激活本 skill 并给出细致判断：事后功效分析容易自证清白，应改用置信区间看效应量范围；若区间包含有实际意义的效应，就不能断言「真没效果」。",
+      "notes": "边界：事后功效分析的合理性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

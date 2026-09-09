@@ -1,0 +1,52 @@
+{
+  "skill": "mm-cascading-failure",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "昨晚我们的缓存挂了五分钟，结果全站不可用半小时。每个服务单独看都没问题，为什么会这样？",
+      "expected_behavior": "应激活 mm-cascading-failure，还原负载转移链路（缓存失效后请求全部压到数据库→数据库过载→上游超时堆积→全站不可用），并标出余量不足的承接点。",
+      "notes": "正面场景：典型雪崩复盘"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们在做新系统的架构评审，想知道哪些地方必须加熔断和隔离，哪些地方可以不用管。",
+      "expected_behavior": "应激活 mm-cascading-failure，先画负载转移图标出承接方，标注各路径冗余余量，再对高风险路径给出具体的熔断/限流/降级措施及其代价。",
+      "notes": "正面场景：设计期的级联风险识别"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们八成收入来自一个大客户，核心系统只有一位同事完全懂。我一直觉得不踏实，但说不清风险在哪。",
+      "expected_behavior": "应激活 mm-cascading-failure，用单食性依赖（熊猫与竹子）的视角指出这是无替代路径的节点，并给出降低依赖与准备替代路径的具体动作。",
+      "notes": "正面场景：组织/商业的单食性依赖"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们办公室的打印机坏了，修一下要多久？",
+      "expected_behavior": "不应激活本 skill，因为这是孤立的单点故障，失效后没有负载转移路径，不会级联；直接给维修建议即可。",
+      "notes": "诱饵：出现了「故障」但无传导结构"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们上线了一个邀请功能，用户A邀请B、B又邀请C，增长像滚雪球一样。这个传播链条该怎么加强？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-chain-reaction——这是中性且可资利用的自持传播过程，用户想的是如何引发而非如何阻断。",
+      "notes": "跨 skill 混淆诱饵：同为「连锁传导」，区分在破坏性 vs. 可利用"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们故意设计成：某个非核心服务挂掉时，把它的功能整个关掉也不影响主流程。这算不算在利用连锁故障的原理？",
+      "expected_behavior": "应激活 mm-cascading-failure 并给出书中明示的立场：这些机制本身是中性的自然法则，关键在于用在何处——主动切断转移路径（降级/熔断）正是把该原理用在正确方向上的例子，与「核能 vs. 核冬天」同理。",
+      "notes": "边界：机制的中立性与主动利用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-network-effects",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们在做一个 B2B 撮合平台，手上钱只够先把一边做起来。应该先拉供应商还是先拉采购方？",
+      "expected_behavior": "应激活 mm-network-effects，归类为双边市场效应，指出应先做透密度更高/更稀缺的一侧，并考虑用人工撮合模拟流动性直到达到临界量。",
+      "notes": "正面场景：双边市场冷启动"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的协作工具用户已经涨到十万了，但我感觉老用户并没有因为新人进来而获得更多价值。这算有网络效应吗？",
+      "expected_behavior": "应激活 mm-network-effects，用「节点之间是否交换信息或货币、新增节点是否提升老节点价值」这条判据做体检，判定这是伪网络效应并建议转向其他护城河分析。",
+      "notes": "正面场景：伪网络效应体检"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "对手的产品明显不如我们，但他们已经占了七成市场，客户就是不走。为什么？",
+      "expected_behavior": "应激活 mm-network-effects，解释节点连接数带来的非线性价值差距，并评估该网络效应强度及可能被多宿主削弱的因素。",
+      "notes": "正面场景：赢家通吃的机制解释"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们做的单机 PDF 转换工具卖得很好，用户量翻了一倍，成本摊薄了不少。接下来怎么继续降成本？",
+      "expected_behavior": "不应激活本 skill，因为这是规模经济（供给侧成本下降），节点之间不交换任何东西，不存在网络效应；应转向规模经济或成本结构分析。",
+      "notes": "诱饵：规模带来优势，但机制不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我每天坚持写技术笔记两年了，现在写起来特别快，以前积累的内容还不断被人引用带来新机会。这种感觉该怎么理解？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-flywheel——这是投入叠加到个人存量、越推越省力的飞轮结构，不涉及节点之间的连接与交换，不是网络效应。",
+      "notes": "跨 skill 混淆诱饵：与 mm-flywheel 高度相邻，区分在是否依赖节点互连"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的本地生活平台在本市做得很好，网络效应明显。但一复制到邻市就要从头再来，是不是我们的模型有问题？",
+      "expected_behavior": "应激活 mm-network-effects 但指出关键边界：网络效应被地理边界切断，每个城市是独立网络，必须按「城市逐个击穿」推进，且这种结构下全国性护城河远弱于本地护城河。",
+      "notes": "边界：网络效应的边界范围（本地 vs. 全局）"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

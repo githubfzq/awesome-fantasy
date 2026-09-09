@@ -1,0 +1,76 @@
+{
+  "skill": "power-struggle-old-wound",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我知道这事不大，但我就是受不了",
+      "expected_behavior": "调用本 skill，做成比例检验（客观严重度 vs 实际痛苦度）",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "为牙膏盖这种小事吵到想离婚，我自己都觉得荒谬",
+      "expected_behavior": "调用本 skill，指出表面议题不是真正原因",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "他一句话就能让我爆炸，事后我也觉得自己反应过度",
+      "expected_behavior": "调用本 skill，做强度不成比例的归因",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "每次都栽在同一件事上，吵完又吵，像地鼠一样打不完",
+      "expected_behavior": "调用本 skill，识别触发器与旧痛",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们冷静地谈了三次，谁也说服不了谁",
+      "expected_behavior": "不应调用本 skill；应命中 drop-your-position（强度正常的立场僵持）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他冷战三天不说话，是不是已经放弃了",
+      "expected_behavior": "不应调用本 skill；应命中 deviant-behavior-diagnosis（阶段定位）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "帮我列一个搬家清单",
+      "expected_behavior": "完全无关",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "他连续三个月没交房租，我催了五次，我很生气",
+      "expected_behavior": "不应命中 power-struggle-old-wound（强度与事件匹配，是就事论事的真实分歧）。可走协商或立场解构，但不做旧痛归因",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我爸从小打我，现在别人一大声说话我就发抖",
+      "expected_behavior": "童年躯体虐待史属创伤范畴，应转介专业创伤治疗；即便本 skill 适用也须在年代追溯步骤立即判停",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "should-not-trigger-04",
+      "type": "should_not_trigger",
+      "prompt": "我一生气就完全说不出话。我就想知道我的火气到底去哪了。",
+      "expected_behavior": "不应调用；应命中 anger-three-forms（愤怒形态追踪，不是旧痛归因）",
+      "notes": "诱饵：跨册混淆（应命中第 2 册 skill）"
+    }
+  ]
+}

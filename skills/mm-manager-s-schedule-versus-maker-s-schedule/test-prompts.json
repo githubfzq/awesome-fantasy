@@ -1,0 +1,52 @@
+{
+  "skill": "mm-manager-s-schedule-versus-maker-s-schedule",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们组工程师天天抱怨没时间写代码，白天全在开会，需求只能晚上赶。老板觉得是他们效率低。怎么破？",
+      "expected_behavior": "应激活 mm-manager-s-schedule-versus-maker-s-schedule，指出这不是效率问题而是日程单位冲突：一次会议对工程师毁掉的是半天不是一小时；量化每周被切成无法开工的半天数；给出制度性对策（每周固定无会议日、会议压缩进固定窗口、提前预约+议程），并强调保护匠人时间是组织的责任。",
+      "notes": "正面场景：典型的组织层日程冲突"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我是做数据分析的，早上刚有点思路就被拉去开个 40 分钟的会，回来全忘了。有什么办法吗？",
+      "expected_behavior": "应激活本 skill，判定用户是匠人日程，说明被打断的真实成本是半天（上下文需重新装载）；给出个人块结构模板（2-4 个 ≥3 小时整块、块内关闭通知）与向上沟通用的成本说明（会议分布表）。",
+      "notes": "正面场景：个人被组织打断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要定明年的远程办公和协作制度，研发同学强烈要求有不被打扰的时间。你建议怎么设计？",
+      "expected_behavior": "应激活本 skill，产出可写进制度的规则：固定无会议日（如周三周四）、每日会议窗口、会议提前预约并附议程、默认异步、允许远离中央办公区工作；每条写明谁执行与如何约束管理者，并设定两周后回看指标。",
+      "notes": "正面场景：制度设计"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我邮件太多回不过来，一天要处理两百封，有什么高效的做法？",
+      "expected_behavior": "不应激活本 skill。邮件处理属于天然按小时甚至按分钟切分的碎片任务，不需要连续半天的上下文，硬凑整块反而降低响应速度。应走批处理/优先级排序类建议。",
+      "notes": "诱饵：也是'时间不够用'，但任务类型不属于匠人工作"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我知道该专注，但一坐下来就想刷手机，总是进入不了状态，怎么训练自己？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-deep-work：用户的问题是个人进入并维持专注状态的能力与技巧（环境、干扰源、专注训练），而不是被他人按小时切碎日程的组织冲突。",
+      "notes": "跨 skill 混淆诱饵：同属专注议题，但一个讲个人技术、一个讲组织制度"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "线上出了 P0 事故，我需要研发同学全天随时响应，这时候还谈什么无会议日？",
+      "expected_behavior": "应激活本 skill 但指出边界：紧急事故期间打断是必要的，模型不适用；同时给出回归条件——事故结束后恢复保护模式，并对无会议日设置明确的例外审批机制（什么算例外、谁有权批），防止'例外'把制度腐蚀掉。",
+      "notes": "边界：紧急态的例外与回归机制"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-deep-work。"
+}

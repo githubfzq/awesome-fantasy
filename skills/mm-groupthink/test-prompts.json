@@ -1,0 +1,52 @@
+{
+  "skill": "mm-groupthink",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "今天会上特别顺利，十分钟就达成一致了，没人反对，是不是挺好？",
+      "expected_behavior": "应激活 mm-groupthink,指出快速一致、无人反对正是群体思维的典型信号;检查领导是否先定调、是否有人更改过原方案、争议是否被绕开,并建议补做会前独立书面意见。",
+      "notes": "正面场景:异常顺利的会议"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我是负责人，感觉我说完之后大家就都顺着我的方向说了，怎么破？",
+      "expected_behavior": "应激活 mm-groupthink,给出书中手段:自己最后发言以减少领导者影响、安排魔鬼辩护人（作为被分配的职责而非个人冒犯）、把团队拆成独立小组各自产出再汇总。",
+      "notes": "正面场景:领导者影响过大"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们准备开个集体头脑风暴，怎么组织比较好？",
+      "expected_behavior": "应激活 mm-groupthink,指出书中明确把群体思维作为“不应一开始就集体头脑风暴”的理由:先让每人独立形成判断并书面提交,再开会;同时营造质疑假说的氛围、对所有观点做批判性评估。",
+      "notes": "正面场景:流程设计阶段"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我一个人在考虑要不要换工作，帮我理清一下利弊。",
+      "expected_behavior": "不应激活本 skill,因为群体思维在定义上需要群体环境,这是个人独立判断;可用利弊清单或决策树。",
+      "notes": "诱饵:形似判断但无群体"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们让每个人在互不交流的情况下独立提交预测，再把结果汇总平均，准确率比任何单个专家都高。这是什么原理？",
+      "expected_behavior": "不应激活本 skill,应激活 mm-wisdom-of-crowds:群体的智慧恰恰以个体判断相互独立为前提,这里独立性被刻意保护了,是健康的群体决策;而群体思维是独立性被破坏后群体退化到不如个体的病症——两者都关于群体,方向却相反。",
+      "notes": "跨 skill 混淆诱饵:群体决策的好与坏"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们每次开会都安排一个人唱反调，但大家轮流来，基本就是走个形式，这样够吗？",
+      "expected_behavior": "合理判断:不够——把魔鬼辩护人做成不需承担后果的轮流形式是走过场,失去作用。魔鬼辩护人只是书中六种手段之一,还应配合会前独立书面意见（最关键）、领导者最后发言、吸纳真正持不同观点者、拆分独立小团队。同时补一句:目标不是取消一致,而是保住多样性——避免群体思维后一群人能胜过独立个体。",
+      "notes": "边界:反制机制的形式化失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-frequentist-vs-bayesian",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "新产品冷启动，一共才 30 个用户，做 A/B 完全看不出显著性，能不能先凭我们的行业经验给个判断？",
+      "expected_behavior": "应激活 mm-frequentist-vs-bayesian，说明数据稀少时频率派区间极宽、难有结论，可用贝叶斯引入先验；同时检查先验来源是否可靠，并按实用主义给出选择。",
+      "notes": "正面场景：数据少时的流派取舍"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我在报告里写「真实转化率高概率落在 3.0%~3.4%」，但同事说频率学派的置信区间不能这么写，到底谁对？",
+      "expected_behavior": "应激活 mm-frequentist-vs-bayesian，明确两派口径差异：频率派是「重复实验下约 95% 的区间命中真值」，贝叶斯才允许「真值有 95% 概率在区间内」，并要求全文统一口径。",
+      "notes": "正面场景：置信区间解释之争"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "老板特别看好这个功能，让我们把「他觉得肯定能成」这个判断直接写进模型里当先验，合适吗？",
+      "expected_behavior": "应激活 mm-frequentist-vs-bayesian，引用书中警告：强先验若源自证实偏差等认知错误，反而会离真相更远；建议检验先验来源，必要时改用频率派从零算起。",
+      "notes": "正面场景：强先验的风险"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这份实验结果表里所有 p 值小于 0.05 的行标红。",
+      "expected_behavior": "不应激活本 skill，因为这是按既定阈值做机械筛选，不涉及统计流派取舍。",
+      "notes": "诱饵：统计任务但无流派分歧"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我知道检测的灵敏度和误报率，也知道发病率，怎么换成「阳性时真有病」的概率？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-bayes-theorem：这是具体的逆概率换算，不是关于统计流派的取舍讨论。",
+      "notes": "跨 skill 混淆诱饵：都带「贝叶斯」字样，极易混淆"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们数据量很大，两派算出来结论一模一样，还有必要争论用哪派吗？",
+      "expected_behavior": "应激活本 skill 但判定无需选边：数据充足时两派趋同（书中明示估算同一基本事实），应按沟通对象与传统口径选择表述方式，而非继续争论。",
+      "notes": "边界：结论趋同时的处理"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

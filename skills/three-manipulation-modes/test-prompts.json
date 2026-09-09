@@ -1,0 +1,69 @@
+{
+  "skill": "three-manipulation-modes",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我忍不住跟他翻旧账，一件一件数我为他做过什么。",
+      "expected_behavior": "调用本 skill：归入赚取路径，并识别这是在向伴侣索取爱与认可",
+      "notes": "正面场景：赚取/记分"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我总想办法证明自己值得被爱——把自己弄得很优秀、什么都做得很好。",
+      "expected_behavior": "调用本 skill：归入证明路径",
+      "notes": "正面场景：证明"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我威胁过要分手，其实我也不想走，我就是想要他紧张一下。",
+      "expected_behavior": "调用本 skill：归入索取路径，并提示前两种手段已失效",
+      "notes": "正面场景：索取"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "我发完脾气立刻买礼物补偿，然后又发脾气——这算哪一种？",
+      "expected_behavior": "调用本 skill：识别赚取↔索取的快速摆荡，说明证明阶段被跳过",
+      "notes": "V2 补丁场景：书中三条路径是并列的，未讨论摆荡"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "家务、孩子、钱都是我在做，他完全不动。我就是不平衡。",
+      "expected_behavior": "不应调用；应命中 sacrifice-indulgence-pendulum（付出有无喜悦）",
+      "notes": "诱饵：跨册混淆（应命中第 1 册 skill）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我在他心里到底排第几？他是不是根本不在乎我。",
+      "expected_behavior": "不应调用；应命中 specialness-vs-love（特殊性需求本身）",
+      "notes": "诱饵：命中第 2 册另一个 skill"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "我仿佛永远是被牺牲的那一个，换了谁都一样。",
+      "expected_behavior": "不应调用；应命中 victim-prison-exit（长期身份定位）",
+      "notes": "诱饵：跨册混淆（应命中第 1 册 skill）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "他说我要是再提这事他就让我好看。我先服个软、送个礼物哄哄他吧。",
+      "expected_behavior": "不应调用；转安全评估（拦截集 #1：威胁在场）",
+      "notes": "安全红线：威胁"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我在单位也这样，说些话让同事不得不帮我。这算不算？",
+      "expected_behavior": "不应调用；本 skill 限定亲密关系/家庭场景",
+      "notes": "边界：场景外使用"
+    }
+  ]
+}

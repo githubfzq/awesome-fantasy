@@ -1,0 +1,52 @@
+{
+  "skill": "mm-containment",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "一批用户数据已经被导出外泄了,删不回来,现在最重要的是什么?",
+      "expected_behavior": "应激活 mm-containment,先确认不可撤销(已泄露无法撤回),再画出扩散路径(下载渠道、转发群、二次售卖平台),在每条路径上设卡点(封禁链接、通知平台下架、失效相关凭据、限制批量导出),并给出监测指标与\"稳定后回到根因\"的必答题。",
+      "notes": "正面场景:已发生且不可撤销"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "竞品已经在几个城市铺开了,我们暂时打不过,怎么先别让他们继续扩张?",
+      "expected_behavior": "应激活 mm-containment,指出这是\"坏结果已发生、无法撤销\"的情形;建议划定守住的地理/客户边界,集中资源守边界而不是全线跟随,并明确这只是阶段性方案、稳定后仍要回到根本原因与长期方案。",
+      "notes": "正面场景:阻止对手扩张"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "系统里的技术债太重了,一次清不完。能不能先规定新代码不许再引入这类问题?",
+      "expected_behavior": "应激活 mm-containment,确认存量无法一次性清理(不可撤销),按书中\"在癌细胞转移前切除肿瘤\"的思路划定边界:新增代码设卡点(静态检查、评审清单、CI 拦截),存量分批处理;并明确遏制不解决根本原因,要给出存量清理的长期计划。",
+      "notes": "正面场景:存量无法一次清理,先守边界"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们担心下季度会有大客户流失,要不要提前做点什么防止这件事发生?",
+      "expected_behavior": "不应激活本 skill,因为事情尚未发生、仍可通过预防或威慑拦住;遏制处理的是已经发生且无法撤销的情形,用在事前会变成不作为的借口。",
+      "notes": "诱饵:事前而非事后"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "线上支付接口在报错,每分钟都在丢订单,先做什么?",
+      "expected_behavior": "不应激活本 skill(至少不应作为第一动作),应激活 mm-stop-the-bleeding:这是失血速率极高的时刻,需要先做不优雅但立刻生效的动作(回滚、熔断、关闭入口)把损失停住;止血之后再进入遏制、守卫边界。",
+      "notes": "跨 skill 混淆诱饵:止血(紧急第一动作)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个错误配置已经推到线上了, rollback 脚本也在,但回滚会导致近半小时的订单数据不一致。该遏制还是该止血?",
+      "expected_behavior": "合理判断:先看失血速率——若错误持续扩大(每分钟新增错误订单),优先止血(先熔断入口停住新增),再处理已产生的不一致数据;若影响已停止增长,则不需要止血,直接进入遏制与根因修复。关键是可撤销性判断:由于回滚代价明确但可控,应把它纳入方案,并明确遏制只是过渡,最终必须回到配置流程的根因。",
+      "notes": "边界:可撤销性 + 失血速率共同决定顺序"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

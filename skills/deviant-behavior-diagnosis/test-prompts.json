@@ -1,0 +1,76 @@
+{
+  "skill": "deviant-behavior-diagnosis",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "他最近总是故意做一些让我难受的事，我说什么他都唱反调",
+      "expected_behavior": "调用本 skill，做四型定位（注意/权力斗争/报复/自我放逐）",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们已经冷战三天了，他一句话都不说，我想知道这算不算已经很严重了",
+      "expected_behavior": "调用本 skill，定位到情绪抽离并判断严重度（核心是阶段判断，不是怎么谈）",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "他彻底放弃了，我们现在就是各过各的，像合租室友",
+      "expected_behavior": "调用本 skill，定位到④自我放逐并说明紧迫性",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "孩子最近总在学校惹事，老师三天两头找我",
+      "expected_behavior": "调用本 skill，四型原生场景（尼尔森四型本为儿童建立）",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们昨天为谁洗碗大吵一架，我现在还在气头上",
+      "expected_behavior": "不应调用本 skill；应命中 eight-questions-communication（单次冲突，不是持续模式）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我就是受不了他那种人，一看到他就来气",
+      "expected_behavior": "不应调用本 skill；应命中 shadow-figure-integration（对人反感，不是行为阶段）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "帮我看看这份租房合同有没有坑",
+      "expected_behavior": "完全无关，不应调用任何关系 skill",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "他最近开始摔东西、推搡我，虽然还没真的打我",
+      "expected_behavior": "不应做四型定位；这是安全预警，应先做安全评估。家暴属于安全议题不是阶段议题",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我们一周没说话了，但以前也这样，过几天自己就好了",
+      "expected_behavior": "边界：需先判断这是习惯性模式还是真的恶化；若是长期习惯则可能不适用本 skill",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "should-not-trigger-04",
+      "type": "should_not_trigger",
+      "prompt": "我一吵架就僵住，一个字都说不出来。我想知道我的愤怒去哪了。",
+      "expected_behavior": "不应调用；应命中 anger-three-forms（单次冲突中的形态自检，不是阶段诊断）",
+      "notes": "诱饵：跨册混淆（应命中第 2 册 skill）"
+    }
+  ]
+}

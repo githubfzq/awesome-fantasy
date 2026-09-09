@@ -1,0 +1,52 @@
+{
+  "skill": "mm-burn-the-boats",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我想把工作辞了全职做自己的项目,觉得留着工作就永远做不成。要不要断了这个退路?",
+      "expected_behavior": "应激活 mm-burn-the-boats,先验证方向——要求给出2-3条外部证据(付费用户、已有收入、他人承诺)而非内部热情;确认失败后能否退回到哪、多久恢复;然后选择最小不可逆剂量(如先每周投入20小时+公开截止日),而不是直接全职。",
+      "notes": "正面场景:典型自绝退路诉求"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "想公开宣布三个月后上线并砍掉旧版本,逼团队背水一战。这样行吗?",
+      "expected_behavior": "应激活 mm-burn-the-boats,检查方向是否已验证、砍掉旧版本是否可逆;区分'断自己的退路'(OK)与'断团队的退路'(需团队参与决策,否则是胁迫);给出递减强度的方案并推荐可逆性最强但同样能凝聚的那一档;同时设失败判定点以便纠偏。",
+      "notes": "正面场景:用公开承诺逼团队"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想把所有资源压到这一个方向上,不做任何备选。是不是决心越大越容易成?",
+      "expected_behavior": "应激活 mm-burn-the-boats,明确破釜沉舟提升的是执行强度而非方向正确性;要求先给出外部验证证据,并说明若方向本身是错的,断退路只会让你更高效地抵达失败;建议保留最小限度的纠偏信号与失败判定点。",
+      "notes": "正面场景:决心与方向正确性的混淆"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "创业初期市场变化很快,我们在同时试两个方向,暂时不想收窄。",
+      "expected_behavior": "不应激活本 skill,因为环境高度不确定、需要保留多个选项,此时自绝退路与'保留可能性'直接冲突;强行聚焦只会提高判断错误的代价。",
+      "notes": "诱饵:聚焦诉求但实为需要保留选项"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "被裁了,我很生气,打算在离职那天把群退了、把几个同事也都拉黑,再也不联系。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-burning-bridges:破坏的是**与他人的关系**而非自己的退路,方向朝后、属于书中列为应避免的做法;破釜沉舟是主动切断自己的退路以向前,二者方向相反。",
+      "notes": "跨 skill 混淆诱饵:过河拆桥(书中明确澄清的方向相反)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我打算用全部积蓄押上这个项目,不给自己留任何后路——科尔特斯不就是这么赢的吗?",
+      "expected_behavior": "合理判断:需要区分激励效果与风险结构。若'全部积蓄'包含家庭基本保障或失败后无法恢复,这已超出破釜沉舟的适用范围(失败即毁灭),应明确劝阻;并指出幸存者偏差——科尔特斯和恺撒赢了所以故事被留下,沉船后全军覆没的例子不会写进教科书。建议改为:保住生存底线的前提下,做一档足够有痛感但可恢复的不可逆承诺(公开截止日、时间投入、可承受的资金上限),这样既获得凝聚效果又不至于毁灭。",
+      "notes": "边界:破釜沉舟的适用剂量与生存底线"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-texas-sharpshooter-fallacy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这次改版整体数据没什么变化，但我看了下细分，25-34 岁的 iOS 用户转化率提升了 12%，p<0.05。可以直接按这个方向上线吧？",
+      "expected_behavior": "应激活 mm-texas-sharpshooter-fallacy，问清这个细分是事先定的还是看了数据之后挑的，还原一共检验了多少个细分维度，算随机基线下出现这种显著结果的期望次数，并要求用固定边界在独立实验上复现。",
+      "notes": "正面场景：最典型的细分挑显著"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "项目失败了我一点也不意外，我早就知道会这样——你看三个月前那份报告里第三页那段，明明就预警过了。",
+      "expected_behavior": "应激活 mm-texas-sharpshooter-fallacy，指出这是事后从大量材料中挑出支持性片段（先射箭后画靶），要求说明这一预警是否在事前被明确提出并作为决策依据，而不是事后才被指认。",
+      "notes": "正面场景：事后诸葛亮的证据挑选"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "最近半年我们这个区出现了好几例同一种罕见病，居民怀疑是旁边的工厂。该怎么判断？",
+      "expected_behavior": "应激活 mm-texas-sharpshooter-fallacy，追问这个「区」的边界和「最近半年」的时间窗是怎么定的、边界滑动后是否仍然聚集，并算随机基线下出现这种聚集的期望次数；若确实超出基线，再转入环境与流行病学调查。",
+      "notes": "正面场景：空间/时间聚集的判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们在实验开始前就写好了假设：新流程会把平均处理时长降低 10% 以上，并且预先确定了样本量和判定标准。现在实验跑完了，该怎么读结果？",
+      "expected_behavior": "不应激活本 skill，因为假设与判定标准都是事前设定的，这是正常的假设检验；应转向检查统计功效与结果解读。",
+      "notes": "诱饵：数据分析场景，但靶子是事先画的"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们跑了几十种用户分群和指标组合，终于找到一个 p<0.05 的显著结果，可以直接写进报告用了吧？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-data-dredging——这是反复检验直到显著的方法论问题（可用多重比较校正处理），而不是围绕已有结果事后定义目标的逻辑问题。",
+      "notes": "跨 skill 混淆诱饵：与 mm-data-dredging 都涉及多次检验，区分点在「统计可校正」还是「靶心事后定义」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们是在探索性分析里偶然发现这个模式的，但换个时间段的数据它还在，而且强度差不多。这还算得州神枪手吗？",
+      "expected_behavior": "应激活本 skill 但给出更正：事后发现本身不必然是谬误，既然已在独立时间段复现，处理方式应从「判定为谬误」转为「升级为正式假设并预先注册后验证」；关键判据是复现，而不是发现的先后顺序。",
+      "notes": "边界：事后发现 + 复现成功"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

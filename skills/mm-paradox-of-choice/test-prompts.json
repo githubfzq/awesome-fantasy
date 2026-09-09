@@ -1,0 +1,52 @@
+{
+  "skill": "mm-paradox-of-choice",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我拿到了一个很好的 offer 也入职了，但每天都在刷招聘软件，总觉得还有更好的机会。",
+      "expected_behavior": "应激活 mm-paradox-of-choice，先确认是「选完不满意」而非「客观选错」，然后关闭持续扫描（取关招聘推送/卸载 App），把标准从最优改成满足（列三条当初的判据逐条打勾），并在固定承诺期内只投资已选路径。",
+      "notes": "正面场景：书中的作者亲身经历"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "刚买的相机用着挺好的，但我一直看测评，越看越觉得自己买亏了，心里堵得慌。",
+      "expected_behavior": "应激活 mm-paradox-of-choice，指出这是未选项的机会成本显性化造成的满意度稀释，执行停止扫描、回归「满足型」判据、给未选项做一次正式告别。",
+      "notes": "正面场景：购后后悔"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "自由职业之后能做的事太多了，我什么都想试，结果一年过去什么都没做成，还很焦虑。",
+      "expected_behavior": "应激活 mm-paradox-of-choice，说明选项过多本身在制造焦虑与空转，要求主动收敛到一条路径、设定承诺期与期内产出，并停止持续扫描新方向。",
+      "notes": "正面场景：无限可能性导致空转"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "公司只给了一个岗位，我没得挑，只能去。",
+      "expected_behavior": "不应激活本 skill，因为没有「选项过多」这个前提，本模型描述的是选项丰富带来的情绪代价，不适用于无选择权的情形。",
+      "notes": "诱饵：无选择权"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的注册页有 15 个套餐，用户要花很久才能选完，怎么提速？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-hick-s-law。这是选项数量导致的决策时间成本（对数增长），解药是分层与收敛选项；而不是选完之后的焦虑与后悔。",
+      "notes": "跨 skill 混淆诱饵：席克定律（书中明确划界）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我选错了专业，是真的不适合我，不是因为想太多——这也算选择的悖论吗？",
+      "expected_behavior": "合理的判断是：不算。检验方法是问「如果只有两个选项你还会不满意吗」——若不会、且存在客观硬伤（能力严重不匹配、身心排斥），属于客观选错，应转入重新决策路径（转专业/转行评估），本 skill 不适用，不应做情绪层面的「停止扫描」建议。",
+      "notes": "边界：客观选错 vs 选项过多"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

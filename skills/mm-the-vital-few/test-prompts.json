@@ -1,0 +1,52 @@
+{
+  "skill": "mm-the-vital-few",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个迭代有三十条需求，时间只够做五六条，挑哪几条最有用？",
+      "expected_behavior": "应激活 mm-the-vital-few，逐条估计贡献，圈出贡献最高的少数几项，把其余明确标注为可接受的不完美，并给出及格标准。",
+      "notes": "最典型的正面场景：从清单挑少数"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "想提高页面浏览量，是不是每个页面都要优化一遍？",
+      "expected_behavior": "应激活本 skill，指出应重点优化标题与主图构成的主页面（hero section），其余做到及格即可——这正是书里给出的例子。",
+      "notes": "页面优化 concentration"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "客诉清单上一百多条，团队想全部处理完，但人手不够。",
+      "expected_behavior": "应激活本 skill，估计每条贡献，标出关键的少数，其余标记为可接受的不完美，并先确认其中没有不可省略的底线项。",
+      "notes": "问题列表过长"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我还没想好该把精力投在哪几个方向，能给点思路吗？",
+      "expected_behavior": "不应激活本 skill，还没有候选清单、需要发散找方向，应激活 mm-high-leverage-activities（高杠杆活动）。",
+      "notes": "诱饵：都是找重点"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "为什么总是 20% 的人掌握 80% 的财富，这个规律的学名叫什么？",
+      "expected_behavior": "不应激活本 skill，这是在问 80/20 分布规律本身，应激活 mm-pareto-principle（帕累托法则）。",
+      "notes": "跨 skill 混淆诱饵：规律 vs 行动主张"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "剩下的那些琐事贡献确实小，但其中有安全检查和合规项，能一起放弃吗？",
+      "expected_behavior": "可激活但要先筛查：贡献小不等于可省略，底线项（安全、合规、备份）缺失会造成系统性问题，应先确认后再区分\"做不到位\"与\"不能不做\"。",
+      "notes": "边界：微不足道的多数里的底线项"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

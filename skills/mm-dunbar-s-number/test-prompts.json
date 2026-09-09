@@ -1,0 +1,52 @@
+{
+  "skill": "mm-dunbar-s-number",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们公司从 90 人涨到 180 人了，以前那种'喊一嗓子就开工'的方式彻底不行了，跨部门的事老是掉球。",
+      "expected_behavior": "应激活 mm-dunbar-s-number，说明已跨过 150 阈值、靠隐性共识维系的协作会突然失效；盘点靠熟人记忆维系的事项（谁负责什么、需求怎么提、跨团队怎么对接），按'误解代价 × 依赖熟人记忆程度'排序取前 3 项，为它们设计显性架构（明确责任人、书面流程、接口人机制），并给出过渡期安排。",
+      "notes": "正面场景：典型跨阈值组织失灵"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "老板说明年要扩到 300 人，让我现在就想想管理上要提前准备什么。",
+      "expected_behavior": "应激活本 skill 并突出前瞻性价值：在逼近阈值前规划调整适应期；输出'当人数达到 X 时启动 Y 机制'的阈值触发式预案表，而不是等崩了再补。",
+      "notes": "正面场景：前瞻规划（本模型价值最大的用法）"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我已经认不全团队里的人了，很多事我以为他在做、他以为我在做。这是怎么回事？",
+      "expected_behavior": "应激活本 skill，判定这是隐性共识出现空洞（关系图装不下），定位到规模档位，然后要求把'谁对什么负责'显性化为明确责任人/直接负责人机制，而不是靠多开会解决。",
+      "notes": "正面场景：典型症状描述"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们 12 个人的小团队，大家想法都太一致了，没人提反对意见，感觉有问题。",
+      "expected_behavior": "不应激活本 skill。人数远低于阈值，且问题是凝聚力过强压制异议，方向与本模型相反。应激活 mm-groupthink（引入魔鬼辩护人、指定唱反调者）。",
+      "notes": "诱饵：也是群体问题，但方向相反（过凝聚 vs. 超限）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们团队 30 人，最近要重新设计小组划分和汇报层级，不同人数规模该配什么机制？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-group-size-thresholds：用户问的是整套档位（10~15 / 30~50 / 150）各自该换什么机制，而不是 150 这个最终上限的突变问题。",
+      "notes": "跨 skill 混淆诱饵：同一概念家族，但粒度不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们 145 人，暂时还没出问题，但我担心一过 150 就要崩。是不是该现在就上全套流程？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：方向对（提前规划适应期），但要避免一刀切——150 是量级估计不是物理常数，取决于沟通密度与流动率；只应优先显性化'误解代价高'的前几项，创新探索类事务明确保持隐性，否则会把高效变官僚。",
+      "notes": "边界：提前量与过度流程化之间的度"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-group-size-thresholds。"
+}

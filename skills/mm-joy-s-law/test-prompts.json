@@ -1,0 +1,52 @@
+{
+  "skill": "mm-joy-s-law",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们项目卡了三个月，就是因为缺一个厉害的架构师。招了大半年都没招到，怎么办？",
+      "expected_behavior": "应激活 mm-joy-s-law，指出'只招十倍人才'反复受挫本身是信号，转向重新设计岗位与项目，让现有成员在自己的个性条件下产出更高",
+      "notes": "正面场景：典型人才依赖假设"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "要不要花两倍薪水挖竞品的那个技术大牛过来？他一来我们的问题就都解决了。",
+      "expected_behavior": "应激活本 skill，说明高产出依赖原组织的角色/资源/人脉组合，换了环境未必可复制，并要求先评估现有队伍的替代方案",
+      "notes": "正面场景：挖明星的诱惑"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "I'm not smart enough to do this. Our team just doesn't have the talent the competitors have.",
+      "expected_behavior": "应激活本 skill，破除'大多数最聪明的人在为我们工作'的反向误解，引导到岗位与项目设计的杠杆点",
+      "notes": "正面场景：个人层面的自我否定"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我写一则高级前端工程师的招聘 JD，再列几个靠谱的招聘渠道。",
+      "expected_behavior": "不应激活本 skill，因为这是招聘执行问题（渠道与文案），不涉及'成败是否押注在明星人才上'的假设",
+      "notes": "诱饵：与人才相关但层级不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们小团队人少，什么活都得干，我在想要不要招个专做数据安全的全职，还是继续让大家都懂一点、遇到难题外包。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-generalists-versus-specialists（通才与专家）：核心问题是专业问题出现频率能否养一个全职岗位",
+      "notes": "跨 skill 混淆诱饵：同属人才结构议题"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们做的是心脏介入手术机器人，这个岗位必须要有执业医师资格的人来负责。招不到就是做不了。",
+      "expected_behavior": "可激活本 skill 检验，但应诚实指出：硬性资质要求下'重新设计岗位'无法替代资质，本模型的杠杆点不适用，应转为资质获取或合作路径（书中未覆盖此类情形）",
+      "notes": "边界：硬性资质约束下模型失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

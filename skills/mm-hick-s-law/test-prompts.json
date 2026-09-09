@@ -1,0 +1,52 @@
+{
+  "skill": "mm-hick-s-law",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的定价页有 12 个套餐，用户停留很久然后就流失了，怎么改？",
+      "expected_behavior": "应激活 mm-hick-s-law，先数出该决策点一次呈现的选项数，判断瓶颈是数量还是可分辨度（12 个套餐是否能一句话说清差别），然后改为分层呈现、每步降到 7 个以内，并给出推荐项与默认值，最后用停留时长与跳出率做前后验证。",
+      "notes": "正面场景：定价页选项过多"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "网站导航栏要放 20 多个入口，怎么组织用户才能更快找到？",
+      "expected_behavior": "应激活 mm-hick-s-law，说明决策时间随选项数对数增长，建议按粗粒度维度分层（先选大类再选细分项），层级不超过 3 层，并避免为精简而砍掉必要入口。",
+      "notes": "正面场景：导航分区设计"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "注册表单填到一半就放弃了，是不是字段和选项太多了？",
+      "expected_behavior": "应激活 mm-hick-s-law，清点每个决策点的同时可见选项数，把一次 N 选 1 拆成向导式分步选择，并给最常见场景设默认值。",
+      "notes": "正面场景：表单流失"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我选了这份工作以后一直后悔，总觉得当时另一个 offer 更好，每天都很难受。",
+      "expected_behavior": "不应激活本 skill，因为这是选完之后的后悔与不满，属于情绪成本而非决策时间；应改用 mm-paradox-of-choice。",
+      "notes": "诱饵：看似选项问题实为后悔情绪"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "职业选择太多了，我每天都在想是不是错过了更好的那条路，越想越焦虑。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-paradox-of-choice。作者明示选项过多除了增加决策时间还可能导致焦虑，焦虑部分归选择的悖论；席克定律只覆盖时间成本。",
+      "notes": "跨 skill 混淆诱饵：选择的悖论（书中明确划界）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们做图片素材站，用户就是来逛的，一屏给 100 张缩略图，要不要按席克定律砍到 8 张？",
+      "expected_behavior": "合理的判断是：浏览/探索型场景的决策慢不是问题，砍选项会损害体验，属本 skill 的排除区。正确做法是保留大列表但提供筛选与分层维度（先选风格/色调再浏览），让主动搜索的用户能快速收敛，让闲逛的用户不受影响。",
+      "notes": "边界：探索型场景不适用砍选项"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-sunk-cost-fallacy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个项目已经砸了两年和几百万，虽然看不到希望，但现在放弃太可惜了。",
+      "expected_behavior": "应激活 mm-sunk-cost-fallacy，把已投入与未来要投入分开，宣布已投入退出决策，评估成功概率并按机会成本比较继续与转向。",
+      "notes": "最典型的正面场景：骑虎难下"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这本书我看了一半，虽然很无聊但还是想看完，不然前面的时间白费了。",
+      "expected_behavior": "应激活本 skill，指出已花掉的时间不可收回，用\"如果现在还没看，你还会开始吗\"作为判据。",
+      "notes": "日常小决策场景"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这段关系已经消耗我五年了，但一想到前面五年就下不了决心。",
+      "expected_behavior": "应激活本 skill，识别\"下注后信心上升\"与声誉顾虑等阻力，给出按机会成本比较继续与转向的判断框架。",
+      "notes": "关系场景"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我手上有两个 offer，一个钱多一个成长好，该选哪个？",
+      "expected_behavior": "不应激活本 skill，还没有任何不可收回的投入，这是典型的机会成本比较问题，应激活 mm-opportunity-cost。",
+      "notes": "诱饵：尚未投入"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这只股票亏了 30%，我就是受不了割肉那个感觉，一直拖着不敢看账户。",
+      "expected_behavior": "不应激活本 skill（作为主模型），用户描述的是怕失去的情绪机制本身，应激活 mm-loss-aversion；沉没成本谬误是被这种情绪驱动出的决策错误。",
+      "notes": "跨 skill 混淆诱饵：常同时出现，极易误调"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "创业三年一直没起色，团队也跟着熬了很久，我该不该结束？",
+      "expected_behavior": "可激活但要权衡：对成功而言灵活度与韧性同等甚至更重要，且涉及对团队的责任与声誉成本，不能简单把坚持标签为谬误；应评估成功概率与机会成本后再给结论。",
+      "notes": "边界：止损 vs 韧性与他人责任"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-collateral-damage",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们打算上一版风控规则，命中黑名单关键词就直接封号。上线前要不要想点什么？",
+      "expected_behavior": "应激活 mm-collateral-damage，列出与目标共享属性但并非目标的第三方（同名/同 IP/同设备/误触词的正常用户），给出受损形式、严重度、是否可逆，并设计救济通道。",
+      "notes": "最典型的正面场景：批量规则上线前"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "公司要裁掉整个测试团队，反正研发自己也能测，影响应该只在那几个人身上吧？",
+      "expected_behavior": "应激活本 skill，指出冲击会沿依赖链扩散：遗留的回归风险、研发被占用的时间、其他团队对质量信号失去信任，并给受损方按严重度排序。",
+      "notes": "组织动作的溢出"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们打算下线一个老接口，已经没人调用了，直接关掉没问题吧？",
+      "expected_behavior": "应激活本 skill，枚举同依赖方（下游服务、外部合作方、历史数据回放、脚本），确认受损可逆性后再定灰度与通知方案。",
+      "notes": "技术动作的溢出"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "封掉这些刷单账号本来就是要让他们付出代价，他们投诉很正常，不用管。",
+      "expected_behavior": "不应激活本 skill，因为受损者正是行动的目标对象，这属于权衡取舍与正当性判断，不是附带损害。",
+      "notes": "诱饵：目标内的人抱怨 ≠ 附带损害"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "工厂排污让下游渔民收入下降，但这笔成本没算进工厂的账里，该怎么处理？",
+      "expected_behavior": "不应激活本 skill，这是成本被第三方承担却未进入决策者账目的定价问题，应激活 mm-externalities（外部性）。",
+      "notes": "跨 skill 混淆诱饵：都是\"别人受损\""
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "为了绝对不误伤任何用户，我们把所有自动封禁都改成了人工审核，结果风控基本瘫痪。",
+      "expected_behavior": "可激活但要指出这是本模型的过度使用：应只对严重且不可逆的受损项改方案，其余加救济通道，而不是取消全部自动化。",
+      "notes": "边界：预防成本压垮了行动本身"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-experimental-mindset",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们团队的周会又长又没用，我想改但不知道改成什么样，怕改完更糟。",
+      "expected_behavior": "应激活 mm-experimental-mindset，把\"要不要改周会\"拆成一个两周内能跑完的小试验（如改为站会+书面同步），事前定好可观测判据（会议时长、待办产出数），限定最坏损失（两周时间，可回退），到期按原判据判定继续或放弃。",
+      "notes": "正面场景：想改但怕试错"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "产品增长停了半年，大家都在提想法，但谁也不敢拍板，怎么办？",
+      "expected_behavior": "应激活 mm-experimental-mindset，说明最成功且适应性最强的组织都在不断完善自己的工作方式，建议把每个候选想法变成一排可并行的小试验、各自事前定判据与爆炸半径，让数据代替拍板。",
+      "notes": "正面场景：增长停滞需要突破口"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我在这个岗位干了五年，感觉一直在做同样的事，也说不上不好，就是没劲。",
+      "expected_behavior": "应激活 mm-experimental-mindset，援引作者本人的例子（从打造产品→打造公司→打造可持续商业模式），建议定期重问\"我现在该做的事还是这件事吗\"，并设计一个小规模试验（如接手一个跨职能项目）来验证新方向。",
+      "notes": "正面场景：个人工作内容需要重新实验"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们要验证新药到底有没有效果，需要得出可以发表的严格结论，该怎么做？",
+      "expected_behavior": "不应激活本 skill，因为这需要可复现、可发表的严格因果结论，试验态度代替不了规范方法；应改用 mm-scientific-method 或 mm-randomized-controlled-experiment。",
+      "notes": "诱饵：需要严格方法而非试验态度"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "公司考虑要不要整个业务方向转型，这是个大决定，能不能多做几次小试验试试？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-pivot。用户面对的是方向性的重大改辙，属于转型决策；实验思维适用于日常小步微调，在不可逆且代价极高的决策上用它反而会低估风险。",
+      "notes": "跨 skill 混淆诱饵：转型（方向改辙 vs 小步试验）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们试了三种新方法，结果都不理想，但大家各说各的好，谁也说服不了谁。",
+      "expected_behavior": "合理判断：问题出在试验前没有定好判据——事后总能找到支持自己的解释，这正是实验思维最容易失效的地方。正确做法是回到源头，为每个试验补记\"当时说好的成功/失败标准是什么\"，若确实没有，则承认这三轮不算试验只能算尝试，重来一轮并把判据写在试验开始之前；同时提醒：当信息已充分时，继续\"再试一次\"可能是逃避拍板。",
+      "notes": "边界：无事前判据的假试验"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

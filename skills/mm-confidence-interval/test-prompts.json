@@ -1,0 +1,52 @@
+{
+  "skill": "mm-confidence-interval",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "调研显示新功能满意率是 68%，我们要不要就按这个数字对外宣布？",
+      "expected_behavior": "应激活 mm-confidence-interval，指出点估计不等于真实值，要求给出 95% 置信区间与宽度，并判断区间是否窄到足以支撑对外宣布。",
+      "notes": "正面场景：点估计直接对外"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "新闻说候选人 A 支持率 48%、候选人 B 45%，是不是 A 明显领先？",
+      "expected_behavior": "应激活 mm-confidence-interval，提示媒体常常不附误差条/置信区间，应追问误差范围并比较区间是否重叠，而不是比较点估计。",
+      "notes": "正面场景：媒体报道缺误差范围"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "A 版本转化率 3.2%，B 版本 2.7%，差距 0.5 个百分点，能说 A 更好吗？",
+      "expected_behavior": "应激活 mm-confidence-interval，用两组区间是否重叠/差异区间是否跨越 0 来判断，而非只看点估计大小。",
+      "notes": "正面场景：两组比较"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这三款产品的成本从低到高排个序，选最便宜的。",
+      "expected_behavior": "不应激活本 skill，因为这是确定性数值的排序，不涉及抽样估计与不确定性区间。",
+      "notes": "诱饵：数值比较但无抽样不确定性"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个实验的 p 值算出来是 0.01，是不是就可以说结果具有统计显著性了？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-p-value：问题聚焦于显著性判据本身，而非效应量的可能范围。",
+      "notes": "跨 skill 混淆诱饵：P 值与置信区间常一起被提及"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "能不能直接告诉我「真实转化率高概率落在 3.0% 到 3.4% 之间」？这样业务方最容易理解。",
+      "expected_behavior": "应给出细致判断：这句话是贝叶斯可信区间的口径；频率学派置信区间不能这样表述（真实值要么在区间内要么不在），需先确认口径再输出，避免把两种解释混为一谈。",
+      "notes": "边界：频率学派 vs 贝叶斯口径的解释差异"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

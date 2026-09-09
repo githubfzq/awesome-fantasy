@@ -1,0 +1,52 @@
+{
+  "skill": "mm-confirmation-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我想辞职去做独立开发，查了一周资料，找到的案例都是成功的，感觉很有把握。",
+      "expected_behavior": "应激活 mm-confirmation-bias，指出搜索路径只覆盖成功案例（幸存者偏差叠加），要求写出 3 条能推翻该决定的条件（如'独立开发者中月收入超过原薪资的比例是多少'），主动去查失败样本与基础比率，并用魔鬼辩护人以最强形式陈述反方。",
+      "notes": "正面场景：结论已定 + 只收集支持证据"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这份市场报告列出了十几条看好这个赛道的理由，领导让我评估一下靠不靠谱。",
+      "expected_behavior": "应激活本 skill，检查报告是否只挑有利证据、反例去哪了；写出能推翻其结论的具体条件并查证；检查是否存在把中性数据解释成有利证据的情况，最后给出修正后的置信度与'什么证据会让我改判'。",
+      "notes": "正面场景：评估他人论证的证据收集方式"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "当初明明有人提醒过风险，为什么我们整个团队都当没看见？",
+      "expected_behavior": "应激活本 skill，解释机制（质疑核心假设的心理代价、集体层面的保护既有结论），并引用书中旁证：局外人因不深信现有范式、不怕声誉受损反而更容易看见反常；建议用灰度思考与魔鬼辩护人改造决策流程。",
+      "notes": "正面场景：复盘集体性忽略预警信号"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "服务器正在告警、用户已经开始投诉了，赶紧帮我想怎么止血！",
+      "expected_behavior": "不应激活本 skill。需要立即行动的场景下做偏差校正是错配，应先止损（mm-stop-the-bleeding），事后复盘时再做证据链审计。",
+      "notes": "诱饵：涉及判断，但时间不允许做偏差审查"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个事我还没想好站哪边，想先把所有事实听完再下结论。有几种做法？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-thinking-gray：用户正在做的正是'推迟判断'——灰度思考是预防证实偏差的手段（尚无结论故无从证实），而证实偏差处理的是结论已形成后的证据筛选。两者是预防与治疗的关系。",
+      "notes": "跨 skill 混淆诱饵：书中把灰度思考列为对抗证实偏差的工具之一"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我也找了反对意见啊，列了五条，但都很弱，驳倒了。这算不算已经排除偏差了？",
+      "expected_behavior": "应激活本 skill 并指出这是'假装寻找反证'的典型形态：以最弱形式构造反方再轻松驳倒。要求按芒格标准以最强形式陈述反方论点（比对方更好地陈述它），并重新执行能推翻结论的具体条件的查证。",
+      "notes": "边界：形式上做了反证搜索但实质无效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-thinking-gray。"
+}

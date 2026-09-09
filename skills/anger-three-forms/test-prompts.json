@@ -1,0 +1,69 @@
+{
+  "skill": "anger-three-forms",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我一生气就不说话，他追着我要答案，我更说不出来。",
+      "expected_behavior": "调用本 skill：识别撤退形态，指出三种形态目标同为「避免痛苦」",
+      "notes": "正面场景：撤退"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我嘴上说没事没事，但我心里知道我其实是在惩罚他。",
+      "expected_behavior": "调用本 skill：识别被动式攻击形态",
+      "notes": "正面场景：被动攻击"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们吵完架能冷战一个礼拜，两个都不说话。",
+      "expected_behavior": "调用本 skill：双方同形态的处理",
+      "notes": "V2 补丁场景：书中默认一人占一种"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "吵完我就后悔，下一次还是一样——我的火气到底去哪了？",
+      "expected_behavior": "调用本 skill：追踪愤怒的形态转换",
+      "notes": "正面场景：事后自检"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "他最近总是忘事、冷战好几天、好像已经彻底放弃了。这段关系还要不要继续？",
+      "expected_behavior": "不应调用；应命中 deviant-behavior-diagnosis（阶段与止损判断）",
+      "notes": "诱饵：跨册混淆（应命中第 1 册 skill）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我知道我反应过度了，但他一句话就能让我炸。",
+      "expected_behavior": "不应调用；应命中 power-struggle-old-wound（强度不成比例=旧痛）",
+      "notes": "诱饵：跨册混淆（应命中第 1 册 skill）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "我们吵了三个小时，给我一个明天能用的谈话流程吧。",
+      "expected_behavior": "不应调用；应命中 eight-questions-communication（对话流程）",
+      "notes": "诱饵：跨册混淆（应命中第 1 册 skill）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "他摔东西、堵着门不让我走。我一生气就完全说不出话。",
+      "expected_behavior": "不应调用；转安全评估（拦截集 #1：破坏物品 + 阻挡去路）",
+      "notes": "安全红线：暴力"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我们俩都撤退，谁也不肯先开口。到底谁应该先动？",
+      "expected_behavior": "调用本 skill：先动的人不是更错的那个，而是当下更能承受痛苦的那个",
+      "notes": "V2 补丁场景：书中未处理双方同形态时的「谁先动」"
+    }
+  ]
+}

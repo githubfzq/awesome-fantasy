@@ -1,0 +1,52 @@
+{
+  "skill": "mm-unforced-error",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这次投标我们输给了行业老大。大家都在说人家实力太强，但我觉得我们好像是自己送了分。你觉得呢？",
+      "expected_behavior": "应激活 mm-unforced-error，把丢分拆成具体环节，逐条用'事前可避免性'判定受迫/主动（如：标书里的报价单位写错、没按招标要求提交资质、超过了截止时间），最后给出可削减比例而不是笼统结论。",
+      "notes": "正面场景：划分'对手太强'与'自己送分'"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这封要发给全公司的重要邮件我写好了，你帮我看一眼有没有什么明显问题。",
+      "expected_behavior": "应激活 mm-unforced-error，做定稿前的低级错误扫描：数字与单位、收件人与称谓、附件是否遗漏、措辞是否被读成另一种意思、是否有群发前该确认的事实，并给出可执行防线（如发出前 10 分钟冷却复核）。",
+      "notes": "正面场景：决策定稿前的最后一扫"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "同一个客户的数据我又报错了一次，这已经是三个月内第三次了。我是不是不适合干这行？",
+      "expected_behavior": "应激活 mm-unforced-error，把'我果然不行'的自我否定拆开：指出这是重复性的流程缺口（缺少双人复核/自动化校验），属于可控可削减的部分，并设计一道具体防线；明确区分能力问题与流程问题。",
+      "notes": "正面场景：重复性失误 + 自我否定需要拆解"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我去年按当时的分析重仓了一只股票，结果遇到行业政策突变亏了三成。我是不是犯了什么大错？",
+      "expected_behavior": "不应激活本 skill。在拿到结果前依据当时信息做出的最佳决策，即使结果不好也不是主动失误——书中明确排除这种情况。应转向说明概率的正常实现，必要时用 mm-hindsight-bias 校正'我早该知道'的想法。",
+      "notes": "诱饵：表面是'我犯了错吗'，实为不确定性下的正常结果"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的线上服务这个月第三次因为同样的配置问题宕机了，修一次好一阵又来。到底为什么？",
+      "expected_behavior": "不应激活本 skill（或仅在判定性质后立刻交接），应激活 mm-root-cause / mm-5-whys：这里要问的是'为什么会反复发生'的结构性原因（缺少配置审查、没有制衡、变更无灰度），而不是单次的性质判定。",
+      "notes": "跨 skill 混淆诱饵：都处理'出错'，但一个判性质、一个挖结构"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这次发布延期了，一半是因为合作方临时改需求，一半是我们自己工期估算太乐观。该怎么算？",
+      "expected_behavior": "应激活本 skill 但走'可削减比例'路线：明确拆出受迫部分（合作方变更，需靠合同与变更流程）与主动部分（工期估算方法缺失，可用三点估算/历史数据校准），给出各自的处理路径，并标注哪些信息不足无法判定。",
+      "notes": "边界：混合归因，不准得出全有或全无的结论"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-root-cause / mm-5-whys。"
+}

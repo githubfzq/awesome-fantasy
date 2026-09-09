@@ -1,0 +1,52 @@
+{
+  "skill": "mm-optimistic-probability-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们这个新 App 下个月上线肯定没问题，我觉得成功率怎么也有九成。我太想把它做成了。",
+      "expected_behavior": "应激活 mm-optimistic-probability-bias，先分离「成功概率」与「愿望强度」，做愿望剥离检验（若与己无关还会给九成吗），再要求补同类项目的历史上线率作为客观锚点，并列出至少 3 条具体失败路径。",
+      "notes": "正面场景：愿望强度高 + 无数据支撑的概率估计"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "老板在会上说这个项目失败概率是十万分之一，但底下做测试的同事私下说也就百分之一。该信谁？",
+      "expected_behavior": "应激活 mm-optimistic-probability-bias，指出这是典型的层级乐观差：离实操越远越乐观（接触的是汇报与公关叙事），应优先采信一线的 1/100，并要求管理层给出其乐观值的证据来源。",
+      "notes": "正面场景：组织内上下估计差数量级"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我打算辞职去创业，感觉市场机会特别好，成功的可能性很大。帮我看看这个判断靠谱吗？",
+      "expected_behavior": "应激活 mm-optimistic-probability-bias，把主观概率与创业领域的客观基础比率对照，做愿望剥离，并用根本原因分析列出具体的失败路径（现金流、获客、竞争、合伙人）。",
+      "notes": "正面场景：重大个人决策、情绪投入深"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这批硬盘过去三年的年故障率是 2.3%，今年采购的 500 台预计大概会坏多少台？",
+      "expected_behavior": "不应激活本 skill，因为有充分、可重复的历史频率数据可直接外推，不存在愿望污染概率的问题，直接做频率计算即可。",
+      "notes": "诱饵：涉及概率但无动机污染"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我最近只看多头的分析文章，越看越觉得这只股票会涨，那些看空的文章我一篇都没点开。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-confirmation-bias。此处的问题是信息筛选机制（只收集支持性证据），而非愿望拉高了概率数值；干预点是补反面证据，不是做愿望剥离。",
+      "notes": "跨 skill 混淆诱饵：证实偏差"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我做这个项目已经失败了两次，这次我自己都觉得大概率还是会失败，只有三成把握。要不要用乐观偏差给自己打打气？",
+      "expected_behavior": "合理的判断是：偏差方向已反转，此时不宜用本 skill 继续压低概率；应先核对同类事情第三次的真实基础比率（往往不是零），若客观数据支持高于三成，应以数据纠偏而非情绪纠偏。本 skill 只在愿望可能抬高概率时使用，这里是信心不足而非乐观偏差。",
+      "notes": "边界：方向相反的悲观偏差"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

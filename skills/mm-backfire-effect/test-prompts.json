@@ -1,0 +1,52 @@
+{
+  "skill": "mm-backfire-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我把三组数据发给他证明这个方案不行，结果他反倒更加坚持要上了，怎么会这样？",
+      "expected_behavior": "应激活 mm-backfire-effect，判定立场变硬属于逆火，要求立即停止继续加证据，并换路径（找共识前提、让他自己推导矛盾、换他信任的来源）。",
+      "notes": "正面场景：证据反而强化对方立场"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我准备整理一份实锤材料，在群里公开驳倒那个一直反对我的人。",
+      "expected_behavior": "应激活 mm-backfire-effect，先判断对方立场是否与身份/群体归属绑定（绑定越深风险越高），并建议改用小剂量试探而非一次性公开驳倒。",
+      "notes": "正面场景：说服前的风险评估"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "看到数据打脸我的判断，我第一反应是这数据肯定有问题，我是不是也这样？",
+      "expected_behavior": "应激活 mm-backfire-effect 做自检，引导用户回答'同样证据指向相反结论时我会不会也抗拒'，把模型同时用在自己身上。",
+      "notes": "正面场景：自身逆火自检"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "同事说文件放在共享盘的 B 目录，我记得是 A 目录，帮我确认一下到底在哪。",
+      "expected_behavior": "不应激活本 skill，因为这是与身份无关的纯事实争议，直接核对即可，逆火风险极低，套用模型会过度谨慎。",
+      "notes": "诱饵：涉及分歧但无身份绑定"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个方案的数据我看了，虽然达标但我觉得样本量太小，要求补测再说，这不过分吧？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-disconfirmation-bias：用户还在讲理框架内抬高证据门槛，尚未出现'证据已足够但立场反而更强'的反向移动。",
+      "notes": "跨 skill 混淆诱饵：逆火效应 vs 不证实偏差"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "有人在群里转发一个害人的医疗谣言，可我知道一反驳肯定会被围攻，我是不是干脆别说？",
+      "expected_behavior": "可以激活但结论不是沉默：有害错误信息需要立即纠正，模型要求的是换表达方式（用故事或对方信任的来源、私下沟通），而非因为怕反弹就放弃。",
+      "notes": "边界：避免反弹 vs 纠正有害信息"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

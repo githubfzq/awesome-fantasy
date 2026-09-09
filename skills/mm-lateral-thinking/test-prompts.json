@@ -1,0 +1,52 @@
+{
+  "skill": "mm-lateral-thinking",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们想提升用户留存，但想来想去全是发券、推送、做活动那一套，还有别的吗？",
+      "expected_behavior": "应激活 mm-lateral-thinking,指出这些是同一思路的变体;注入随机刺激（随机物或词典随机名词）,强行为其与留存建立 3 种以上联系,产出新分支后再切回批判性筛选。",
+      "notes": "正面场景:思路内空转"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "脑暴了两小时，产出的点子本质上都是同一个方案的不同包装。",
+      "expected_behavior": "应激活 mm-lateral-thinking,用随机性绕过既有联想路径;若仍枯竭,建议跳出日常交际圈引入不同背景的外部视角,并记录新分支。",
+      "notes": "正面场景:发散失败"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "上一轮我们把所有方案都否决了，现在手上什么都没有了。",
+      "expected_behavior": "应激活 mm-lateral-thinking,说明此刻缺的是生成而非评判（横向思维与批判性思维互补但必须分开进行）,重新生成一批想法后再做批判性评估。",
+      "notes": "正面场景:评判阶段结束后需重新生成"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这三个方案各有利弊，帮我评估一下选哪个，重点看风险和成本。",
+      "expected_behavior": "不应激活本 skill,因为这是收敛与评判阶段,继续横向发散只会拖延;应用批判性思维相关工具做评估。",
+      "notes": "诱饵:同为想法工作但阶段相反"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我越想越觉得我们问的问题本身就不对，是不是该换个问题？",
+      "expected_behavior": "不应激活本 skill,应激活 mm-reframe-the-problem:用户怀疑的是问题定义本身（换掉问题）,而横向思维是在同一个问题里换到达答案的路径;问题定义有疑问时应先重订问题。",
+      "notes": "跨 skill 混淆诱饵:换路径 vs. 换问题"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们用随机词联想出了 20 个点子，是不是直接用最有趣的那个就行？",
+      "expected_behavior": "合理判断:不行——强行建立的联系需要被验证,能联想出来不等于成立。应先切换回批判性评估筛掉大部分,挑出 1-2 条值得验证的;同时提醒横向思维只是半个流程,只发散不收敛的产出是漂亮的废话。",
+      "notes": "边界:发散之后必须收敛"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-activation-energy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我买了瑜伽垫和课程，在家锻炼的计划拖了两个月了，一次都没开始。我知道运动重要，可就是坐不起来。",
+      "expected_behavior": "应激活 mm-activation-energy，先做 5 分钟测试确认是门槛问题，再把「开始锻炼」拆成前置动作逐项削减（垫子提前铺好、固定时间、首次只做 5 分钟），并配一个催化剂。",
+      "notes": "正面场景：典型的「知道该做但启动不了」"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们给全员推了新的项目管理工具，所有人都说好用，但一个月了实际使用率只有 12%。要不要再办几场宣讲？",
+      "expected_behavior": "应激活 mm-activation-energy，指出问题在起步门槛而非说服力，建议削减首次上手的前置动作（预建模板、一键导入现有任务、默认替用户创建第一条记录），而不是加开宣讲会。",
+      "notes": "正面场景：组织采纳卡在开头"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想养成每天写点东西的习惯，但每次坐下来都觉得要写一大篇，压力很大就放弃了。",
+      "expected_behavior": "应激活 mm-activation-energy，把起步动作缩小到「只写一句话」，并配置降低启动能量的具体装置。",
+      "notes": "正面场景：起步动作过大导致门槛高"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我已经开始学吉他三个月了，现在卡在 F 和弦按不响，手指力量不够，有没有练习方法？",
+      "expected_behavior": "不应激活本 skill，因为用户已经启动，问题是能力与练习方法，降低起步门槛无意义；应直接给针对性的练习方案。",
+      "notes": "诱饵：学习类场景，但卡点在执行中段"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我已经想清楚要开始锻炼了，计划也列好了，就是需要一个东西能让我降低每次启动所需的那股劲儿。有什么能当这个东西？",
+      "expected_behavior": "不应激活本 skill 作为主模型，应激活 mm-catalyst——用户已经确认是活化能问题并在问「用什么降低门槛」，正是催化剂模型的职责范围。",
+      "notes": "跨 skill 混淆诱饵：与 mm-catalyst 高度相邻，区分点在「量门槛」还是「找降门槛之物」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我要不要辞掉现在的工作去创业？这个想法想了两年了，一直没动。是不是我启动能量太高？",
+      "expected_behavior": "应激活 mm-activation-energy 但明确拒绝直接削平门槛：重大不可逆决策的犹豫是审慎而非门槛问题，应先做可逆性分析（mm-reversible-vs-irreversible-decisions）与小规模试验，而不是用降低起步成本的方式催促行动。",
+      "notes": "边界：考验 agent 是否会误把审慎当拖延"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

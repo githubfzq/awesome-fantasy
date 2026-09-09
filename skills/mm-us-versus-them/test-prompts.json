@@ -1,0 +1,52 @@
+{
+  "skill": "mm-us-versus-them",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "市场部根本不考虑我们的死活，他们多拿一分预算我们就少一分。这次得联合大家跟他们杠到底。",
+      "expected_behavior": "应激活 mm-us-versus-them，标出框架性表述，做零和检验（对方多得是否必然导致我方失利、清单能否被补偿），把「我们 vs 市场部」重述为各方具体诉求，并尝试在时间/资源/优先级上找可交换维度。",
+      "notes": "正面场景：典型的阵营化表述"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "明天要跟供应商谈续约，对方肯定想涨价。我怎么准备才不会吃亏？感觉这就是他多赚我少赚的事。",
+      "expected_behavior": "应激活 mm-us-versus-them，先做零和检验：涨价之外是否还有付款节奏、期限、量级、排他性等其他可交换维度；若存在，构造非零和方案，再配合 BATNA 摸清底线。",
+      "notes": "正面场景：谈判前预设零和"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "竞品刚上线了一个和我们很像的功能，他们就是在针对我们。我们要不要马上跟进做个一样的？",
+      "expected_behavior": "应激活 mm-us-versus-them，指出把竞品的每一次动作读成针对性攻击是框架误用，要求区分「他们针对我们」与「他们在服务自己的用户」，再做零和检验。",
+      "notes": "正面场景：竞争分析中的框架误用"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们团队的五个同事关系都很好，大家都愿意互相帮忙，凝聚力很强。这有什么问题吗？",
+      "expected_behavior": "不应激活本 skill，因为没有对立与零和假设，这只是正常的内群凝聚；不要病理化健康的团队认同。",
+      "notes": "诱饵：涉及群体认同，但无对立结构"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "公司今年加薪的总包就这么多，A 部门多拿一个点，我们部门就少一个点。我该怎么为我的团队争取最大份额？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-zero-sum——这是真实的零和收益结构（总量固定），问题不是框架误判，而是如何在零和中争取；不应劝用户「找双赢」。",
+      "notes": "跨 skill 混淆诱饵：与 mm-zero-sum 高度相邻，区分点在「框架误判」还是「结构确实零和」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们部门长期被另一个部门抢功、压资源，这次我实在忍不了了。你是不是又要说「其实是我想多了」？",
+      "expected_behavior": "应激活 mm-us-versus-them 但必须先认真对待控诉：先做真实的零和检验与事实梳理，确有可能存在真实的利益侵害与权力失衡；不应把「框架」当成消解正当不满的工具，必要时转向 mm-batna 等谈判策略。",
+      "notes": "边界：考验 agent 是否会误把正当冲突当框架误判"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

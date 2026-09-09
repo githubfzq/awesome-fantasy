@@ -1,0 +1,52 @@
+{
+  "skill": "mm-social-engineering",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "公司邮箱被入侵了，但我们查了一圈防火墙和服务器都没发现任何漏洞，密码怎么泄露的？",
+      "expected_behavior": "应激活 mm-social-engineering，指出攻击面在人而不在技术，还原操纵链条（伪装可信来源、制造紧急情境），并建议补流程性防线（带外确认、MFA、最小权限）。",
+      "notes": "正面场景：技术未破但信息泄露"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "刚收到一封邮件，说是 IT 支持中心，让我点链接验证账号，否则两小时后停用。要不要点？",
+      "expected_behavior": "应激活 mm-social-engineering，识别为典型的伪装可信来源加制造紧迫感，建议不点链接、通过独立渠道（直接打给 IT 或打开官网）核实。",
+      "notes": "正面场景：识别操纵情境"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们安全预算基本全花在防火墙和扫描上了，但事故还是出在人身上。是不是方向有问题？",
+      "expected_behavior": "应激活 mm-social-engineering，说明技术加固无法覆盖人性接口，应把一部分投入转向流程性防线（带外确认、双人复核、敏感操作延迟）与降低单点泄露杀伤。",
+      "notes": "正面场景：安全投入方向纠偏"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的数据库被拖库了，查出来是某个接口存在 SQL 注入。怎么修？",
+      "expected_behavior": "不应激活本 skill，因为这是明确的技术漏洞导致的入侵，应走技术修复流程；用社会工程解释会误导为「员工犯错」。",
+      "notes": "诱饵：安全事件但成因在技术侧"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们一直卡在「怎么让用户愿意填完注册表单」上，我在想能不能换个问法，比如不是让他们注册而是先让他们用起来。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-reframe-the-problem——用户在实践「换一个问法」这一上位方法本身，与社会工程无关。",
+      "notes": "跨 skill 混淆诱饵：社会工程是重定义问题的实例，但此处需要的是上位方法"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "同事在群里 @ 我，说领导让我马上把一份客户名单发给他。看着像本人，但我有点不放心。",
+      "expected_behavior": "应激活 mm-social-engineering 并给出带外确认动作：不通过同一渠道回复，改用电话或当面与领导核实；同时建议团队把「敏感数据外发」纳入强制双人复核流程，而不是事后追责个人。",
+      "notes": "边界：可疑但未必是攻击时的稳健处理"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-procedural-justice",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这次晋升评审我全程没看到打分标准,结果出来后才知道今年改成看协作了,去年明明看业绩。",
+      "expected_behavior": "应激活 mm-procedural-justice,逐条检验四要素:规则是否事先公开、标准是否客观可衡量、是否对所有人一致适用、是否有复核或申诉通道;本例至少违反前两项,应要求把标准书面化并提前公布,并为本次决策补充申诉环节。",
+      "notes": "正面场景:标准不透明且不一致"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们招标流程每一步都走了,材料也全,但候选人是我们老板前同事这事大家心知肚明。",
+      "expected_behavior": "应激活 mm-procedural-justice,明确指出'流程都走完了'属于形式合规而非实质合规——若存在未被披露的利害关系且未回避,程序正义即被破坏;应要求书面披露与回避,同时提醒用户先拿出可核实的证据再主张,避免停留在猜测。",
+      "notes": "正面场景:形式合规 vs 实质合规"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我要给团队设计一套项目奖金分配规则,怎么定才算站得住?",
+      "expected_behavior": "应激活 mm-procedural-justice,给出程序侧的设计要求:标准事先公开、可客观衡量、对所有人一致适用、留有复核与申诉通道;并提醒先与团队就'公平是指结果均等还是规则公平'达成一致(两套标准会给出不同方案)。",
+      "notes": "正面场景:设计规则"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这两款服务器配置差不多,帮我按三年总成本算一下哪个更省。",
+      "expected_behavior": "不应激活本 skill,因为这是纯效率与成本比较,不涉及任何公平判断或程序评价;属于常规成本收益分析,直接计算即可。",
+      "notes": "诱饵:涉及比较决策但无公平成分"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "公司今年利润翻倍,高管奖金涨了三倍,我们一线只涨了 5%,这也太离谱了吧。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-distributive-justice:不满来自结果分布的巨大差距(涨了多少倍),而不是规则是否被一致公开执行;程序正义关注过程,分配正义关注份额,此例焦点在份额。",
+      "notes": "跨 skill 混淆诱饵:分配正义"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "规则确实是提前公布且一视同仁的,但按这个规则算下来,干活最多的人反而拿得最少,我该按规则执行吗?",
+      "expected_behavior": "合理判断:这是程序正义与分配/贡献直觉冲突的典型情境。不应直接宣布规则不公,也不应机械执行——先按规则执行以保住可预期性,同时把规则本身的缺陷记录下来并启动修订(补充贡献维度),并公开说明本次为何仍按原规则执行。关键是:规则的可信度来自'不事后变更',缺陷则通过下一轮修订修复。",
+      "notes": "边界:程序正确但结果反直觉"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

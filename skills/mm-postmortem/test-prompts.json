@@ -1,0 +1,52 @@
+{
+  "skill": "mm-postmortem",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "昨晚的线上故障已经恢复了，服务正常。老板要一份事故报告，我该怎么写？",
+      "expected_behavior": "应激活 mm-postmortem，先定复盘边界，重建只含事实的时间线，还原关键决策点「当时为什么合理」，然后挑出 2-3 个杠杆点并写成带 owner、日期、验证方式的改进项，最后约定跟踪机制。",
+      "notes": "正面场景：事故已结束的标准复盘"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个版本终于上线了，比计划晚了三周。团队下周要开个总结会，怎么开才有价值？",
+      "expected_behavior": "应激活 mm-postmortem，提醒把目标从「交代延期原因」转为「下次怎么做」，产出可执行的改变（如需求冻结窗口、排期缓冲机制）而非解释，并给出会议流程与产出标准。",
+      "notes": "正面场景：版本结项复盘"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们这次大促活动做完了，效果一般。我想把经验沉淀下来，别下次又踩一遍。",
+      "expected_behavior": "应激活 mm-postmortem，重建活动时间线，找出可改的杠杆点并按影响×可行性排序取前 2-3 项，写成带 owner 与验证方式的改进项，并约定下次何时回顾。",
+      "notes": "正面场景：活动结束后沉淀经验"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我写一份给客户的项目周报，把本周进展说清楚就行。",
+      "expected_behavior": "不应激活本 skill，因为这是周期性进展汇报，不是事件结束后的系统性复盘；项目仍在进行中，目标是同步状态而非产出改进项。",
+      "notes": "诱饵：汇报材料被误认为复盘"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个项目还要两个月才上线，我现在就担心会延期，能不能提前预演一下可能出问题的地方？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-mid-mortems。事件尚未结束，用户要的是进行中的事前/中期预演（提前假想失败并预防），而不是事后复盘。",
+      "notes": "跨 skill 混淆诱饵：中期分析 / 事前分析"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这次事故复盘我们列了二十条改进项，每条都有人认领。但三个月后回头看，好像一条都没落地。",
+      "expected_behavior": "合理的判断是：复盘本身已经失效在最后一公里——改进项超出组织消化能力，且缺少跟踪机制。应回到本 skill 的第 4、6 步：把二十条压缩到 2-3 个真正的高杠杆项（按影响×可行性排序），每条配可验证的完成标准，并明确跟踪载体与回顾时间；同时把「三个月无人回顾」本身作为下一个复盘的对象。不因为没落地就否定复盘，而是修正复盘的产出粒度。",
+      "notes": "边界：改进项过载与跟踪缺失"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

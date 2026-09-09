@@ -1,0 +1,52 @@
+{
+  "skill": "mm-customer-development",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们团队为要不要加这个社交功能吵了两周，谁也说服不了谁。怎么办？",
+      "expected_behavior": "应激活 mm-customer-development，指出这是典型的办公室推演僵局；先定位客户是谁（掏钱的人/使用的人/影响决策的人三者取付费方），把争论写成 3-5 条可推翻的假设并标注'若答错我们会改变什么'，选择最快最便宜的验证手段（几天内有结果的那种），设计问'任务'而非'方案'的访谈提纲，执行至少 5 次接触后据结果做加码/修正/转介转型的判定。",
+      "notes": "正面场景：团队僵局"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "产品马上要投入开发了，但我总感觉我们其实不知道用户要什么。要不要先做一轮访谈？",
+      "expected_behavior": "应激活本 skill，支持做但要把它做成'快速反馈循环'而不是耗时六周的问卷工程：指出直接与客户交谈比在办公室推演廉价得多，优先选几天内能出结果的手段；提醒使用替代 XY ELI：访谈要问客户想达成什么目标、上次遇到这事怎么处理，而不是问'你觉得这个功能好不好'（避免客户陷在特定解决方案上的马斯洛之锤）。",
+      "notes": "正面场景：开发前的去风险"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "东西做出来了但没人用，团队都在猜是不是定价太高、还是渠道没选对。",
+      "expected_behavior": "应激活本 skill，把内部猜测转成外部验证：停止继续在会议室里归因，要求回到真实客户（明确区分付费方）那里建立反馈循环；提醒这种场景下更可能需要 mm-jobs-to-be-done 挖真实任务，若多轮仍无法收敛则应转介 mm-pivot。",
+      "notes": "正面场景：事后回访"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "需求已经很清楚了，客户天天催我们上线。团队还在说要再做一轮用户访谈，我该怎么办？",
+      "expected_behavior": "不应激活本 skill。需求已明确且已验证时继续访谈会成为拖延的借口。应建议直接进入执行与交付，把客户开发留到下一个未知假设出现时再用。",
+      "notes": "诱饵：听起来很'以客户为中心'，但阶段已过"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想知道用户到底雇我们的产品去完成什么任务——是打发通勤无聊，还是给孩子当加餐？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-jobs-to-be-done：用户问的是访谈中该问的那个核心内容（客户实际雇产品去完成的任务），而不是整套反馈循环的方法与节奏。两者常一起出现，但职责不同——本skill 管流程，待办任务管问什么。",
+      "notes": "跨 skill 混淆诱饵：紧密配套的两个模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "客户很明确地告诉我们，他们想要一个能自动导出 Excel 报表的按钮。我们是不是照着做就行了？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：书中明确警告客户会把关注点放在特定解决方案而非真正要解决的问题上（马斯洛之锤）。应指出这是客户指定的方案而不是他要完成的任务，建议按劳伦的经验请客户先用通俗语言解释想达到的目标，再回头判断是不是非得用导出按钮来实现；同时不能走到另一个极端——若客户确实已清楚说过目标，则不必过度深挖。",
+      "notes": "边界：客户指定了解决方案时如何处理"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-jobs-to-be-done。"
+}

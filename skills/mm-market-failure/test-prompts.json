@@ -1,0 +1,52 @@
+{
+  "skill": "mm-market-failure",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们这儿的共享渔场，每家都拼命多捕，鱼越来越少。靠渔民自己协商能解决吗？",
+      "expected_behavior": "应激活 mm-market-failure，确认这是次优结果（公地悲剧型失灵），定位没被定价的那一项（个体捕捞的长期成本由全体承担），量化规模，检查私人方案为何不够，并在结论处转交干预设计同时强制要求做政府失灵检查。",
+      "notes": "正面场景：公地悲剧型失灵"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "新型抗生素对社会价值很大，但药企算下来不赚钱，都停止研发了。这算市场的问题还是企业的问题？",
+      "expected_behavior": "应激活 mm-market-failure，指出这是典型的外部性导致的市场失灵（社会价值与私人价值脱钩、且储备用药在使用前专利到期），说明这不是单个企业的道德问题而是机制问题，并提醒干预形式不止补贴一种。",
+      "notes": "正面场景：正外部性与供给不足"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "上游工厂排污，下游养殖户的鱼死了，但工厂不用赔。这个市场是不是有问题？",
+      "expected_behavior": "应激活 mm-market-failure，归类为负外部型失灵，写清「工厂的排污成本由下游养殖户承担且未获补偿」，粗略估算损害规模，并说明这论证了干预必要性但不指定干预形式（管制、税收、产权谈判皆可）。",
+      "notes": "正面场景：负外部性型失灵"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个牌子的手机卖得比我们贵一倍，我觉得太贵了，市场应该管管。",
+      "expected_behavior": "不应激活本 skill，因为高价位本身不是次优结果，只是用户对分配/定价不满意；没有未定价的成本收益，也没有人无法进入市场，应按竞争与定价策略分析。",
+      "notes": "诱饵：把不满意的价格叫失灵"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "政府给新能源汽车补贴三年了，结果出现了骗补，真正做技术的反而拿不到钱。这该怎么看？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-government-failure。这里失灵的不是原始市场，而是为纠正市场而设计的干预措施本身产生了扭曲与意外后果，属于政府失灵/政治失灵的分析对象。",
+      "notes": "跨 skill 混淆诱饵：政府失灵"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们这个行业确实有负外部性，但最近几家头部公司自发搞了个行业公约和第三方认证，看起来在起作用。还要不要推动监管？",
+      "expected_behavior": "合理的判断是：应激活 mm-market-failure 但结论要留有余地。先按第 5 步检查私人方案是否真的足够——公约有无强制力、是否存在搭便车（不加入者反而成本更低）、认证是否覆盖全部外部性。若私人方案能覆盖主要损害且搭便车者不构成成本优势，可先观察并设定触发监管的具体条件与时点；若搭便车明显，则市场化自律会逐步瓦解，需要外部干预兜底。无论哪种结论，都要同步做政府失灵预演。",
+      "notes": "边界：私人自律方案是否使干预不再必要"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

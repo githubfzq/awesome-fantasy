@@ -1,0 +1,52 @@
+{
+  "skill": "mm-brute-force",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "要给 12 位嘉宾发邀请函，我在想要不要写个邮件合并脚本，还是直接一封封复制粘贴改名字？",
+      "expected_behavior": "应激活 mm-brute-force，量化对比：手工约 20 分钟，写脚本加调试约 40 分钟，明确建议直接手工，并给出临界点（超过约 50 封就该用工具）。",
+      "notes": "正面场景：小规模下暴力更快"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们每个月都要从三个系统导数据再手工拼成一张报表，四个人轮流做，每人半天。要不要做个自动化的？",
+      "expected_behavior": "应激活 mm-brute-force 做规模估算后指出：这是重复性任务，判据已转向 mm-automation——年化成本约 24 人天，远超自动化的一次性投入，建议转为自动化评估。",
+      "notes": "正面场景：规模越过后应换工具"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想先把这批 30 条用户反馈人工读一遍打个标签，再决定要不要上模型。会不会太笨？",
+      "expected_behavior": "应激活 mm-brute-force，确认小规模先暴力拿到结果再做决策是合理的，并说明这是为后续工具选型积累 ground truth，不是浪费。",
+      "notes": "正面场景：先用暴力探路"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "下属连续两周没交周报，我打算在部门会上直接点名批评，用强硬手段立立规矩。",
+      "expected_behavior": "不应激活本 skill，因为用户把 brute force 误解为「对人强硬」；书中该词指花力气解决问题，不涉及管理强硬手段，应转向沟通与管理问题。",
+      "notes": "诱饵：字面误解「暴力」一词"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个四位数的密码锁我忘了密码，准备从 0000 试到 9999，一个个试总能试出来吧？",
+      "expected_behavior": "不应激活本 skill 作为主模型，应激活 mm-exhaustive-search——用户在枚举候选解，属于穷举搜索这一更具体的子类，应做组合数与单次成本的速算。",
+      "notes": "跨 skill 混淆诱饵：与 mm-exhaustive-search 高度重叠，区分点在「遍历候选解」还是「泛指靠力气」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "要核对 200 份报销单据，每份看一眼大概 30 秒，我打算手工过一遍。这个量算大吗？",
+      "expected_behavior": "应激活 mm-brute-force 但需修正判据：虽然总耗时仅约 100 分钟看起来可接受，但错误代价高（漏审违规单据），不能只按时间比大小，建议提高抽样或工具辅助的权重。",
+      "notes": "边界：规模不大但错误代价高"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

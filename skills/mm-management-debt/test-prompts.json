@@ -1,0 +1,52 @@
+{
+  "skill": "mm-management-debt",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "团队从 10 人涨到 60 人了，管理层和流程还是原来那套，什么都等我拍板，先这样行吗？",
+      "expected_behavior": "应激活 mm-management-debt，指出这是管理债务：说出恶化机制（决策瓶颈随规模指数恶化），列出欠账与利息，给出利息最高项的最小还本动作。",
+      "notes": "最典型的正面场景：管理债务"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们每个页面风格都不一样，也没有设计规范，要不要专门花时间做一套？",
+      "expected_behavior": "应激活本 skill，识别为设计债务：欠的是统一设计语言/品牌风格指南，利息是每个新功能都要重新发明一套、协作成本递增。",
+      "notes": "设计债务"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "团队清一色都是同一背景的人，一直在说要多样化但招聘时总顾不上，这算问题吗？",
+      "expected_behavior": "应激活本 skill，识别为多样化债务，列出欠账与利息（视角盲区、决策同质化），并安排最小还本动作。",
+      "notes": "多样化债务"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "代码里那坨祖传逻辑实在改不动了，要不要重构？",
+      "expected_behavior": "不应激活本 skill，这是代码与架构层面的欠账，应激活 mm-technical-debt（技术负债）。",
+      "notes": "诱饵：都是\"欠账\""
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我每天存 50 块，年化 8%，二十年后能有多少？",
+      "expected_behavior": "不应激活本 skill，这是正向收益的指数累积，应激活 mm-compound-interest（复利）。",
+      "notes": "跨 skill 混淆诱饵：指数机制相同，方向相反"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我这周没收拾屋子、没锻炼、也没联系老朋友，是不是欠了一堆债要赶紧还？",
+      "expected_behavior": "可激活但要区分：作者确实把债务扩展到清洁、节食、关系领域（屋中凌乱、腰围扩大、关系恶化），但只有会自行恶化的才算债务；一次性没做只是普通待办，不必为它支付焦虑成本。",
+      "notes": "边界：什么才算\"债务\""
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

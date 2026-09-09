@@ -1,0 +1,52 @@
+{
+  "skill": "mm-divide-and-conquer",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个系统迁移项目太大了，我完全不知道从哪开始，能帮我拆成几块吗？",
+      "expected_behavior": "应激活 mm-divide-and-conquer，先界定整体交付定义，再按依赖关系切分成 3-7 个可独立验证的子问题，并给出合并规则。",
+      "notes": "正面场景：大任务无从下手"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我想把这份年度报告分给三个同事写，怎么切才不会出现互相等来等去的情况？",
+      "expected_behavior": "应激活 mm-divide-and-conquer，按独立性检查切分维度（按章节/按数据来源/按阶段），为每块定义输入输出接口与唯一负责人。",
+      "notes": "正面场景：委派与并行"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "50 个页面的改版我一个人扛着，哪些部分可以交出去、怎么分？",
+      "expected_behavior": "应激活 mm-divide-and-conquer，识别依赖最弱的切分维度，标出可单独交付的块与必须自己保留的块。",
+      "notes": "正面场景：个人负载分担"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我把这个耦合很深的系统性能问题拆成十个模块分别优化了，为什么整体反而更慢了？",
+      "expected_behavior": "不应激活本 skill 作为解法，因为该问题的性质在于整体耦合，拆开会丢失关键性质；应指出这是分而治之的失效场景，需要回到系统级评估。",
+      "notes": "诱饵：看似是分解问题，实为分解已失效"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "线上事故这周复发了三次，帮我挖出最深的那个原因，别只看表面现象。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-root-cause：用户要的是收敛到单一最深致因，而分而治之是发散地拆成多个子问题，方向相反。",
+      "notes": "跨 skill 混淆诱饵：分解 vs 收敛归因"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我想把这个设计稿拆成前端组件，但组件之间的样式和状态互相依赖，还能拆吗？",
+      "expected_behavior": "可以激活，但必须先做独立性检验：若接口能被清晰定义（如统一 design token + 状态上提）则可拆；若依赖无法切断，应明确判定此处不适用分而治之，而不是硬拆。",
+      "notes": "边界：独立性与耦合度临界"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

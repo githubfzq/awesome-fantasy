@@ -1,0 +1,52 @@
+{
+  "skill": "mm-internalizing",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "隔壁工厂半夜排放废气，整个小区都在受害，但治理费用全是我们居民和政府出。有没有办法让他们自己承担？",
+      "expected_behavior": "应激活 mm-internalizing，定位被甩出的健康与环境成本，估算每单位排放的处理成本，选择排污费/罚款/排放许可等工具，并把价格设到足以支付治理成本的水平，最后设定复检指标验证排放是否下降。",
+      "notes": "正面场景：典型负外部性内部化"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们平台上垃圾广告特别多，审核成本全是我们在扛，发广告的人一点代价都没有。",
+      "expected_behavior": "应激活 mm-internalizing，把审核与处置成本折算成每条内容的成本，设计发布押金/违规扣费/按条收费/保证金等机制，让发布方承担处置成本，并验证垃圾量是否下降。",
+      "notes": "正面场景：平台治理成本回收"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "市中心一到高峰就堵死，开车的人完全不觉得自己有成本。",
+      "expected_behavior": "应激活 mm-internalizing，指出拥堵成本被甩给了其他道路使用者，建议用道路通行费/拥堵费/停车差异化定价把成本收回驾驶者身上，价格应反映其造成的延误成本，并观察车流变化。",
+      "notes": "正面场景：书中拥堵费案例"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们公司内部一个工具用得少，主要是我们自己在维护，费用也全走我们部门预算，想砍掉它。",
+      "expected_behavior": "不应激活本 skill，因为成本已由使用方（自己部门）完全承担，不存在甩给第三方的外部性，属于普通的成本收益决策。",
+      "notes": "诱饵：涉及成本但无外部性"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "上游化工厂排污影响下游三个村子的饮水，三方打算坐下来谈补偿，人数不多、产权也清楚。",
+      "expected_behavior": "不应激活本 skill（至少不应优先），应激活 mm-coase-theorem。参与方少、产权清晰、交易成本低时应让双方自行谈判出有效结果，外部管制反而是多余的；只有谈不成时才回到内部化。",
+      "notes": "跨 skill 混淆诱饵：科斯定理"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们打算对碳排放每吨收 20 元的费用，企业应该会开始减排吧？",
+      "expected_behavior": "合理的判断是：关键不在「收不收」，而在「价格是否足以支付处理后果的成本」。若实际治理/碳捕集成本远高于 20 元/吨，这个价格起不到内部化作用，只会给排放发牌照、让企业觉得付费即合规；应先估算真实边际损害成本再定区间，并配套复检指标观察排放是否真的下降。",
+      "notes": "边界：定价过低的假内部化"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

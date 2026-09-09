@@ -1,0 +1,52 @@
+{
+  "skill": "mm-center-of-gravity",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要推一款面向设计师的工具，预算只够打一个渠道。行业里有几个大社群、也有几个粉丝不多的资深设计师，到底该先搞定谁？",
+      "expected_behavior": "应激活 mm-center-of-gravity，画出节点与「谁向谁寻求指导」的箭头，指出重心应是他人看齐的资深设计师而非体量最大的社群，并给出可验证的传导预测（谁会跟、多久、看什么指标）。",
+      "notes": "正面场景：资源有限，需要定位传导中心"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "竞争对手刚融资完在疯狂投广告。我们要反击，应该打他们的哪个点？",
+      "expected_behavior": "应激活 mm-center-of-gravity，定位对手行动所依托的战略重心（如其核心渠道、关键客户群或获客引擎），并说明越靠近重心、对手防守风险越高。",
+      "notes": "正面场景：军事战略意义上的重心"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想在公司内部推行新的代码评审规范，工程师有六十多个。说服哪些人最能让这件事落地？",
+      "expected_behavior": "应激活 mm-center-of-gravity，先识别「其他人向谁寻求指导」的技术意见领袖（可能不是职级最高的），而不是先去说服人数最多的群体。",
+      "notes": "正面场景：组织变革找关键节点"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们已经确定要先拿下华东的三个大客户，现在需要一份具体的报价和客户拜访计划。",
+      "expected_behavior": "不应激活本 skill，因为目标已经锁定，用户需要的是执行方案而非定位；应直接给出拜访与报价的具体计划。",
+      "notes": "诱饵：销售/竞争场景，但卡点在执行层"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我统计了一下，80% 的售后工单来自 20% 的客户类型，另外几类客户几乎不产生工单。我该优先优化哪部分？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-pareto-principle——这是按产出占比做的统计排序，各客户类型之间并无影响传导关系，不存在重心。",
+      "notes": "跨 skill 混淆诱饵：与 mm-pareto-principle 都问「该抓哪个」，区分点在「耦合传导」还是「产出占比」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个行业里大家都各自采购，客户之间互相不认识也没什么交流。我们还是想找一个「重心客户」来撬动市场，可行吗？",
+      "expected_behavior": "应激活本 skill 但给出否定结论：节点之间无连接即无重心，此时集中打一个点不会带来传导；建议改用 mm-pareto-principle 按产出占比排序，或先评估能否人为制造连接（社群、行业会议）。",
+      "notes": "边界：系统无耦合时模型不适用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

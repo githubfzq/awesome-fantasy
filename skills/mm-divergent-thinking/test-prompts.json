@@ -1,0 +1,52 @@
+{
+  "skill": "mm-divergent-thinking",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "做明年的情景分析,我们几个人讨论来讨论去只想出乐观和悲观两种,感觉漏了什么。",
+      "expected_behavior": "应激活 mm-divergent-thinking,给出书中做法:开会只统一目标后立即解散或分组,各组拿一个不同提示(如同一份调查数据的不同切片)或自行设计思维实验,独立产出各自的情景设定;汇总时按差异聚类而非按优劣评判,最后再缩减到 2-4 个深入。",
+      "notes": "正面场景:情景分析中的发散不足"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "每次头脑风暴都是老王先说一个想法,然后所有人就顺着那个方向走了,怎么破?",
+      "expected_behavior": "应激活 mm-divergent-thinking,指出问题出在大家坐在一起讨论时第一个想法锚定全场;建议改成先独立书面产出再汇总,或拆成小团队各自发散,发散阶段禁止评判优劣。",
+      "notes": "正面场景:会议中想法过早收敛"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个问题我卡了两天,翻来覆去就是那一个思路,有没有办法打开一下?",
+      "expected_behavior": "应激活 mm-divergent-thinking,先明确界定问题边界,再用不同提示/不同起点强制产出多条不同质的路径,衡量标准是'覆盖多大不同空间'而非'哪个更好'。",
+      "notes": "正面场景:个人思路打不开"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们已经列出了五个候选方案,现在要从里面挑一个,怎么选?",
+      "expected_behavior": "不应激活本 skill,因为用户已完成发散、手上有一组备选方案要做的是收敛与筛选;应激活 mm-convergent-thinking(或成本收益分析/决策树),两阶段必须顺序执行。",
+      "notes": "诱饵:同属'想法'话题但阶段相反"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们这季度要不要调整组织架构?需要按几种可能的未来发展分别预演一下,然后缩减到几个重点分析。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-scenario-analysis:用户要的是一整套方法(发散出多个情景 → 缩减 → 深入),发散思维只是其中的第一步动作;只给发散步骤会漏掉缩减与深入的下半程。",
+      "notes": "跨 skill 混淆诱饵:情景分析"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们要发散一下报税流程怎么走,多想几种做法行不行?",
+      "expected_behavior": "合理判断:报税是强合规、存在唯一正确解的场景,强行发散只会制造无效选项甚至违规方案;明确说明此时不适用发散思维,应直接查规定或咨询专业人士,可只保留'再想一个反方向'作为防错检查。",
+      "notes": "边界:存在唯一正确解时不应发散"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

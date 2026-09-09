@@ -1,0 +1,52 @@
+{
+  "skill": "mm-default-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "怎么才能让每周的深度工作时段不被别人约走？",
+      "expected_behavior": "应激活 mm-default-effect，建议在日程中设置重复时段把时间默认占住，并提高偏离默认（被约走）的阻力。",
+      "notes": "最典型的正面场景：用默认保护时间"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的注册表单有个\"订阅 newsletter\"的勾选框，默认勾上还是不勾？",
+      "expected_behavior": "应激活本 skill，说明默认项会显著改变结果，并提醒保留明确退出通道与合规/信任风险。",
+      "notes": "产品/表单默认设计"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "想养成每月自动存钱的习惯，但每次都要手动转，总会忘。",
+      "expected_behavior": "应激活本 skill，建议设置自动转账这一新默认，让它不依赖每次重新决策。",
+      "notes": "让正确行为自动发生"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "员工不愿意配合新流程，是不是该调整一下激励？",
+      "expected_behavior": "不应激活本 skill，这是激励设计问题，应转向 aligning-incentives（激励一致）或 carrot-and-stick。",
+      "notes": "诱饵：靠激励而非靠默认"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我明知道该健身，但每天都给自己找理由不去，这是怎么回事？",
+      "expected_behavior": "不应激活本 skill（作为主模型），应激活 mm-present-bias；用户在问为什么会拖延，默认效应是解法不是诊断。",
+      "notes": "跨 skill 混淆诱饵：高度相邻，常一起出现"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们把所有新服务的隐私设置默认改成\"公开\"，用户量指标确实涨了。",
+      "expected_behavior": "应激活并指出风险：涉及他人重大利益与知情同意时，靠默认项悄悄改变选择是黑暗模式，会损害信任；应保留明确知情与便捷退出路径。",
+      "notes": "边界：默认效应的伦理边界"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

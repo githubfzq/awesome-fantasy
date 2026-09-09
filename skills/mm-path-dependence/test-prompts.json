@@ -1,0 +1,52 @@
+{
+  "skill": "mm-path-dependence",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要给团队选个协作工具，大家说随便选一个先用着。我总觉得这种事不能随便，是我的错觉吗？",
+      "expected_behavior": "应激活 mm-path-dependence，指出最初「看起来无害」的低成本低关注度选择恰恰最危险，列出会积累的东西（数据、流程、习惯），估算三年后的切换成本，并给出出口设计（可导出格式、抽象层、期限性承诺）。",
+      "notes": "正面场景：早期选型的锁定风险"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "明知道另一个方案更先进，但我们就是换不动，数据、流程、培训全绑在现在的系统上。",
+      "expected_behavior": "应激活 mm-path-dependence，识别积累物并逐项估算迁移代价，同时区分这是客观锁定还是「舍不得已投入」的沉没成本。",
+      "notes": "正面场景：换不动的诊断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我在这行干了十年，现在行业在走下坡路，可我转不了，这些年积累的东西全在这个方向上。",
+      "expected_behavior": "应激活 mm-path-dependence，列出积累物（技能、人脉、地理、身份）并估算迁移代价，检查是否叠加了债务，然后给出「提前保留出口」的具体安排（可迁移技能、分阶段转型）。",
+      "notes": "正面场景：职业方向的锁定"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "中午吃哪家？随便选，反正明天可以换一家。",
+      "expected_behavior": "不应激活本 skill，因为切换成本极低、不产生任何积累物，不构成路径依赖。",
+      "notes": "诱饵：选择但无积累"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个项目已经投了两年、砸了几百万，现在看前景不好，但就这么放弃我实在不甘心。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-sunk-cost-fallacy。放弃并不需要额外付出迁移代价，「不甘心」源于已投入的心理依恋，属于认知谬误而非客观锁定。",
+      "notes": "跨 skill 混淆诱饵：沉没成本谬误"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们被现在这套系统锁死了，迁移要半年。是该咬牙迁，还是继续用？",
+      "expected_behavior": "合理的判断是：先分清路径依赖与沉没成本——迁移半年是真实的客观成本，因此不能简单用「忽略已投入」来否定顾虑；应把迁移成本与新方案每年的增量收益做比较（折算回收期），并把「不迁的话未来每年多付多少」计入。同时注意路径依赖会随时间加深，等待通常使成本上升。结论应给出具体的回收期数字而非抽象的「该迁」。",
+      "notes": "边界：客观锁定下的迁移决策"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

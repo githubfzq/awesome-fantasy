@@ -1,0 +1,52 @@
+{
+  "skill": "mm-learning-curve",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "他刚学两周就说自己基本会了，还觉得这东西没那么难。我有点担心。",
+      "expected_behavior": "应激活 mm-learning-curve，判断处于初期陡坡段、易高估自己（因为还不知道自己不知道什么）；建议'压一压'——指出他尚未接触的具体复杂场景，安排一个当前水平之上的真实任务来校准自我评估",
+      "notes": "正面场景：陡坡段过度自信"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "前几周进步特别快，最近怎么练都没变化，他开始说想放弃了。",
+      "expected_behavior": "应激活本 skill，判断已进入平缓段，明确告知'进步变慢是曲线形状决定的、不是退步'，给出已跨过的具体里程碑作为证据，并改用改打法而非加时长（引入教练/反馈、转刻意练习、用间隔效应重排节奏）",
+      "notes": "正面场景：平缓期信心骤减"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "As a coach, how do I decide whether to push someone harder or encourage them more?",
+      "expected_behavior": "应激活本 skill，给出书中判据：先判断成员处于学习曲线的哪个位置——陡坡段压一压（防过度自信冒进），平缓段加把鼓励（防在临近突破处放弃）；用反了都会出事",
+      "notes": "正面场景：教练的压/推决策"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这门课的内容排进未来四周的日历，决定什么时候学什么。",
+      "expected_behavior": "不应激活本 skill，因为需要的是训练编排（转 mm-spacing-effect 间隔效应）；本 skill 是进度诊断工具，不是排期工具",
+      "notes": "诱饵：需要排期而非诊断"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他才学了三天，就在会上拍胸脯说这个方案没问题，完全听不进反对意见。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-dunning-kruger-effect（邓宁-克鲁格效应）：这是能力低者系统性高估自己的认知偏差；学习曲线只描述客观进步速度的形状，高估的程度由邓宁-克鲁格刻画",
+      "notes": "跨 skill 混淆诱饵：同为新手上手的过度自信"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "他卡了两个月完全没进步，按你说的'平缓期正常'安慰了也没用。还要继续安慰吗？",
+      "expected_behavior": "应激活本 skill 但必须先验证前提：诊断前需确认进步只是变慢而非停滞或倒退（推导，非书中明示）；若为完全停滞，应转查训练方法是否一直在重复已会的内容（转 mm-deliberate-practice），并警惕用'这是平缓期'来安慰真实退步",
+      "notes": "边界：平缓期与真停滞的区分"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

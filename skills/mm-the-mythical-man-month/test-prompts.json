@@ -1,0 +1,52 @@
+{
+  "skill": "mm-the-mythical-man-month",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "项目已经延了两周，老板说从别的组抽 4 个人过来支援，这样两周就能补上。你觉得行吗？",
+      "expected_behavior": "应激活 mm-the-mythical-man-month，指出人月换算前提不成立：先拆剩余任务的可并行性（模块是否耦合、是否需共享隐性上下文），估算 4 位新人的净负值期（达到零贡献的时间、期间消耗老手多少小时做讲解/review/返工），说明'加 4 人前两周进度可能是负的'；并给出替代方案（砍范围、降验收标准、集中给最熟的人）。",
+      "notes": "正面场景：最典型的加人赶工"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "截止期是客户定的不能动，团队已经连着加班一个月了。是继续硬扛还是延期？",
+      "expected_behavior": "应激活本 skill，把两难显式化：(a) 硬扛有过劳与离职风险、(b) 延期打击士气，并说明没有无痛选项；因截止期刚性划掉延期项，在硬扛与加人之间权衡，同时给出砍范围/降标准等替代方案，并补充未来排期规则（新人上手时间计入工期）。",
+      "notes": "正面场景：两难抉择"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个项目估下来 20 人月，我们打算上 10 个人两个月完成，帮我看下排期合理吗？",
+      "expected_behavior": "应激活本 skill，质疑线性换算：要求按可并行性拆分任务，估算上手成本并计入工期，指出 10 人两个月的理想换算只有在任务可干净并行时才成立，给出应预留的缓冲量。",
+      "notes": "正面场景：排期阶段的预防性使用"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们要标注 50 万张图片，现在 5 个人干，什么时候能干完？要不要加人？",
+      "expected_behavior": "不应激活本 skill（或激活后应判定不适用）。任务可干净并行、上手成本极低、无需共享上下文，加人近似线性加速，人月换算在这里基本成立。直接按人均产能算工期即可。",
+      "notes": "诱饵：也是'要不要加人'，但任务性质不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们每次估工期都估少了，明明已经特意留了缓冲还是超，这是怎么回事？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-hofstadter-s-law（侯世达定律）：用户的问题是**估算本身**系统性偏乐观，而不是**加人无效**。二者常同时出现，但本例不涉及人力配置。",
+      "notes": "跨 skill 混淆诱饵：同属项目延期议题，一个是估时偏差、一个是资源配置谬误"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "项目刚启动第一周，团队 3 个人，我打算现在就补到 8 个人。这时候加人总不会拖慢吧？",
+      "expected_behavior": "应激活本 skill 并给出边界判断：书中明示提前规划可以避免两难，早期、可拆分阶段加人的代价远小于后期空降，因此方向合理；但仍需把上手时间计入工期，且必须是'提前配齐'而非'边做边加'，并要求先把模块边界划干净、降低耦合，否则早期加人同样会拖慢。",
+      "notes": "边界：早期加人的适用条件"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-hofstadter-s-law。"
+}

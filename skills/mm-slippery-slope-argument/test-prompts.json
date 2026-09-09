@@ -1,0 +1,52 @@
+{
+  "skill": "mm-slippery-slope-argument",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "同事反对给实习生开线上环境权限,理由是\"今天给了实习生,明天就人人都得给,最后谁都能改生产数据\"。",
+      "expected_behavior": "应激活 mm-slippery-slope-argument,把论证拆链(实习生权限 → 全员权限 → 人人可改生产),逐环标注机制与概率,指出\"给实习生\"与\"人人可改生产\"之间缺少必然机制;同时按书中提醒不要整体驳回——若确有先例效应,应给出刹车点(按角色授权、只读、审计、限期)。",
+      "notes": "正面场景:典型滑坡论证"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "有人提议允许一次例外,老板说这个口子一开就收不住了。但我觉得这只是个小例外。",
+      "expected_behavior": "应激活 mm-slippery-slope-argument,要求写出\"这次例外 → 后续每一步 → 最坏结果\"的显式链条,逐环找出推动机制(先例被引用、其他人援引平等待遇、规则失效);明确指出最弱环节,并回答\"最可能停在第几步\"——部分骨牌确实会倒。",
+      "notes": "正面场景:先例与口子"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我自己写方案的时候写了\"如果不控制住,最终会导致全面失控\",感觉有点虚,怎么改?",
+      "expected_behavior": "应激活 mm-slippery-slope-argument,帮用户自检:把\"全面失控\"拆成可判断的中间步骤,每步补上机制与概率,删掉只靠联想的环节,并把结论改成\"最可能滑到第 N 步,原因是\";同时给出阻断措施,把滑坡变成可控的斜坡。",
+      "notes": "正面场景:自检自己的滑坡论证"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "主库挂了之后,从库自动接管失败,接着缓存雪崩,然后整个服务不可用——这是昨天事故的真实过程。",
+      "expected_behavior": "不应激活本 skill,这是有明确技术耦合机制的真实级联失效,不是滑坡论证;应激活 mm-cascading-failure 或 mm-domino-effect 分析耦合关系与容错设计。",
+      "notes": "诱饵:真实的工程级连锁故障"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "小区里几扇破窗一直没人修,现在乱扔垃圾、涂鸦越来越多,是不是该从修窗户抓起?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-broken-windows-theory:这是关于可见失序信号会鼓励更严重违规的一个具体主张(书中明确指出其干预效果尚不明确),不是对论证形式的检验工具;处理时应把它当待验证假设并配套衡量。",
+      "notes": "跨 skill 混淆诱饵:破窗理论"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "允许一个部门用一款未审批的 SaaS 工具,长远看会不会导致整个公司的数据合规失控?",
+      "expected_behavior": "合理判断:不能整体接受也不能整体驳回。拆链后——\"一个部门用\"到\"更多人用\"有真实的模仿与便利驱动机制(较可能),\"更多人用\"到\"数据外流\"取决于工具的数据权限(有条件),\"到合规全面失控\"则取决于是否有审批与审计(可阻断)。结论:部分骨牌确实会倒,因此不应简单放行,但正确动作不是全面禁止,而是设置刹车点(数据分级、禁用敏感数据、统一 SSO 与审计、限期转正或下线)。",
+      "notes": "边界:链条部分成立,需要刹车点而非一概驳回"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,76 @@
+{
+  "skill": "expectation-tracing",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "他应该知道我要什么啊，为什么每次都要我开口说",
+      "expected_behavior": "调用本 skill，收敛成'此时此刻我希望从他身上得到什么'",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我对他已经没感觉了，是不是不爱了",
+      "expected_behavior": "调用本 skill，先做期望溯源再谈去留",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我以为他结了婚就会成熟起来，现在彻底失望了",
+      "expected_behavior": "调用本 skill，定位'我希望他变成什么样'这个期望并做意愿测试",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "每次都让我失望，我已经不抱希望了",
+      "expected_behavior": "调用本 skill，做意愿测试（愿不愿意放弃这项期望）",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "家里的事都是我在做，他连个碗都不洗",
+      "expected_behavior": "不应调用本 skill；应命中 sacrifice-indulgence-pendulum（付出-接受失衡）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们昨晚大吵一架，他摔门走了",
+      "expected_behavior": "不应调用本 skill；应命中 eight-questions-communication（当场冲突流程）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "婚礼场地有哪些推荐",
+      "expected_behavior": "完全无关",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "他出轨了，我觉得伴侣应该忠诚",
+      "expected_behavior": "底线类事项：应明确判定为不可放手的底线，不做期望溯源或放手工作；也不做向内归因",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我只是希望他记得倒垃圾，这种小事也要分析吗",
+      "expected_behavior": "边界：小期望也适用，但不应过度展开；重点是'具体化+意愿测试'而非长流程",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "should-not-trigger-04",
+      "type": "should_not_trigger",
+      "prompt": "我最在意的其实是我心里在不在他第一位——他记得所有人的生日偏偏忘了我的。",
+      "expected_behavior": "不应调用；应命中 specialness-vs-love（特殊性需求，不是某个具体期望的溯源）",
+      "notes": "诱饵：跨册混淆（应命中第 2 册 skill）"
+    }
+  ]
+}

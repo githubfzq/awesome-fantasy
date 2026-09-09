@@ -1,0 +1,52 @@
+{
+  "skill": "mm-proximate-cause",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "线上事故复盘出来了：原因是运维同学改配置时填错了参数。让他以后改之前双人核对就行了吧？",
+      "expected_behavior": "应激活 mm-proximate-cause，指出「填错参数」只是最近一层的症状，做复发测试（双人核对后同类事故是否还会发生），并把这个结论推向下游：追问为什么没有校验、为什么没有灰度、为什么改动能直接上生产。",
+      "notes": "正面场景：归因停在最近一层就准备结案"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个 bug 已经是今年第三次了，前两次也是改改就上线，怎么又来了？",
+      "expected_behavior": "应激活 mm-proximate-cause，指出复发本身就是上次归因停在直接原因的证据，把「改改就上线」作为症状继续往上层挖，并把措施分成止血与根治两栏。",
+      "notes": "正面场景：问题复发"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "项目延期的责任在谁？需求是产品那边晚给的，我们开发一直等着。",
+      "expected_behavior": "应激活 mm-proximate-cause，指出「需求晚给」是直接原因而非终点，追问需求为什么晚给、为什么没有提前暴露阻塞、为什么排期没有缓冲，并提醒把根因落到流程而不是个人。",
+      "notes": "正面场景：归因决定改进方向"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "服务现在还在报错，用户下单全失败了，先怎么办？",
+      "expected_behavior": "不应激活本 skill，因为事故正在发生，此刻应直接止血（回滚/降级/恢复），挖根因是复盘阶段的事；此时追问深层原因会延误恢复。",
+      "notes": "诱饵：正在发生的故障"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们已经用五个为什么挖到最底层了：没有自动化的配置校验平台，所以任何手工改动都不可验证。接下来怎么定改进项？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-root-cause。用户已经穿过多层因果链抵达最底层根因，当前需要的是围绕根本原因设计改进措施与验证方式，而不是再判定「还停在哪一层」。",
+      "notes": "跨 skill 混淆诱饵：根本原因"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这次故障是机房那台机器硬件突然坏了，纯粹运气不好，供应商说这种故障率是万分之一。还要继续挖吗？",
+      "expected_behavior": "合理的判断是：先用复发测试判断——若「单台硬件随机损坏」被消除（换机器）同类业务中断是否还会发生。若系统本就有冗余与自动切换，那么这次硬件损坏本身就是全部原因，挖到底也只剩运气，可以结案；若单点损坏就导致业务中断，那么真正的可改层是「无冗余/切换未生效」，应转入根因分析。不要把随机事件硬挖成结构性根因，也不要用「运气不好」掩盖设计缺陷。",
+      "notes": "边界：一次性随机意外 vs 结构缺陷的症状"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

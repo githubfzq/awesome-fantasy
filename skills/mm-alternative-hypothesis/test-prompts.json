@@ -1,0 +1,52 @@
+{
+  "skill": "mm-alternative-hypothesis",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要验证助眠功能的效果，实验假设该怎么写？预期提升多少算成功？",
+      "expected_behavior": "应激活 mm-alternative-hypothesis，把目标转写为「有意义的最小差异」（如 10 分钟内入睡的人增加 15%），写成可检验的对立假设，并说明它将作为样本量计算的输入。",
+      "notes": "正面场景：实验假设撰写"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "预算紧张，我们把对立假设从 15% 改成 30% 吧，这样 62 人就够了，你觉得呢？",
+      "expected_behavior": "应激活 mm-alternative-hypothesis，明确指出这是书中警告的做法：若真实差异只有 15%，62 人方案只有约 32% 检出概率、约 2/3 概率假阴性；要求用户知情接受，或改为延长周期而非调大假设。",
+      "notes": "正面场景：书中明确警告的误用"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们实验结论是「没有显著差异」，但我觉得可能只是当初预期设得太大了，怎么判断？",
+      "expected_behavior": "应激活 mm-alternative-hypothesis，回溯当初的对立假设是否等于「有意义的最小差异」还是乐观预期，并核算在该假设下样本量是否足够，区分「真的没效果」与「假设设得过大导致漏检」。",
+      "notes": "正面场景：回溯假设设定"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这份实验报告整理成一页摘要给老板看。",
+      "expected_behavior": "不应激活本 skill，因为这是文档整理任务，不涉及假设设定或实验设计。",
+      "notes": "诱饵：实验相关但非设计决策"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "结果 p=0.03，小于 0.05，是不是就能说我们的改动有效了？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-statistical-significance：问题在于判定阈值与「显著是否等于有意义」，不涉及如何设定预期差异。",
+      "notes": "跨 skill 混淆诱饵：同属假设检验，极易混"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们在做一个全新的功能，完全不知道会有正面还是负面效果，也要先写对立假设吗？",
+      "expected_behavior": "应激活本 skill 并说明：探索性阶段可以先做描述性观察生成假设，但如果最终要下「有效/无效」的判定，仍需事先定出「有意义的最小差异」才能算样本量与功效；建议先小样本探索，再据此设计正式实验。",
+      "notes": "边界：探索性研究中的适用性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

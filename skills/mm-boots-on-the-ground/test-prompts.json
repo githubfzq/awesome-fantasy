@@ -1,0 +1,52 @@
+{
+  "skill": "mm-boots-on-the-ground",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "新价值观发布三个月了,一线一点变化都没有。我再发一封全员邮件强调一下有用吗?",
+      "expected_behavior": "应激活 mm-boots-on-the-ground,指出文化是地面目标而非信息目标,再发邮件仍是空中力量、够不着;建议定位具体场域,由决策者本人到场,设计双向互动动作(现场办公、跟班、当面答疑、一起解决问题),并列出领导者以身作则的示范动作与每周到场频率。",
+      "notes": "正面场景:用单向广播推地面目标"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我是新来的负责人,想推动一些变革,但团队明显不信我。怎么办?",
+      "expected_behavior": "应激活 mm-boots-on-the-ground,指出信任是双向互动的产物、单向广播造不出信任;参考社区警务机制(警察在社区内花时间建立联系),给出具体到场动作、以身作则的可见示范(卷起袖管、进入战壕、表明是'我们中的一员'),以及4-8周后的观察指标。",
+      "notes": "正面场景:信任未建立就想推动变革"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "外地分公司对我们总部的政策很抵触。要不要拍个宣传片解释一下我们的初衷?",
+      "expected_behavior": "应激活 mm-boots-on-the-ground,指出拍宣传片属于远距离传播信息,而抵触是信任问题、属地面目标;建议明确具体场域与必须亲自到场的人(不能委派代言),设计双向互动动作而非单向宣讲。",
+      "notes": "正面场景:用外部传播替代到场互动"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "新版本下周上线,我要通知所有客户注意兼容变更。用什么渠道发通知最好?",
+      "expected_behavior": "不应激活本 skill,因为这是纯信息目标(通知变更),靠广播即可,亲自到场是浪费;应直接优化传播渠道。",
+      "notes": "诱饵:谈落地但实为纯信息传递"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们想让这个地区的民众真心认同我们的项目,而不只是表面配合。该做什么?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-winning-hearts-and-minds:用户描述的是目标本身(让人们真心认同);本 skill 是达成该目标的必要手段(必须脚踏实地亲自到场互动)。书中把两者直接相连,但前者是'要什么',后者是'怎么做'。",
+      "notes": "跨 skill 混淆诱饵:赢得人心(目标 vs 手段)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我每周都去一线转一圈、问一圈情况,但半年了他们还是不信任我。是不是这个模型没用?",
+      "expected_behavior": "合理判断:先排查三类退化——(1)到场是否变成了巡查与督导:书中强调的是互动与赢得人心(社区警务是花时间建立联系),到场若变成检查工作反而削弱信任;(2)是否委派了他人代替本人:组织语境要求领导者以身作则、表明是'我们中的一员',委派中层就退化成远距离作战;(3)到场后言行是否与主张一致——人到了却言行相悖,破坏力大于不到场。同时确认目标是地面目标而非信息目标,并检查频率是否足够(信任是重复互动的累积,一次性亮相无效)。",
+      "notes": "边界:到场的三种退化形态"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

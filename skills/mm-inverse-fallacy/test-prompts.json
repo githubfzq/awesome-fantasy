@@ -1,0 +1,52 @@
+{
+  "skill": "mm-inverse-fallacy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这种病的检测准确率有 95%，我测出来是阳性，那我是不是基本可以确定得病了？",
+      "expected_behavior": "应激活 mm-inverse-fallacy，指出把 P(阳性|患病)=95% 当成 P(患病|阳性) 是方向倒置，两个分母（患者群体 vs 阳性人群）完全不同，需引入患病率重新计算反向概率。",
+      "notes": "正面场景：医学检测倒置"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我看统计说独角兽公司的创始人 80% 都是名校毕业，所以我招个名校生，做出独角兽的概率应该也很高吧？",
+      "expected_behavior": "应激活 mm-inverse-fallacy，说明 P(名校|独角兽创始人) ≠ P(独角兽创始人|名校生)，后者分母是庞大的名校生群体，概率极低，并用假想总体表给出量级对比。",
+      "notes": "正面场景：成功学归因倒置"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "数据显示出车祸的司机里大部分都疲劳驾驶，所以只要有人疲劳驾驶，就很可能出车祸，对吧？",
+      "expected_behavior": "应激活 mm-inverse-fallacy，指出 P(疲劳|事故) 高不代表 P(事故|疲劳) 高，后者分母是所有疲劳驾驶者（其中绝大多数没出事），两者不可互换。",
+      "notes": "正面场景：安全归因倒置"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我解释一下条件概率 P(A|B) 到底怎么算，我一直没搞懂。",
+      "expected_behavior": "不应激活本 skill，因为用户只是想学习条件概率的计算方法，没有发生方向倒置的错误推理，应走 mm-conditional-probability。",
+      "notes": "诱饵：同主题但无谬误"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们这个城市酒驾比例大概千分之一，酒精测试错误率 5%，测出阳性的人真的醉驾的概率有多少？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-base-rate：问题的核心是低基础比率导致假阳性占绝大多数，虽然与倒置相关，但正确切入点是分母中的先验发生率。",
+      "notes": "跨 skill 混淆诱饵：书中相邻小节，高度易混"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们平台上 90% 的付费用户都看过新手引导，那给所有新用户强制播放引导，付费率应该能到 90% 吧？",
+      "expected_behavior": "应激活本 skill 并指出方向倒置（P(看过引导|付费) ≠ P(付费|看过引导)），同时说明这是相关而非因果，即使纠正方向也不能得出 90%，应建议做对照实验。",
+      "notes": "边界：倒置 + 因果混淆叠加"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

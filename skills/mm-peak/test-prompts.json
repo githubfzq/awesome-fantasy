@@ -1,0 +1,52 @@
+{
+  "skill": "mm-peak",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们平台的用户增长明显慢下来了，是不是已经见顶了？后面该怎么做？",
+      "expected_behavior": "应激活 mm-peak，先明确度量口径（活跃用户数还是新增数），把历史曲线外推作为零假设，再列出会移动供给/需求的结构性力量，最后给出条件式区间判断（在什么条件下会掉头）而非单点年份。",
+      "notes": "正面场景：增长见顶判断"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "专家又说石油峰值要在三年内到来了，这种预测可信吗？",
+      "expected_behavior": "应激活 mm-peak，援引书中 1919 年戴维·怀特预测美国石油产量峰值很快过去却至今未出现的例子，说明峰值预测极易出错，因为需求剧增会催生地下开采新技术使供给曲线移动；要求关注底层结构性变化而非历史产量外推。",
+      "notes": "正面场景：峰值预测的可信度（书中原型）"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想说「以后这种歧视只会越来越少」，有没有一个更精确的说法？",
+      "expected_behavior": "应激活 mm-peak，说明书中把它当成一个可加前缀的构词框架（如「性别歧视峰值」「脸书网峰值」），意为从此以后只会比现在少；并提醒越过峰值后下降速度可能极慢，以及不要因希望它见顶而过早宣布。",
+      "notes": "正面场景：用「XX峰值」框架表达判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这项技术已经存在五十年了还在用，是不是说明它还能再用五十年？",
+      "expected_behavior": "不应激活本 skill，因为这是判断事物还能存活多久，属于林迪效应；峰值回答的是何时开始下滑，不回答寿命问题。应改用 mm-lindy-effect。",
+      "notes": "诱饵：寿命问题而非拐点问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的新产品增长速度变慢了，但还是在涨，是不是进入了饱和期？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-s-curves。用户描述的是增长放缓但仍在上升、可能进入平台期的形状，这正是 S 形曲线顶部的特征；峰值专指由升转降的那一点，把平台期误判为峰值会导致过早撤退。",
+      "notes": "跨 skill 混淆诱饵：S形曲线（平台期 vs 掉头）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "石油峰值这个说法被证伪好几次了，那我们是不是干脆别预测峰值了？",
+      "expected_behavior": "合理判断：不应因预测屡次出错就放弃这个概念。正确做法是改变输出形式——不再给出单点峰值年份，而是给出条件式判断（若某类技术/政策出现则推迟，否则在某区间见顶），并把重点从历史曲线外推转向底层结构性变化（如书中列举的气候变化、太阳能兴起、电动车成本竞争力、自动驾驶与拼车）。峰值概念的价值在于提醒方向会反转，不在于预测具体时点。",
+      "notes": "边界：预测易错不等于概念无用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

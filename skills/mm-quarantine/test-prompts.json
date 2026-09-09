@@ -1,0 +1,52 @@
+{
+  "skill": "mm-quarantine",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "社区里最近冒出一批营销号,封不过来,内容还在往信息流里进。除了封号还能怎么办?",
+      "expected_behavior": "应激活 mm-quarantine,指出不追求消灭源头而是切断传播路径:降低这些内容进入主信息流的权重、加一道发布门槛或延迟可见、把它们归入单独的低曝光区;给出摩擦代价估计与误伤申诉通道,并用触达率/举报率衡量暴露面是否真的下降。",
+      "notes": "正面场景:源头清不完,切传播路径"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "有个第三方数据源经常出问题,但它一挂就影响我们核心报表。能不能先隔开?",
+      "expected_behavior": "应激活 mm-quarantine,建议把它放进隔离层:核心表不直接依赖它、写入前做校验与降级、异常时使用上一版快照并告警;明确这只是控制传播、不解决数据源本身,并给出后续治理动作与时间点。",
+      "notes": "正面场景:不可信依赖的隔离"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "内部有个服务时不时内存泄漏拖垮整台机器,排查要很久。有没有临时办法?",
+      "expected_behavior": "应激活 mm-quarantine,给出节点级隔离:把它单独部署到独立容器/机器并设资源上限与自动重启,禁止它与核心服务共享宿主机;明确隔离是过渡手段,仍需完成泄漏的根因排查。",
+      "notes": "正面场景:故障节点隔离"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这十个账号确认是同一批人注册的刷量号,证据确凿,直接封掉就行吧?",
+      "expected_behavior": "不应激活本 skill,因为源头可以低成本、彻底地清除;隔离适用于无法根除或识别成本过高的情形,能直接清除时应直接封禁,隔离只会留下长期维护成本。",
+      "notes": "诱饵:源头可清除,不需要隔离"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们想搭一台看起来像核心数据库、实际是空壳的服务器,专门看谁会来扫,顺便记录他们的手法。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-honeypot:蜜罐是主动设一个假目标吸引并观测恶意行为者(守方诱饵),隔离是被动在真实传播路径上设闸阻断;二者都依赖隔离环境,但目的相反——一个是引诱,一个是阻断。",
+      "notes": "跨 skill 混淆诱饵:蜜罐(主动假目标)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "为了拦垃圾内容,我们把所有新用户前三条发言都改成先审后发。垃圾确实少了,但新用户发帖量掉了四成。",
+      "expected_behavior": "合理判断:隔离生效但摩擦加错了位置——它压在正常用户必经路径上,净效果可能为负。建议按风险分层:只对触发风险信号的新用户启用先审后发,其余用户事后抽检;并把闸门后移到\"分发\"而不是\"发布\",同时提供申诉与快速放行通道,用触达率和留存共同衡量。",
+      "notes": "边界:摩擦位置的代价权衡"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

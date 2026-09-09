@@ -1,0 +1,52 @@
+{
+  "skill": "mm-false-positive",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的风控系统最近误杀了很多正常用户，业务方要求把阈值放松，但老板又怕放过坏人，这个阈值到底怎么定？",
+      "expected_behavior": "应激活 mm-false-positive，列出四格结果，为误杀（假阳性）与放过（假阴性）分别定价，据此给出阈值方向与容忍度，并说明固定样本/信息量下两者此消彼长。",
+      "notes": "正面场景：阈值权衡"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "垃圾邮件过滤又把我小侄女的照片邮件判成垃圾了，这模型太差了吧？",
+      "expected_behavior": "应激活 mm-false-positive，引用书中垃圾邮件案例，说明这是假阳性，与「真垃圾漏进收件箱」的假阴性构成权衡，需先明确哪一侧更不可接受再评价模型。",
+      "notes": "正面场景：书中案例迁移"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "做癌症筛查方案，漏掉一个早期病人后果很严重，误报只是让人多复查一次，我们是不是应该尽量往松的阈值调？",
+      "expected_behavior": "应激活 mm-false-positive，肯定「按后果定价」的思路（假阴性代价高 → 偏向灵敏度），同时提示假阳性会带来复查成本与焦虑，阈值应定在边际代价平衡点。",
+      "notes": "正面场景：医学筛查权衡"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我写个脚本，把这批用户的行为日志按时间排序导出。",
+      "expected_behavior": "不应激活本 skill，因为这是数据处理任务，不涉及二元判断与错误权衡。",
+      "notes": "诱饵：工程任务，无判断系统"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的实验样本只有 200 人，真有 15% 的差异也可能测不出来，需要多少样本才能有把握检出？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-power：问题聚焦于假阴性率（功效）与所需样本量，而非两类错误之间的取舍。",
+      "notes": "跨 skill 混淆诱饵：书中同节，假阴性与功效高度相关"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们既不想误杀用户，也不想放过坏人，能不能把两个错误率都降到 1% 以下？",
+      "expected_behavior": "应激活本 skill 并说明：在固定信息量下二者此消彼长、不能同时压低；唯一出路是增加样本量/信息量（引入更多特征、更多数据），或接受一方的容忍度上调。",
+      "notes": "边界：同时压低两类错误的诉求"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

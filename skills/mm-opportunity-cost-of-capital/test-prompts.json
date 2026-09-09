@@ -1,0 +1,52 @@
+{
+  "skill": "mm-opportunity-cost-of-capital",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "新产线预计年回报 8%，看着还行，这笔钱要不要投？",
+      "expected_behavior": "应激活 mm-opportunity-cost-of-capital，先找出这笔资本的次佳用途并量化其回报率作为门槛（如原业务广告投入的 5%），用同一口径比较后给结论并标注敏感性。",
+      "notes": "最典型的正面场景：跟门槛比"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们账上有笔闲钱，是继续投广告、开新市场还是存银行，怎么比？",
+      "expected_behavior": "应激活本 skill，把各方案统一到同一收益率口径，以次佳用途的回报为门槛做横向比较。",
+      "notes": "多项目资金分配"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "投资人问我们的最低可接受回报率是多少，该怎么定？",
+      "expected_behavior": "应激活本 skill，说明门槛来自次佳用途的回报率，并明确口径（税前/税后、年化、风险调整）。",
+      "notes": "设定 hurdle rate"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这条产线已经投了三千万，现在停掉就全打水漂了，还得继续投。",
+      "expected_behavior": "不应激活本 skill，讨论的是已发生不可收回的投入，应激活 mm-sunk-cost-fallacy（沉没成本谬误）。",
+      "notes": "诱饵：都是投资决策"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我周末是去兼职赚钱还是在家陪孩子，时间就这么多，怎么选？",
+      "expected_behavior": "不应激活本 skill，稀缺资源是时间与人而非资本，应激活 mm-opportunity-cost（机会成本）的通用形式。",
+      "notes": "跨 skill 混淆诱饵：都是机会成本家族"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "新项目回报 12% 但风险高，原来的业务只有 6% 但很稳，能直接说新项目更好吗？",
+      "expected_behavior": "可激活但要先做风险调整：门槛比较必须在同一风险口径下进行，风险差异显著时不能直接比大小，调整后再判断并标注敏感性。",
+      "notes": "边界：风险口径不一致"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

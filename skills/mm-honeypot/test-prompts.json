@@ -1,0 +1,52 @@
+{
+  "skill": "mm-honeypot",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "怀疑有人在内部批量爬客户数据,但日志里看不出是谁。能不能埋点什么把他钓出来?",
+      "expected_behavior": "应激活 mm-honeypot,建议部署诱饵(含可追踪假数据的假记录/假接口/canary token)并说明设计要点:看起来值得下手、实际完全隔离、碰触即告警;首要前提是严格验证隔离性(无真实数据、无横向移动、无真实凭据),并配好告警与响应人。",
+      "notes": "正面场景:内部数据滥用取证"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们老是被脚本扫站,能不能搭个假后台页面,看他们想干什么?",
+      "expected_behavior": "应激活 mm-honeypot,给出诱饵可信度设计(常见后台路径、合理命名、符合预期的表单),强调必须与真实系统网络与权限隔离、不能有任何通向真实资产的通路;明确蜜罐只提供情报、不阻止攻击,必须配套真实加固。",
+      "notes": "正面场景:外部扫描的情报收集"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "反垃圾这块,能不能放一批假账号进去,谁加他们就说明是营销号?",
+      "expected_behavior": "应激活 mm-honeypot,确认这是\"看起来有价值、实为受控\"的诱饵;要求明确记录哪些行为、阈值与处置流程;同时给出边界提醒:蜜罐捕获的只是愿意碰诱饵的那部分攻击者,不能据此推断整体攻击面,也不能把它当主要防御。",
+      "notes": "正面场景:平台风控中的诱饵账号"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个漏洞已经定位了,补丁也写好了,直接修掉就可以。",
+      "expected_behavior": "不应激活本 skill,因为源头可以直接、低成本地清除;蜜罐用于无法直接清除、需要获取手法情报的情形,能修就修,布陷阱只会增加维护面。",
+      "notes": "诱饵:源头可直接清除"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "竞品一直在比价格,我们想把客户引导到\"总拥有成本\"这个我们占优的维度上去谈。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-flypaper-theory:把对手引到自己占优的地形上打,靶子是真的(真实的成本优势);蜜罐的靶子是假的、目的是观测与诱捕,方向完全不同。",
+      "notes": "跨 skill 混淆诱饵:粘蝇纸理论"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们想给所有用户邮箱里塞一条假的\"密码重置\"链接,点了的就标记为钓鱼易感员工。这样合规吗?",
+      "expected_behavior": "合理判断:结构上属于蜜罐(假目标 + 观测),但对象从可疑攻击者扩大到了全部内部人员,性质发生变化。若实施,必须限定范围、事先告知存在安全意识演练、经法务与人力审批、不收集超出必要的个人信息、对\"中招\"者以培训而非惩戒处理,并提供退出机制;否则法律与伦理风险远高于收益,建议改用不含真实凭据的外部演练服务。",
+      "notes": "边界:蜜罐扩大到内部全员 phishing 演练"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

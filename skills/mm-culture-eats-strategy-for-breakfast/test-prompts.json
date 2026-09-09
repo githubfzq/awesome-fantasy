@@ -1,0 +1,52 @@
+{
+  "skill": "mm-culture-eats-strategy-for-breakfast",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "公司要转敏捷开发，培训也做了、流程也定了，半年过去大家还是按老办法走，为什么？",
+      "expected_behavior": "应激活 mm-culture-eats-strategy-for-breakfast，先确认战略与资源本身没问题，再把「敏捷」翻译成具体日常行为，逐条问这些行为在组织里是否被奖励过；若多数无反馈或被惩罚，判定为文化对抗战略，然后在三条补救路径（组建文化匹配的新团队 / 修正战略 / 缓慢改变文化）中选定一条并说明取舍。",
+      "notes": "正面场景：转型推不动"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们并购了一家公司都一年了，新流程就是落不进他们团队，怎么办？",
+      "expected_behavior": "应激活 mm-culture-eats-strategy-for-breakfast，说明文化是被固化的共享规范、惯性极大而战略可一夜改变，因此新流程会被消化掉；建议评估三条路径，并明确若选择改变文化需以年为单位。",
+      "notes": "正面场景：并购后整合卡壳"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "战略方向很清楚，资源也给足了，就是没人照做，是执行力问题吗？",
+      "expected_behavior": "应激活 mm-culture-eats-strategy-for-breakfast，指出只要战略要求的行为在这个组织里从来没被奖励过，就不是执行力问题而是文化对抗；要求列出战略要求的具体行为并逐条对照激励与晋升案例。",
+      "notes": "正面场景：把文化问题误判为执行力问题"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们明年的方向还没定，到底该主攻大客户还是走量，怎么想清楚？",
+      "expected_behavior": "不应激活本 skill，因为战略本身尚未形成，属于策略与战术层面的规划问题；本模型处理的是战略已明确但被文化对抗的情形。应改用 mm-strategy-versus-tactics。",
+      "notes": "诱饵：战略未定而非战略被对抗"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们公司太大了，一个决定要过五层审批，光协调就要几周，怎么提速？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-inertia。阻力来自组织规模带来的无价值取向的转不动，属于物理性惯性，可以通过授权与流程精简用资源推动；文化对抗战略则是「认为不该这么转」，加资源无效。",
+      "notes": "跨 skill 混淆诱饵：惯性（物理性 vs 规范性）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们决定从大公司挖一批人组成突击队来做这个项目，是不是就高枕无忧了？",
+      "expected_behavior": "合理判断：组建文化匹配的新团队正是书中给出的第一条补救路径（HealthCare.gov 最后靠招募大型科技公司突击队修复），但它有前提——突击队必须在文化上保持隔离。若把新团队塞回原有的审批与激励体系，他们会被同化，战略照样被消化掉。应明确建议保护突击队的决策权与评价方式，并设定 90 天内可观察的行为变化指标来验证。",
+      "notes": "边界：补救路径 A 的生效前提"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

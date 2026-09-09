@@ -1,0 +1,52 @@
+{
+  "skill": "mm-statistical-significance",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "实验 p=0.03，转化率从 3.00% 涨到 3.02%，是不是可以上线了？",
+      "expected_behavior": "应激活 mm-statistical-significance，说明统计显著只意味着「不太可能纯属偶然」，但 0.02 个百分点的幅度属于书中警告的「样本量大时连 1% 微小差异也显著」，需按业务意义与改动成本单独判断是否值得上线。",
+      "notes": "正面场景：显著但不有意义"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们有几百万用户，跑什么指标都是显著的，这样还怎么判断？",
+      "expected_behavior": "应激活 mm-statistical-significance，解释大样本下显著性阈值极易被跨过，应改用「有意义的最小差异」作为判据，并引用美国统计协会「不该只根据概率是否超出特定阈值下结论」的告诫。",
+      "notes": "正面场景：大样本导致的显著性通货膨胀"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "结果是 p=0.12，不显著，是不是就证明这个改动没效果？",
+      "expected_behavior": "应激活 mm-statistical-significance，指出「不显著」不等于「证明无效果」，需核算当前样本量下的功效，区分「有证据表明无效果」与「证据不足」，再给出继续收集或停止的建议。",
+      "notes": "正面场景：不显著的误读"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我解释一下什么是原假设，我一直搞不清楚。",
+      "expected_behavior": "不应激活本 skill，因为用户问的是假设检验的基础概念，不是结果判定，应走 mm-null-hypothesis。",
+      "notes": "诱饵：同主题但非判定场景"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们想把这个实验的显著性水平从 5% 提到 1%，这样结论更稳妥，代价是什么？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-type-i：问题在于 α（第一类错误容忍度）的设定及其对假阴性率的影响，而不是拿已有 p 值做判定。",
+      "notes": "跨 skill 混淆诱饵：阈值设定 vs 阈值使用"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们测了 20 个指标，只有 1 个显著（p=0.04），能说这个指标有效果吗？",
+      "expected_behavior": "应激活本 skill 并提示多重比较问题：测 20 个指标时 α=5% 意味着平均会有 1 个假阳性，这个「唯一显著」很可能就是它；建议做多重比较校正或在新样本上复现，并关联 mm-data-dredging。",
+      "notes": "边界：多重比较下的显著性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

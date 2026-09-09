@@ -1,0 +1,52 @@
+{
+  "skill": "mm-counterfactual-thinking",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "如果当初我接受了那份工作，现在会不会好很多？",
+      "expected_behavior": "应激活 mm-counterfactual-thinking,先推演另一条路的积极后果,再强制补写不少于同等数量的负面连锁（以及“现在拥有的哪些东西根本不会存在”）,并用蝴蝶效应检查“其他不变”的假设。",
+      "notes": "正面场景:书中点名的典型提问"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这次项目成功了，复盘一下我们到底做对了什么。",
+      "expected_behavior": "应激活 mm-counterfactual-thinking,用反事实区分“结果好”与“过程对”:推演若某个关键判断不同会怎样,从而识别哪些成功来自决策、哪些来自运气,并提炼 1-2 条可复用规则。",
+      "notes": "正面场景:结果偏误风险高的复盘"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我一直在后悔当初没早点进这个行业，越想越难受。",
+      "expected_behavior": "应激活 mm-counterfactual-thinking,说明只想象另一条路的积极后果是书中点名的误用;引导补写负面连锁与“其他不可能保持不变”的地方,把情绪转化为对因果信念的更新。",
+      "notes": "正面场景:单向美化的后悔循环"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们要为明年制定三套可能的战略图景，分别推演一下。",
+      "expected_behavior": "不应激活本 skill,因为这是面向未来的情景构造,不是对过去的反事实推演;应激活 mm-scenario-analysis。",
+      "notes": "诱饵:同为“如果……会怎样”但时间轴朝前"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "如果这个产品完全免费、运维成本为零，我们的商业模式会变成什么样？",
+      "expected_behavior": "不应激活本 skill,应激活 mm-thought-experiment:这是面向虚构未来情形的假设推演,而反事实思维专门针对过去已经发生的事（想象其与实际相反）。",
+      "notes": "跨 skill 混淆诱饵:同为假设推演,时间轴相反"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "当初那个决定已经过去十年了，我现在反复想“如果选了另一条路”，还有意义吗？",
+      "expected_behavior": "合理判断:取决于能否产出可复用的决策规则——若能提炼出对因果理解的更新（例如“我当时高估了 X 的影响”）,有意义;若只是反复美化没走的那条路且无法产生任何可复用规则,收益接近零,应止步。同时提醒:反事实推演更新的是信念而非事实,只有一个真实结果可供比较,无法验证。",
+      "notes": "边界:何时该停止反事实推演"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-dark-patterns",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个会员我想取消,官网翻遍了只有开通入口,客服要发邮件等三个工作日,太离谱了。",
+      "expected_behavior": "应激活 mm-dark-patterns,定位具体操纵动作为'退出障碍'(roach motel):进入一步完成、退出被刻意加难;说明这是利用摩擦力而非产品价值留住用户,并给出脱身路径(支付渠道止损、书面留证、投诉渠道)与预防做法(虚拟卡、续费提醒、签约前先查退出流程)。",
+      "notes": "正面场景:极难取消的经典形态"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "结账的时候才发现多了一笔服务费,前面几步都没显示,这算不算套路?",
+      "expected_behavior": "应激活 mm-dark-patterns,定位为'隐藏收费'(书中直接列举的形态);执行充分知情检验——若用户在费用前置明示的情况下不会下单,即可判定为黑暗模式;建议截图留证并向平台或监管渠道申诉。",
+      "notes": "正面场景:隐藏收费"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们想提高续费率,打算把取消按钮做成灰色小字放在页面底部,这样会不会有问题?",
+      "expected_behavior": "应激活 mm-dark-patterns,明确指出这属于靠信息不对称与摩擦力而非产品价值留存用户;给出整改替代方案(把退出做得和进入一样容易、在留存上改用真实价值与服务提醒),并说明欺骗性设计既是伦理问题也是合规风险。",
+      "notes": "正面场景:设计方自查是否越线"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们后台改版后,老用户普遍反馈找不到导出按钮在哪,点了半天才发现藏在二级菜单里。",
+      "expected_behavior": "不应激活本 skill,因为这是信息架构混乱导致的可用性问题,没有操纵意图、也没有欺骗或阻碍退出的设计;应做常规的导航与信息架构优化,而非道德指控。",
+      "notes": "诱饵:体验差但无操纵意图"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "有人在我们的服务器上传了个伪装成系统补丁的程序,运维一装就被控制了。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-trojan-horse:核心机制是'看似无害甚至诱人的礼物诱使你放下戒备'、绕过安全检查后从内部发作,属于一次性的入口欺骗;黑暗模式关注的是产品流程中持续性的操纵设计,此处场景是安全事件。",
+      "notes": "跨 skill 混淆诱饵:特洛伊木马"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "公益机构随信寄了免费的姓名地址贴纸希望你捐款,这跟那些商业套路用的是不是同一套?",
+      "expected_behavior": "合理判断:机制上确实是同一套(互惠 + 社会认同),但书中正是用这个例子说明道德灰度——目的是做善事且不构成欺骗时,是否算黑暗模式由你自己定底线;建议用户按'是否存在欺骗'而非'是否使用了影响力杠杆'来判断,并可把标准写成:若对方坦率说明意图且不制造虚假事实,则不归入黑暗模式。",
+      "notes": "边界:道德灰度,机制相同目的不同"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

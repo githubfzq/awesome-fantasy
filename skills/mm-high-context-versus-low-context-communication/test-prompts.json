@@ -1,0 +1,52 @@
+{
+  "skill": "mm-high-context-versus-low-context-communication",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我就是直说了这个方案不行，怎么他就不高兴了、后面几天都不太配合？",
+      "expected_behavior": "应激活 mm-high-context-versus-low-context-communication，判定对方偏高语境：直言不讳会被读作冒犯、导致士气低落；建议调整表达形式而非改变内容——补齐场合与铺垫、用间接方式传递否定、注意语气与非语言线索",
+      "notes": "正面场景：低语境直言撞上高语境对象"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "客户从不直接说'不'，只说'我们再研究研究'。这到底是答应还是拒绝？",
+      "expected_behavior": "应激活本 skill，识别这是高语境表达——没说出口的话和说出口的话同样重要甚至更重要；建议从是否遵循常规流程、语音语调的细微差别、非语言线索中找线索，并用低语境方式温和确认（明确时间节点与下一步）",
+      "notes": "正面场景：读不懂高语境回复"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "新来的同事好像很不适应我们这种直来直去的风格，怎么办？",
+      "expected_behavior": "应激活本 skill，建议坦率说明组织自身的沟通风格（书中：新人可能抵触，所以越坦率说明组织文化越好），讲清'我们这里是怎么说话的'，并说明此举是为降低误配而非要求对方改变",
+      "notes": "正面场景：新人融入"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "双方手上的数据版本不一样，所以结论对不上。先对一下数据吧。",
+      "expected_behavior": "不应激活本 skill，因为这是信息缺失/事实不一致的问题，不是沟通风格误配；应先补信息",
+      "notes": "诱饵：信息问题而非风格问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "两个部门为了明年的预算分配争得不可开交，谁都不肯让。",
+      "expected_behavior": "不应激活本 skill，因为冲突根源是利益与资源争夺（零和分配）；改变表达方式不解决利益问题（可关联 mm-zero-sum 看待分配结构）",
+      "notes": "跨 skill 混淆诱饵：沟通不畅的表象下是利益冲突"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "对方是高语境文化，但这份合同的责任划分必须写得毫无歧义。怎么办？",
+      "expected_behavior": "应激活本 skill 但应判定为必须强制转低语境：涉及需要无歧义留痕的事项（合同条款、合规要求、事故定责），无论语境高低都必须用低语境的书面明确表达（推导，非书中明示）；同时可用高语境方式维护关系——把硬性条款落在书面、把语气与铺垫放在沟通中",
+      "notes": "边界：需要强制低语境的场景"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

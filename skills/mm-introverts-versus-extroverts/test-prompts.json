@@ -1,0 +1,52 @@
+{
+  "skill": "mm-introverts-versus-extroverts",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "他代码写得很好，但一让他跟客户对接就整个人没精神。要不要让他去跑销售锻炼一下？",
+      "expected_behavior": "应激活 mm-introverts-versus-extroverts，指出人格特质稳定、改造成本高于调岗成本，建议调整角色或拆分角色（客户演示交给外向同事、方案撰写留给他），而不是逼他多社交",
+      "notes": "正面场景：角色与能量类型错配"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我一开一天会就整个人废掉了，第二天什么都不想干。是不是我太内向了所以升不上去？",
+      "expected_behavior": "应激活本 skill，识别出是高频互动持续放电导致的能量消耗，而非能力问题；建议按互动密度匹配角色或调整协作方式（减少会议、保留整块独立工作时间）",
+      "notes": "正面场景：能量消耗与晋升焦虑"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "We're hiring for a role that's 80% client-facing demos. Should we specifically look for an extrovert?",
+      "expected_behavior": "应激活本 skill，先量出角色的互动密度（对外演示占 80%），确认属高频互动角色，判定更适合外向型候选人；同时提示内外向只是众多人格维度中最有用的一个，不能作为唯一筛选标准",
+      "notes": "正面场景：招聘中的角色匹配"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "他对新框架完全不熟，写出来的代码 bug 很多，需要安排两周培训。",
+      "expected_behavior": "不应激活本 skill，因为这是技能与知识不足的培训问题，不涉及互动密度与能量类型；强行归因于性格会掩盖真实原因",
+      "notes": "诱饵：表现不佳但根源是能力"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想知道他能不能读懂客户的情绪、处理好团队里的摩擦，他平时挺聪明的但一沟通就把人得罪。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-eq-versus-iq（情商与智商）：这是能力维度（能否感知与管理情绪，可训练），不是能量维度（会不会被社交耗干）；且书中强调智商与情商彼此独立",
+      "notes": "跨 skill 混淆诱饵：人际相关但是能力而非能量"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们团队全是内向的人，客户演示没人愿意上，但大家技术都很好。怎么办？",
+      "expected_behavior": "应激活本 skill 并给出结构性解法而非改造个人：拆分角色（演示与客户成功交给少数适配者或外招一名外向者）、降低单次互动密度（轮换上、缩短时长）、或用书面材料替代部分同步演示；同时指出内向者在一对一深度客户关系上往往表现很好，不应按岗位名称一刀切（推导，非书中明示）",
+      "notes": "边界：团队整体同质化时的解法"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

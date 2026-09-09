@@ -1,0 +1,52 @@
+{
+  "skill": "mm-maslow-s-hammer",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们团队不管遇到什么问题，第一反应都是先做 A/B 测试，连品牌 slogan 和招人标准都要测，这样对吗？",
+      "expected_behavior": "应激活 mm-maslow-s-hammer，指出 A/B 测试成了那把锤子，问题正被重新定义成「可量化、可分流」的形态；按复杂度匹配工具，说明哪些问题不适合实验法，并建议补进决策树、成本收益分析等工具。",
+      "notes": "正面场景：单一工具套所有问题"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "新来的技术负责人看什么都像架构问题，业务问题、流程问题他也想靠重构解决，我该怎么跟他聊？",
+      "expected_behavior": "应激活 mm-maslow-s-hammer，引用马斯洛洗车机比喻说明工具会反过来塑造问题定义，先识别问题被改写的地方，再用「复杂度—工具匹配」的方式讨论，而不是否定他的专业能力。",
+      "notes": "正面场景：单一视角垄断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我刚学了决策树，发现什么决定都能画成决策树，是不是以后都用这个？",
+      "expected_behavior": "应激活 mm-maslow-s-hammer，肯定工具扩充是对的，但提醒作者强调的另一面：在比较简单的情况下用复杂模型是杀鸡用牛刀；应按问题的选项数、后果严重性、不确定性匹配工具复杂度。",
+      "notes": "正面场景：新工具的过度应用"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我用 SQL 优化一下这个慢查询。",
+      "expected_behavior": "不应激活本 skill，因为问题与工具天然匹配，不存在工具单一化导致的视野扭曲。",
+      "notes": "诱饵：使用工具但无锤子病"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "要不要接这个外包项目，我列了张利弊清单，好处有五条、坏处只有一条，是不是可以接？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-pro-con-list：用户已在具体使用决策工具，问题在于清单本身的缺陷（弊端列不全、等权假设），而不是工具选择单一化。",
+      "notes": "跨 skill 混淆诱饵：书中同一章，利弊清单正是被指认的那把锤子"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们以前只会列清单，现在花了两周给一个小功能做完整的决策树和敏感性分析，这是不是矫枉过正了？",
+      "expected_behavior": "应激活本 skill 并说明：是的，锤子病包含匹配失当的两个方向。作者明确提醒在比较简单的情况下用复杂模型就是杀鸡用牛刀；应按后果严重性与不确定性决定是否值得建模，小功能用轻量工具即可。",
+      "notes": "边界：过度建模同样是锤子病"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-beachhead",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们十个人的团队同时在推企业版、个人版和海外市场,每条线都半死不活,怎么破?",
+      "expected_behavior": "应激活 mm-beachhead。指出这是典型的全面开战:资源有限却在每条战线都是少数派,任何一条都守不住。要求收窄到一个足够窄、可形成局部优势的领域先站稳;列出候选滩头堡并按'足够窄 / 守得住 / 连得出去'三点打分;为选定项定义'站稳'的可观测指标(份额、留存、口碑、现金流),再规划相邻扩张顺序与触发门槛。",
+      "notes": "正面场景:多线作战需要聚焦"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们要进一个很大的市场,但不知道先切哪一块。你怎么建议?",
+      "expected_behavior": "应激活 mm-beachhead。说明军事原义:先占领并保卫一小片海滩,以便更多兵力经过滩头抵达陆地;商业上即先在一个狭窄领域站稳再向相邻市场扩张。要求先明确终点(最终想去的大陆),再倒推起点,因为与终点不相连的海滩是纯粹浪费;可举亚马逊(书籍)与特斯拉(Roadster)作为先窄后扩的参照。",
+      "notes": "正面场景:大市场的切入选择"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我现在是个普通开发,想往架构师方向走,但明显还不够格,中间该怎么走?",
+      "expected_behavior": "应激活 mm-beachhead。说明滩头堡在职业上同样成立:当前技能与岗位就是你的滩头堡,据此迈向更高岗位——不是直接跳到终点,而是先确认脚下这块地站得稳、走得出。要求定义'站稳'的判据(能独立负责的范围、可信度、可迁移的能力),再给出相邻的下一站。",
+      "notes": "正面场景:职业路径的立足点"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们已经站稳了,现在核心问题是团队执行力不行,定好的事总落不了地。",
+      "expected_behavior": "不应激活本 skill,因为问题出在执行力而非战线选择——收窄战线救不了执行不落地;这是管理/执行机制问题,应转向执行与责任归属层面的分析。",
+      "notes": "诱饵:提到站稳但痛点在执行"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们盯上了一个市场,但要不要现在进还拿不准——时机成熟了吗?是不是太早了?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-why-now(若判断时机成熟度)或 mm-barriers-to-entry(若判断进入难度)。用户问的是'能不能进/该不该现在进'——可行性判断;本 skill 只解决'既然决定了要进,从哪里进'的路径选择。先解决可行性,再谈切入点。",
+      "notes": "跨 skill 混淆诱饵:进入可行性 vs 进入位置"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们这个赛道网络效应特别强,谁先做起来谁通吃。这时候还要先缩到一个小滩头堡吗?",
+      "expected_behavior": "合理判断:不能机械套用。滩头堡的前提是资源有限时避免全面开战,但在强网络效应/赢家通吃结构下,速度本身可能压倒收窄的收益——先占小块可能来不及,需结合 mm-network-effects 与 mm-winner-take-most-markets 重新评估。折中做法:滩头堡仍要选,但选择标准要变——优先选'能最快触发网络效应闭环'的那个细分(密度高、用户间互相可见),而不是'最容易守'的那个;同时设定明确时间点,超时未达规模则必须收缩或放弃。",
+      "notes": "边界:网络效应下滩头堡的适用上限与选择标准变化"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

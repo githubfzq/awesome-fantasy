@@ -1,0 +1,52 @@
+{
+  "skill": "mm-scientific-method",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我不知道早上工作还是晚上工作效率高，怎么才能搞清楚？",
+      "expected_behavior": "应激活 mm-scientific-method，写成可证伪的假设，设计观察周期与指标，跑完分析数据并进入下一轮迭代。",
+      "notes": "最典型的正面场景：哪个做法真的有效"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "改版后转化率涨了 5%，但这个改动真的有用吗？",
+      "expected_behavior": "应激活本 skill，指出需要对照组与足够样本，明确判断支持/不支持/数据不足，而非直接归因。",
+      "notes": "验证改动有效性"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我觉得用户不用这个功能是因为入口太深，但也不确定。",
+      "expected_behavior": "应激活本 skill，把猜测写成可证伪假设并设计检验方案（改变入口深度观察使用率变化）。",
+      "notes": "把猜测变成可检验假设"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "昨天线上又出故障了，赶紧查是什么导致的。",
+      "expected_behavior": "不应激活本 skill，这是根因追溯场景，应转向 mm-root-cause 或 5-whys；需要的是溯因而非假设检验。",
+      "notes": "诱饵：找原因 vs 验证假设"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "两边的实验组和对照组该怎么随机分配才不失真？",
+      "expected_behavior": "不应激活本 skill（作为主模型），用户在问检验环节的具体设计，应激活 mm-randomized-controlled-experiment（随机对照实验）。",
+      "notes": "跨 skill 混淆诱饵：都在讲实验"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我试了三天新方法，感觉挺好的，是不是可以定了？",
+      "expected_behavior": "应激活并提醒：书中明示不能指望一次试验定论，三天样本与无对照不足以支撑结论，需明确周期、对照与判定标准后再下结论。",
+      "notes": "边界：样本不足就下结论"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

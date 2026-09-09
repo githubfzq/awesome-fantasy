@@ -1,0 +1,52 @@
+{
+  "skill": "mm-market-for-lemons",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们做二手相机平台，卖家知道机器有没有暗病，买家看不出来。现在成色好的机器越来越少，成交价一路跌。怎么办？",
+      "expected_behavior": "应激活 mm-market-for-lemons，确认信息不对称方向（卖方知道暗病），用成交均价与优质供给留存率验证驱逐循环，量化柠檬折扣，并设计破解机制（第三方检测、质保期、卖家自证的延长保修、分层市场）及配套的反伪造措施。",
+      "notes": "正面场景：典型柠檬市场诊断与设计"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们招高级工程师，开的薪资在市面上算中上，但来的候选人简历都很漂亮、面试一问就露馅，真正厉害的根本不来投。",
+      "expected_behavior": "应激活 mm-market-for-lemons，指出买方（公司）在入职前无法分辨真实能力，只能按平均质量定价，导致高能力者的估值高于该价格而退出；建议用可验证信号（实操题、开源作品、试用期双向选择、内推背书）重建质量区分度。",
+      "notes": "正面场景：招聘市场优质供给退出"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的内容平台上，认真做内容的创作者都在流失，剩下的全是标题党和洗稿的。是不是该提高分成？",
+      "expected_behavior": "应激活 mm-market-for-lemons，指出问题不在分成高低而是优质内容无法被识别、流量按平均质量分配导致优质创作者退出，应优先做质量信号与分层分发（优质池、人工审核、原创标识）而非单纯加钱。",
+      "notes": "正面场景：平台内容供给劣化"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们卖的是标准化的 U 盘，参数透明、支持七天无理由退货，但价格还是被同行压得很低。",
+      "expected_behavior": "不应激活本 skill，因为买方可以低成本验证质量（参数透明 + 可退货），不存在信息不对称，低价来自竞争而非柠檬化；应按竞争与成本结构分析。",
+      "notes": "诱饵：质量可验证的低价竞争"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们卖了车险之后，客户开车明显没以前小心了，出险率上升。这是怎么回事？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-moral-hazard。问题发生在交易之后（买了保险后行为改变），而不是交易前质量信息不对称导致的优质品退出，属于道德风险而非柠檬市场。",
+      "notes": "跨 skill 混淆诱饵：道德风险"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们打算给平台上的商品都加一个「官方质检」标签来解决信任问题。但听说隔壁平台做了类似认证，结果商家花钱就能买到标签。",
+      "expected_behavior": "合理的判断是：方向正确但必须补上反伪造闭环。应激活本 skill 并要求为质量信号配反套利措施——抽检比例与结果公示、标签与商家历史履约数据交叉校验、造假的高额惩罚（下架+保证金扣除）、检测方与平台的利益隔离；同时用优质供给留存率与纠纷率作为上线后的验证指标。若不配反伪造措施，认证标签反而会成为劣质品的正当化外衣，加速柠檬化。",
+      "notes": "边界：质量信号本身被套利"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

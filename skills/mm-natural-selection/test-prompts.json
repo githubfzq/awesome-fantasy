@@ -1,0 +1,52 @@
+{
+  "skill": "mm-natural-selection",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "为什么这套打法在硅谷很成功，搬到我们国内市场就不灵了？",
+      "expected_behavior": "应激活 mm-natural-selection，说明优势由环境定义，列出当前环境实际奖励的性状并判断原做法是否匹配。",
+      "notes": "最典型的正面场景：环境依赖"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "平台规则改了，我们原来的增长玩法一下子全失效，怎么办？",
+      "expected_behavior": "应激活本 skill，指出环境变化使原有优势反转，找出具体变化点并给出适应方向与代价。",
+      "notes": "环境变化导致优势失效"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "为什么十年前爆红的内容形式，现在照搬却没人看了？",
+      "expected_behavior": "应激活本 skill，说明品位与技术在变，把旧成功原样搬到新环境大概率失败，并给出当前环境的适应建议。",
+      "notes": "时移世易"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这门手艺我想练到顶尖水平，应该怎么训练？",
+      "expected_behavior": "不应激活本 skill，这是个人技能成长问题，应转向 mm-deliberate-practice（刻意练习）或 10000-hour-rule。",
+      "notes": "诱饵：个人成长而非群体筛选"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这门手艺流传了三百年还在，估计再传三百年也没问题吧？",
+      "expected_behavior": "不应激活本 skill，用户在判断存续时间，应激活 mm-lindy-effect（林迪效应）；自然选择解释为何被选中，不预测剩余寿命。",
+      "notes": "跨 skill 混淆诱饵：都与\"为什么会留存\"有关"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "活下来的那几家都特别激进，所以激进就是成功的关键性状吧？",
+      "expected_behavior": "应激活并提醒幸存者偏差：只看活下来的样本归纳\"优势性状\"会忽略同样激进却死掉的那些；需补上失败样本才能判断选择压力的真实方向。",
+      "notes": "边界：与幸存者偏差叠加"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

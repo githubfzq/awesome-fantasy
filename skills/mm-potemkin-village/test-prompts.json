@@ -1,0 +1,52 @@
+{
+  "skill": "mm-potemkin-village",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "去考察这家工厂,对方安排的参观路线特别顺畅,车间干净、工人都在岗、设备全开。但我要求临时换一个厂区看看,对方说那边今天检修不方便。",
+      "expected_behavior": "应激活 mm-potemkin-village,指出全部观测点都由对方安排、临时抽检被拒,正是\"只能看前台、看不到后台\"的典型信号;要求随机抽一个非样板点、要求看未经整理的原始生产记录与排班表,并用产能成本反推其真实规模。",
+      "notes": "正面场景:参观路线被安排 + 拒绝抽检"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "他们路演时那个数据看板做得特别炫,实时跳数字。我怀疑是提前录好的视频或者手工改的,怎么看出来?",
+      "expected_behavior": "应激活 mm-potemkin-village,给出穿透动作:要求现场输入一个随机查询条件并即时返回结果、要求导出未经加工的原始日志、要求切换到一个演示脚本外的场景;同时提醒不要因为展示漂亮就反推一定有假(书中标明该传说本身未必可靠),指控需有后台证据。",
+      "notes": "正面场景:演示是否真实在跑"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们下周要接待投资人,老板让把办公区重新布置一下,还让我们那天全员到岗、把最好的项目摆在大屏上。这算造假吗?",
+      "expected_behavior": "应激活 mm-potemkin-village,给出界线:整洁与重点展示属于正常包装,但若刻意制造无法反映日常经营状态的假象(临时凑人、摆上并不存在的项目、隐藏真实工位使用率)则越线;建议展示日常真实状态,并主动提供可随时抽查的后台数据与联系人。",
+      "notes": "正面场景:自查合理包装与造假的界线"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "他们的官网和宣传视频拍得挺精致的,但产品功能介绍、定价、客户案例都写得很实在,还能直接申请试用。",
+      "expected_behavior": "不应激活本 skill,因为后台可被用户自行验证(可直接试用、信息可核对),不满足\"后台不可核查\"这一机制条件;这属于正常的品牌包装,应按常规选型流程处理。",
+      "notes": "诱饵:包装精美但可验证"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "他们发布会上宣布了下一代产品,说半年后上市,结果一年半了还没影,客服一直说快了。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-vaporware:雾件骗的是未来——宣布尚未完成的产品以试探需求、冻结竞对决策;波将金村骗的是现在——摆出已经做好的样子让人误以为现状如此。",
+      "notes": "跨 skill 混淆诱饵:雾件"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们给客户做的样板间,用的确实是自家产品,但配的软装和灯光是专门请团队搭的,客户看到的效果日常很难复现。要不要在合同里说明?",
+      "expected_behavior": "合理判断:这属于\"前台美化\",是否构成波将金村取决于是否让客户误以为这就是日常效果。若软装灯光等变量显著影响观感且未在合同中披露,实质上已构成对现状的误导;建议书面标注哪些属于展示道具、哪些是交付标准,并邀请客户参观一个已交付的实际项目。",
+      "notes": "边界:样板间美化 vs 对交付现状的误导"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-social-norms-vs-market-norms",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "幼儿园家长总是迟到接孩子,我们打算对迟到收罚款,应该能减少迟到吧?",
+      "expected_behavior": "应激活 mm-social-norms-vs-market-norms,给出日托中心案例的警告:罚款会把'迟到让老师为难'的社会契约换成'花几块钱买方便'的市场交易,结果迟到的反而更多,且取消罚款后不会恢复;建议优先用非货币方案,并强调这是不可逆决策。",
+      "notes": "正面场景:书中原案例"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们开源社区的贡献者一直免费干得很起劲,现在想给他们发补贴,会不会有问题?",
+      "expected_behavior": "应激活 mm-social-norms-vs-market-norms,指出这是把热爱与声誉驱动的社会规范换成市场规范,一旦切换回不去;若确要引入,建议定位为谢意/象征性补偿而非对价、金额小到无法被当价格,并设试验期与中止条件。",
+      "notes": "正面场景:社区/志愿者补贴"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "孩子本来挺愿意帮忙做家务的,我按件给零花钱之后他开始跟我讲价,怎么回事?",
+      "expected_behavior": "应激活 mm-social-norms-vs-market-norms,说明钱给行为提供了清晰可计算且不丢脸的解释,把'帮家里'降级成了'计件工作';并警告取消零花钱后义务感不会自动回来,建议改为表彰式、非对价式的表达。",
+      "notes": "正面场景:家庭里的规范切换"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个外包团队报价八万,我想压到六万,他们会不会不接?",
+      "expected_behavior": "不应激活本 skill,因为这本就是纯市场交易关系,不存在社会规范被破坏的问题;直接按价格、范围与替代供应商(BATNA)谈判即可。",
+      "notes": "诱饵:涉及钱但关系性质本就是市场规范"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们给销售定了高额提成,结果他们开始帮客户造假单冲业绩。怎么治?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-perverse-incentives(或 mm-cobra-effect / mm-goodhart-s-law):这里的扭曲发生在市场规范内部(激励指标被钻空子),不是社会规范被市场规范替换;处理方式是改指标与核查,而不是撤回货币激励。",
+      "notes": "跨 skill 混淆诱饵:不当诱因"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们公司从创立起就是纯绩效导向、一切按钱算,现在想搞点'家文化',来得及吗?",
+      "expected_behavior": "合理判断:书中说的是'从社会规范切到市场规范不可逆',并未断言反向不可行;但应诚实指出从市场规范重建社会规范难度更高、需要长期一致的行为与仪式,且不能靠一次团建完成;建议先从非核心、低风险的小范围关系重建,并降低钱的显著性。",
+      "notes": "边界:反向切换未被书中明确支持"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

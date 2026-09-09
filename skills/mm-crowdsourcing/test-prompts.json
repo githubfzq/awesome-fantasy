@@ -1,0 +1,52 @@
+{
+  "skill": "mm-crowdsourcing",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们内部几个人想不出明年可能遇到的风险,要不公开征集一下大家的想法?",
+      "expected_behavior": "应激活 mm-crowdsourcing,先确认集体知识是否多于团队已有知识;再逐条设计三条件——多样性(从哪里招不同背景的人)、独立性(提交前看不到别人的答案)、聚合性(用什么规则合成结论);并提醒这正是发现未知的未知数的手段。",
+      "notes": "正面场景:借助外部视角补盲区"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "想搞一个线上的创意征集活动,怎么设计才能真的收到有用的东西而不是一堆噪音?",
+      "expected_behavior": "应激活 mm-crowdsourcing,给出关键设计:把问题拆成可被外部人独立回答的具体提问、说明要找的是'不同的可能'还是'最优解'、给出提交格式,并预先声明聚合规则与判定标准。",
+      "notes": "正面场景:众包活动设计"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我看有人靠众包解决了算法难题(网飞那个比赛),我们这个内部问题能不能也这么搞?",
+      "expected_behavior": "应激活 mm-crowdsourcing,结合书中网飞推荐算法比赛案例说明众包能奏效的条件,同时检查本题是否满足三条件;若问题属保密范畴应明确劝阻。",
+      "notes": "正面场景:书中案例的现实迁移"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们还没发布的旗舰产品功能,能不能放到公开社区征集用户意见?",
+      "expected_behavior": "不应激活本 skill,因为涉及未公开产品与商业机密,公开征集等于泄露;建议改用小范围保密访谈或内部专家评审。",
+      "notes": "诱饵:形式上像众包但触碰保密红线"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们搞了个内部竞猜让大家估下季度销量,结果公布在一个共享表格里,所有人都能看到别人的数字。这样能拿到靠谱的集体判断吗?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-wisdom-of-crowds:用户要判断的是'聚合后的平均判断为何可信/为何不可信'这一统计原理;共享表格破坏的正是独立性这一条件,此时要回到三条件核对与信任等级评定,而不是重新设计众包动作。",
+      "notes": "跨 skill 混淆诱饵:群体的智慧"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个决策只有我和另一个合伙人知道全部背景,外面的人连基本情况都不了解,众包有用吗?",
+      "expected_behavior": "合理判断:作者明确限定只有当集体知识储备多于你原本拥有的知识时,利用群体智慧才有意义;此处外部集体知识并不多于内部已有知识,众包只会产生噪音甚至误导,建议改用专家咨询或内部深挖。",
+      "notes": "边界:集体知识不多于已有知识"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

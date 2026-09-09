@@ -1,0 +1,52 @@
+{
+  "skill": "mm-red-line",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "供应商已经第三次延期了,我打算正式发函:再延期超过3个工作日就暂停付款并启动备选供应商。这样写合适吗?",
+      "expected_behavior": "应激活 mm-red-line,把界线写成可客观判定的事件(延期超过约定交付日3个工作日)、后果写成己方可执行动作(暂停付款、启动备选),并做可信度压力测试:是否有能力执行、对方是否相信、越线后24小时内具体谁去做什么。",
+      "notes": "正面场景:典型的划线宣告"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我已经跟他说过好几次'下次再这样就别怪我'了,但他还是照旧。是不是应该正式划条线?",
+      "expected_behavior": "应激活 mm-red-line,指出'下次再这样就别怪我'不是红线:界线主观、后果模糊,对方无法算进收益矩阵;要求重写成可观测的界线+明确的己方动作,并提醒反复说而不兑现已折损信誉,这次若不打算执行就别再放话。",
+      "notes": "正面场景:模糊红线无效的典型诊断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "下周要谈续约,对方肯定会一步步加条件。我想提前想好哪些能让、哪些绝对不能让。",
+      "expected_behavior": "应激活 mm-red-line,帮助设计'让步底线+越线动作':把不可让的1-2条写成可观测事件与对应的具体动作(如终止谈判、启动备选),避免临场被逐步蚕食;并强调只留真正不可接受的少数几条。",
+      "notes": "正面场景:谈判前的边界设计"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "新同事总是不清楚报销流程,提交的单子老是被退回。我该不该发个警告说再错就扣绩效?",
+      "expected_behavior": "不应激活本 skill,因为对方不是算计后选择越界,而是不知道规则;红线惩罚不了无心之失。应改为说清流程、做模板、加校验,必要时再做培训。",
+      "notes": "诱饵:形似越界但根因是无知"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我打算告诉他,如果他继续这样,我就把内部问题全部公开,反正我自己的名声也别要了。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-nuclear-option:后果是'连我自己也会被炸到'的极端自伤行为,靠自伤换可信度,属于威胁光谱最末端;而红线的后果执行成本对己方可控。",
+      "notes": "跨 skill 混淆诱饵:核选项(自伤式极端威胁)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我准备在全员会上宣布'任何人迟到一律辞退',这样够不够有震慑力?",
+      "expected_behavior": "合理判断:这更接近零容忍政策而非普通红线(取消梯度、初犯顶格),且作为红线有明显问题——后果过重会降低可信度,对方会判断'他不可能真这么做'。应先问:发现率如何、误伤情形(突发急事、交通)如何处置、第一个触线者若是最得力员工是否仍执行;若这些都答不上来,建议改为更轻但确定的后果,或先用书面警告作前置环节。",
+      "notes": "边界:红线与零容忍政策的交界,以及后果过重损害可信度"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

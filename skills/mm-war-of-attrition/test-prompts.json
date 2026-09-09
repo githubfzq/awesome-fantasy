@@ -1,0 +1,52 @@
+{
+  "skill": "mm-war-of-attrition",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "对手烧钱补贴已经一年了,我们账上还能撑八个月。要不要跟?",
+      "expected_behavior": "应激活 mm-war-of-attrition,先算双方资源存量与月消耗率,判断谁先耗尽;明确指出这是消耗战、每场战斗都伤害双方、赢家也常是惨胜;若判断会输,直接给出找出路或改变游戏规则的建议,而不是鼓励硬撑。",
+      "notes": "正面场景:典型价格/补贴消耗战"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "大公司起诉我们侵权,明显是想用诉讼费拖死我们,我们其实没侵权。怎么办?",
+      "expected_behavior": "应激活 mm-war-of-attrition,指出持久诉讼正是大公司榨干初创公司的标准打法;执行书中指令——若意识到会输就必须找出路或改变游戏规则;具体建议包括降低自身消耗率(简化争点、申请费用担保)、提高对方消耗成本(反诉、公开)、或换战场(商业解决、和解谈判)。",
+      "notes": "正面场景:书中点名的大公司策略"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "苏军损失一千多万、德军才四百万,为什么最后是德国垮了?",
+      "expected_behavior": "应激活 mm-war-of-attrition,说明决定胜负的是相对消耗而非绝对损失——德军损失的兵力占其二战总损失的 80%,消耗率远超其资源承受度,最终各条战线失利;由此点明'看谁撑得久'的正确算法。",
+      "notes": "正面场景:书中二战案例"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们准备集中所有资源打一场发布会,一举拿下市场。这次能定胜负吗?",
+      "expected_behavior": "不应激活本 skill,因为这是一击定胜负的决战思路,不存在长期相互消耗的结构;应评估集中优势与执行风险,而不是算消耗率。",
+      "notes": "诱饵:形似对抗但不是消耗战"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们同时在两个新市场开战,资源明显不够用,要不要先撤一个?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-two-front-wars:这是战场数量导致的资源分散问题,而消耗战处理的是单一持久战场上的相对消耗率;先解决战线数量,再谈消耗。",
+      "notes": "跨 skill 混淆诱饵:两线作战"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们判断能赢这场消耗战,但打完估计也伤筋动骨。还打吗?",
+      "expected_behavior": "合理判断:这正是消耗战的典型结局——赢家也是惨胜;应把本模型与 mm-pyrrhic-victory 一起使用,先估算胜利后的剩余资源能否支撑后续经营、以及赢下来的是否还有价值;若代价超过收益,应提前改规则或退出,而不是等赢了再后悔。",
+      "notes": "边界:能赢但不值得赢"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

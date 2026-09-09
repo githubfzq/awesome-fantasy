@@ -1,0 +1,52 @@
+{
+  "skill": "mm-perfect-competition",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "客户总在比价,说我们就比对手贵两百块。要不要跟降?",
+      "expected_behavior": "应激活 mm-perfect-competition,先做客户视角的完全替代性检验:若我们把价格提高X%,客户换成竞品需付出什么代价——若几乎零成本,则确认处于完全竞争;指出在此状态下小幅提价与'强调我们更用心'均无效(提价等于把客户送给对手);让用户在'接受市场价拼成本效率'与'做出客户认可的不可替代差异'之间明确选择。",
+      "notes": "正面场景:典型的价格战困境"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们团队加班加点,但价格就是提不上去,毛利一路下滑。问题在哪?",
+      "expected_behavior": "应激活 mm-perfect-competition,指出商品提供者只能接受市场价格、无法协商溢价,所以更努力地销售或生产不会带来溢价;明确把目标从'提价'改为'做具体不可替代来源(转换成本、网络效应、品牌信任、专有数据、捆绑服务)'或'成为成本最低者/退出',并给出验证方式与退出阈值。",
+      "notes": "正面场景:努力无法转化为溢价"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我做这行五年了,但感觉谁都能替代我,薪水一直涨不动。",
+      "expected_behavior": "应激活 mm-perfect-competition,把模型迁移到个人:当你可替代、无差异化时,薪酬完全由市场供求决定、无法协商溢价;建议明确选择——培养市场重视且不可互换的技能,或接受该岗位的市场价(可结合 mm-supply-and-demand 判断行业需求趋势)。",
+      "notes": "正面场景:个人职业的商品化"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的系统已经深度嵌入客户的核心流程,迁移要停机两周。要不要趁续约涨价?",
+      "expected_behavior": "不应激活本 skill,因为客户切换存在明显代价(停机风险、迁移成本),说明存在锁定效应与市场支配力,不是完全替代品;应转 mm-market-power 或 mm-switching-costs 分析。",
+      "notes": "诱饵:谈定价但有实质切换成本"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这个市场只有我们和另一家,客户基本二选一。我们有定价空间吗?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-market-power:完全竞争要求'众多竞争者提供完全相同的产品',只有两家的情形不适用;市场支配力是连续谱上的通用概念,更适合分析少数供给者之间的定价能力。",
+      "notes": "跨 skill 混淆诱饵:市场支配力(极端端点 vs 连续谱)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的产品在功能上确实比对手强一点点,但客户还是只看价格,说'都差不多'。这算商品化吗?",
+      "expected_behavior": "合理判断:算。关键判据是客户视角的可替代性,不是生产者视角的差异——自认为的'服务更好/功能更强'若客户不愿为此多付钱或忍受不便,就不构成差异,此时仍处在完全竞争状态。但要避免反向误用:不能把'竞争激烈'直接等同于完全竞争,若客户换成竞品需付出实质代价则不适用。建议做一次可验证的检验(提价X%后客户是否流失、是否愿意为差异点付费)来定位,再决定是继续差异化还是转成本策略。",
+      "notes": "边界:生产者视角差异 vs 客户视角可替代性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

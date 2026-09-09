@@ -1,0 +1,52 @@
+{
+  "skill": "mm-system-1",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我以前做电商的，现在第一次做 SaaS，直觉告诉我只要把投放预算翻倍，增长就能起来。应该没问题吧？",
+      "expected_behavior": "应激活 mm-system-1，判定这是陌生领域（无编码经验：新业务形态、反馈周期长），揪出「SaaS 增长 ≈ 电商投放」的相似性假设并逐条检验，然后切到慢思考（基础比率、粗略估算、对立假设）。",
+      "notes": "正面场景：陌生领域凭直觉套旧经验"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "昨天客户在会上提了个需求，我想都没想就答应了，今天越想越不对。我当时怎么回事？",
+      "expected_behavior": "应激活 mm-system-1，指出在缺乏编码经验（新客户、新需求）时快思考抢先给出了承诺，复盘当时跳过了哪些假设检验，并给出下次的慢思考触发动作。",
+      "notes": "正面场景：事后后悔的快速承诺"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个候选人面试聊了二十分钟，我直觉觉得不太行，但说不上为什么。要不要直接拒？",
+      "expected_behavior": "应激活 mm-system-1，判断面试短、反馈弱属于缺乏编码经验的情境，把「说不上为什么」拆成可检验的具体维度（能力、匹配度、沟通），并建议用结构化问题替代直觉判断后再定。",
+      "notes": "正面场景：不可言说的直觉判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们线上服务又告警了，是那个常见的磁盘打满问题，我处理过几十次了。",
+      "expected_behavior": "不应激活本 skill，因为这是高频重复、反馈快且准的熟练操作，属于有编码经验的情境，快思考更可靠；强行慢思考反而降低效率。",
+      "notes": "诱饵：熟练常规操作被误判为需要慢思考"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们报价的时候，大家总习惯参考去年合同那个数往上调一点。这个数真的合理吗？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-anchoring。问题在于一个先入数字（去年合同价）正在牵引判断，属于快思考的具体失效模式之一，应由锚定 skill 处理，而不是先讨论系统切换。",
+      "notes": "跨 skill 混淆诱饵：锚定"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我在这行干了十五年，现在遇到一个新情况：老办法明显不灵了，但我说不清该相信经验还是该重新算一遍。",
+      "expected_behavior": "合理的判断是：应激活 mm-system-1，并明确指出「老办法不灵」已经证明编码经验失效（环境变了，反馈不再支持旧模型），因此必须切到慢思考；同时提醒不要走到另一个极端——十五年积累的行业结构性认知仍然有价值，应作为慢思考的输入假设而非结论，逐条检验哪些部分还成立。",
+      "notes": "边界：经验失效但直觉仍有信息量"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

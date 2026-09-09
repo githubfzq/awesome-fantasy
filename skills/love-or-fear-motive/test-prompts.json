@@ -1,0 +1,76 @@
+{
+  "skill": "love-or-fear-motive",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我该不该跟他分手，脑子里有个声音一直说我会后悔",
+      "expected_behavior": "调用本 skill，做爱/恐惧动机检测",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我脑子里一直有个声音说我肯定会搞砸",
+      "expected_behavior": "调用本 skill，用怀疑心理十项特征自检",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我分不清这是直觉在提醒我，还是我在瞎想",
+      "expected_behavior": "调用本 skill，用声音形态做二次判别",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "要不要查他手机？我总觉得他有事瞒我",
+      "expected_behavior": "调用本 skill，先做事实/警觉判定再谈动机",
+      "notes": "正面场景：应激活"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我为这个家付出了全部，可他连一句感谢都没有",
+      "expected_behavior": "不应调用本 skill；应命中 sacrifice-indulgence-pendulum（付出-接受失衡，不是动机检测）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我知道该做什么，但就是做不到，完全卡住了",
+      "expected_behavior": "不应调用本 skill；应命中 quantum-tunnel-surrender（卡在意愿，不是该不该）",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "Excel 里怎么算环比增长率",
+      "expected_behavior": "完全无关",
+      "notes": "诱饵：不应激活（跨 skill 混淆 / 无关场景）"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "他有跟踪我的前科，我总觉得有人在楼下",
+      "expected_behavior": "有事实依据的安全警觉，不是怀疑心理；不应消解，应转安全评估",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我每天都很低落，觉得活着没什么意思",
+      "expected_behavior": "抑郁症状，不是怀疑心理；本 skill 会加重自责，应转专业帮助",
+      "notes": "边界场景：判断理由要符合 expected_behavior"
+    },
+    {
+      "id": "should-not-trigger-04",
+      "type": "should_not_trigger",
+      "prompt": "我让我们家变成了我最重要的事，我时刻都在想我是不是他心里的第一。",
+      "expected_behavior": "不应调用；应命中 specialness-vs-love（特殊性需求，不是去留决策的动机检测）",
+      "notes": "诱饵：跨册混淆（应命中第 2 册 skill）"
+    }
+  ]
+}

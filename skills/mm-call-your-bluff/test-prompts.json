@@ -1,0 +1,52 @@
+{
+  "skill": "mm-call-your-bluff",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我说过再延期就换供应商,结果他真的又延了一次,而且明显是看我敢不敢。我要不要真换?",
+      "expected_behavior": "应激活 mm-call-your-bluff,确认这是明知规则仍故意越线的检验;量化兑现成本与不兑现后未来6-12个月被反复试探的预期损失;若判定兑现更划算,则按当初承诺的后果执行、不追加不翻倍,并向其他合作方公示执行依据。",
+      "notes": "正面场景:典型的摊牌时刻"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我跟老板说不给涨薪就走,他当场说'那你走吧'。我其实不想走,现在怎么办?",
+      "expected_behavior": "应激活 mm-call-your-bluff,指出对方接受摊牌说明你的威胁被判定为不可信或代价可接受;要求回看原话措辞、承担表述责任,走'重新定义而非收回'的脱身路径——不否认说过的话,而是提出新的具体条件与生效时点,把收回的限定在条款而非信誉上。",
+      "notes": "正面场景:自己的虚张声势被摊牌"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "合作方坚持要我们让步,说'你们上次也说这是底线,最后不还是让了'。我该怎么回应?",
+      "expected_behavior": "应激活 mm-call-your-bluff,承认上次未兑现已导致威胁被折价这一事实;要求这次先把后果改到真的愿意执行的量级再宣告,并用可分阶段、可客观判定的表述重建可预测性——信誉靠准不靠狠。",
+      "notes": "正面场景:历史未兑现导致的持续试探"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "新来的实习生不知道我们周五要提交周报,连续两周没交。是不是不把我当回事?",
+      "expected_behavior": "不应激活本 skill,因为没有威胁被检验的前提——对方不知道规则,属于信息缺失而非故意挑衅;应改为说清规则与建立提醒流程。",
+      "notes": "诱饵:形似挑衅但实为不知情"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我要跟合作方明确:再超过约定交付日3天就暂停付款。这条线该怎么写才有效?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-red-line:这是**事前**设计一条界线与后果,还没有发生对方检验的动作;叫你摊牌处理的是威胁已发出且被对方故意越线检验的时刻。",
+      "notes": "跨 skill 混淆诱饵:红线(划线阶段 vs 被检验阶段)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我宣布了零容忍:迟到一次就罚。结果第一个迟到的是刚入职的新人,而且是地铁故障。要不要罚?",
+      "expected_behavior": "合理判断:先判定这不是摊牌——对方无挑衅意图、属不可抗力,不适用摊牌逻辑。但它是零容忍政策的第一次真执行,处理不当会被所有人当作'政策会打折扣'的证据。建议:按程序认定不可抗力、公开说明判定依据并明确'什么情况算、什么情况不算',同时把规则补严;保住的是规则的可预测性,而不是靠罚一个人立威。",
+      "notes": "边界:摊牌与误判/不可抗力的区分,以及首次执行的信号效应"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

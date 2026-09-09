@@ -1,0 +1,52 @@
+{
+  "skill": "mm-sample-distribution",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的民调显示支持率 52%，误差范围 ±3%。如果换一批人再问一次，结果会怎样？",
+      "expected_behavior": "应激活 mm-sample-distribution, 建立「再抽一次会得到不同数值」的心智模型，说明 ±3% 描述的正是抽样分布的宽度（估计值的抖动），而不是被访者意见的差异，并说明约 95% 的重复抽样会落在该区间内。",
+      "notes": "正面场景：书中原场景"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "两个团队各做了一次用户调研，一个说转化率 6%，一个说 8%。到底哪个对？",
+      "expected_behavior": "应激活 mm-sample-distribution, 指出两次抽样得到不同值是正常的，关键要看各自抽样分布的宽度是否重叠，并要求双方给出样本量与误差范围再判断差异是否真实。",
+      "notes": "正面场景：两次抽样结果不一致"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要做一次调研，希望支持率的估计误差控制在 ±2% 以内。大概要问多少人？",
+      "expected_behavior": "应激活 mm-sample-distribution, 从「能接受多宽的区间」反推所需样本量，说明样本量增大使抽样分布更集中、更接近正态，但不改变中心位置，再转 mm-sample-size 落实。",
+      "notes": "正面场景：由精度反推样本量"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们用户的客单价差异很大，从几十到几万都有，这个分布该怎么描述？",
+      "expected_behavior": "不应激活本 skill, 因为这是原始数据本身的分布（个体之间差多少），不是样本均值的抽样分布（估计值会抖多少）；前者不随样本量变窄。",
+      "notes": "诱饵：都在谈分布，但层级不同"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "为什么样本量大了之后，样本均值的分布会越来越接近钟形曲线？这里面的原理是什么？",
+      "expected_behavior": "不应激活本 skill（问的是解释这一现象的定理本身）, 应激活 mm-central-limit-theorem。抽样分布是被描述的对象，中心极限定理是解释它为何趋近正态的原理。",
+      "notes": "跨 skill 混淆诱饵：同属抽样分布话题，但一个是对象一个是定理"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们把样本量从 100 加到 10000，估计值应该会准很多吧？",
+      "expected_behavior": "合理的判断是：纠正「更准」的说法——抽样分布的中心本来就对准真值，加大样本量只是让分布更集中（抖动更小），区间宽度大约按根号比例缩小；同时提醒如果抽样方式本身有偏（如非随机、存在无反应偏差），再大的样本也只是更精确地错。",
+      "notes": "边界：精度 vs 准确性的经典混淆"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

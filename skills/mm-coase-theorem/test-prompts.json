@@ -1,0 +1,52 @@
+{
+  "skill": "mm-coase-theorem",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "楼上公司装修噪音影响我们办公，他们说是正常施工。我们该找物业出规定，还是直接跟他们谈？",
+      "expected_behavior": "应激活 mm-coase-theorem，先确认外部性存在，再逐条检验三条件（产权是否明确、双方是否理性、交易成本是否低），只有三方都成立才建议自行协商（如补偿施工时段），否则指出该走物业管制。",
+      "notes": "正面场景：少数方纠纷，选择解法路径"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "政府要给我们行业设定碳排放上限，我听说可以把配额拿去买卖。这个机制为什么比直接罚款有效？",
+      "expected_behavior": "应激活 mm-coase-theorem，说明总量控制与交易就是科斯式解法：政府设定总量以明确产权，企业在公开交易所以低交易成本买卖许可，从而内部化外部性，并指出前提是产权清晰与交易成本低。",
+      "notes": "正面场景：cap and trade"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "两个团队抢同一套压测环境，都想多占时段。是不是排个优先级表就行？",
+      "expected_behavior": "应激活 mm-coase-theorem，先判断当事方数量少、产权可界定、交易成本低，因此可把时段明确归属给一方并允许互相交易/调剂，而不是单纯行政排序；同时检查配额是否会催生囤积等不当诱因。",
+      "notes": "正面场景：配额可否交易"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我该不该辞职去读研？纯粹是我自己的事。",
+      "expected_behavior": "不应激活本 skill，因为既不存在外部性，也不涉及多方产权与交易，属于个人单一决策问题。",
+      "notes": "诱饵：决策问题但无外部性"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "小区停车位是公共的，谁先到谁停，现在天天有人为了抢位吵架，车位也坏了没人修。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-tragedy-of-the-commons。这是开放准入的共享资源被过度使用，使用者众多导致交易成本必然过高，科斯条件不成立，应走限制准入或界定产权后的管理，而不是当事方自行谈判。",
+      "notes": "跨 skill 混淆诱饵：公地悲剧"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们平台有上百万商家，用户投诉假货。有人说让我们和商家自己协商解决就行，不用平台出规则。",
+      "expected_behavior": "合理的判断是：这不属于科斯路径适用的场景，因为当事方数量庞大、交易成本极高，第二个（理性与信息）与第三个（交易成本）条件都不成立，必须走平台管制（准入、赔付、扣分）。同时应指出科斯定理只保证效率不保证公平，初始权利分配决定谁拿走那笔财富。",
+      "notes": "边界：三条件不满足时的转向"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

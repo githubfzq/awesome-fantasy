@@ -1,0 +1,52 @@
+{
+  "skill": "mm-ad-hominem",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我在会上提了个成本优化建议,有人直接回我'你算老几啊?这个话题上你又不是专家',我一下就懵了。",
+      "expected_behavior": "应激活 mm-ad-hominem,做删人测试:删掉关于提出者的内容后,这段反驳不剩任何针对论点的质疑,确认是人身攻击;把建议本身单独摘出来重新评估,并给出把对话拉回论点的回应话术。",
+      "notes": "正面场景:书中原型案例"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "评论区全在骂那个人,说他学历低、做过什么工作,但没人讨论他提的那个问题本身。",
+      "expected_behavior": "应激活 mm-ad-hominem,指出这是用贴标签把注意力从重要问题转移到易批评的人身问题上;要求把论点单独摘出来评估,并提醒反向错误——不能因为他学历低就断定他说错了。",
+      "notes": "正面场景:舆论中的人身攻击"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我特别想反驳他,但写着写着发现我全在写他这人不靠谱,是不是跑偏了?",
+      "expected_behavior": "应激活 mm-ad-hominem,做删人测试让用户自查:删掉关于人的部分后还剩多少针对论点的内容;并给出改法——先复述对方的实际主张,再逐条列出该主张缺少什么证据或在哪一步推不出。",
+      "notes": "正面场景:自查自己是否在人身攻击"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "他那份报告的结论我不同意,我把原始数据和他的口径对比了一下,发现他漏算了三个月的成本。",
+      "expected_behavior": "不应激活本 skill,因为反驳完全针对论证与数据(口径与漏算),不涉及提出者的身份、资质或人格;属于正常的证据质询。",
+      "notes": "诱饵:反驳场景但直指论证"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我只是建议先做完作业再玩一会儿游戏,他就说'你就是什么都不让我做',这帽子扣得也太大了。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-straw-man:对方是把用户的论点推向极端后加以攻击(部分→全部),攻击对象仍是论点(尽管是被歪曲的论点),而不是用户这个人;人身攻击完全放弃论点转而去打人。",
+      "notes": "跨 skill 混淆诱饵:稻草人"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这篇研究的第一作者收了那家药企的钱,我要不要在网上把这个说出来?",
+      "expected_behavior": "合理判断:披露真实存在的利益冲突属于合法的证据,不是人身攻击——但要点在于怎么用它:只披露身份不足以推翻结论,仍需指出论文中具体哪一步的论证或数据有问题;同时避免把'收了钱'直接等同于'结论一定错',而应把它作为需要更严格复核的理由。",
+      "notes": "边界:利益冲突披露 vs 人身攻击"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

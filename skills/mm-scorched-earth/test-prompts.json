@@ -1,0 +1,52 @@
+{
+  "skill": "mm-scorched-earth",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我要离职了,打算把自己写的代码和文档全删了,反正都是我做的,不想留给公司。",
+      "expected_behavior": "应激活 mm-scorched-earth,明确区分合法权利与越界行为(职务成果属公司,删除可能违法并留下操作日志);拆解真实动机(报复/筹码/怕被抢功),给出正当替代(书面主张署名、保留自己的作品副本与时间戳证据、走离职协议),并列出用户**应当**带走的东西。",
+      "notes": "正面场景:典型的销毁冲动"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "合伙要散了,我想把服务器清空,让他们从头再来。",
+      "expected_behavior": "应激活 mm-scorched-earth,指出定义中的自伤性——'使任何人(包括你自己)都无法使用';评估不可逆性与法律后果,分割资产归属,给出替代(按股权/协议分割数据与知识产权、律师介入、仲裁)。",
+      "notes": "正面场景:拆伙时的焦土冲动"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "气头上我把项目文件删了,现在有点慌,怎么办?",
+      "expected_behavior": "应激活 mm-scorched-earth,走止损路径:立即停止进一步操作、保留现状不再覆盖以便恢复或说明、主动向相关方说明并寻求法律意见;明确不建议继续隐瞒或进一步掩盖。",
+      "notes": "正面场景:已发生销毁后的止损"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "项目结束了,按公司规定我要把超过保留期限的客户数据清理掉。",
+      "expected_behavior": "不应激活本 skill,因为这是合规的数据清理,动机是合规与隐私保护而非报复或掩盖,且不属于'使任何人包括自己都无法使用'的破坏行为。",
+      "notes": "诱饵:删除行为但动机正当"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "离职前我把团队的工作群全退了,还跟几个同事闹得不太愉快。朋友说我这样做以后会后悔。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-burning-bridges:毁掉的是**关系**而非**资源**,且关系尚有修复可能;焦土是销毁记录/资产这类通常不可逆的自伤行为。",
+      "notes": "跨 skill 混淆诱饵:过河拆桥(毁关系 vs 毁资源)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这些客户名单是我自己一个个跑出来的,离职带走不算过分吧?公司说属于他们。",
+      "expected_behavior": "合理判断:这正是焦土/离职纠纷中最容易越界的地方。区分三层——(1)属于个人的:自己的劳动合同、工资与绩效记录、个人笔记、能证明自己工作成果的材料,可以且应当保留;(2)存在争议的:客户名单这类职务成果,通常属于公司(尤其在有保密/竞业约定的情况下),不能带走、更不能销毁或废掉;(3)明确越界的:删除公司系统中的数据,可能留下更糟的痕迹。建议:不删任何东西,带走属于自己的证明材料,对争议部分走书面确认或法律咨询,而不是自行处置。",
+      "notes": "边界:合法自保与越界销毁的分界"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

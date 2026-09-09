@@ -1,0 +1,52 @@
+{
+  "skill": "mm-de-risking",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我准备辞职做一个面向小商家的记账工具，产品我肯定能写出来。你觉得该先干什么？",
+      "expected_behavior": "应激活 mm-de-risking，指出'能造出来'是最确定、最不致命的假设，把清单拆成五条（能造/有人要/能盈利/扛竞争/市场够大），按致命性×不确定性排序，优先检验'有人想要且愿意付钱'，并给出低成本检验动作与事先写死的判定阈值。",
+      "notes": "正面场景：典型创业去风险化，纠正常见的'先做产品'误区"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "团队为'用户会不会为这个功能付费'吵了两轮了，双方都只是'我觉得'。怎么破？",
+      "expected_behavior": "应激活 mm-de-risking，把分歧转成一个可证伪的假设（'目标用户中至少 X% 愿意付 Y 元'），设计最低成本检验（预售页/定金/访谈 20 人），事先写定判定阈值，并要求按阈值而非按感受下结论。",
+      "notes": "正面场景：争论无证据时把分歧转成可检验假设"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们从原理上推出来成本能压到现在三分之一，团队很兴奋想马上投产。",
+      "expected_behavior": "应激活 mm-de-risking，提醒第一性原理推出的只是假设、必须在现实中检验：列出投产前必须验证的假设（小批量良率、供应链是否接单、性能是否达标），按致命性排序，先做最低成本验证再投产，防止过早投入。",
+      "notes": "正面场景：接第一性原理的下游工序"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个功能的按钮颜色，是用蓝色还是绿色好看一点？",
+      "expected_behavior": "不应激活本 skill。决策可逆、成本极低、没有致命假设需要验证，直接做 A/B 测试或按设计系统选一个即可；走去风险化流程是杀鸡用牛刀。",
+      "notes": "诱饵：也是'做个决定'，但不存在需要排序的致命假设"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "大家都说这个行业成本降不下来，但我想知道物理上最低能到多少，不想参考同行报价。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-arguing-from-first-principles：用户要的是从基本事实自下而上**推导**结论，而不是对已有假设做现实**检验**。推导完之后才轮到去风险化。",
+      "notes": "跨 skill 混淆诱饵：二者是前后工序，本例处在前段"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们招了 10 个人试用了原型，反馈还不错，但没人愿意付钱。这算验证通过了吗？",
+      "expected_behavior": "应激活本 skill 并指出边界：'有人想要'部分通过，但'愿意付费'这条致命假设未通过（好评不等于付费意愿）。同时警告不要把结论外推（10 人不等于市场够大），应重新设计更锐利的检验（如要定金/预付）而不是据现有结果下结论。",
+      "notes": "边界：部分通过 + 防止外推，需重新设计检验"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-arguing-from-first-principles。"
+}

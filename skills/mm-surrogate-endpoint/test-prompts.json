@@ -1,0 +1,52 @@
+{
+  "skill": "mm-surrogate-endpoint",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们准备把客服的考核指标改成「日均处理工单数」，这样大家效率肯定上来了，你看行不行？",
+      "expected_behavior": "应激活 mm-surrogate-endpoint，先逼出真终点（问题是否真被解决、用户是否满意），画出「工单数→服务质量」的因果链，并追问是否存在「工单数上升但问题没解决」的反例，最后给出失效条件与低频直接校验方案。",
+      "notes": "正面场景：典型 KPI 选型"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "看到一篇新闻说某种新药能显著降低「心律失常发生率」，是不是说明吃了就能活得更久？",
+      "expected_behavior": "应激活 mm-surrogate-endpoint，指出心律失常发生率只是代理终点，引用书中抗心律失常药反例（降低心律失常却提高猝死率），要求验证代理与真终点（总死亡率）同步。",
+      "notes": "正面场景：读懂医学研究中的替代终点"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们想用「代码提交行数」来衡量工程师产出，便于季度评优，怎么设计比较公平？",
+      "expected_behavior": "应激活 mm-surrogate-endpoint，说明代码行数是产出的代理而非产出本身，列出链条断裂情形（拆分提交、复制粘贴、刻意膨胀），并建议搭配可直接观测真终点的低频校验。",
+      "notes": "正面场景：指标设计咨询"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这份销售明细表按月份汇总一下，算算每个月的总营收。",
+      "expected_behavior": "不应激活本 skill，因为这只是对真终点（营收）本身的直接统计，不涉及用间接指标替代真终点；直接完成汇总即可。",
+      "notes": "诱饵：数据类任务但无代理问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们把「Bug 关闭数」设成了团队 OKR，结果大家开始把难修的 Bug 一直挂着不处理，专挑简单的刷数量，这到底是怎么回事？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-goodhart-s-law：这里的失真来自人围绕指标博弈，而不是代理指标本身的链条断裂。",
+      "notes": "跨 skill 混淆诱饵：古德哈特定律最易与代理指标混淆"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "想衡量「团队的技术影响力」，这个东西好像没法直接测量，但又必须给老板一个数字，怎么办？",
+      "expected_behavior": "应激活 mm-surrogate-endpoint，但须先诚实说明：真终点难以直接测量正是代理指标的适用前提；可以给出代理（如外部引用、被复用次数）但必须标注其为间接、易受抨击，并设定边界与直接校验，而不是假装代理就等于真终点。",
+      "notes": "边界：恰好落在适用前提（真终点不可测）内，但需避免过度承诺"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

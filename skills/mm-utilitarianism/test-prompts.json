@@ -1,0 +1,52 @@
+{
+  "skill": "mm-utilitarianism",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "公司要裁掉 20 个人保住剩下 300 个人，我做这个决定对不对？",
+      "expected_behavior": "应激活 mm-utilitarianism,列出所有相关方（被裁者、留任者、公司、家属），用效用值给每个方案对每一方打分并加总比较，同时明确指出书中点出的第一项弊端：总效用提升但代价集中在少数人身上时会显得不公平。",
+      "notes": "正面场景:典型的多方伦理取舍"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们要在三个预算方案里选一个，每个方案对不同部门有利有弊，怎么判断哪个最站得住脚？",
+      "expected_behavior": "应激活 mm-utilitarianism,建立“方案 × 相关方”效用矩阵，加总选总和最大的方案，并如实标注哪些效用值是估算的。",
+      "notes": "正面场景:需要裁决规则的多方取舍"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这个功能上线能让绝大多数用户体验变好，但会让一小批老用户没法用，值不值得做？",
+      "expected_behavior": "应激活 mm-utilitarianism,把老用户也计入相关方（不得默认为零效用），加总比较后明确写出“谁在替谁买单”，并检查结论对效用估算误差是否稳健。",
+      "notes": "正面场景:产品决策中的少数人代价"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们该选 A 供应商还是 B 供应商？只看报价和交付周期，哪个更省钱。",
+      "expected_behavior": "不应激活本 skill,因为这是决策者自己账上的金钱比较、不涉及多方伦理取舍;应激活 mm-cost-benefit-analysis。",
+      "notes": "诱饵:形似方案比较但无伦理维度"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "这笔奖金怎么分才能让大家都觉得公平？现在的问题是有人觉得自己干得多拿得少。",
+      "expected_behavior": "不应激活本 skill,应激活 mm-distributive-justice:用户关心的是分配是否公平,而功利主义只看总和、根本不看分配,用它只会加剧不满。",
+      "notes": "跨 skill 混淆诱饵:公平 vs. 总量"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "患者家属要求隐瞒病情，说这样对病人整体最好。用功利主义算一下是不是该瞒？",
+      "expected_behavior": "合理判断:可以用功利主义把相关方效用加总做参考,但必须同时指出它越界了——涉及个体知情权与承诺时,功利主义会为了总和牺牲个人权利;且“病人的心理效用”根本无法可靠估算。建议结论以权利为约束,功利计算仅作为辅助,并如实标注不确定性。",
+      "notes": "边界:模型可用但必须让位于权利约束"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

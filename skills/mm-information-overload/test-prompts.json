@@ -1,0 +1,52 @@
+{
+  "skill": "mm-information-overload",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "想买台咖啡机，已经刷了三天评论和几十个型号，现在完全选不出来了。",
+      "expected_behavior": "应激活 mm-information-overload，把决策问题写成一句话，列出能改变排序的最少信息项（封顶 3-5 项），设时间盒或\"连续 N 条不改变排序即停\"的停止条件，然后拍板。",
+      "notes": "最典型的正面场景：消费决策刷评论"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "选城市这件事我列了十几个维度，越查越乱，还要不要继续查？",
+      "expected_behavior": "应激活本 skill，指出继续搜集已不再改变排序，收敛到少数几个真正会翻转结论的维度并设定停止条件。",
+      "notes": "重大选择维度过多"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "技术选型我攒了一百多页竞品资料，团队还是没有结论，怎么办？",
+      "expected_behavior": "应激活本 skill，锁定决策真正要回答的一个问题，删掉不改变排序的材料，设定停止条件并给出拍板建议与剩余未知。",
+      "notes": "工作调研材料堆积"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我还没开始了解这个领域，有没有什么入门资料推荐？",
+      "expected_behavior": "不应激活本 skill，用户缺的是基本调研而不是信息减量，应先补充关键信息。",
+      "notes": "诱饵：信息话题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "方案其实早就清楚了，但我总怕选错，一直反复权衡不敢拍板。",
+      "expected_behavior": "不应激活本 skill，卡点是不敢行动而非信息过多，应激活 mm-analysis-paralysis（分析瘫痪）。",
+      "notes": "跨 skill 混淆诱饵：都是迟迟不决策"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这是台要花掉公司半年利润的设备，我还在查资料，是不是也该赶紧定了？",
+      "expected_behavior": "可激活但要权衡：书中明示做决策确实需要信息，反对的是过量；高风险高不可逆的决策应放宽停止条件，把\"慢的代价\"与\"错的代价\"一起比较。",
+      "notes": "边界：高风险决策下停止条件应放宽"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

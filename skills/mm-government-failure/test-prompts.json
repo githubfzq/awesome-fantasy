@@ -1,0 +1,52 @@
+{
+  "skill": "mm-government-failure",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要出台一个中小企业数字化补贴，按采购合同金额报销 30%。怎么设计才不会被钻空子？",
+      "expected_behavior": "应激活 mm-government-failure，先确认原问题（中小企业数字化投入不足的规模），列出干预改变了谁的行为（企业、供应商、审批部门、制定者），做风险与回报归属检查与信息约束检查，预演骗补/虚高合同/供应商合谋三条失灵路径并配兜底设计，最后设定日落条款与评估指标。",
+      "notes": "正面场景：补贴设计的事前失灵预演"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "公司上了新的合规审批流，说要控风险。结果正经项目卡三周，大家开始绕流程走线下，风险反而更看不见了。",
+      "expected_behavior": "应激活 mm-government-failure，指出审批者不承担项目延误的代价（风险与回报分离），执行者缺乏真实风险信息，管制制造了规避行为与信息黑洞；建议改为分级审批、明确时限、随机抽检，并为制度设定日落条款。",
+      "notes": "正面场景：内部管制产生规避与信息失真"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "为什么专利制度保护了创新，药企却不愿研发那种需要储备的抗生素？",
+      "expected_behavior": "应激活 mm-government-failure，指出专利这一为纠正市场失灵设计的制度在特定情境下失灵：储备药在被需要前专利到期、须持续小批量生产且会过期，制药公司无利可图；并说明这是风险与回报分属不同实体造成的意外后果。",
+      "notes": "正面场景：纠正手段制造新的失灵"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个行业完全没人管，结果污染得一塌糊涂。这是怎么回事？",
+      "expected_behavior": "不应激活本 skill，因为这里没有任何外部干预，失灵发生在市场自行运转的层面，属于市场失灵的分析对象；本 skill 分析的是干预措施本身的失灵。",
+      "notes": "诱饵：无干预的市场问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们把客户投诉响应时长写进了客服团队的 KPI，现在客服都在抢简单单、把复杂单挂起不处理。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-perverse-incentives。这里的核心是激励制度诱导出了与设计意图相反的具体行为（挑单），问题在被诱导出的行为本身，而不是干预主体的信息约束与风险回报错配。",
+      "notes": "跨 skill 混淆诱饵：不当诱因"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "监管草案征求意见，行业协会提了几十条修改意见，几乎把我们原本的限制条款都改掉了。这算被俘获了吗？",
+      "expected_behavior": "合理的判断是：不能直接定性，应先按本 skill 做区分性检查。若修改确实带来了原草案忽略的技术可行性信息，属于弥补干预者的信息约束，是正当反馈；若修改的方向系统性降低了被管制者的成本、且把监管信息获取权交回被管者手上，则构成管制俘获，应转 mm-regulatory-capture 处理。可操作的判据是：看每条修改的受益方是谁、是否有独立的第三方信息源可以验证这些说法、以及最终条款是由谁在提供监管所需数据。",
+      "notes": "边界：正当信息反馈 vs 管制俘获"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

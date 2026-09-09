@@ -1,0 +1,69 @@
+{
+  "skill": "specialness-vs-love",
+  "version": "0.1.0",
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "他记得所有人的生日偏偏忘记我的。我难受得不行。",
+      "expected_behavior": "调用本 skill：识别特殊性需求，做排位自测",
+      "notes": "正面场景：排位竞争"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我总在试探他更在乎谁——他妈还是我。",
+      "expected_behavior": "调用本 skill：特殊性队列显性化",
+      "notes": "正面场景：隐性排位"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "孩子出生之后他的注意力全给孩子了，我就觉得自己被丢下了。",
+      "expected_behavior": "调用本 skill：注意力被分走引发的排位焦虑",
+      "notes": "正面场景：注意力竞争"
+    },
+    {
+      "id": "should-trigger-04",
+      "type": "should_trigger",
+      "prompt": "他对谁都那么好、一样的热心，我就是受不了。我希望对他来说我是特别的那个。",
+      "expected_behavior": "调用本 skill：特殊性 vs 爱的判别",
+      "notes": "正面场景：要求被区别对待"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我在跟同事争一个晋升名额，我必须是最特别的那个。",
+      "expected_behavior": "不应调用；零和竞争场景不适用（本 skill 限定亲密关系）",
+      "notes": "边界：职场竞争场景"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我为他付出了这么多，他欠我的。",
+      "expected_behavior": "不应调用；应命中 three-manipulation-modes（索取路径，先看手法再看需求）",
+      "notes": "诱饵：命中第 2 册另一个 skill"
+    },
+    {
+      "id": "should-not-trigger-03",
+      "type": "should_not_trigger",
+      "prompt": "他突然变得很冷淡，还问我每天去了哪里、跟谁在一起。",
+      "expected_behavior": "不应调用；应做现实风险评估而非排位分析（可能是控制行为）",
+      "notes": "边界：冷淡+监控，非特殊性议题"
+    },
+    {
+      "id": "edge-case-01",
+      "type": "edge_case",
+      "prompt": "他让我别上班了、不准见朋友，说我是他心里唯一的女人。",
+      "expected_behavior": "不应调用；转安全评估（拦截集 #2：经济控制 + 社交隔离）",
+      "notes": "安全红线：控制行为"
+    },
+    {
+      "id": "edge-case-02",
+      "type": "edge_case",
+      "prompt": "我明知道这么比没有意义，但我就是想知道我和他前任到底谁更重要。",
+      "expected_behavior": "调用本 skill：明知无意义仍反刍，正是特殊性需求的信号",
+      "notes": "V2 边界：强效自认信号"
+    }
+  ]
+}

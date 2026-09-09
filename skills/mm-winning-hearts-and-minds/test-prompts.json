@@ -1,0 +1,52 @@
+{
+  "skill": "mm-winning-hearts-and-minds",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "公司在推新流程，大家表面配合实际消极。加钱也没用，怎么让大家真的认同？",
+      "expected_behavior": "应激活 mm-winning-hearts-and-minds，诊断驱动力来源，写出能直击人心的愿景，并补齐八项做法中最常被跳过的流程一致性与问责制，同时安排领导者亲自到场",
+      "notes": "正面场景：外在驱动失效"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的价值观写得挺好，但墙上贴着没人当真。怎么让它落地？",
+      "expected_behavior": "应激活本 skill，指出价值观需落成流程（找出冲突之处）、以身作则、强化问责与奖励典范行为，并设定频繁沟通的强化节奏",
+      "notes": "正面场景：价值观空转"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "We need users to actually advocate for us against a regulation that hurts them. How do we get buy-in?",
+      "expected_behavior": "应激活本 skill，参考爱彼迎做法——直接呼吁用户联系议员、把用户变成共同事业的参与者，通过沟通动之以情而非利益收买",
+      "notes": "正面场景：外部动员"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "安全检查发现三处违规，必须本周内整改完毕，没有商量余地。",
+      "expected_behavior": "不应激活本 skill，因为这是需要强制执行的一次性合规任务，用赢得人心的方式会拖慢执行",
+      "notes": "诱饵：涉及'让大家配合'但性质是强制"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "供应商不肯降价，我们有没有别的筹码？要不要调整一下付款账期来换？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-batna（谈判协议的最佳替代方案）等谈判工具：这是纯利益交换场景，不是愿景与内在驱动力问题",
+      "notes": "跨 skill 混淆诱饵：同样涉及'让人同意'"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "公司要推行降薪，希望我用愿景宣讲让大家接受。这算赢得人心吗？",
+      "expected_behavior": "应激活本 skill 并明确警示：若'赢得人心'被用于让成员接受本不该接受的安排，属操纵性使用，会迅速被识破并反噬信任（推导，非书中明示）；且书中说驱动力不应只靠报酬，不等于可以削减合理报酬",
+      "notes": "边界：模型被操纵性使用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

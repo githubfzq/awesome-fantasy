@@ -1,0 +1,52 @@
+{
+  "skill": "mm-s-curves",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的新产品采纳率一直很慢，什么时候才会突然陡增？",
+      "expected_behavior": "应激活 mm-s-curves，判断当前处于 S 形曲线的底部（创新者与早期采纳者），指出陡增需要跨越临界点，并据此说明当前杠杆高低。",
+      "notes": "正面场景：定位所处阶段"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "市场是不是已经接近饱和了？我们还有多少空间？",
+      "expected_behavior": "应激活 mm-s-curves，判断是否在顶部放缓段，说明接近饱和时投入的边际回报下降，应转向换曲线或提效率。",
+      "notes": "正面场景：顶部饱和判断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "这条 S 曲线我们现在到底在底部、陡增段还是顶部？杠杆高不高？",
+      "expected_behavior": "应激活 mm-s-curves，用采纳率时间序列定位所处段位，并给出段位对应的行动差异（底部：找早期采纳者；陡增段：加码；顶部：换曲线）。",
+      "notes": "正面场景：段位识别 + 杠杆判断"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们上线才两个月，能画出我们的 S 曲线吗？",
+      "expected_behavior": "不应激活本 skill，因为数据时间跨度太短，无法判断曲线形状与所处段位；应先说明需要更长的采纳率时间序列，而不是拟合一条假 S 曲线。",
+      "notes": "诱饵：涉及 S 曲线但数据不支持"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们的产品在早期用户里反响很好，但主流客户一直进不来，中间那道坎怎么过？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-crossing-the-chasm：用户问的是早期采纳者与早期大多数之间的鸿沟如何跨越，是采纳过程中的一个间断，而非 S 曲线的形状与段位。",
+      "notes": "跨 skill 混淆诱饵：S 曲线形状 vs 跨越鸿沟"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "增长明显放缓了，是走到 S 曲线顶部了，还是这条曲线本身该换了？",
+      "expected_behavior": "可以激活，需先判断是否已达饱和（渗透率接近上限）；若渗透率仍低却已放缓，应指出可能不是顶部而是曲线本身需要更换，两种情况行动完全不同。",
+      "notes": "边界：顶部饱和 vs 换曲线"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

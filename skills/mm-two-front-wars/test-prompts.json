@@ -1,0 +1,52 @@
+{
+  "skill": "mm-two-front-wars",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们同时在进攻企业级和消费级两个市场，每个都投了人但每个都没做到领先，怎么办？",
+      "expected_behavior": "应激活 mm-two-front-wars，列出两条战线及各自的「赢」标准，逐条评估是在场还是占优，判定为主动分兵后选定唯一主战场，明确另一条的退出/冻结方案，并把释放的资源转移到主战线。",
+      "notes": "正面场景：同时打两个市场"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们超市夹在折扣店和高端有机超市中间，两头都在抢我们的客人。",
+      "expected_behavior": "应激活 mm-two-front-wars，识别这是「被夹击」而非主动分兵，因此不能简单砍掉一边，而要先做定位移动（往高端或往低端靠），再集中资源形成局部优势。",
+      "notes": "正面场景：书中的 A&P 被两面夹击"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想同时创业和读博，两个都要全力投入，现在两边都推进得很慢。",
+      "expected_behavior": "应激活 mm-two-front-wars，指出这是「同时追两只兔子」，要求选定主战线并明确另一条的处理方式（退出/暂停/串行化），而不是继续平均分配投入。",
+      "notes": "正面场景：个人双战线"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我这周有十个会议和五个交付，日程排满了，怎么安排时间？",
+      "expected_behavior": "不应激活本 skill，因为只有一个目标下的任务密集，属时间管理/日程问题，不是需要压倒性投入的两条战略战线。",
+      "notes": "诱饵：任务多但目标单一"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我写代码的时候老是被消息打断，一天切来切去，效率低得要命。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-multitasking。这是分钟级注意力切换的执行效率损失，解药是时间块与减少切换；两线作战是战略级兵力分摊。",
+      "notes": "跨 skill 混淆诱饵：多任务处理（书中正是把它作为宏观类比引出）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们有三条收入来源：成熟的主业、在投的新业务、还有一笔国债投资。这算两线作战吗？",
+      "expected_behavior": "合理的判断是：不算。判据是「是否需要压倒性投入才能赢 + 是否自维持」。国债是刻意的风险分散（设计意图），成熟主业若已自维持也不消耗压倒性投入；真正的战线只有新业务一条。应确认新业务是否被主业的维持性需求挤占，若是才需要收缩。",
+      "notes": "边界：风险分散与自维持业务不构成分兵"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

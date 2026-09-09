@@ -1,0 +1,52 @@
+{
+  "skill": "mm-foxes-versus-hedgehogs",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "团队里 A 特别能讲愿景，一句话就能点燃大家；B 每次都先问数据、列例外情况。分别该放什么位置？",
+      "expected_behavior": "应激活 mm-foxes-versus-hedgehogs，判定 A 为刺猬型适合营销与愿景传达，B 为狐狸型适合战略与分析，并设计互补的决策流程",
+      "notes": "正面场景：典型岗位适配"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们公司十年的战略主线一直没变过，但市场数据已经明显不支持了，创始人不肯松口。",
+      "expected_behavior": "应激活本 skill，识别为刺猬型'坚守过时理念'的失效模式，检查主线理念上次更新时间与已忽略的反例",
+      "notes": "正面场景：书中明示的刺猬失效模式"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "I'm very detail-oriented and struggle to see the big picture. What kind of work should I lean into?",
+      "expected_behavior": "应激活本 skill，指出狐狸型（重细节、容忍复杂性）在战略与预测上的优势，并提示需补一条能对外说清的主线",
+      "notes": "正面场景：自我定位"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这份行业报告压缩成一页要点。",
+      "expected_behavior": "不应激活本 skill，因为这是纯信息压缩任务，不涉及认知风格与岗位适配",
+      "notes": "诱饵：涉及'细节 vs 全局'但无人员配置问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们公司小，遇到专业难题频率不高，是该招专职专家还是让通才覆盖？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-generalists-versus-specialists（通才与专家）：核心是问题频率与组织编制，不是认知风格",
+      "notes": "跨 skill 混淆诱饵：同章相邻的人才分类模型"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们 CEO 讲愿景一流，但同时他对数据极其敏感，一有反例就自己改口径。他到底是哪种？",
+      "expected_behavior": "应激活本 skill 并给出'混合型'判断，说明分类是倾向而非二分；须避免用标签回避具体问题，要求回到可观察行为分任务判定（对外传播时呈刺猬特征、内部决策时呈狐狸特征）",
+      "notes": "边界：分类不是非此即彼"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-self-serving-bias",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我这次项目延期是因为需求一直变，可隔壁组延期就是执行力差，这话说得没错吧？",
+      "expected_behavior": "应激活 mm-self-serving-bias，把'需求变更'与'执行力差'两套解释并排列出，做角色互换检验，并补齐隔壁组可能面对的情境信息。",
+      "notes": "正面场景：双标归因"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "刚才路上那个人开得飞快，太鲁莽了——当然我今天是真有急事才开快的。",
+      "expected_behavior": "应激活 mm-self-serving-bias，指出这正是书里的飙车案例：同一行为，自己是主角时情境浮现、是旁观者时品性浮现，要求用统一标准重述。",
+      "notes": "正面场景：书中原始案例类型"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "年终复盘大家都在说自己贡献最大、别人没配合好，我该怎么判断谁说得对？",
+      "expected_behavior": "应激活 mm-self-serving-bias，锁定具体行为而非笼统印象，分别列出行为者与观察者视角的解释，并检查信息是否可补齐。",
+      "notes": "正面场景：功劳归属"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我算一下这个月我们组的实际产出和目标的差距。",
+      "expected_behavior": "不应激活本 skill，因为这是对事实的量化核对，不涉及对行为原因的归因，也没有自我与他人的双重标准。",
+      "notes": "诱饵：涉及绩效但无归因"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "客户那边对接人回复特别慢，我觉得这人就是不上心，是不是该投诉他？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-fundamental-attribution-error：这里只有对他人单向的品性归因，没有用户对自己同类行为的对照解释，属于单向偏差。",
+      "notes": "跨 skill 混淆诱饵：自利性偏差 vs 基本归因错误"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我确实瞒报了一次数据错误，但当时压力太大了；别人这么做我肯定觉得是品性有问题——我该怎么看自己？",
+      "expected_behavior": "可以激活，但需明确边界：模型可以做归因自检，但不能用来给明确的违规行为脱罪；应先承认责任，再用统一标准审视自己与他人的解释差异。",
+      "notes": "边界：偏差自检 vs 责任逃避"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

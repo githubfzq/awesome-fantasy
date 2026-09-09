@@ -1,0 +1,52 @@
+{
+  "skill": "mm-ockham-s-razor",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "同事昨天突然提离职，有人说是因为早就在看机会，有人说是上次晋升没他，还有人说是跟领导闹翻了。我该信哪个？",
+      "expected_behavior": "应激活 mm-ockham-s-razor，把三个解释各拆成基本假设（'他早就在面试''他知道自己没被提名''发生过一次公开冲突'），逐条追问是否有证据、去掉后是否仍能解释'突然提离职'，剃掉无证据支撑的，输出首选解释并声明置信度与可推翻它的证据。",
+      "notes": "正面场景：多解释竞争同一组事实"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我列了二十条择偶标准，结果一个合适的都遇不到。帮我看看问题出在哪。",
+      "expected_behavior": "应激活本 skill，把每条标准当作一条假设，追问'它真的对关系质量有必要吗？有什么证据？'，剃掉无依据的具体偏好（高温瑜伽、某种冰淇淋、眼睛颜色），保留核心诉求，输出精简后的清单。",
+      "notes": "正面场景：标准清单过长，可满足性被合取条件压垮"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "他开会时看了我一眼没说话，是不是对我有意见？我越想越觉得是。",
+      "expected_behavior": "应激活本 skill，把'他对我有意见'拆成多条隐含假设（他注意到了某件事、他在意、他选择用沉默表达、针对的是我），逐条要求证据，指出更简单的解释（走神、在看材料、与我无关）能解释同一事实，并提醒简单解释有时反直觉。",
+      "notes": "正面场景：过度解读，需要晒出隐含假设"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的风控模型要加一条新规则，怎么评估它该不该加？",
+      "expected_behavior": "不应激活本 skill（除非存在多个解释力相当的候选规则集）。这是新增假设的评估问题，应转向 mm-de-risking 做低成本验证或 mm-overfitting 检查是否对历史样本过拟合；剃刀用于削减已有假设，不是评估新增项。",
+      "notes": "诱饵：涉及'假设'，但方向是新增而非削减"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我觉得她既是程序员、又热心公益，比她只是程序员更可能，因为感觉更像她。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-conjunction-fallacy：这是概率判断错误（P(A且B) ≤ P(A)），需要用概率规则纠正，而不是在多个解释间做选择。两者常一起出现但处方不同。",
+      "notes": "跨 skill 混淆诱饵：都涉及'多条件'，但一个是概率一个是解释选择"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "最简单的解释是系统变慢只是因为流量涨了，但监控显示流量没涨。还要坚持最简单的解释吗？",
+      "expected_behavior": "不应强行用简单解释。正确判断：剃刀的前提是解释力相同，简单解释漏掉了'流量没涨'这条已观察事实，前提不成立，应回到拆解环节修正候选解释，而不是靠'更简单'取胜。",
+      "notes": "边界：简单解释解释力不足时，剃刀失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-conjunction-fallacy。"
+}

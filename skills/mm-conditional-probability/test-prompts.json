@@ -1,0 +1,52 @@
+{
+  "skill": "mm-conditional-probability",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们整体转化率是 3%，那来自小红书渠道的用户，转化率大概该怎么估？手上有分渠道数据。",
+      "expected_behavior": "应激活 mm-conditional-probability，把问题写成 P(转化 | 渠道=小红书)，用分渠道数据给出条件概率，并说明该值只对具备该条件的群体成立。",
+      "notes": "正面场景：分群概率"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "已知这栋房子在佛州沿海，它的索赔概率为什么比宾州同类房子高那么多？这不公平吧？",
+      "expected_behavior": "应激活 mm-conditional-probability，引用书中房屋保险案例：费率按索赔的条件概率逐栋定制，附加信息改变了概率估计，因此差异化定价是精算逻辑而非歧视。",
+      "notes": "正面场景：书中保险案例"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "已知某位女性携带 BRCA1 基因异常，她这辈子得乳腺癌的概率大概多高？",
+      "expected_behavior": "应激活 mm-conditional-probability，给出书中条件概率数值（到 90 岁风险高达 80%），并强调这是「在携带该基因异常条件下」的概率，不能套用到普通人群。",
+      "notes": "正面场景：医学风险的条件概率"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这批订单里有多少是来自上海的，帮我数一下。",
+      "expected_behavior": "不应激活本 skill，因为这是对已发生事实的计数，不涉及在给定条件下估计某事件的概率。",
+      "notes": "诱饵：分群统计但非概率估计"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "测试准确率 95%，那测出阳性的人真的有问题的概率是不是就是 95%？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-base-rate-fallacy：这里把 P(阳性|有病) 当成了 P(有病|阳性)，忽略了基础比率，需要贝叶斯定理换算。",
+      "notes": "跨 skill 混淆诱饵：方向反转是条件概率最典型的误用"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "按城市、年龄段、设备类型、注册渠道四个维度一起分层后，每个格子的概率都不一样，是不是这样就最精准了？",
+      "expected_behavior": "应激活本 skill 并提示风险：分层过细会让每个条件下的样本极少、估计噪声大（推导提示），应权衡条件相关性与样本量，必要时合并层级。",
+      "notes": "边界：条件概率过度分层的可靠性问题"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

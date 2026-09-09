@@ -1,0 +1,52 @@
+{
+  "skill": "mm-cognitive-dissonance",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我一直坚持我们这个产品方向是对的，可上线三个月数据一直很差。我觉得肯定是埋点口径有问题，数据团队不靠谱。你觉得呢？",
+      "expected_behavior": "应激活 mm-cognitive-dissonance，把「方向是对的」与「数据一直很差」两个观念并排摆出，指出「口径不对」属于不可证伪的解释，做换人测试，并转成一句带阈值和时间点的可检验陈述。",
+      "notes": "正面场景：为已投入的决定辩护且证据变坏"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我说过今年要好好锻炼，结果还是天天熬夜刷手机。不过我工作强度这么大，晚上放松一下也合理吧？",
+      "expected_behavior": "应激活 mm-cognitive-dissonance，指出「在意健康」与「天天熬夜」并存产生的压力正在被「需要放松」消解，区分可证伪与不可证伪的解释，并转成一条可检验的行为约定。",
+      "notes": "正面场景：自相矛盾的话而自己未察觉"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我特别受不了那种开会迟到还不道歉的人。今天我自己迟到了二十分钟，不过是因为客户临时拉会，跟他们那种完全不一样。",
+      "expected_behavior": "应激活 mm-cognitive-dissonance，指出用户在批评别人正在做的事，并做换人测试（同样的迟到的别人会怎么评价），指出「情况不一样」是否为可成立的限定条件。",
+      "notes": "正面场景：双标式自我豁免"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我和同事对技术方案有分歧，我觉得该用消息队列，他觉得直接同步调用就行。谁更有道理？",
+      "expected_behavior": "不应激活本 skill，因为这是两个人的正常观点分歧，用户没有同时持有互斥观念，也没有在为矛盾找解释；应按技术权衡正常分析。",
+      "notes": "诱饵：正常争论被误认为失调"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我最近收集了很多支持我做短视频赛道的资料，越看越觉得能做。但我担心自己是不是只看了想看的那部分，该怎么避免？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-confirmation-bias。用户尚未撞上矛盾证据、也没有在消解矛盾，问题出在收集端的证据筛选（只挑支持自己的看），属于证实偏差而非认知失调。",
+      "notes": "跨 skill 混淆诱饵：证实偏差"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我承认这个决策是错的，也知道为什么错。但推倒重来的成本太高，我打算先维持，等下个季度再改。",
+      "expected_behavior": "合理的判断是：不应按认知失调处理，因为用户已经完成观点修正（明确承认错误且能说明原因），后续是成本与时机的取舍问题，应转向可逆/不可逆决策与切换成本的权衡；只有当用户在执行期间开始不断追加「其实也没那么糟」的新解释时，才重新激活本 skill。",
+      "notes": "边界：已认错 vs 仍在合理化"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

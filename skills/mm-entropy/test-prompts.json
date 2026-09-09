@@ -1,0 +1,52 @@
+{
+  "skill": "mm-entropy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们上个季度花大力气整理了一次共享文档库，现在又乱成一团了。是不是大家就是不配合？",
+      "expected_behavior": "应激活 mm-entropy，指出这不是配合问题而是规则松导致最大熵高、系统自然滑向无序，建议通过收紧规则（固定目录结构、命名规范、自动化检查）降低最大熵，而不是再做一次整理。",
+      "notes": "正面场景：一次性整理必然复发的机制解释"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "团队现在所有流程都有硬性规定，做任何事都要走审批，大家抱怨没有一点发挥空间，创新项目也没人提了。",
+      "expected_behavior": "应激活 mm-entropy，判定最大熵被压得过低、系统失去状态空间，建议分区处理（核心合规区严格、探索区放宽）并给出具体的规则层面改动。",
+      "notes": "正面场景：秩序过度的反面"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我在考虑要不要给团队加一条强制的代码提交规范。加了会不会太束缚？",
+      "expected_behavior": "应激活 mm-entropy，评估这条规则会把最大熵压到什么程度、代价是什么，并结合该系统当前是偏混乱还是偏僵化给出建议。",
+      "notes": "正面场景：规则设计的最大熵权衡"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这台服务器的散热设计有问题，能不能帮我算一下热负荷？",
+      "expected_behavior": "不应激活本 skill，因为这是真正的热力学工程计算，书中是类比用法；应建议咨询专业热设计分析。",
+      "notes": "诱饵：出现了热力学相关词汇"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想多遇到些好机会，是不是该让自己的工作和生活节奏别那么死板？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-luck-surface-area——用户在问「如何被机会撞上」这一具体应用，而非无序度本身的机制；若需解释底层原理再引回熵。",
+      "notes": "跨 skill 混淆诱饵：与 mm-luck-surface-area 底层-应用成对，区分在提问层级"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的研发流程要过合规审计，但我又希望团队有创新空间。这两者能兼顾吗？",
+      "expected_behavior": "应激活 mm-entropy 并给出分区方案：合规相关的核心区必须压低最大熵、不留弹性（明确标注此处不适用「留白」建议），非合规的探索区则刻意提高最大熵；同时说明安全/合规场景是熵模型「升熵」建议的明确例外。",
+      "notes": "边界：升熵建议在合规场景下的例外处理"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

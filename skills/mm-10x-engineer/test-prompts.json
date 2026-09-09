@@ -1,0 +1,52 @@
+{
+  "skill": "mm-10x-engineer",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "团队产出一直上不去,我觉得就是缺一个厉害的人。准备花大价钱去挖个明星工程师来带一下。",
+      "expected_behavior": "应激活 mm-10x-engineer,指出只追十倍人才是陷阱——产出随角色、项目、组织变化往往不可复制(可结合乔伊法则);把注意力转向内部匹配:逐人盘点'做什么事时明显比别人快/好、主动揽过什么活、什么情境下失速',找出错配并重新设计岗位与项目分配。",
+      "notes": "正面场景:典型挖角冲动"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "他在这个岗位快一年了,一直不出活,我在考虑要不要辞退。",
+      "expected_behavior": "应激活 mm-10x-engineer,先做匹配诊断而非直接下'人不行'的结论:盘点他的独特个性与当前岗位实际要求的错配点,给出换项目/换职责边界/换协作对象/换工作方式的具体方案,设定4-6周观测周期;若调整后仍无改善再谈绩效处置。",
+      "notes": "正面场景:疑似低绩效的匹配排查"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们只有五个人,要干的活是十个人的量。怎么让整体产出翻上去?",
+      "expected_behavior": "应激活 mm-10x-engineer,目标是造出'十倍团队'而非单点明星:让多名成员同时成为十倍贡献者——逐人做能力-任务匹配重排,同时清掉抑制产出的环境因素(会议密度、审批链、上下文切换),并为每人定可观测指标与复盘周期。",
+      "notes": "正面场景:十倍团队的设计"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们要招三个前端,想问问用哪些渠道和薪酬策略能招到人。",
+      "expected_behavior": "不应激活本 skill,因为这是招聘渠道与人才获取的执行问题,不是人岗匹配设计;本 skill 解决的是如何在现有人中造出十倍产出。",
+      "notes": "诱饵:谈人才但实为招聘执行问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "项目因为缺人一直没启动,大家在等招到资深的人再说。我该不该催一下招聘?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-rumsfeld-s-rule:用户的问题是'因等待理想队伍而不行动',需要的是接受人力约束、用现有部队开打的纪律;十倍团队是接受约束之后提升产出的方法,属于下一层。",
+      "notes": "跨 skill 混淆诱饵:拉姆斯菲尔德法则(行动纪律 vs 产出方法)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "按你说的重新排了岗位,但两个月了产出还是没变化。是不是这个模型没用?",
+      "expected_behavior": "合理判断:先排查三类被忽略的抑制因素——(1)产出问题根源其实在流程、目标不清或战略摇摆,重排岗位无济于事;(2)环境因素(会议、审批、上下文切换)吃掉了匹配带来的增益;(3)确实存在内部不具备的硬性能力缺口,匹配设计替代不了。同时提醒'十倍'是虚指、不是KPI,不能承诺;也不要把所有绩效问题都归为位置不对而拖延必要的绩效处置。建议逐项排查后决定是补人、改流程还是做绩效处置。",
+      "notes": "边界:匹配设计的失效排查与适用上限"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

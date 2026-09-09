@@ -1,0 +1,52 @@
+{
+  "skill": "mm-perverse-incentives",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们想鼓励销售多签单，打算把提成改成按签约合同数量算，签得越多提成比例越高。",
+      "expected_behavior": "应激活 mm-perverse-incentives，指出计量单位（合同份数）与真实目标（营收质量）错位，推演拆单、压货、低价冲量、向低质客户倾斜等套利路径（含合规但违背意图的路径），并建议改为与回款额/毛利/留存挂钩并加质量门槛与奖励上限。",
+      "notes": "正面场景：提成设计的事前推演"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们给内容创作者按发布篇数发补贴，结果平台上全是拼凑的短内容，没人愿意写长文了。早知道会这样。",
+      "expected_behavior": "应激活 mm-perverse-incentives，指出按篇数计酬的计量单位忽略了质量与深度维度，创作者理性地最小化单位成本；建议改为与阅读完成率/停留时长/单位质量分挂钩，并保留长内容的加权。",
+      "notes": "正面场景：激励已导致行为跑偏"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "公司要求每个季度必须有五个流程改进提案，现在大家都在把一件事拆成五件报。怎么改？",
+      "expected_behavior": "应激活 mm-perverse-incentives，指出这是完全合规但违背意图的典型套利（数量可拆、价值不可拆），建议改为按已采纳提案的实际效果计分、允许「本季度无提案」、并加入去重与跨季度追踪。",
+      "notes": "正面场景：合规但违背意图的钻空子"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们刚给团队涨了固定薪资，想提升士气。会不会有副作用？",
+      "expected_behavior": "不应激活本 skill，因为固定薪资不与任何具体行为挂钩，不构成行为激励，也就不存在「按字面兑现而违背意图」的套利空间；这属于薪酬与士气问题。",
+      "notes": "诱饵：无行为挂钩的固定报酬"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们按发现的违规账号数量给外包团队结算，结果他们自己注册了一批小号来刷，平台上违规量比治理前还高。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-cobra-effect。这里已经越过了「行为跑偏」的界限——有人开始生产问题、原问题被放大，属于最具破坏性的那一类，应由眼镜蛇效应处理（重点在获利群体与退出预案）。",
+      "notes": "跨 skill 混淆诱饵：眼镜蛇效应"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们按客户满意度给客服发奖金，但同时考核平均处理时长。现在客服为了满意度不断延长通话，效率掉得很厉害。两个指标都有道理，怎么办？",
+      "expected_behavior": "合理的判断是：这是激励设计的典型两难而非单纯的不当诱因，应激活本 skill 并给出组合解法——两个方向冲突的指标本身就构成一定制衡（这正是多指标制衡的意义），问题在于缺少统一的上位目标与权重。建议改为以「一次性解决率」这类同时覆盖质量与效率的单位为主指标，满意度与时长降为监控项（不直接挂奖金）或仅设阈值门槛（低于阈值取消奖金资格），并设定上线后的观察指标与复查周期。关键判断是：不要通过删掉一个指标来恢复另一个，而要找一个计量单位与目标一致的指标。",
+      "notes": "边界：多指标冲突下的激励重构"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

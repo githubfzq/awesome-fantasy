@@ -1,0 +1,52 @@
+{
+  "skill": "mm-most-respectful-interpretation",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我给学校发邮件问入学的事，四天了都没回。他们肯定是根本不在乎我们这种家长，我想再发一封骂过去。",
+      "expected_behavior": "应激活 mm-most-respectful-interpretation，把事实（四天未回）与解释（不在乎）分开，列出多种解释（在准备材料、在等内部确认、邮件被淹没），并据此把骂人的邮件改写为询问进度的邮件。",
+      "notes": "正面场景：书中原例（给学校发邮件）同类情境"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我给同事发了一段很长的方案，他就回了个『OK』。这不明摆着是敷衍我吗？",
+      "expected_behavior": "应激活 mm-most-respectful-interpretation，列出善意/中性/恶意三类解释（在忙、在路上用手机看、确实没细看），并给出换取真实反馈的问法（有没有哪块你觉得不对）。",
+      "notes": "正面场景：短回复被解读为轻视"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我已经写好了一封挺冲的回复邮件，想了想又删了。你觉得我该不该发？",
+      "expected_behavior": "应激活 mm-most-respectful-interpretation，先确认触发点的事实与解释，采用善意解释后给出改写版本，说明哪种更容易换回信息。",
+      "notes": "正面场景：出手前的犹豫时刻"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "合作方第三次在合同约定的交付日临时毁约，还把责任推给我们，聊天记录都在。我还要不要往好处想？",
+      "expected_behavior": "不应激活本 skill，因为证据已明确指向不诚信且反复发生，此时应谈止损与追责，而不是继续做善意推定。",
+      "notes": "诱饵：证据充分且反复，善意推定已不适用"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们部门这个季度目标没完成，我觉得就是团队执行力差、人不行。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-fundamental-attribution-error（把结果归因于他人的内在品性而忽略外部情境，如目标设定、资源、市场变化），而非对单个动机做善意推定。",
+      "notes": "跨 skill 混淆诱饵：品性归因 vs 善意解释"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "他以前也爽约过两次，这次又迟到四十分钟。我知道应该往好处想，但我心里就是很不爽。",
+      "expected_behavior": "合理判断：可以激活但要调整——善意解释针对单次事件仍成立（可能真堵车），但出现重复模式时『善意』的默认权重应下调；正确做法是先承认自己的不爽是合理的，再把话题转向模式与规则（下次提前告知、设定等待上限），而不是靠压抑情绪维持善意。",
+      "notes": "边界：单次善意推定 vs 重复模式"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

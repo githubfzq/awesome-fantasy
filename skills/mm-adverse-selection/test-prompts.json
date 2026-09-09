@@ -1,0 +1,52 @@
+{
+  "skill": "mm-adverse-selection",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们搞了个员工互助医疗基金，自愿参加，结果报名的几乎都是家里有慢性病同事的，费用眼看要撑不住。",
+      "expected_behavior": "应激活 mm-adverse-selection，说明这是高风险者更积极进场导致的正反馈，并给出三条解法供选：强制全员参与、按风险差异化定价、或恢复信息对称；同时提示要确定「要把谁留下」。",
+      "notes": "正面场景：互助池结构恶化"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的二手交易平台好卖家越来越少，买家只肯出均价，好东西都撤了。怎么救？",
+      "expected_behavior": "应激活 mm-adverse-selection，画出「好货退出→均价下降→更多好货退出」的正反馈环，并建议恢复信息对称（质检报告、历史记录、认证）把柠檬赶出去，参考 Carfax 的做法。",
+      "notes": "正面场景：柠檬市场"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们发了一个补贴，结果领的人大多不是我们想扶持的对象，预算很快就没了，怎么调整？",
+      "expected_behavior": "应激活 mm-adverse-selection，识别「进场者结构系统性偏移」，建议核查私有信息与自选择机制，并用资格核验、差异化额度或改为事后核验发放来打断正反馈。",
+      "notes": "正面场景：补贴被非目标人群领取"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们产品的客户流失率这个季度上升了，主要是对手降价抢人。",
+      "expected_behavior": "不应激活本 skill，因为这是外部竞争导致的流失，进场者结构并未因私有信息而系统性偏移，不存在正反馈的构成恶化。",
+      "notes": "诱饵：指标恶化但非构成问题"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "公司给全员上了设备险之后，大家明显不爱惜电脑了，摔了碰了直接报修，反正不用自己掏钱。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-moral-hazard。这是签约之后的行为变化（有了兜底就更大意），发生在合约订立之后；逆向选择处理的是签约前谁进来。",
+      "notes": "跨 skill 混淆诱饵：道德风险"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们准备做共享带宽池，自愿加入，大家按用量分摊。我担心会不会出问题？",
+      "expected_behavior": "合理的判断是：存在逆向选择风险——用量大的团队最有动力加入、用量小的会自己单干，导致分摊成本上升、更多人退出。建议事前设计：全员强制分摊或按基线用量分级定价，并设定退出机制与用量披露；同时说明这是事前预判，需要先用小范围试点验证进场结构是否真的偏移，而不是直接下结论。",
+      "notes": "边界：事前预判而非事后诊断"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

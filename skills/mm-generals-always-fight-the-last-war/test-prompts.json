@@ -1,0 +1,52 @@
+{
+  "skill": "mm-generals-always-fight-the-last-war",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们公司十年前靠线下经销商起家，现在年轻人都在线上买，老板还是坚持把 80% 的资源压在经销商大会上，说当年就是这么赢的。",
+      "expected_behavior": "应激活 mm-generals-always-fight-the-last-war，还原线下经销商打法当年成立的前提（流量在线下、信息不对称、渠道稀缺），逐条核查今天是否成立，并指出胜负维度已迁移",
+      "notes": "正面场景：典型旧战术 + 环境已变"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "预算会在讨论要不要做 AI 相关的投入，有人说这东西我们五年前试过类似的，没什么用，还是别折腾了。",
+      "expected_behavior": "应激活本 skill，区分'五年前试过'与'今天再试'的前提差异（模型能力、成本、生态），避免直接用旧结论否决新环境",
+      "notes": "正面场景：用旧经验否决新事物"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "Our growth playbook was built for paid acquisition. Acquisition costs have tripled and a new distribution channel just opened up. Are we fighting the last war?",
+      "expected_behavior": "应激活本 skill，做前提核查（买量成本结构、渠道可得性），指出规则维度变化并评估窗口期",
+      "notes": "正面场景：用户直接使用英文触发词"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "每周的项目周会流程已经稳定运行两年了，团队合作也没问题，要不要改一改？",
+      "expected_behavior": "不应激活本 skill，因为不存在环境迁移的客观证据，稳定有效的例行做法无需套用此模型；若用户只是想优化，走常规效率改进即可",
+      "notes": "诱饵：只是'旧'，但没有'环境变了'"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们当年选了这个数据库，现在全公司几百个服务都依赖它，明知道有更好的也换不动了。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-path-dependence（路径依赖）：这是历史选择造成的迁移成本约束，不涉及'战术与环境错配'",
+      "notes": "跨 skill 混淆诱饵：同为'被过去束缚'"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "行业里所有人都说新渠道会取代旧渠道，但我们自己旧渠道的转化率其实还在稳步上涨。要不要现在就转？",
+      "expected_behavior": "可激活本 skill 做前提核查，但应诚实指出：若旧渠道前提仍成立（转化率在涨），则不构成'打上一场仗'，并援引作者'不要假定一切旧战术都失效'的提醒，建议双轨验证而非立刻切换",
+      "notes": "边界：模型自身警告的适用范围"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

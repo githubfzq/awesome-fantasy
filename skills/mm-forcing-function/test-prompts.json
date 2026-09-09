@@ -1,0 +1,52 @@
+{
+  "skill": "mm-forcing-function",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我想每周做一次工作复盘，写了三周就断了。每次到周五都觉得「这周也没啥好复盘的」就跳过了，靠自觉真的不行。",
+      "expected_behavior": "应激活 mm-forcing-function，把复盘固化到具体时间（如周五 16:00-16:30 写进日历）、绑定外部性（发给主管或同伴）、定义最小版本（只写三条），并设定 2-4 周后看执行率再调整。",
+      "notes": "正面场景：周期性事务被挤掉"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们团队的双周会总是被临时取消，理由是「这阵子太忙，下次再开」。有什么办法让它真的发生？",
+      "expected_behavior": "应激活 mm-forcing-function，指出问题在于会议没有外部性与代价，建议绑定不可轻易跳过的约束（固定时间 + 明确产出物 + 负责人），并设最小版本（很忙时开 15 分钟）。",
+      "notes": "正面场景：团队节奏机制"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我给自己定了每天读书的计划，但一忙就忘。怎么才能保证真的做，而不是靠意志力？",
+      "expected_behavior": "应激活 mm-forcing-function，给出预先安排的时间点 + 外部约束（已付费约读伙伴/公开打卡）+ 最小版本（读两页）+ 错过后的复位规则。",
+      "notes": "正面场景：习惯设计，明确要求「不靠自觉」"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我每周都在写周报，但写了半年感觉没什么用，领导也不怎么看。是不是我写的方式有问题？",
+      "expected_behavior": "不应激活本 skill，因为行为已经在规律发生，问题出在效果与写法上；应先诊断周报的内容与受众，而不是再加机制。",
+      "notes": "诱饵：周期性事务场景，但卡点是「做了没效果」"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我知道锻炼很重要，也想好了计划，可每次一想到要换衣服、出门、到健身房这一串，就放弃了。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-activation-energy——用户卡在单次启动的门槛上，正确动作是削减起步前置动作，而不是先排日程。",
+      "notes": "跨 skill 混淆诱饵：与 mm-activation-energy 同属第4章，区分点在「单次门槛」还是「重复发生」"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我在纠结要不要辞职去读研，想了大半年了。要不要给自己设个「每月一号必须做决定」的机制，逼自己动起来？",
+      "expected_behavior": "可以激活 mm-forcing-function 但必须限制其用法：重大不可逆决策的犹豫是审慎而非执行失败，不应被机制催促；可把机制用于「每月固定时间收集信息与推进一小步」，决策本身仍走 mm-reversible-vs-irreversible-decisions 与小规模试验。",
+      "notes": "边界：考验 agent 是否会误把审慎当执行力不足"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

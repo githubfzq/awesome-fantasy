@@ -1,0 +1,52 @@
+{
+  "skill": "mm-strategy-versus-tactics",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "会上讨论了两个小时都在排期和分工，但没人说得清做到什么程度算成功。",
+      "expected_behavior": "应激活 mm-strategy-versus-tactics，判定讨论只有战术层（下一步做什么）缺策略层，要求先补一句可验证的'最终成功是什么样'（含时间跨度与判定标准，不含实现路径），再从策略倒推下一步",
+      "notes": "正面场景：缺策略层"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "愿景讲得很好，但落到这周要做什么就卡住了。",
+      "expected_behavior": "应激活本 skill，判定只有策略层缺战术层，要求输出一个具体的下一步目标，并说明它如何服务于已定的成功定义",
+      "notes": "正面场景：缺战术层"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "He's an outstanding executor but freezes whenever he has to set direction. Should he move up to director?",
+      "expected_behavior": "应激活本 skill，指出岗位越高越需要策略能力，用'能否独立定义成功标准、能否在信息不全时定方向'评估；若不能，提示战略岗风险并关联 mm-peter-principle",
+      "notes": "正面场景：晋升中的策略/战术能力评估"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "方向已经定了，帮我把这周的任务拆到人和天。",
+      "expected_behavior": "不应激活本 skill，因为策略已明确、只需排期与执行；强行上升到策略层是浪费",
+      "notes": "诱饵：纯执行拆解"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们最牛的工程师被提成经理之后，团队产出反而下滑了，他自己也很痛苦。",
+      "expected_behavior": "不应激活本 skill（或仅作为机理补充），应激活 mm-peter-principle（彼得原理）：这是'人被提升到不胜任层级'的现象诊断；本 skill 只解释其中一种机理（战术型被放到战略岗）",
+      "notes": "跨 skill 混淆诱饵：现象与机理的关系"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "线上出故障了，用户正在投诉，我们还要不要先对齐一下长期方向？",
+      "expected_behavior": "应激活本 skill 但应立即判停到战术层：危机现场需要直接给战术动作（止血），不应在此刻拉到策略层；可建议事后复盘时再补策略层讨论。同时提示不可用'这是战略问题'来回避当下的战术决策（推导，非书中明示）",
+      "notes": "边界：危机现场的层级选择"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

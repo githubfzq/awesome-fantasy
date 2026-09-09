@@ -1,0 +1,52 @@
+{
+  "skill": "mm-thinking-gray",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我同事和隔壁组吵起来了，我一听完就觉得是隔壁组那人太过分了。你说是不是？",
+      "expected_behavior": "应激活 mm-thinking-gray，先识别并暂停用户已形成的判断，列出还不知道的事实清单（另一方的陈述、此前发生了什么、激励结构），为双方各写一条最强版本陈述，指出具体灰在哪个维度（动机混合/程度/情境依赖/归因分散），本轮不输出谁对谁错。",
+      "notes": "正面场景：未听完事实就站队"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "客户那边投诉说我们交付延期，我们这边说是他们需求一直在改。两边说的都有道理，我该信谁？",
+      "expected_behavior": "应激活本 skill，要求补全时间线与变更记录等缺失事实，为双方各写最强版本陈述，指出灰色维度（多半是归因分散 + 程度问题：延期多少由需求变更造成、多少由我方排期造成），事实到位后再给出明确立场而非停在'都有道理'。",
+      "notes": "正面场景：争议中观点两极化，需要定位灰色维度"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "网上那个事两边吵得厉害，我看了几篇就气得不行。帮我理理到底怎么回事。",
+      "expected_behavior": "应激活本 skill，指出强烈情绪本身说明立场已被先定（情绪先于事实），要求先把信息源铺开（多方陈述、原始材料而非转述），识别灰色维度，并提醒个性化推荐会加剧单侧信息；本轮只给事实地图与不确定性标注。",
+      "notes": "正面场景：情绪驱动的站队 + 单侧信息源"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这段 SQL 的 JOIN 条件写错了导致数据重复，帮我看下正确的写法。",
+      "expected_behavior": "不应激活本 skill。纯技术性、有客观正确答案的问题，不存在灰色地带，维持不确定没有意义，直接给出正确写法。",
+      "notes": "诱饵：看似要'理清楚'，但事实可判定且唯一"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我已经决定要投这个项目了，帮我找找支持这个决定的理由。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-confirmation-bias（并配合 mm-devil-s-advocate-position）：结论已经形成，问题不是'要不要下判断'而是'证据是否被筛选过'。灰度思考作用于判断形成之前，本例已过了那个阶段。",
+      "notes": "跨 skill 混淆诱饵：书中把灰度思考列为对抗证实偏差的工具，但二者作用时点不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这事涉及明显的财务造假，但有人说也要理解当事人的难处，要'灰度'地看。你怎么看？",
+      "expected_behavior": "应给出边界判断：明确指出本 skill 不适用于有明确是非底线的领域（违法、安全、欺诈），把它们灰化是纵容而非中立。应转向事实核实与合规处理，并说明灰度思考的适用前提是'存在合理的多元解释'而非'存在困难动机'。",
+      "notes": "边界：底线问题不可灰化，防止本 skill 被用作和稀泥"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-confirmation-bias。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-le-chatelier-s-principle",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "新税种推出来后，按现在的交易量算每年能多收 X 亿，这个数靠谱吗？",
+      "expected_behavior": "应激活 mm-le-chatelier-s-principle,指出这正是书中点名的情形:人们会为避税调整行为,长期税收收入会低于按当前条件估算的预期;引导列出具体规避行为并给出修正后的长期数字。",
+      "notes": "正面场景:书中案例的现实版本"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们上线了新的绩效指标，前三个月效果很好，这个季度怎么就不行了？",
+      "expected_behavior": "应激活 mm-le-chatelier-s-principle,说明系统对外部改动会自行调整并部分抵消;找出被改变的行为（刷指标、挑容易的活）,给出长期均衡值并设计抗回摆的指标组合。",
+      "notes": "正面场景:效果衰减"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "如果我们把佣金比例调高，一年能多带来多少业绩？",
+      "expected_behavior": "应激活 mm-le-chatelier-s-principle,先算天真预期,再列出相关方会做出的行为调整（刷单、抢单、压价成交）,明确抵消是部分的而非全部的,给出修正后预期与达到新平衡的时间。",
+      "notes": "正面场景:改动效果的长期预测"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "把这台机器的转速调高 20%，产能能提多少？",
+      "expected_behavior": "不应激活本 skill,因为这是无适应主体的物理操作,没有主体会根据新规则调整行为,不存在回摆;直接按工程参数计算即可。",
+      "notes": "诱饵:形似条件改变但无自适应主体"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们悬赏捕蛇，结果有人开始在家养蛇领赏，这到底怎么回事？",
+      "expected_behavior": "不应激活本 skill（作为主 skill）,应激活 mm-cobra-effect:这是抵消演变成反向恶果的极端情形（激励导致问题加剧）,属于眼镜蛇效应而非一般的“部分抵消”规律。",
+      "notes": "跨 skill 混淆诱饵:行为回摆的两种程度"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "既然系统会抵消改动，那我们是不是什么改革都不用做了？反正没用。",
+      "expected_behavior": "合理判断:这是误用——原理明确说系统只抵消“部分”条件变化,不是完全抵消,改动依然有效。同时纠正另一个误读:它不意味着系统围绕某个预定值回归,而是对刺激做出反应并部分抵消。应给出修正后的长期预期,而不是放弃改动。",
+      "notes": "边界:犬儒式误用"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

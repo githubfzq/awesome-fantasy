@@ -1,0 +1,52 @@
+{
+  "skill": "mm-base-rate-fallacy",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这个病的筛查准确率 99%，我家人体检查出阳性，是不是基本可以确定得病了？",
+      "expected_behavior": "应激活 mm-base-rate-fallacy，指出 99% 是 P(阳性|有病) 方向，需先知道该病在人群中的基础比率，再用贝叶斯定理换算 P(有病|阳性)；若疾病罕见，阳性结果很可能是误报。",
+      "notes": "正面场景：医学筛查"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的反作弊模型准确率 95%，今天命中了 200 个账号，所以这 200 个基本都是作弊用户，直接封吧。",
+      "expected_behavior": "应激活 mm-base-rate-fallacy，要求给出作弊账号在全部账号中的基础比率，说明若作弊极罕见，命中名单里真作弊者可能只占少数，直接封禁会大量误伤。",
+      "notes": "正面场景：风控命中"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "一篇论文 p<0.05，所以这个效应肯定真实存在吧？",
+      "expected_behavior": "应激活 mm-base-rate-fallacy，引用书中用法：被重复检验的假说里假阳性的基础比率远高于 5%，显著性不等于真实性。",
+      "notes": "正面场景：可重复性危机中的基础比率"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这批 1000 个订单里实际有 12 个退款，帮我算一下退款率。",
+      "expected_behavior": "不应激活本 skill，因为这是对已观测事实的直接频率统计，不涉及由检测准确率反推结论。",
+      "notes": "诱饵：比率计算但非贝叶斯反推"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我知道基础比率是 1/1000，也知道误报率 5%，怎么把这两个数合起来算出真正醉驾的概率？具体公式是什么？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-bayes-theorem：用户已经意识到基础比率，索要的是换算公式本身。",
+      "notes": "跨 skill 混淆诱饵：书中二者紧邻且用同一酒驾例子"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这个病在这种有症状的高危人群里发病率本来就高达 30%，检测准确率 99%，那阳性能说明什么？",
+      "expected_behavior": "应激活本 skill 并给出细致判断：基础比率高时先验影响变小，阳性结果可信度大幅提升；应代入 30% 先验算出后验，并说明「罕见」才是该谬误发作的条件。",
+      "notes": "边界：先验很高时，谬误不再主导"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

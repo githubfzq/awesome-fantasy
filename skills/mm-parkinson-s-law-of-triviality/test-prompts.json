@@ -1,0 +1,52 @@
+{
+  "skill": "mm-parkinson-s-law-of-triviality",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "评审会上大家为一个按钮颜色吵了半小时，核心架构问题反而没人深究。",
+      "expected_behavior": "应激活 mm-parkinson-s-law-of-triviality，指出讨论时间与影响规模倒挂，重排议程、给议题设时间框并把重大议题前置。",
+      "notes": "最典型的正面场景：会议注意力错配"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们 PR 评审总在纠结命名和格式，逻辑漏洞没人看，怎么改流程？",
+      "expected_behavior": "应激活本 skill，用影响占比 vs 时间占比做对照，给出议程重排与时间框机制。",
+      "notes": "代码评审场景"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "下周的预算会怎么安排议程比较好？怕又变成老样子。",
+      "expected_behavior": "应激活本 skill，建议按议题金额占比分配讨论时间、重要议题先议、每项设严格时间上限。",
+      "notes": "预防性议程设计"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我自己写方案时总在细节上反复打磨，迟迟交不了稿。",
+      "expected_behavior": "不应激活本 skill，这是个人过度打磨问题（接近完美乃优秀之敌），本模型针对群体讨论中的注意力错配。",
+      "notes": "诱饵：个人而非群体"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "手上一堆事不知道先做哪个，帮我分个轻重缓急。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-eisenhower-decision-matrix；这是个人待办排序，不是会议议程设计。",
+      "notes": "跨 skill 混淆诱饵：都涉及重要性判断"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "团队每周都在争论那个很小的预算项，我怀疑他们是在故意回避真正的大问题。",
+      "expected_behavior": "可激活但需加一层判断：书中明示，反复争小项目可能是故意转移注意力或另有所图，应先排除战略性表演，再按琐碎定律处理议程。",
+      "notes": "边界：表面的琐碎未必是真琐碎"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

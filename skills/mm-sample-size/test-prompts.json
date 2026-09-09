@@ -1,0 +1,52 @@
+{
+  "skill": "mm-sample-size",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要验证新版助眠功能能让 10 分钟内入睡的人增加 15%，需要多少用户参与实验？",
+      "expected_behavior": "应激活 mm-sample-size，以「15% 差异」为有意义的最小差异，结合 α=5%、功效 80% 算出所需样本量（书中量级约 268 人），并换算成时间与成本做取舍。",
+      "notes": "正面场景：实验前样本量设计"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "预算只够跑 60 个用户，我们把对立假设设成 30% 的差异吧，这样统计上就够了，可以吗？",
+      "expected_behavior": "应激活 mm-sample-size，明确指出这是书中警告的取巧：样本量可降到约 62 人，但若真实差异只有 15%，检出概率仅约 32%，有约 2/3 概率得到假阴性；建议改为延长周期或承认实验不可行。",
+      "notes": "正面场景：书中明确警告的误用"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "实验跑了 3 天，两组各 80 人，看着没什么差别，是不是可以下结论说没效果了？",
+      "expected_behavior": "应激活 mm-sample-size，判断当前样本量是否足以检出有意义的最小差异；若不足以说明「没效果」，需区分「真的没效果」与「样本不够」，并给出继续跑所需样本量或停止规则。",
+      "notes": "正面场景：样本不足导致的假阴性"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我把这 3000 份问卷的结果导出成 Excel 并画个柱状图。",
+      "expected_behavior": "不应激活本 skill，因为数据已收集完毕，只是处理与呈现任务，不涉及样本量的取舍决策。",
+      "notes": "诱饵：含样本量数字但无设计决策"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们只有 200 个样本，真有 15% 的差异能检出的概率有多大？是不是大概率测不出来？",
+      "expected_behavior": "不应激活本 skill（主技能），应激活 mm-power：问题直接问的是给定样本量下的检出概率（统计功效），而非如何权衡确定样本量。",
+      "notes": "跨 skill 混淆诱饵：同一案例的两个侧面"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这是给重症病人做的临床试验，多招一个受试者就多一份风险，我们能不能把样本量压到最低？",
+      "expected_behavior": "应激活本 skill 并说明：受试者风险正是书中列出的成本项之一，压低样本量确实有伦理理由；但代价是假阴性率上升、可能埋没有效疗法。应把 α/β 按后果重新权衡，并考虑序贯设计或 prior 信息以减少所需样本，而不是单方面压缩。",
+      "notes": "边界：伦理约束下的样本量取舍"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

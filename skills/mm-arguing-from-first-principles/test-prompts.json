@@ -1,0 +1,52 @@
+{
+  "skill": "mm-arguing-from-first-principles",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "供应商说这套设备行业价就是 80 万，已经是最低了。我们到底有没有降价的余地？",
+      "expected_behavior": "应激活 mm-arguing-from-first-principles，不接受 80 万这个继承结论，而是拆到原材料市价、标准件价格、加工工时、法定合规成本等基本构件自下而上重算，得出成本下限，再解释 80 万里包含了什么（渠道、利润、过时工艺、真实约束），最后把结论转成可检验假设。",
+      "notes": "正面场景：被报价/惯例卡住，需要算真实下限"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个方案要三个月才能做完，但我不太信——我们之前类似的事也就两周。能不能重新估一下？",
+      "expected_behavior": "应激活本 skill，把工期拆到不可再拆的任务与依赖关系上（每步实际所需工时、并行度、不可压缩的等待），自下而上加总出时间下限，并标出哪些环节是'经验值'假设而非事实。",
+      "notes": "正面场景：估算缺乏依据，需重建推导"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想搞清楚电池成本到底能低到什么程度，不是问市场上卖多少，而是问物理上最低能是多少。",
+      "expected_behavior": "应激活本 skill，拆解为原材料在交易所的价格加总，算出理论下限，并与市价对比定位差额来源，明确说明'推导出的下限不等于能造出来'，需交给 mm-de-risking 在现实中检验。",
+      "notes": "正面场景：典型的第一性原理提问方式"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "团队聚餐，是去上次那家火锅店还是试新的日料？",
+      "expected_behavior": "不应激活本 skill。日常、可逆、成本极低的决策，用类比或偏好即可，从零推导是浪费。直接给建议或问偏好就行。",
+      "notes": "诱饵：也是'做个决定'，但推导成本远高于收益"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们列了五个可能导致用户流失的原因，怎么判断哪个最可能是真的？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-ockham-s-razor（在多个都能解释现象的假设中剃掉不必要的）并配合 mm-de-risking 用低成本实验逐一验证。这里要削减假设而不是从底部重建结论。",
+      "notes": "跨 skill 混淆诱饵：都涉及假设处理，但方向相反（削减 vs 重建）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们花两周从原理上算出来成本能压到现在的三分之一，但供应链上找不到愿意小批量做的厂。怎么办？",
+      "expected_behavior": "应激活本 skill 的边界意识：肯定推导结果的同时明确指出'第一性原理只是假设，必须在现实中检验'——差额来自真实仍成立的约束（供应链规模门槛）。建议把'能否找到小批量产能'本身当作待检验的关键假设交给 mm-de-risking，而不是继续优化推算。",
+      "notes": "边界：推导有效但现实约束未验证，防止空想推进"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-ockham-s-razor。"
+}

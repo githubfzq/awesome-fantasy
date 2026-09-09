@@ -1,0 +1,52 @@
+{
+  "skill": "mm-cap-and-trade",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们要在园区推行碳排放管理，到底是直接给每家企业定排放上限，还是搞一个企业之间可以买卖配额的机制？",
+      "expected_behavior": "应激活 mm-cap-and-trade，确认这是总量型问题，说明「上限 + 可交易」的两步结构及其成本优势（减排便宜的多减、贵的买配额），并进一步设计初始分配、交易平台、核查惩罚与失灵兜底条款。",
+      "notes": "正面场景：政策工具选择"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "公司内部 GPU 算力不够用，各团队都在抢。我在想能不能给每个团队发额度，然后允许互相转让。",
+      "expected_behavior": "应激活 mm-cap-and-trade，把算力配额按「总量封顶 + 可交易」设计：先把总量按物理单位定死并给收紧路径，再设计初始分配（避免祖父制奖励历史高占用者）、降低内部转让的交易成本、明确计量规则（算力按什么口径计）。",
+      "notes": "正面场景：组织内部稀缺资源配额转让"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的碳交易市场开了两年了，配额价格一直很低，排放量也没降。是不是这个思路就不对？",
+      "expected_behavior": "应激活 mm-cap-and-trade，指出价格低迷通常说明上限超发而非思路错误，检查配额总量是否高于实际排放、免费发放比例是否过高、核查是否可信，并给出收紧上限、缩减免费配额、引入价格下限等修正。",
+      "notes": "正面场景：诊断机制为何失灵"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们想减少办公室的打印机浪费，是不是给大家发打印额度就行了？",
+      "expected_behavior": "不应激活本 skill，因为总量不是问题核心、也没有形成可交易的产权与交易平台，这只是一个内部用量的行政管控，用额度与公示即可，无需引入可交易许可机制。",
+      "notes": "诱饵：简单配额管理被误认为 cap-and-trade"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "小区里有两户人家，一家开民宿噪音大，一家受不了，双方私下谈补偿一直谈不拢。政府需不需要介入？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-coase-theorem。这是少数主体之间界定产权后的私人谈判问题（产权是否清晰、交易成本是否过高才是关键），不涉及政府先设定总量上限这一步骤，也不是排放许可市场。",
+      "notes": "跨 skill 混淆诱饵：科斯定理"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们市要治理空气污染，打算引入排污权交易。但我们市只有两家大型化工厂，而且它们都在同一条河的上游。",
+      "expected_behavior": "合理的判断是：先做适用性检查再决定。两家主体太少，形不成有竞争性的市场，交易机制的成本优势基本消失；更要紧的是两家都在上游同一条河，若危害取决于局部浓度而非总量，允许交易会让污染向其中一处集中，反而加重局部损害。结论应倾向直接管制（分别设定排放上限与技术标准），若仍要保留交易元素，须附加局部浓度上限与禁止集中转让的约束条款。",
+      "notes": "边界：主体过少 + 局部浓度型危害"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

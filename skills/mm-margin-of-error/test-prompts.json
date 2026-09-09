@@ -1,0 +1,52 @@
+{
+  "skill": "mm-margin-of-error",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "新闻说候选人对A支持率45%,对B支持率43%,误差范围±3%。是不是A真的领先?",
+      "expected_behavior": "应激活 mm-margin-of-error,指出两个区间分别为[42%,48%]与[40%,46%],存在重叠,不能断定A领先——重叠只能说明'无法断定有差异',不等于两者相等;同时提示报道未标明置信度,默认按95%处理。",
+      "notes": "正面场景:典型的区间重叠误读"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们做了200份用户问卷,满意度68%。这个结论能拿去汇报吗?",
+      "expected_behavior": "应激活 mm-margin-of-error,先确认这是抽样估计,用阶梯(384人→±5%、96人→±10%)核对200份样本实际精度约在±7%量级(按±1/√n保守估算),明确可汇报但必须标注区间而非点估计;若要做到±5%需追加到约384份。",
+      "notes": "正面场景:小样本结论的可用性判断"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "想把调研精度从±4%提到±2%,样本量增加一倍够吗?",
+      "expected_behavior": "应激活 mm-margin-of-error,指出标准误差与样本量平方根成反比,误差减半需样本量翻4倍(如1067人→±2%);给出目标样本量与成本的四倍关系,并追问±2%是否真的必要——多数决策在±5%就该动手。",
+      "notes": "正面场景:平方反比的样本量规划"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "帮我算一下这批订单的平均客单价和中位数是多少。",
+      "expected_behavior": "不应激活本 skill,因为这是全量数据的描述性统计,不存在抽样误差,谈±X%会人为制造不确定性;应走均值/中位数的描述统计。",
+      "notes": "诱饵:谈数字精度但实为全量描述统计"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们想做一个严格的显著性检验,还要处理多重比较校正,该怎么设计?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-statistical-significance(或 mm-confidence-interval):用户需要的是正式的假设检验与多重比较流程;误差范围是民调语境下默认95%的通俗表述,精度与设计严谨度都不够。",
+      "notes": "跨 skill 混淆诱饵:统计显著性(正式检验 vs 通俗区间)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这家民调机构标了±3%,但我发现他们只调查了某个特定社区的人。这个±3%还作数吗?",
+      "expected_behavior": "合理判断:误差范围本身在数学上仍然成立(它确实描述了随机抽样误差),但它只覆盖随机误差,不覆盖样本框偏差、无反应偏差、提问方式偏差——抽样框错了的民调,实测误差可能远超±3%。正确做法是先修抽样偏差再谈精度,并明确告知用户'±3%在此处严重低估了真实不确定性'。",
+      "notes": "边界:随机误差 vs 系统性偏差的分界"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

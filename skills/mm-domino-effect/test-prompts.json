@@ -1,0 +1,52 @@
+{
+  "skill": "mm-domino-effect",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "有人说:一旦允许员工远程办公,大家就不来公司,然后团队就散了,公司就完了。这推理站得住吗?",
+      "expected_behavior": "应激活 mm-domino-effect,把链条写成'允许远程→无人来公司→团队散→公司完',逐环要求给出概率与依据,并算出总概率;指出缺少每环证据的推理正是滑坡论,可用书中枪支管制民调(72% 同时赞成两项具体管制,未出现滑坡)作对照说明。",
+      "notes": "正面场景:识别滑坡式过度援引"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们一个核心服务挂了,会不会把整条业务线都拖垮?",
+      "expected_behavior": "应激活 mm-domino-effect,写出传导链(核心服务→依赖它的服务→上游入口→用户流失),逐环估概率并找断点(缓存、降级、熔断),指出最该加固的那一环,最终给出接受/遏制/预防的建议。",
+      "notes": "正面场景:系统传导链的真实评估"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "一个小 bug 被用户发到网上,现在媒体报道越来越多,会不会滚成大危机?",
+      "expected_behavior": "应激活 mm-domino-effect,列出'bug→用户曝光→媒体跟进→品牌受损→客户流失'每一环并估概率,找出可切断的环节(快速修复与公开回应),并说明总概率是各环相乘、并非一旦曝光就必然崩盘。",
+      "notes": "正面场景:声誉危机的连锁评估"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个月服务器宕机一次,直接损失了三万块。算一下损失。",
+      "expected_behavior": "不应激活本 skill,因为后果单一、不存在传导链条;直接核算单次损失即可,套用链条分析属过度建模。",
+      "notes": "诱饵:形似风险但无连锁结构"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们是不是该禁掉这个边缘功能?一旦开了头,用户就会要求更多,最后产品就失控了。",
+      "expected_behavior": "不应激活本 skill 去认真估算链条,应激活 mm-slippery-slope-argument:这是未经检验地断言 A 必然导致 Z 的谬误式论证,处理方式是指出其缺少每环证据,而不是帮它补概率;多米诺效应要求先有证据再谈概率。",
+      "notes": "跨 skill 混淆诱饵:滑坡论"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "这条链有五环,每环我都有 80% 把握,那整体不是有八成会发生吗?",
+      "expected_behavior": "合理判断:不是——链条成立需要每一环都发生,总概率是各环相乘(0.8^5≈33%),这正是模型要求逐环估概率的原因;应纠正这个常见的概率直觉错误,并据此重新判断是否需要遏制,以及优先切断哪一环。",
+      "notes": "边界:链条概率的乘法直觉错误"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

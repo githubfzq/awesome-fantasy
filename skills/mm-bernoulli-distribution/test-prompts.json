@@ -1,0 +1,52 @@
+{
+  "skill": "mm-bernoulli-distribution",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们投了广告，1000 个人看到后有 43 个下单了。这个 4.3% 的转化率能说明广告有效吗？",
+      "expected_behavior": "应激活 mm-bernoulli-distribution, 说明「是否下单」是二元结果、4.3% 就是 0/1 编码后的平均值，检查 np 与 n(1-p) 是否满足正态近似前提，然后接上抽样分布工具给出误差范围与可信度表述。",
+      "notes": "正面场景：书中点名的广告宣传是否购买场景"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "A/B 测试里我的指标是'用户有没有点这个按钮'，这种数据该怎么分析？",
+      "expected_behavior": "应激活 mm-bernoulli-distribution, 指出这是典型 0/1 二元结果、点击率即平均值，说明配合中心极限定理可按正态量处理并估算样本量与显著性。",
+      "notes": "正面场景：书中点名的 A/B 测试是否点击场景"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "临床试验里我们只记录'患者有没有对治疗产生反应'，这种数据能算置信区间吗？",
+      "expected_behavior": "应激活 mm-bernoulli-distribution, 确认二元编码、算出反应率，检查正态近似前提，再转 mm-sample-distribution / mm-confidence-interval 完成区间估计。",
+      "notes": "正面场景：书中点名的临床试验是否反应场景"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的用户满意度是 1 到 5 分打出来的，平均分 4.2，想看看这个分数的分布。",
+      "expected_behavior": "不应激活本 skill, 因为这是 5 档有序分类而非二元结果；强行二值化（如把 4-5 分算满意）会丢信息并引入人为切点，应按连续/有序数据处理。",
+      "notes": "诱饵：都是比例或分数，但取值不是二选一"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们做了很多次民调，每次得到的支持率都不一样。这些支持率本身的分布叫什么、该怎么理解？",
+      "expected_behavior": "不应激活本 skill（问的是多次抽样后比例的分布，而非单次是/否结果的分布）, 应激活 mm-sample-distribution。伯努利是原材料，抽样分布才是对比例做推断的工具。",
+      "notes": "跨 skill 混淆诱饵：同为民调场景，但层级不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们的转化率只有 0.3%，样本 500 个，只有一个多转化。还能用正态近似来算吗？",
+      "expected_behavior": "合理的判断是：指出 np 远小于 5，中心极限定理的正态近似在此失效，结论会严重失真；建议改用精确方法（如精确二项检验）或先扩大样本量，而不是照常套用正态区间。",
+      "notes": "边界：二元结果成立，但正态近似前提不满足"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

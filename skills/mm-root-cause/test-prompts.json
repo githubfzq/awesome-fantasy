@@ -1,0 +1,52 @@
+{
+  "skill": "mm-root-cause",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们的服务这个月第三次因为配置问题宕机了，前两次也是改完就好了。到底怎么回事？",
+      "expected_behavior": "应激活 mm-root-cause，把'配置写错'标记为直接原因（待验证而非结论），列出更深的候选根因（无配置审查、变更无灰度、无双人复核、缺乏制衡），对每个施加'消除了它同类事故还会不会发生'的判据，要求根因能解释多个现象，输出标明治标/治本的修复方案。",
+      "notes": "正面场景：反复发生，修了又来"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这个员工每次交不出东西都有很合理的理由——需求变了、别人没配合、资源不够。但半年了就是没起色。",
+      "expected_behavior": "应激活本 skill，指出'任何人都能为自身行为提供理由，但那可能并不是真正原因'；把这些解释标为候选而非结论，区分能力/动力/结构三类深层原因，用'消除后会不会改善'判据筛选，并警告不要停在'他不上进'（基本归因错误）。",
+      "notes": "正面场景：书中明确举过的员工借口例子"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "复盘会开完了，结论是'某某操作失误'，大家散会了。但我总觉得没那么简单。",
+      "expected_behavior": "应激活本 skill，指出'追责到人通常意味着还没挖到根因'；要求继续追问什么样的流程让这个失误能发生且不可拦截（类比挑战者号的真正原因是组织失效与缺乏制衡），并要求根因能解释其他同类现象。",
+      "notes": "正面场景：结论停在人身上，需继续下探"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "刚才机房断电导致服务中断两分钟，现在恢复了。要不要做个根因分析？",
+      "expected_behavior": "不应激活本 skill（除非断电频繁发生）。明确的一次性外部偶发事件，直接处理即可；完整根因分析的收益来自防止复发，一次性事件做它是浪费。若用户担心可建议记录观察。",
+      "notes": "诱饵：也是'出了问题'，但无复发特征"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "服务现在还在告警、用户投诉不断，快帮我看看先做什么！",
+      "expected_behavior": "不应激活本 skill，应激活 mm-stop-the-bleeding：事故现场应先止血恢复服务，根因分析属于事后环节（mm-postmortem）。在压力下做归因会导致草率结论。",
+      "notes": "跨 skill 混淆诱饵：都处理'问题'，但阶段不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们挖到了'组织缺乏内部制衡'，但这个上面是不是还有原因？要一直挖到哪里为止？",
+      "expected_behavior": "应激活本 skill 并给出边界：承认任何原因都有更深层原因，但根因分析应停在'可被本层级实际改动的那一层'——再往上就变成无法行动的哲学。判定标准是能否给出具体可执行的修复动作；若只能描述不能行动，说明挖过头了。",
+      "notes": "边界：防止无限上溯导致的分析瘫痪"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-postmortem / mm-stop-the-bleeding。"
+}

@@ -1,0 +1,52 @@
+{
+  "skill": "mm-correlation-does-not-imply-causation",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们看数据发现，用户使用深色模式的比例和留存率高度相关，打算全面推深色模式来提升留存。",
+      "expected_behavior": "应激活 mm-correlation-does-not-imply-causation，枚举三类替代解释（混淆因素如重度用户更爱折腾设置、随机、反向因果如高留存用户才有时间自定义），检验时间与剂量关系，并建议用 A/B 实验验证。",
+      "notes": "正面场景：看板相关导致错误归因"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我感冒时喝了大量维 C 泡腾片，第二天就好了，看来维 C 真的有效。",
+      "expected_behavior": "应激活 mm-correlation-does-not-imply-causation，指出先后关系存在自愈等替代解释，并说明个体轶事无法提供概率与风险比。",
+      "notes": "正面场景：书中斯纳普果汁案例的同构场景"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们在做增长归因，从上百个指标里跑出了十几个和用户付费显著相关的特征。是不是都可以用？",
+      "expected_behavior": "应激活 mm-correlation-does-not-imply-causation，重点提示多重比较问题——变量对极多时纯随机也会产生大量显著相关，并建议做多重检验校正或独立样本复现。",
+      "notes": "正面场景：多重比较导致的虚假相关"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们做了一次严格的随机对照 A/B 实验，样本量足够，结果显著。可以直接上线吗？",
+      "expected_behavior": "不应激活本 skill 来质疑因果，因为已有随机实验证据；应转向效果量评估与上线决策。",
+      "notes": "诱饵：因果推断场景，但证据等级已足够"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们发现「气温」这个变量同时影响了冰淇淋销量和溺水人数，导致两者看起来相关。这种变量叫什么？该怎么处理？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-confounding-factor——用户已经知道不能下因果结论，问的是这个第三方变量叫什么、如何排除，属于具体路径层面而非总原则层面。",
+      "notes": "跨 skill 混淆诱饵：与 mm-confounding-factor 相邻，区分在总原则 vs. 具体路径"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们把上周表现最差的十个客服叫来培训，这周他们的评分都回升了。这说明培训有效吗？",
+      "expected_behavior": "应激活 mm-correlation-does-not-imply-causation 并引入均值回归：被选中恰恰因为上周处于极端低值，之后自然向均值回落，与培训无关；正确验证方式是随机分配对照组而非只挑最差的。",
+      "notes": "边界：均值回归作为「干预有效」的替代解释"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

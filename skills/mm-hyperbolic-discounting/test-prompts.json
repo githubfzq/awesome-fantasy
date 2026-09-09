@@ -1,0 +1,52 @@
+{
+  "skill": "mm-hyperbolic-discounting",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "论文还有三个月交，我一点都不急，但知道到时候又会通宵赶，怎么才能现在就开始？",
+      "expected_behavior": "应激活 mm-hyperbolic-discounting，指出这是偏好随距离反转的典型指纹（远期雄心勃勃、临到眼前才痛苦），建议缩短反馈距离（把三个月的deadline拆成每周可见的进度）并提前锁定（公开承诺、固定时段写作），同时把任务切到当天可执行的小动作。",
+      "notes": "正面场景：拖延与偏好反转"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "每次都说从明天开始减肥，结果一到晚上就想点外卖，我是不是意志力太差了？",
+      "expected_behavior": "应激活 mm-hyperbolic-discounting，说明这不是意志力问题而是折现曲线在作祟——远期折扣太狠导致偏好临到眼前反转；建议用提前锁定（不买零食回家、预设健康餐）和降低启动成本，而不是靠意志力。",
+      "notes": "正面场景：自控失败"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "工资一发就花光，明知道该存钱，可一想存钱就没动力，怎么办？",
+      "expected_behavior": "应激活 mm-hyperbolic-discounting，解释即时满足相对延迟满足被系统性高估，建议用承诺机制提前锁定（发薪日自动转账、不可随时取用的账户）绕过近期的自己。",
+      "notes": "正面场景：即时满足 vs 延迟满足"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "公司说明年给我 100 万奖金，或者现在给 90 万，我该怎么算这笔账？",
+      "expected_behavior": "不应激活本 skill，因为这是需要规范性折现计算的估值问题，应改用 mm-discount-rate 或 mm-net-present-value；双曲折现描述的是非理性偏差，不能当计算工具。",
+      "notes": "诱饵：跨期估值而非自控偏差"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我这个人就是特别看重眼下的感受，做决定总是偏向眼前，这是不是不太好？",
+      "expected_behavior": "不应激活本 skill，应激活 mm-present-bias。用户描述的是\"过度看重当下\"这个现象本身，现时偏好才是直接对应的入口；双曲折现是解释该现象背后的数学形状（折现率随距离下降），应在需要解释机制时引入。",
+      "notes": "跨 skill 混淆诱饵：现时偏好（现象 vs 机制）"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我知道要提前锁定，但我就是不想设自动转账，我觉得靠自己的意志力能搞定。",
+      "expected_behavior": "合理判断：这恰恰是双曲折现最典型的自我表现——处在远期的自己高估自己未来的自控力，而近期的自己会反转偏好。应明确指出这种抗拒本身就是模型预测的结果，而不是模型不适用的证据；同时尊重用户意愿，改为提议一个最小的可逆实验（如先锁定两周看效果），而非强行施加机制。",
+      "notes": "边界：对模型的抗拒本身是模型预测的一部分"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

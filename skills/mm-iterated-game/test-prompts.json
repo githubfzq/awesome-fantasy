@@ -1,0 +1,52 @@
+{
+  "skill": "mm-iterated-game",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这次供货我们可以以次充好多赚一笔,反正以后还要长期合作……这样说是不是有问题?",
+      "expected_behavior": "应激活 mm-iterated-game,指出长期合作正是关键:估算一次背叛多赚多少 vs 此后每次合作损失多少、还能合作多少次的贴现值;若未来收益贴现值更高,合作才是理性选择,不需要任何一方更高尚。",
+      "notes": "正面场景:长期关系中的背叛诱惑"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "为什么跟老客户就能谈成,一次性的买卖就总是谈崩?",
+      "expected_behavior": "应激活 mm-iterated-game,解释'未来的报复'机制:一次性博弈中背叛是占优策略,重复博弈中未来报复进入计算使合作成为理性;并提醒声誉机制是现实中的等价物。",
+      "notes": "正面场景:为什么长期关系更容易合作"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们要跟这家供应商签三年合同,但彼此还不太信任,怎么让合作真的成立?",
+      "expected_behavior": "应激活 mm-iterated-game,建议主动拉长未来的影子:把大交易拆成多期交付/分期付款、公开承诺、引入第三方托管、签订带违约金的合同,让未来变得可信;并给出以牙还牙的具体打法。",
+      "notes": "正面场景:设计长期合作机制"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我在景区买纪念品,一次性交易,卖家会宰我吗?我要不要信任他?",
+      "expected_behavior": "不应激活本 skill,因为一次性、匿名、无后续交往的博弈中背叛仍是占优策略,重复博弈的结论不适用;应说明此时应靠比价、明码标价或第三方平台保障,而不是指望声誉。",
+      "notes": "诱饵:涉及信任但无后续交往"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "合作方这次违约了,我要不要也坑回去?具体该怎么打?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-tit-for-tat:用户已经处在重复博弈情境中、问的是具体怎么打;以牙还牙给出'开局合作、对等回应、等背叛呈现规律再报复、始终留恢复通道'的操作步骤,而重复博弈只负责判断合作是否可能。",
+      "notes": "跨 skill 混淆诱饵:以牙还牙"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "三年合作期只剩最后一个月了,对方突然开始偷工减料,为什么?我们该怎么办?",
+      "expected_behavior": "合理判断:这是终局效应——双方都知道这是最后一局时未来的报复消失,重复博弈坍缩成单次博弈;应指出此时不能再靠声誉约束,必须有外部机制兜底,如尾款押后、质保金、验收后付款,以及把声誉记录跨场景公开传递。",
+      "notes": "边界:终局效应"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

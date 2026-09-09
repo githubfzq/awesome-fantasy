@@ -1,0 +1,52 @@
+{
+  "skill": "mm-semmelweis-reflex",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "运营同事提了个新流程，说试了两周转化提升了 15%，但技术部都说他说不清原理、全在瞎搞。",
+      "expected_behavior": "应激活 mm-semmelweis-reflex，把'转化提升 15%'（证据）与'说不清原理'（机制）分开，先检验数据的样本与可重复性，再判断拒绝理由属于证据不足还是范式排斥。",
+      "notes": "正面场景：机制说不通但有小规模数据"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "一个完全没做过我们这行的新人提了个想法，大家都在笑他，但我觉得他说的好像有点道理。",
+      "expected_behavior": "应激活 mm-semmelweis-reflex，指出'提出者是外行'是典型触发条件，要求先分离证据与机制，并设计最小验证让证据说话。",
+      "notes": "正面场景：外行身份触发排斥"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "历史上有哪些当时被嘲笑、后来被证明是对的发现？我该怎么避免自己犯同样的错？",
+      "expected_behavior": "应激活 mm-semmelweis-reflex，给出'拒绝理由是证据不足还是不该为真'这一判据，并建议事前写下接受条件以防事后用后见之明掩盖情绪性拒绝。",
+      "notes": "正面场景：自检与复盘"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "有人给我推荐一套设备，说能输出比输入更多的能量，还拿不出任何第三方测试报告。",
+      "expected_behavior": "不应激活本 skill，因为这违反热力学基本定律且无任何实证支持，拒绝是正当的；模型要求检验证据，而不是要求接受。",
+      "notes": "诱饵：新说法被拒但拒绝正当"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "新方案的数据我看过了，确实达标，但我就是不想接受这个结论，我要再找找它的问题。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-disconfirmation-bias：证据已经通过门槛，用户仍在用'再找找问题'抬高门槛，属于评估环节的门槛浮动，而非条件反射式拒绝。",
+      "notes": "跨 skill 混淆诱饵：塞麦尔维斯反射 vs 不证实偏差"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "有个外部顾问提了个很新的思路，但我们下周就要上线了，要不要现在花时间验证？",
+      "expected_behavior": "需权衡而非机械套用：在需要用既有范式快速决策、且验证会挤压上线窗口时，先验优先是合理的；建议记录该假设留待上线后验证，而不是当下强推或彻底否定。",
+      "notes": "边界：开放检验 vs 快速决策"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

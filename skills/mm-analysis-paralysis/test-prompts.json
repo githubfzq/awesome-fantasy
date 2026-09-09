@@ -1,0 +1,52 @@
+{
+  "skill": "mm-analysis-paralysis",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我为了买一台咖啡机已经看了三十多篇评测、对比了十几个型号，三周了还没下单。",
+      "expected_behavior": "应激活 mm-analysis-paralysis，确认新信息已不再改变排序（进入收益递减），点明不选择就是选择保持现状，先判断该决定可逆（走快速通道），再把候选收敛到 3 个以内并设决策时点与「够好」标准。",
+      "notes": "正面场景：书中的咖啡机"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我不喜欢现在这份工作，但一直没动，因为不确定下一步该做什么，可能性太多了。",
+      "expected_behavior": "应激活 mm-analysis-paralysis，指出「不做选择本身就是选择了保持现状」，且这个默认选项通常比可选方案更糟；限制选项数量、设定决策时点与足够好标准。",
+      "notes": "正面场景：滞留不满意的现状"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们这个方案讨论了五轮，每次结尾都是「再收集点数据」，一直定不下来。",
+      "expected_behavior": "应激活 mm-analysis-paralysis，检验最近几次新增数据是否改变了排序，若是收益递减则停止收集，并识别这是可逆决策、设定单一决策人与时间盒。",
+      "notes": "正面场景：团队反复讨论无果"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我刚接手这个项目，还不知道有哪几种方案，需要先了解一下情况。",
+      "expected_behavior": "不应激活本 skill，因为信息确实严重不足、连基本选项都未厘清，此时需要的是调研而非催促进度。",
+      "notes": "诱饵：慢但属于正常调研"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "连着开了六个评审会，到最后一个项目我基本没细看就放行了，现在有点后悔。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-decision-fatigue。这是连续决策导致的资源耗竭与「退化到默认项」，休息后可恢复；而不是信息过多导致选不出来。",
+      "notes": "跨 skill 混淆诱饵：决策疲劳"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们在考虑要不要卖掉公司，已经想了半年还没决定，是不是分析瘫痪？",
+      "expected_behavior": "合理的判断是：卖公司属于不可逆决策（单向门），值得慢，不应套用「快速通道」的解法。正确做法是先归类为不可逆、投入系统性深思熟虑与意见征询，同时尝试把它降级为可逆（先引入战略投资、保留回购条款、分阶段交易）。只在该做的功课都做完、新信息已不再改变结论时才施加收敛压力。",
+      "notes": "边界：不可逆决策不适用快速收敛"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

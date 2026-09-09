@@ -1,0 +1,52 @@
+{
+  "skill": "mm-pyrrhic-victory",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "这场官司八成能赢,但律师费加上我投入的时间,算下来比对方赔的钱还多。还要打吗?",
+      "expected_behavior": "应激活 mm-pyrrhic-victory,列出战利品与全部代价(含时间、精力、关系等隐性项),判断净收益为负;检查是否被沉没成本绑架(若今天刚接手还会打吗),并给出三条出路——不打/换低成本打法(调解、仲裁)/限定投入上限,明确推荐一条。",
+      "notes": "正面场景:典型的惨胜核算"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "为了拿下这个大客户,我们答应了极低的价格,还得抽掉三个主力去驻场。签下来算赢吗?",
+      "expected_behavior": "应激活 mm-pyrrhic-victory,做相对而非绝对的比较——客户拿下后团队在其他战线是否变弱、力量对比是拉大还是缩小;区分可再生与不可再生资源(主力时间、团队士气不可再生),并设止损线与退出条件。",
+      "notes": "正面场景:商业竞标中的惨胜"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "开会的时候我把对方说得哑口无言,方案按我的来了。但现在团队里没人愿意跟我说话了。",
+      "expected_behavior": "应激活 mm-pyrrhic-victory,指出这是赢了局部、输了后续的典型结构:战利品(一次方案通过)可再生,代价(团队信任)不可再生;建议做关系修复并反思把决议之争打成输赢之争的做法。",
+      "notes": "正面场景:组织内/关系中的惨胜"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "这个项目做了半年,投入很大,但最近发现方向错了。是不是该止损?",
+      "expected_behavior": "不应激活本 skill,因为这里没有'赢了'这个要素——这是纯粹的止损判断,更适合用沉没成本谬误与退出策略来分析;皮洛士式胜利专指'赢了但代价超过战利品'的结构。",
+      "notes": "诱饵:有代价有损失但没有胜利"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们主动放弃了这个赔钱的小客户,把资源全压到大客户身上。有人说我们是认输了,这样对吗?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-sacrifice-play:这是事前算过账、为全局主动放弃局部的弃子战略,与'无意中用过量代价换来局部'的皮洛士式胜利方向相反;判据是事前是否算清。",
+      "notes": "跨 skill 混淆诱饵:弃子战略(主动、有意的局部放弃)"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "对手比我们有钱得多,这场仗即使赢了我们也伤筋动骨。但我们如果现在退,整个市场就没我们位置了。",
+      "expected_behavior": "合理判断:不能简单判为惨胜。关键要看这一仗的战利品是不是不可再生的战略资产(市场位置、入场资格),以及代价是不是可再生资源(钱、短期利润)。若退出的代价是永久失去市场资格,那么即使短期净收益为负也可能是合理的战略投入——但必须做三件事:确认战利品确实不可再生且关键、限定投入上限与止损点、并明确这是主动取舍而非被动消耗(否则滑向惨胜)。若两者都可再生,则判定为惨胜,应撤退。",
+      "notes": "边界:惨胜与必要战略投入的分界,取决于资源可再生性与替代性"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

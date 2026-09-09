@@ -1,0 +1,52 @@
+{
+  "skill": "mm-devil-s-advocate-position",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "并购方案在会上全票通过了，没人提反对。下周就要签了，我要不要再想想？",
+      "expected_behavior": "应激活 mm-devil-s-advocate-position，指出'没人反对'正是最强触发信号；建议优先把已知持异见者纳入流程（书中称最有效），以芒格标准陈述最强反方论点，逐条攻击关键假设，区分可修补与致命攻击点，致命且无法回应的应建议暂停。",
+      "notes": "正面场景：全票通过 + 重大不可逆决策"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "这是我们老板亲自推的方案，会上没人敢说什么。你帮我挑挑毛病。",
+      "expected_behavior": "应激活本 skill，指出权力差会使反对消失、因此需要制度化的反对角色；以最强形式陈述反方（不是弱化为抬杠），给出 3-5 条最致命攻击点及杀伤力评级，并提醒要保护提出反对的人不被视为不合作。",
+      "notes": "正面场景：权力差压制异议"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我觉得我这个方案已经挺完善了，但我想知道它最脆的地方在哪。",
+      "expected_behavior": "应激活本 skill，逐条攻击方案的关键假设（'如果这个不成立会怎样'），输出杀伤力评级与可修补/致命分类，并要求把结论写进决策记录，而不是只停留在讨论中。",
+      "notes": "正面场景：主动要求压力测试"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们还没想好要做什么，大家先随便说说想法吧。",
+      "expected_behavior": "不应激活本 skill。方案尚未形成，没有可攻击的目标，此时反对会退化成抬杠并破坏创意氛围。应转向发散思维/头脑风暴或灰度思考（先不下判断）。",
+      "notes": "诱饵：讨论场合，但缺'已定决策'这一前提"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我还没决定要不要接受这个 offer，想先把两边的事实都听完再判断。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-thinking-gray：用户尚未形成判断，需要的是推迟判断、补全事实。魔鬼辩护人作用于判断/决策形成**之后**，攻击一个已定的结论；本例处在其之前。",
+      "notes": "跨 skill 混淆诱饵：书中把两者并列为对抗证实偏差的工具，作用时点不同"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们每次开会都指定一个人唱反调，但提的意见都很轻，方案从来没因此改过。这样够吗？",
+      "expected_behavior": "应激活本 skill 并判定为仪式化走过场：指出识别标志是反对未触及关键假设且无人改变方案。建议改用书中更有效的第三种做法（把真正持异见者纳入流程），并引入芒格标准与'可修补 vs 致命'分类，同时提醒保护反对者以免机制下次失效。",
+      "notes": "边界：形式存在但实质失效"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-thinking-gray。"
+}

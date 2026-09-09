@@ -1,0 +1,52 @@
+{
+  "skill": "mm-murphy-s-law",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "下周要做一次数据库迁移，我们的计划是停机两小时直接切。有什么要注意的吗？",
+      "expected_behavior": "应激活 mm-murphy-s-law，枚举失败路径（迁移中断、数据量超预期、依赖服务未同步、回滚失败），对每条问'有没有预防/检测/兜底'，标出裸奔项，优先加检测与回滚演练，并提示兜底成本高于损失的项目可明确接受风险。",
+      "notes": "正面场景：规划阶段，需要提前准备预案"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们的上线计划写得很顺，从头到尾都是一切正常。我总觉得哪里不对。",
+      "expected_behavior": "应激活本 skill，指出计划里没有任何容错设计，是典型的只预测成功未设计容错；把注意力从'预测成功'转向'设计容错'，逐环节问'到底哪里会出错'并补上兜底与回滚。",
+      "notes": "正面场景：方案是一条直线，无容错"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "客户问我们'万一项目失败了怎么办'，我一时答不上来。该怎么准备？",
+      "expected_behavior": "应激活本 skill，用'出错后我有兜底吗'这一判据逐条检查，给出预防/检测/兜底三层的具体设计，并说明哪些风险可明确接受（兜底成本高于损失）。",
+      "notes": "正面场景：直接对应关键判据"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们的活动昨天现场出了大乱子，为什么会搞成这样？",
+      "expected_behavior": "不应激活本 skill。书中明确指出墨菲定律'无法解释所有可能的意外结果'，用'反正可能出错的都会出错'来回答等于放弃归因。应转向 mm-5-whys / mm-root-cause 做结构化归因。",
+      "notes": "诱饵：与'出错'有关，但处于事后解释阶段"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想把业务做起来但不知道从哪下手，正向想不出路径。",
+      "expected_behavior": "不应激活本 skill，应激活 mm-inversion：这是正向求解卡住、需要反转问题生成策略的场景。墨菲定律只给出'要有预案'的态度与方向，不产生新选项；逆向思维才是穷举失败路径并逐条排除的操作方法。",
+      "notes": "跨 skill 混淆诱饵：都处理失败，但一个生成策略一个只提提醒"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "既然可能出错的都会出错，那我们是不是干脆别做这个项目了？",
+      "expected_behavior": "应纠正为宿命论误用：明确说明墨菲定律的用途是'有备无患、提前准备预案'，不是放弃规划；正确做法是把注意力从预测成功转向设计容错（预防/检测/兜底 + 保留弹性），对兜底成本高于损失的风险明确接受。",
+      "notes": "边界：防止定律被当作悲观哲学或放弃的借口"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 指向兄弟 skill mm-inversion。"
+}

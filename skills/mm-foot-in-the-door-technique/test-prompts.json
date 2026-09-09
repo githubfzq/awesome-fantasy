@@ -1,0 +1,52 @@
+{
+  "skill": "mm-foot-in-the-door-technique",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "销售先问我'是不是希望睡得更好',然后就要我买那张床垫。我怎么就答应了呢?",
+      "expected_behavior": "应激活 mm-foot-in-the-door-technique,拆开请求链:第一步是一个几乎无法拒绝但确实构成承诺的动作(赞同'希望睡得更好'),第二步之所以变容易不是因为产品变好,而是拒绝会产生认知失调;并给出把拒绝锚定在事情本身而非关系上的话术。",
+      "notes": "正面场景:书中床垫案例"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "同事一开始说帮个小忙,现在已经变成我每周的固定义务了,怎么体面地退出?",
+      "expected_behavior": "应激活 mm-foot-in-the-door-technique,把每个请求单独列出并标注'这一步我究竟承诺了什么',对每个请求独立判断(若没有前面的承诺我还会答应吗);若答案为否,明确指出这是一致性压力在起作用,并给出可直接使用的拒绝话术。",
+      "notes": "正面场景:被逐步加码的托付"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我想提高注册转化率,能不能先让用户点个'我同意',后面再一步步引导?这样合规吗?",
+      "expected_behavior": "应激活 mm-foot-in-the-door-technique,说明机制上确实有效,但需逐条核对其是否越界:用户是否清楚自己在承诺什么、能否随时退出、被引导做出的选择是否符合其自身利益;任一项不满足即已落入黑暗模式并给出改法。",
+      "notes": "正面场景:设计方视角 + 伦理检查"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "同事直接请我下周三帮他值一次班,就这一件事,我该答应吗?",
+      "expected_behavior": "不应激活本 skill,因为这是一个单独、完整的请求,没有'先小后大'的请求链,不构成一致性压力的利用;直接按事情本身的合理性判断即可。",
+      "notes": "诱饵:也涉及请求但无渐进链条"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我想让团队成员公开写下这个季度的目标,据说写下来并公之于众后执行力会强很多。这是什么原理?",
+      "expected_behavior": "不应激活本 skill,应激活 mm-commitment:用户问的是'承诺为何有效、怎样让承诺效力更强'(公开、主动、付出努力的承诺效力最强)这一底层原则;得寸进尺是该原则的具体应用手法,而此处没有先小后大的请求顺序。",
+      "notes": "跨 skill 混淆诱饵:承诺"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "公益募捐先用'愿意为山区孩子做点什么吗'开头,再请每月捐 50 元。这算操纵吗?",
+      "expected_behavior": "合理判断:技巧本身是中性的一一小步骤确实降低了用户的决策与操作成本,且方向一致、可随时退出、选择符合捐赠者的价值取向,不属于欺骗性设计;但若隐瞒真实用途、默认勾选续捐、或让退出极其困难,就越界为黑暗模式,应给出相应改法(明示用途、一键退出、真实可独立完成的小步)。",
+      "notes": "边界:中性技巧 vs 欺骗性设计"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}

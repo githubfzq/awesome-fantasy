@@ -1,0 +1,52 @@
+{
+  "skill": "mm-randomized-controlled-experiment",
+  "version": "0.1.0",
+  "source_book": "思维模型 (Super Thinking) — 加布里·温伯格 & 劳伦·麦肯",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "我们改了注册流程，注册率涨了 8%。但同期也在投广告，我怀疑不是流程的功劳。怎么确认？",
+      "expected_behavior": "应激活 mm-randomized-controlled-experiment，设计随机分组的对照实验：锁定单一变量（注册流程）、明确随机化单位、预先定义主指标与判定阈值，并说明如何排除广告带来的混淆。",
+      "notes": "正面场景：需要确认因果"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "我们一次上线了三个改动，效果不错但不知道是哪个起的作用。下次该怎么设计？",
+      "expected_behavior": "应激活 mm-randomized-controlled-experiment，指出违反「一次只改一个变量」原则，并给出分离变量的实验设计（分臂测试或逐项上线）。",
+      "notes": "正面场景：多变量混淆导致无法归因"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "我们的功能上线后做了对比，但指标是看结果后挑的——挑了三个涨得最明显的写进报告。这样行吗？",
+      "expected_behavior": "应激活 mm-randomized-controlled-experiment，指出终点必须预先定义、事后挑指标等于给自己多次撞显著的机会，并给出重跑方案。",
+      "notes": "正面场景：事后挑选终点的设计缺陷"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "我们想把按钮颜色从蓝改成绿，改错了随时能改回来。有必要做实验吗？",
+      "expected_behavior": "不应激活本 skill，因为改动成本极低、可快速回滚，实验成本超过收益；直接建议改了观察即可。",
+      "notes": "诱饵：涉及效果验证，但性价比不匹配"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "我们想研究孕期吸烟对婴儿的影响，显然不能随机分配孕妇去吸烟。这种情况下还能做什么，结论该怎么说？",
+      "expected_behavior": "不应激活本 skill 作为可行方案，因为书中明示随机化在此不道德/不现实；应在说明「不可随机化」后转向观察性研究与统计控制，并显著下调结论措辞强度（相关而非因果）。",
+      "notes": "诱饵：同一 skill 的场景，但落在边界之外，考验是否诚实说明不可行"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "我们给对照组也做了一套完整的假流程，结果他们也有明显改善。这实验还能说明什么？",
+      "expected_behavior": "应激活 mm-randomized-controlled-experiment 并给出正确解读：这正是设对照组的价值——真实效应 = 实验组改善 − 对照组改善；若两组改善程度相近，说明处理本身可能无效，效果主要来自安慰剂/期望（应引 mm-placebo-effect）。",
+      "notes": "边界：对照组的价值与效应剥离"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "3 条 should_trigger + 2 条 should_not_trigger + 1 条 edge_case。should_not_trigger-02 必须是同书兄弟 skill 的场景。"
+}
