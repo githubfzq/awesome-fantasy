@@ -55,11 +55,19 @@ STEP2_CLS = "Tfrm_YKYJCalcTax"
 STEP4_CLS = "Tfrm_YKYJReportDeclare"
 NSR_CLS = "TfrmNsrMgrView"
 IGNORE_CLS = {"Shell_TrayWnd", "Progman", "TFormShadow",
-              "Windows.UI.Core.CoreWindow", "TApplication"}   # T9: IME 候选窗等
+              "Windows.UI.Core.CoreWindow", "TApplication",   # T9: IME 候选窗等
+              # 环境噪音（无交互意义，2026-10-08 三次冻结取证确认均为零面积/系统级空壳）：
+              #   prl_cc_* = Parallels 共享剪贴板代理；DummyDWMListenerWindow = DWM 监听空壳；
+              #   EdgeUiInputTopWndClass = Edge 输入法条（贴屏幕上沿，h=2px，不可点）；
+              #   SplashWindow("...") = 扣缴端加载 splash，短暂出现属正常加载态。
+              "prl_cc_fgproxy", "prl_cc_wndclass", "DummyDWMListenerWindow",
+              "EdgeUiInputTopWndClass", "SplashWindow"}
 BTN_PREFIXES = ("TITSSpeedButton", "TModalSpeedButton",
                 "TModalSpeedButtonRound", "TButton", "TBitBtn")
 
-EXPECT_MONTH = "2026年08月"
+EXPECT_MONTH = (lambda n: "%d年%02d月" % ((n.year, n.month - 1) if n.month > 1
+                  else (n.year - 1, 12)))(__import__("datetime").datetime.now())
+# 默认申报上个月（N 月申报 N-1 月），运行时现算，不硬编码
 PIPE_DIR = r"\Mac\Home\Documents\rpa\pipeline"      # VM 侧共享盘 → Mac ~/Documents/rpa/pipeline
 MAC_PIPE = "~/Documents/rpa/pipeline"
 

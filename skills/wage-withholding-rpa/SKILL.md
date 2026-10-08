@@ -43,7 +43,7 @@ bash declare_month.sh recheck                # 退出模块重进，第二次独
 | 门 | 断言 |
 |---|---|
 | 门1 通道新鲜度 | 每次 VM 调用前后 `C:\rpa\last_result.json` 的 `run_id` 严格更新；未更新=本次未执行→自动重试一次，仍失败 `GATE1_FAIL`（防桥接陈旧回读假成功） |
-| 月份门 | 税款所属期实测=`N-1月`（N 月申报 N-1 月，如 2026-09 期→`2026年08月`）；不符停机，**绝不改月份** |
+| 月份门 | 税款所属期实测=自动算得的上月（`EXPECT_MONTH` 运行时由当前日期现算，N 月申报 N-1 月，跨年自动回 12 月，**不硬编码**）；不符停机，**绝不改月份** |
 | 复制证据门 | 【复制结果】「成功复制【1】条，失败【0】条」∧ 网格「填写人数==1」（李关珍）；复制 0 条/人数≠1 停机。草稿已在（幂等分支）则不重复制，防止复制出第 2 条 |
 | 发送前双门 | 步骤4 校验 memo **无负态文案**（计税前「未计算税款」计税后应翻转消失，空=无错误）∧ 发送钮 `enabled∧visible`（rect 钉死 [1138,343,1226,375]） |
 | 终态门 | 只认正向白名单「申报成功」类文案（memo 机器读 + 截图判读），且**退出模块重进两次独立读数**一致；绝不用代理信号猜"已申报" |
@@ -103,6 +103,14 @@ session 1 (fanzuquan 登录的桌面，扣缴端在此运行)
 scripts/
   declare_month.sh            # Mac 侧端到端驱动：门1 内建、取密仅内存、分阶段/auto
   declare_month_pipeline.py   # VM 侧内核：stage=preflow/finish/terminal_resume/recheck，dry_run 内建
+  confirm_click_ok.py         # [补救] 点「确认信息」弹窗左钮【确定】（owner-drawn 按钮无文本，按 x 最小=确定）
+  wizard_select1.py           # [补救] 复制向导选第①项单选 + BM_GETCHECK 断言
+  wizard_import.py            # [补救] 向导点【导入】→ 等结果框 → 机读「成功复制【N】条，失败【M】条」
+  close_result_box.py         # [补救] 点结果框右钮【关闭】
+  back_step1.py               # [补救] 点【返回】回步骤1（文本匹配优先，几何兜底）
+  read_confirm_modal.py       # [排查] 只读所有弹窗/结果框的文字与按钮（写 modal_read.json）
+  probe_state.py              # [排查] 列当前关键顶层窗（向导/结果框/弹窗/主窗）
+  grab_state.py               # [排查] 抓整屏到共享盘 state_now.png（必须经 pythonw，见排错#8）
   wage_rpa.py                 # [legacy] 早期 5 步交互流程，单步调试参考
   rpa.py                      # [legacy] 早期 VM 内 RPA 引擎（uia_* 子命令）
 references/
@@ -134,3 +142,21 @@ references/
 - 桥接无响应/退出 137：agent 被旧 `prlctl exec` 卡住，清理 `~/.prlctl-bridge/req`、`res` 并杀残留进程后重试。
 - `GATE1_FAIL`：门1 重试仍陈旧 → 通道未真正执行，检查 `run_vm.sh` 与共享盘挂载，**绝不采信旧结果**。
 - 登录超时弹窗（`Tfrm_MsgDlgRich`「登录超时」）随时可能出现：出现即会话已死 → 关弹窗 → 重登录 → 重新断言草稿（填写人数==1 则直接计税）→ 继续。
+- `unknown_modal_frozen`（enter_module/back_click 处反复出现）：先看冻结 JSON 的 unknowns 列表。
+  2026-10-08 取证确认以下为**环境噪音**，已加入 `IGNORE_CLS` 白名单，勿再当真弹窗停机：
+  `prl_cc_fgproxy`/`prl_cc_wndclass`（Parallels 剪贴板代理，零面积）、`DummyDWMListenerWindow`
+  （DWM 空壳，零面积）、`EdgeUiInputTopWndClass`（Edge 输入法条，贴屏上沿 h=2px）、
+  `SplashWindow`("...")（扣缴端加载 splash，短暂出现属正常）。新增噪音类同样先取证 rect/内容再进白名单。
+- **「确认信息」双弹窗陷阱**（2026-10-08）：点「填写」后系统弹『您本月[N月]还没有生成过正常工资薪金明细
+  数据。需要使用自动导入向导吗？』——这是**正常申报入口**，左钮【确定】→ 复制向导。但流水线
+  `wait_fill_reaction` 常误判 reaction=detail（明细页框架先渲染、数据后加载），随后在 back_to_step1
+  处又撞同一弹窗停机。补救：跑 `confirm_click_ok.py`（点确定）→ `wizard_select1.py`（选①）→
+  `wizard_import.py`（导入+机读复制硬门）→ `close_result_box.py`（关闭）→ `back_step1.py`（返回），
+  然后正常 `auto-resume finish`。弹窗文字 owner-drawn 无 HWND，**只能截图判读**（用 read_confirm_modal.py
+  拿 rect → PIL 裁剪 → 视觉模型读）。
+- 向导开着时 `back_to_step1`/页面判定必失败（模态遮挡）：先取消/关闭向导再继续；取消安全
+  （不复制，回步骤1 空白），按钮 rect 与 WIZ_IMPORT_REL/WIZ_CANCEL_REL 吻合可作几何校验。
+- **psexec 直跑 `python.exe` 会弹出黑色控制台窗口遮挡扣缴端**（截图判读全废）：排查/取证脚本一律用
+  `PsExec64.exe -i 1 C:\venv\Scripts\pythonw.exe`（无窗），流水线内核本就经 run_vm.sh 用 pythonw。
+- `EXPECT_MONTH` 已去硬编码（2026-10-08）：运行时由当前日期现算上月。若未来需要跨期补报，
+  显式覆盖该常量并在报告中记录，不要改回硬编码。
