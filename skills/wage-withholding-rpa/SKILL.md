@@ -1,5 +1,6 @@
 ---
 name: wage-withholding-rpa
+agent_created: true
 description: 在 Parallels Windows 11 VM 中端到端自动完成「自然人电子税务局（扣缴端）」月度工资薪金申报：declare_month.sh 一条命令串起 关闭→登录→复制上月→计税→发送→终态复核，硬门全过自动发送（用户已事先授权），失败即停、全程留痕。当用户要自动化个税扣缴端月度申报、或要求"把申报流程走完"时使用。
 ---
 
