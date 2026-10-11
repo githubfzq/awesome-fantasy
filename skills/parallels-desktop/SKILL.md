@@ -14,6 +14,10 @@ agent_created: true
 
 通过 `prlctl` 命令行工具管理和排查 macOS 上 Parallels Desktop 虚拟机问题。涵盖虚拟机生命周期管理、Secure Boot 修复、强制关闭、权限提升、服务初始化、网络修复等常见运维场景。
 
+> 本机有 `~/.prlctl-bridge/call.sh`（LaunchAgent 常驻的用户态 prlctl 桥，单槽串行）可绕过非 GUI 会话连不上
+> Parallels Service 的问题，`exec`/`list` 等优先走它。操作扣缴端 VM 的登录/关闭另有专用技能
+> `withholding-login`（`run_vm.sh` 经共享文件夹 + PsExec -i 1 驱动）。
+
 ## 前置条件
 
 - macOS 上已安装 Parallels Desktop

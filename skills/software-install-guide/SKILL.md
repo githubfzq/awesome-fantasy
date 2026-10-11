@@ -1,21 +1,24 @@
 ---
 name: software-install-guide
-description: 软件安装与 GitHub 资源下载通用指南。当需要在本机（macOS）、远程 Linux 服务器或云服务器上安装或升级软件、从 GitHub 下载 release 资源、配置二进制到 PATH、创建 systemd/LaunchAgent 常驻服务时使用。核心规范：GitHub 下载永远优先走 ghproxy 前缀代理加速（国内云服务器直连最快），下载后先校验再解压安装，安装幂等可重入。
+description: 软件安装与 GitHub 资源下载通用指南。当需要在本机（macOS）、远程 Linux 服务器或云服务器上安装或升级软件、从 GitHub 下载 release 资源或克隆仓库、配置二进制到 PATH、创建 systemd/LaunchAgent 常驻服务时使用。核心规范：GitHub Release 下载走 ghproxy 前缀代理加速（国内云服务器直连最快），git clone 优先走 SSH 协议、仅 SSH 失败才走镜像站；下载后先校验再解压安装，安装幂等可重入。
 agent_created: true
 ---
 
 # 软件安装通用指南（software-install-guide）
 
-规范"在用户的 Mac 本机与远程服务器上安装软件"的完整流程：选源 → 下载 → 校验 → 安装 → 常驻 → 验证。核心纪律是 **GitHub 资源必走代理加速** 与 **安装幂等**。
+规范"在用户的 Mac 本机与远程服务器上安装软件"的完整流程：选源 → 下载 → 校验 → 安装 → 常驻 → 验证。核心纪律是 **GitHub Release 下载必走代理加速、git clone 优先 SSH、安装幂等**。
 
 ## 何时使用
 
 - 从 GitHub 下载 release 二进制/源码包（最常见场景）
+- 从 GitHub 克隆仓库（skill、工具源码等）
 - 在 macOS / Ubuntu 服务器上安装命令行软件并配置 PATH
 - 把软件配置为常驻服务（Linux systemd / macOS LaunchAgent）
 - 既有软件升级到新版本
 
-## 一、GitHub 资源下载（铁律：必走 ghproxy 前缀代理）
+## 一、GitHub 资源获取
+
+### 1.1 Release 文件下载（铁律：必走 ghproxy 前缀代理）
 
 **链接格式为 URL 前缀代理**（不是改域名）：
 
@@ -45,6 +48,21 @@ https://<镜像域名>/https://github.com/<owner>/<repo>/archive/refs/tags/<tag>
 - 下载后先 `tar tzf <file> >/dev/null`（或对应格式校验）再解压，**禁止直接解压未校验的包**（半截文件会解出残缺二进制）
 - 有官方 checksums 时必须校验：`sha256sum -c`（Linux）/ `shasum -a 256 -c`（Mac）
 - 查最新版本：`curl -s https://api.github.com/repos/<owner>/<repo>/releases/latest | grep tag_name`（本机走环境代理通常可达；国内服务器访问 api.github.com 可能超时，此时直接去镜像站已知版本号）
+
+### 1.2 git clone 仓库（铁律：优先 SSH 协议，SSH 失败才走镜像）
+
+**执行顺序（2026-08-22 确立的规则）**：
+
+1. **首选 SSH 协议**：`git clone git@github.com:<owner>/<repo>.git <目标目录>`
+   - 本机已配置 GitHub SSH key（账号 githubfzq），克隆走 SSH 通常稳定且速度可接受
+   - 适合克隆 skill 仓库、工具源码等需要完整 git 历史或后续 pull 更新的场景
+2. **SSH 失败时降级镜像站**：`git clone https://gh-proxy.com/https://github.com/<owner>/<repo>.git <目标目录>`
+   - 触发条件：SSH 认证失败（无 key / key 未加到账号）、连接超时或中断
+   - 镜像优先级同 1.1 节（gh-proxy.com → ghproxy.net → ghfast.top）
+   - 国内云服务器上若无 SSH key，也可直接 `git clone https://gh-proxy.com/https://github.com/...`
+3. **判失败再切换，不要并行尝试**：一次只用一种方式，确认失败（非零退出/超时）后再降级
+
+注意：**Release 文件下载（1.1 节）与 git clone（本节）策略不同**——前者永远走 ghproxy 代理，后者优先 SSH。不要把 Release 的代理规则套用到 clone 上。
 
 ## 二、安装规范（分平台）
 

@@ -24,8 +24,9 @@ VM="Windows 11"
 MAC_ROOT="$HOME/Documents/rpa"
 PSEXEC='C:\rpa\pstools\PsExec64.exe'
 PYTHONW='C:\venv\Scripts\pythonw.exe'
-# VM 侧看到的共享根（单引号保留反斜杠字面量，UNC 需要开头的双反斜杠）
-SHARE='\\Mac\Home\Documents\rpa'
+# VM 侧看到的共享根（⚠️ 必须**单**反斜杠 `\Mac\Home\...`：实测双反斜杠经 prlctl exec + cmd /c + PsExec
+# 会解析失败（exit 255、仅打印 PsExec banner、脚本静默不执行）。文档里写 \\Mac\Home 只是 Markdown 转义表示。）
+SHARE='\Mac\Home\Documents\rpa'
 
 die() { echo "[x] $*" >&2; exit 1; }
 
@@ -40,6 +41,8 @@ while [ $# -gt 0 ]; do
 done
 [ -n "$MAIN" ] || die "缺少主脚本。用法见 --help"
 [ -f "$MAIN" ] || die "找不到文件: $MAIN"
+# 绝对化（兼容 ./ 相对路径），供 to_unc 校验前缀
+MAIN="$(cd "$(dirname "$MAIN")" && pwd)/$(basename "$MAIN")"
 
 # ---------- 1) 桥接自愈 ----------
 bridge_ok() { "$CALL" exec "$VM" cmd /c "echo bridge_ok" >/dev/null 2>&1; }
@@ -56,11 +59,14 @@ fi
 to_unc() {
   local p="$1"
   local rel="${p#$MAC_ROOT/}"
-  [ "$rel" != "$p" ] || die "脚本必须在 $MAC_ROOT 下: $p"
+  if [ "$rel" = "$p" ]; then
+    echo "脚本必须在 $MAC_ROOT 下: $p" >&2
+    return 1
+  fi
   rel="${rel//\//\\}"                       # / -> \
   printf '%s%s%s' "$SHARE" '\' "$rel"       # 三部分拼接，避免 printf 格式里的反斜杠歧义
 }
-MAIN_UNC="$(to_unc "$MAIN")"
+MAIN_UNC="$(to_unc "$MAIN")" || die "路径解析失败"
 
 # ---------- 3) 组装命令：PsExec -i 1 在交互会话直接 pythonw <UNC> ----------
 ARGS="$MAIN_UNC"
@@ -73,10 +79,11 @@ if [ "$NORUN" -eq 1 ]; then
 fi
 
 # 确保 VM 侧结果目录存在（仅创建目录，不删任何文件）
-"$CALL" exec "$VM" cmd /c "mkdir C:/rpa" >/dev/null 2>&1 || true
+"$CALL" exec "$VM" cmd /c "if not exist C:\rpa mkdir C:\rpa" >/dev/null 2>&1 || true
 
 echo "[*] 运行: $MAIN_UNC" >&2
-"$CALL" exec "$VM" "$RUN"
+# 必须经 cmd /c 包装：prlctl exec 收到带空格的整条命令时若不经 shell 会静默不执行（实测 exit 0 但无效果）
+"$CALL" exec "$VM" cmd /c "$RUN"
 
 # ---------- 4) 回读 last_result.json（base64 回传，剥离桥接噪声行） ----------
 echo "----- last_result.json -----"
