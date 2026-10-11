@@ -72,8 +72,11 @@ def shot(page: Page, name: str) -> Path:
 def get_credentials() -> dict:
     """从 keepass 取凭据： UserName=扣缴义务人识别号(统一社会信用代码)，
     Password=网站密码，Notes 内含身份证号。只在内存中返回。
-    注意：全量 show -s 输出带字段名（Title/UserName/Password/URL/Notes），
-    第一行是「请输入密码…」提示行，用行首锚定解析。"""
+    坑（实测 2026-10-11）：
+    - 不能用 `show -s -a UserName -a Password`：只输出两行纯值、不带字段名，
+      且某字段为空时整行不输出会让后面错位 → 用全量 show -s + 行首字段名解析。
+    - 解锁提示行「输入密码以解锁 …」走 stderr，capture_output 已分离，无需 tail -1。
+    - agents.kdbx 仅主密码保护：不要传 -k，否则 HMAC 不匹配。"""
     cmd = [KP_CLI, "show", "-s", KP_DB, KP_ENTRY]
     with open(KP_MASTER_FILE, "rb") as mf:
         master = mf.read().splitlines()[0]

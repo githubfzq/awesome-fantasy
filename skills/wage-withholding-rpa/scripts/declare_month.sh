@@ -16,11 +16,16 @@
 #   运行后断言严格更新；未更新=本次未执行 → 自动重试一次，仍失败 GATE1_FAIL。
 # 凭据：仅运行时经 keepass-lookup 取出并放进进程环境（WITHHOLDING_PASSWORD），
 #   绝不 echo、绝不落盘；auto_login 日志只记长度。
+# keepassxc-cli 坑（勿改回旧写法）：
+#   - 多 -a（如 -a UserName -a Password）只输出纯值、不带字段名，空字段还会让后面错位 →
+#     kp_get.py 用全量 `show -s` + 行首字段名解析，这里只读 JSON 的 password。
+#   - 解锁提示行在 stderr；库仅主密码保护，不要传 --key-file（否则 HMAC 不匹配）。
 set -uo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 VM="Windows 11"
 BR="$HOME/.prlctl-bridge/call.sh"
-KP="$HOME/.zcode/skills/keepass-lookup/scripts/kp_get.py"
+KP="$HOME/.workbuddy/skills/keepass-lookup/scripts/kp_get.py"
+[ -f "$KP" ] || KP="$HOME/.zcode/skills/keepass-lookup/scripts/kp_get.py"   # 旧路径兜底
 KP_DB="/Users/fanzuquan/Nutstore Files/.symlinks/坚果云/keepass/agents.kdbx"
 KP_KEY="/Users/fanzuquan/Nutstore Files/.symlinks/坚果云/keepass/agent_main_pass"
 

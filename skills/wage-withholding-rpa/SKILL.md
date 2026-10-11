@@ -71,6 +71,17 @@ JSONL `send_authorization` 事件；见 `declare_month.sh` `stage_finish` 的
 `tax-withholding-vm`（系统错误框/运行库）、`parallels-desktop`（VM 生命周期）、
 `withholding-captcha-crop`（验证码原理）。
 
+### 取申报密码的坑（keepassxc-cli · 本流水线相关）
+
+- `kp_get.py` 路径优先 `~/.workbuddy/skills/keepass-lookup/scripts/kp_get.py`（旧 `~/.zcode/...` 仅兜底），
+  `declare_month.sh` 已内建探测；找不到会 `PIPELINE_STATUS=kp_failed`。
+- **别用 `show -s -a UserName -a Password` 取多字段**：只返回两行纯值、不带字段名，空字段不出行会让
+  后面整体错位（曾导致拿到用户名当密码）。kp_get.py 已改为全量 `show -s` + 行首字段名解析。
+- 解锁提示行「输入密码以解锁 …」在 **stderr**，`2>/dev/null` 即可；不加 `-s` 时密码显示 `PROTECTED`。
+- agents.kdbx **仅主密码保护**：传 `--key-file` 或自动探测同目录 key file → `HMAC 不匹配`。
+- 库路径含空格（坚果云目录）需整段引号；主密码走 `--master-file` / stdin，绝不进命令行与日志。
+- 取到的 password 是**申报密码**（非网站登录密码），只经 `WITHHOLDING_PASSWORD` 环境变量传给 auto_login。
+
 ## 架构（关键事实）
 
 ```

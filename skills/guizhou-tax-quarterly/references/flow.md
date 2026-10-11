@@ -19,6 +19,30 @@
 | viewport | 1291×863 DPR=2；Playwright 截图 2582px；Read 展示 1080 宽 → **坐标×1.1954** |
 | 申报窗口 | 2026-10 顺延至 10-26 |
 
+## 0.1 凭据获取（keepassxc-cli · 实测 2026-10-11）
+
+```bash
+cat "$MF" | "$KX" show -s "$DB" "贵州电子税务局网站" 2>/dev/null
+```
+输出（全量、带字段名）：
+```
+Title: 贵州电子税务局网站
+UserName: 91520123MA6H98Y6XT
+Password: ***
+URL: https://tpass.guizhou.chinatax.gov.cn:8443/#/
+Notes: 贵州省电子税务局 企业电子税务网站登录；身份证号:522524197210294822（法人/经办人）
+Uuid / Tags
+```
+解析：`common.get_credentials()` 用 `^\s*(UserName|Password):\s*(.+)$` 抓字段，
+再用 `身份证号[:：]\s*(\d{17}[\dXx])` 从 Notes 抽身份证；三段缺一即抛错。
+
+踩坑：
+1. `show -s -a UserName -a Password` → **只给两行纯值、无字段名**，且空字段不出行会让后续错位。**禁止**用它取多字段。
+2. 解锁提示行「输入密码以解锁 …」在 **stderr**（不是 stdout），`2>/dev/null` 即可；别用 `tail -1`。
+3. 不加 `-s`：全量输出里 Password=`PROTECTED`。统一加 `-s`。
+4. `search 贵州` 会带出 `/回收站/贵州电子税务局（企业电子税务网站）` → 用完整条目名。
+5. agents.kdbx 仅主密码保护：传 `-k` 或自动探测 key file → `HMAC 不匹配`。
+
 ## 1. 登录
 
 - 访客首页右上「登录」→ 登录页默认「企业业务」tab（activeCls）
