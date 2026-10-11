@@ -8,8 +8,13 @@
 #   - Tfrm_MsgDlg     「提示信息」(如数据库备份提示): 单按钮「确认」，按钮 TModalSpeedButton
 #   本脚本循环处理所有这类确认弹窗（点确认/靠左按钮），直到主窗消失、无残留弹窗。
 #
+# 已知行为：扣缴端点系统关闭后窗体是「隐藏（托盘化）」而非销毁，进程驻留；
+# 本脚本最后对 TApplication 窗发 WM_CLOSE 优雅退出，仍不退则 taskkill 兜底
+# （用户已明确要求关闭应用）。返回 closed = 窗口不可见且无扣缴端进程。
+#
 # 每步带后置验证与结构化日志，符合 RPA 工程契约，绝不盲点。
 import ctypes
+import time
 import rpa_core as R
 from ctypes import wintypes
 
@@ -18,9 +23,12 @@ LOGIN_CLS = "Tfrm_LoginViewer"  # 登录窗（未进主界面时也要能完整�
 # 两类退出相关确认弹窗
 CONFIRM_CLS = ("Tfrm_MsgDlgRich", "Tfrm_MsgDlg")
 WM_GETTITLEBARINFOEX = 0x033F
+WM_CLOSE = 0x0010
 CLOSE_BTN = 5
 BTN_CLS_ALL = ("TITSSpeedButton", "TModalSpeedButtonRound", "TModalSpeedButton",
                "TButton", "TBitBtn")
+# 扣缴端相关进程名片段（窗口关闭后进程可能仍驻留托盘）
+APP_PROC_PATTERNS = ("EPPortal", "EPEvenue", "ProcDataDeal", "EPDataMgrTools")
 
 
 class TITLEBARINFOEX(ctypes.Structure):
@@ -85,25 +93,80 @@ def click_modal_default(modal):
     return {"clicked": None, "candidates_total": len(kids)}
 
 
+def app_processes():
+    """返回仍在运行的扣缴端相关进程映像名列表（tasklist CSV）。"""
+    import subprocess
+    try:
+        out = subprocess.run(["tasklist", "/FO", "CSV", "/NH"],
+                             capture_output=True, text=True, timeout=15).stdout
+    except Exception:
+        return []
+    procs = []
+    for line in out.splitlines():
+        name = line.split('","', 1)[0].strip('"')
+        if name and any(p in name for p in APP_PROC_PATTERNS) and name not in procs:
+            procs.append(name)
+    return procs
+
+
+def ensure_processes_exit(r):
+    """窗口已关但进程仍驻留（托盘化）时的收尾：优雅 WM_CLOSE → 兜底 taskkill。
+    返回 {"procs_before": [...], "method": "...", "procs_after": [...]}"""
+    before = app_processes()
+    if not before:
+        return {"procs_before": [], "method": "none", "procs_after": []}
+    # 1) 优雅关闭：对扣缴端 TApplication 顶层窗发 WM_CLOSE（可能弹确认框，交给下一轮模态处理）
+    sent = 0
+    for w in R.enum_top_windows():
+        if w["class"] == "TApplication" and w["title"] in ("自然人电子税务局（扣缴端）", "数据处理"):
+            R.user32.PostMessageW(w["hwnd"], WM_CLOSE, 0, 0)
+            sent += 1
+    time.sleep(2.0)
+    # 2) 处理 WM_CLOSE 可能带出的确认弹窗
+    while find_confirm_modal() is not None:
+        modal = find_confirm_modal()
+        click_modal_default(modal)
+        time.sleep(0.8)
+    # 3) 仍未退 → 兜底强杀（用户已明确要求关闭应用）
+    after = app_processes()
+    method = "wm_close"
+    if after:
+        import subprocess
+        for name in after:
+            try:
+                subprocess.run(["taskkill", "/F", "/T", "/IM", name],
+                               capture_output=True, timeout=15)
+            except Exception:
+                pass
+        time.sleep(1.5)
+        method = "taskkill"
+    return {"procs_before": before, "method": method, "procs_after": app_processes()}
+
+
 def main(r):
     # 1) 若登录窗可见且无确认弹窗挡着，先点其系统关闭按钮（覆盖『仍在登录窗』状态）
+    #    注：扣缴端点关闭后窗体是「隐藏（托盘化）」而非销毁，verify 以「不再可见」为准。
     lw = R.find_window(LOGIN_CLS, visible_only=True)
     if lw and find_confirm_modal() is None:
         r.step("click_close_login",
                action=lambda: click_close(lw["hwnd"]),
-               verify=lambda: (R.find_window(LOGIN_CLS, visible_only=False) is None)
+               verify=lambda: (R.find_window(LOGIN_CLS, visible_only=True) is None)
                               or (find_confirm_modal() is not None),
-               verify_desc="登录窗已消失或出现退出确认弹窗",
+               verify_desc="登录窗已隐藏或出现退出确认弹窗",
                timeout=8.0)
     # 2) 若主窗可见且无确认弹窗挡着，点系统关闭按钮
     mw = R.find_window(MAIN_CLS, visible_only=True)
     if mw and find_confirm_modal() is None:
         r.step("click_close_main",
                action=lambda: click_close(mw["hwnd"]),
-               verify=lambda: (R.find_window(MAIN_CLS, visible_only=False) is None)
+               verify=lambda: (R.find_window(MAIN_CLS, visible_only=True) is None)
                               or (find_confirm_modal() is not None),
-               verify_desc="主窗已消失或出现退出确认弹窗",
+               verify_desc="主窗已隐藏或出现退出确认弹窗",
                timeout=8.0)
+
+    # 2.5) 沉降等待：主窗关闭后，EPDataMgrTools.exe 会「延迟」弹出「提示信息」(Tfrm_MsgDlg)，
+    # 先等其浮现再进弹窗循环，避免单轮漏收需补跑一轮。
+    time.sleep(2.5)
 
     # 2) 循环处理所有退出相关确认弹窗，直到无残留
     handled = 0
@@ -120,11 +183,32 @@ def main(r):
         if handled > 6:
             r.fail("确认弹窗链过长，疑似异常", detail={"handled": handled})
             break
+        # 级间沉降：给下一级延迟确认框（如 EPDataMgrTools 后置弹窗）浮现时间
+        time.sleep(0.8)
 
-    return {"closed": (R.find_window(MAIN_CLS, visible_only=False) is None
-                       and R.find_window(LOGIN_CLS, visible_only=False) is None),
+    # 2.6) 最终再探一次：捕获循环退出后才浮现的延迟弹窗（EPDataMgrTools 偶发后置）。
+    # 单轮兜底，避免「主窗已关、残留提示信息框未收」需另起一轮。
+    time.sleep(1.5)
+    late = find_confirm_modal()
+    if late is not None:
+        cls = late["class"]
+        r.step("confirm_modal_late",
+               action=lambda m=late: click_modal_default(m),
+               verify=lambda c=cls: R.find_window(class_name=c, visible_only=True) is None,
+               verify_desc="延迟确认弹窗(%s)已关闭" % cls,
+               timeout=8.0,
+               guard=False)
+        handled += 1
+
+    # 3) 进程收尾：窗口已隐藏但进程驻留托盘 → 优雅 WM_CLOSE → 兜底 taskkill
+    proc = ensure_processes_exit(r)
+
+    return {"closed": (R.find_window(MAIN_CLS, visible_only=True) is None
+                       and R.find_window(LOGIN_CLS, visible_only=True) is None
+                       and not proc["procs_after"]),
             "final_modal": find_confirm_modal() is not None,
-            "modals_handled": handled}
+            "modals_handled": handled,
+            "process": proc}
 
 
 if __name__ == "__main__":

@@ -19,12 +19,19 @@ agent_created: true
 - VM 重启后 CUA computer_server 失联，需要重新注入会话
 - 需要不靠坐标、不靠肉眼看截图地驱动 Windows 桌面
 
+> **分工**：本技能 = VM 基础设施 / CUA 驱动 / 运行库修复 / 系统错误弹窗。
+> **登录与关闭扣缴端**（填表/验证码/被拒分流/多级退出弹窗）→ 转 `withholding-login`
+> 的 `auto_login.sh` / `close_app.sh`（1 次调用 + STATUS 决策表）。两者配合：
+> 本技能处理"应用起不来/弹系统错误框"，`withholding-login` 处理"起来了怎么登录/关闭"。
+
 ## 关键事实（环境）
 
 - VM：`Windows 11`，IP `10.211.55.5`；Mac 侧网桥 `bridge100` = `10.211.55.1`
 - CUA endpoint：`http://10.211.55.5:8000/mcp`（由 `cua-computer-use` 技能提供）
 - 扣缴端：`C:\ITSKHD\EPPortal_DS3.0\EPEvenue_SH.exe`（拉起 `EPPortalITS2.exe`）
 - 故障子进程：`...\AppModules\ITSKHD\Common\Base\ProcDataDeal\ProcDataDeal.exe`（x86）
+- RPA 运行通道：`~/Documents/rpa/run_vm.sh`（Parallels 共享文件夹 + PsExec -i 1 + pythonw，
+  登录/关闭脚本都走它；与 CUA 通道互不依赖）
 - 脚本目录：`scripts/`（`cua_ps.py` 封装 PowerShell 执行；`close_popup.ps1` 关弹窗；
   `detect_dialog.ps1` 检测弹窗；`install_runtime.ps1` 装运行库；`list_all.ps1`）
 

@@ -36,6 +36,12 @@ The hard-won lessons baked into this skill:
 - Debugging `computer_screenshot` returning `'image_data'` or empty results
 - Reconnecting after the Mac reboots (bridge100 IP is lost on reboot)
 
+> For the 扣缴端 (tax withholding client) specifically, prefer the dedicated
+> `withholding-login` skill: its `run_vm.sh` channel (Parallels shared folder +
+> `psexec -i 1` + `pythonw`) performs login/close in 1–2 calls with structured
+> `STATUS` output, instead of step-by-step screenshot/click/type through CUA.
+> Use CUA here for exploratory/one-off desktop tasks and troubleshooting.
+
 ## Prerequisites
 
 - Parallels Desktop installed on the Mac; a Windows 11 VM exists and is running.

@@ -26,9 +26,20 @@ API Key 来源：
    KX=/Applications/KeePassXC.app/Contents/MacOS/keepassxc-cli
    DB="/Users/fanzuquan/Nutstore Files/.symlinks/坚果云/keepass/agents.kdbx"
    KEY=$(cat "/Users/fanzuquan/Nutstore Files/.symlinks/坚果云/keepass/agent_main_pass" \
-        | "$KX" show -s -a "API key" "$DB" deepseek 2>/dev/null | tail -1)
+        | "$KX" show -s -a "API key" "$DB" deepseek 2>/dev/null)
+   ```
+   等价写法（走 keepass-lookup 脚本，输出 JSON）：
+   ```bash
+   KEY=$(python3 ~/.workbuddy/skills/keepass-lookup/scripts/kp_get.py \
+          --db "$DB" --master-file <主密码文件> --search deepseek --attr "API key" \
+        | python3 -c 'import sys,json;print(json.load(sys.stdin)["attrs"]["API key"])')
    ```
 
+   **为什么必须 `-a` 单取（实测 2026-10-11）**：「API key」是**受保护自定义属性**，
+   全量 `show -s` 输出里只列 Title/UserName/Password/URL/Notes/各模型备注/Uuid/Tags，
+   **不含「API key」**——全量解析拿不到它，只能 `-a "API key"`（输出仅一行值）。
+   其它坑：多 `-a` 只输出纯值、不带字段名且空字段会错位；解锁提示行在 **stderr**（`2>/dev/null` 即可）；
+   不加 `-s` 受保护字段显示 `PROTECTED`；库仅主密码保护，**不要传 `-k`**（否则 HMAC 不匹配）。
    主密码文件路径与「绝不读取个人库」等规范见用户级技能 `keepass-lookup`。
 2. 环境变量 `DEEPSEEK_API_KEY`
 3. 运行时由用户直接提供（仅当次会话使用）
