@@ -54,7 +54,7 @@ function report(html) {
     scriptExplicitMath:
       countMatches(scripts, /katex\s*\.\s*render|renderMathInElement/g) +
       countMatches(scripts, /\\\([^)\n]*?\\\)/g) +
-      countMatches(scripts, /\\\[^)\n]*?\\\]/g) +
+      countMatches(scripts, /\\\[[^\n]*?\\\]/g) +
       countMatches(scripts, /\$\$[^$\n]+\$\$/g),
   };
 }
